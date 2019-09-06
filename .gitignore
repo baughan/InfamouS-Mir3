@@ -94,7 +94,7 @@ Release
 /.vs/
 
 /packages/Ionic.Zlib.1.9.1.5
-;*.csproj
+*.csproj
 Components/SlimDX.dll
 PatchManager/PatchManager.csproj
 >>>>>>> f9f3c0e... Uploading correct code
