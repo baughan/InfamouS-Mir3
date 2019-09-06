@@ -1343,12 +1343,7 @@ namespace Client.Controls
                 {
                     if (Parent == null) return;
 
-
-                    if (tempPoint.X + DisplayArea.Width > Parent.DisplayArea.Width) tempPoint.X = Parent.DisplayArea.Width - DisplayArea.Width;
-                    if (tempPoint.Y + DisplayArea.Height > Parent.DisplayArea.Height) tempPoint.Y = Parent.DisplayArea.Height - DisplayArea.Height;
-
-                    if (tempPoint.X < 0) tempPoint.X = 0;
-                    if (tempPoint.Y < 0) tempPoint.Y = 0;
+                    tempPoint = GetBoundsPoint(tempPoint);
                 }
 
                 //clipping here for tear off
@@ -1381,6 +1376,16 @@ namespace Client.Controls
             MouseControl = this;
 
             MouseMove?.Invoke(this, e);
+        }
+        public virtual Point GetBoundsPoint(Point tempPoint)
+        {
+            if (tempPoint.X + DisplayArea.Width > Parent.DisplayArea.Width) tempPoint.X = Parent.DisplayArea.Width - DisplayArea.Width;
+            if (tempPoint.Y + DisplayArea.Height > Parent.DisplayArea.Height) tempPoint.Y = Parent.DisplayArea.Height - DisplayArea.Height;
+
+            if (tempPoint.X < 0) tempPoint.X = 0;
+            if (tempPoint.Y < 0) tempPoint.Y = 0;
+
+            return tempPoint;
         }
         public virtual Size GetAcceptableResize(Size size)
         {

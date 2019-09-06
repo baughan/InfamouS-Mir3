@@ -188,6 +188,7 @@ namespace Client.Scenes
         public QuestDialog QuestBox;
         public QuestTrackerDialog QuestTrackerBox;
         public CompanionDialog CompanionBox;
+        public CompanionOptionsDialog CompanionOptionsBox;
         public BlockDialog BlockBox;
         public MonsterDialog MonsterBox;
         public MagicBarDialog MagicBarBox;
@@ -299,6 +300,9 @@ namespace Client.Scenes
             }
         }
         private ClientUserCompanion _Companion;
+
+        public List<Tuple<ItemType, RequiredClass>> CompanionForbiddenItems = new List<Tuple<ItemType, RequiredClass>>();
+        public List<Rarity> CompanionForbiddenGrades = new List<Rarity>();
 
         #endregion
 
@@ -443,6 +447,7 @@ namespace Client.Scenes
                 Parent = this,
                 Visible = false,
             };
+
             NPCCompanionStorageBox = new NPCCompanionStorageDialog
             {
                 Parent = this,
@@ -596,6 +601,11 @@ namespace Client.Scenes
                 Parent = this,
                 Visible = false,
             };
+            CompanionOptionsBox = new CompanionOptionsDialog
+            {
+                Parent = this,
+                Visible = false,
+            };
 
             BlockBox = new BlockDialog
             {
@@ -704,6 +714,8 @@ namespace Client.Scenes
             SendMailBox.Location = new Point((Size.Width - SendMailBox.Size.Width) / 2, (Size.Height - SendMailBox.Size.Height) / 2);
 
             CompanionBox.Location = new Point((Size.Width - CompanionBox.Size.Width) / 2, (Size.Height - CompanionBox.Size.Height) / 2);
+
+            CompanionOptionsBox.Location = new Point(CompanionBox.ClientArea.Right + 1, (Size.Height - CompanionOptionsBox.Size.Height) / 2);
 
             BlockBox.Location = new Point((Size.Width - BlockBox.Size.Width) / 2, (Size.Height - BlockBox.Size.Height) / 2);
 
@@ -4344,6 +4356,14 @@ namespace Client.Scenes
                         CompanionBox.Dispose();
 
                     CompanionBox = null;
+                }
+
+                if (CompanionOptionsBox != null)
+                {
+                    if (!CompanionOptionsBox.IsDisposed)
+                        CompanionOptionsBox.Dispose();
+
+                    CompanionOptionsBox = null;
                 }
 
                 if (BlockBox != null)

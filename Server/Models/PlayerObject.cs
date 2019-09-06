@@ -130,6 +130,8 @@ namespace Server.Models
             PartsStorage = new UserItem[1000];
 
         public Companion Companion;
+        public List<Tuple<ItemType, RequiredClass>> CompanionForbiddenItems = new List<Tuple<ItemType, RequiredClass>>();
+        public List<Rarity> CompanionForbiddenGrades = new List<Rarity>();
 
         public MapObject LastHitter;
 
@@ -791,6 +793,68 @@ namespace Server.Models
                 BuffAdd(BuffType.Developer, TimeSpan.MaxValue, null, true, false, TimeSpan.Zero);
 
             Enqueue(new S.HelmetToggle { HideHelmet = Character.HideHelmet });
+
+            if (Character.CompanionForbidGold)
+                CompanionForbiddenItems.Add(Tuple.Create(ItemType.Gold, RequiredClass.None));
+            if (Character.CompanionForbidWeapon)
+                CompanionForbiddenItems.Add(Tuple.Create(ItemType.Weapon, RequiredClass.None));
+            if (Character.CompanionForbidArmour)
+                CompanionForbiddenItems.Add(Tuple.Create(ItemType.Armour, RequiredClass.None));
+            if (Character.CompanionForbidHelmet)
+                CompanionForbiddenItems.Add(Tuple.Create(ItemType.Helmet, RequiredClass.None));
+            if (Character.CompanionForbidShield)
+                CompanionForbiddenItems.Add(Tuple.Create(ItemType.Shield, RequiredClass.None));
+            if (Character.CompanionForbidNecklace)
+                CompanionForbiddenItems.Add(Tuple.Create(ItemType.Necklace, RequiredClass.None));
+            if (Character.CompanionForbidBracelet)
+                CompanionForbiddenItems.Add(Tuple.Create(ItemType.Bracelet, RequiredClass.None));
+            if (Character.CompanionForbidRing)
+                CompanionForbiddenItems.Add(Tuple.Create(ItemType.Ring, RequiredClass.None));
+            if (Character.CompanionForbidShoes)
+                CompanionForbiddenItems.Add(Tuple.Create(ItemType.Shoes, RequiredClass.None));
+            if (Character.CompanionForbidBook)
+                CompanionForbiddenItems.Add(Tuple.Create(ItemType.Book, RequiredClass.None));
+            if (Character.CompanionForbidBookWarrior)
+                CompanionForbiddenItems.Add(Tuple.Create(ItemType.Book, RequiredClass.Warrior));
+            if (Character.CompanionForbidBookWizard)
+                CompanionForbiddenItems.Add(Tuple.Create(ItemType.Book, RequiredClass.Wizard));
+            if (Character.CompanionForbidBookTaoist)
+                CompanionForbiddenItems.Add(Tuple.Create(ItemType.Book, RequiredClass.Taoist));
+            if (Character.CompanionForbidBookAssassin)
+                CompanionForbiddenItems.Add(Tuple.Create(ItemType.Book, RequiredClass.Assassin));
+            if (Character.CompanionForbidPotion)
+                CompanionForbiddenItems.Add(Tuple.Create(ItemType.Consumable, RequiredClass.None));
+            if (Character.CompanionForbidMeat)
+                CompanionForbiddenItems.Add(Tuple.Create(ItemType.Meat, RequiredClass.None));
+            if (Character.CompanionForbidCommon)
+                CompanionForbiddenGrades.Add(Rarity.Common);
+            if (Character.CompanionForbidElite)
+                CompanionForbiddenGrades.Add(Rarity.Elite);
+            if (Character.CompanionForbidSuperior)
+                CompanionForbiddenGrades.Add(Rarity.Superior);
+
+            Enqueue(new S.AllFilters
+            {
+                CompanionGold = !Character.CompanionForbidGold,
+                CompanionWeapon = !Character.CompanionForbidWeapon,
+                CompanionArmour = !Character.CompanionForbidArmour,
+                CompanionHelmet = !Character.CompanionForbidHelmet,
+                CompanionShield = !Character.CompanionForbidShield,
+                CompanionNecklace = !Character.CompanionForbidNecklace,
+                CompanionBracelet = !Character.CompanionForbidBracelet,
+                CompanionRing = !Character.CompanionForbidRing,
+                CompanionShoes = !Character.CompanionForbidShoes,
+                CompanionBook = !Character.CompanionForbidBook,
+                CompanionBookWarrior = !Character.CompanionForbidBookWarrior,
+                CompanionBookWizard = !Character.CompanionForbidBookWizard,
+                CompanionBookTaoist = !Character.CompanionForbidBookTaoist,
+                CompanionBookAssassin = !Character.CompanionForbidBookAssassin,
+                CompanionPotion = !Character.CompanionForbidPotion,
+                CompanionMeat = !Character.CompanionForbidMeat,
+                CompanionCommon = !Character.CompanionForbidCommon,
+                CompanionElite = !Character.CompanionForbidElite,
+                CompanionSuperior = !Character.CompanionForbidSuperior,
+            });
 
             //Send War Date to guild.
             foreach (CastleInfo castle in SEnvir.CastleInfoList.Binding)
@@ -7697,6 +7761,7 @@ namespace Server.Models
                 case ItemType.Poison:
                 case ItemType.Amulet:
                 case ItemType.Scroll:
+                case ItemType.Gold:
                     return false;
                 case ItemType.Weapon:
                     if (SEnvir.Random.Next(Stats[Stat.Strength]) > 0) return false;
@@ -7932,6 +7997,97 @@ namespace Server.Models
             Character.HideHelmet = value;
             SendShapeUpdate();
             Enqueue(new S.HelmetToggle { HideHelmet = Character.HideHelmet });
+        }
+
+        public void CompanionPickupToggle(ItemType type, RequiredClass pclass)
+        {
+            Tuple<ItemType, RequiredClass> tuppleToggle = Tuple.Create(type, pclass);
+            if (CompanionForbiddenItems.Contains(tuppleToggle))
+                CompanionForbiddenItems.Remove(tuppleToggle);
+            else
+                CompanionForbiddenItems.Add(tuppleToggle);
+
+            switch (type)
+            {
+                case ItemType.Gold:
+                    Character.CompanionForbidGold = CompanionForbiddenItems.Contains(tuppleToggle);
+                    break;
+                case ItemType.Weapon:
+                    Character.CompanionForbidWeapon = CompanionForbiddenItems.Contains(tuppleToggle);
+                    break;
+                case ItemType.Armour:
+                    Character.CompanionForbidArmour = CompanionForbiddenItems.Contains(tuppleToggle);
+                    break;
+                case ItemType.Helmet:
+                    Character.CompanionForbidHelmet = CompanionForbiddenItems.Contains(tuppleToggle);
+                    break;
+                case ItemType.Shield:
+                    Character.CompanionForbidShield = CompanionForbiddenItems.Contains(tuppleToggle);
+                    break;
+                case ItemType.Necklace:
+                    Character.CompanionForbidNecklace = CompanionForbiddenItems.Contains(tuppleToggle);
+                    break;
+                case ItemType.Bracelet:
+                    Character.CompanionForbidBracelet = CompanionForbiddenItems.Contains(tuppleToggle);
+                    break;
+                case ItemType.Ring:
+                    Character.CompanionForbidRing = CompanionForbiddenItems.Contains(tuppleToggle);
+                    break;
+                case ItemType.Shoes:
+                    Character.CompanionForbidShoes = CompanionForbiddenItems.Contains(tuppleToggle);
+                    break;
+                case ItemType.Book:
+                    switch (pclass)
+                    {
+                        case RequiredClass.None:
+                            Character.CompanionForbidBook = CompanionForbiddenItems.Contains(tuppleToggle);
+                            break;
+                        case RequiredClass.Warrior:
+                            Character.CompanionForbidBookWarrior = CompanionForbiddenItems.Contains(tuppleToggle);
+                            break;
+                        case RequiredClass.Wizard:
+                            Character.CompanionForbidBookWizard = CompanionForbiddenItems.Contains(tuppleToggle);
+                            break;
+                        case RequiredClass.Taoist:
+                            Character.CompanionForbidBookTaoist = CompanionForbiddenItems.Contains(tuppleToggle);
+                            break;
+                        case RequiredClass.Assassin:
+                            Character.CompanionForbidBookAssassin = CompanionForbiddenItems.Contains(tuppleToggle);
+                            break;
+                    }
+                    break;
+                case ItemType.Consumable:
+                    Character.CompanionForbidPotion = CompanionForbiddenItems.Contains(tuppleToggle);
+                    break;
+                case ItemType.Meat:
+                    Character.CompanionForbidMeat = CompanionForbiddenItems.Contains(tuppleToggle);
+                    break;
+            }
+
+            Enqueue(new S.CompanionPickupToggle { Type = type, Class = pclass });
+        }
+
+        public void CompanionPickupGradeToggle(Rarity grade)
+        {
+            if (CompanionForbiddenGrades.Contains(grade))
+                CompanionForbiddenGrades.Remove(grade);
+            else
+                CompanionForbiddenGrades.Add(grade);
+
+            switch (grade)
+            {
+                case Rarity.Common:
+                    Character.CompanionForbidCommon = CompanionForbiddenGrades.Contains(grade);
+                    break;
+                case Rarity.Elite:
+                    Character.CompanionForbidElite = CompanionForbiddenGrades.Contains(grade);
+                    break;
+                case Rarity.Superior:
+                    Character.CompanionForbidSuperior = CompanionForbiddenGrades.Contains(grade);
+                    break;
+            }
+
+            Enqueue(new S.CompanionPickupGradeToggle { Grade = grade });
         }
         #endregion
 
