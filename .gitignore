@@ -16,6 +16,6 @@
 /.vs/
 
 /packages/Ionic.Zlib.1.9.1.5
-;*.csproj
+*.csproj
 Components/SlimDX.dll
 PatchManager/PatchManager.csproj
