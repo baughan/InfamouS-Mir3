@@ -4016,6 +4016,72 @@ namespace Client.Envir
             GameScene.Game.CharacterBox.ShowHelmetBox.Checked = !p.HideHelmet;
         }
 
+        public void Process(S.CompanionPickupToggle p)
+        {
+            Tuple<ItemType, RequiredClass> tupleToggle = Tuple.Create(p.Type, p.Class);
+            if (GameScene.Game.CompanionForbiddenItems.Contains(tupleToggle))
+                GameScene.Game.CompanionForbiddenItems.Remove(tupleToggle);
+            else
+                GameScene.Game.CompanionForbiddenItems.Add(tupleToggle);
+
+            GameScene.Game.CompanionOptionsBox.Refresh();
+        }
+
+        public void Process(S.CompanionPickupGradeToggle p)
+        {
+            if (GameScene.Game.CompanionForbiddenGrades.Contains(p.Grade))
+                GameScene.Game.CompanionForbiddenGrades.Remove(p.Grade);
+            else
+                GameScene.Game.CompanionForbiddenGrades.Add(p.Grade);
+
+            GameScene.Game.CompanionOptionsBox.Refresh();
+        }
+
+        public void Process(S.AllFilters p)
+        {
+
+            if (!p.CompanionGold)
+                GameScene.Game.CompanionForbiddenItems.Add(Tuple.Create(ItemType.Gold, RequiredClass.None));
+            if (!p.CompanionWeapon)
+                GameScene.Game.CompanionForbiddenItems.Add(Tuple.Create(ItemType.Weapon, RequiredClass.None));
+            if (!p.CompanionArmour)
+                GameScene.Game.CompanionForbiddenItems.Add(Tuple.Create(ItemType.Armour, RequiredClass.None));
+            if (!p.CompanionHelmet)
+                GameScene.Game.CompanionForbiddenItems.Add(Tuple.Create(ItemType.Helmet, RequiredClass.None));
+            if (!p.CompanionShield)
+                GameScene.Game.CompanionForbiddenItems.Add(Tuple.Create(ItemType.Shield, RequiredClass.None));
+            if (!p.CompanionNecklace)
+                GameScene.Game.CompanionForbiddenItems.Add(Tuple.Create(ItemType.Necklace, RequiredClass.None));
+            if (!p.CompanionBracelet)
+                GameScene.Game.CompanionForbiddenItems.Add(Tuple.Create(ItemType.Bracelet, RequiredClass.None));
+            if (!p.CompanionRing)
+                GameScene.Game.CompanionForbiddenItems.Add(Tuple.Create(ItemType.Ring, RequiredClass.None));
+            if (!p.CompanionShoes)
+                GameScene.Game.CompanionForbiddenItems.Add(Tuple.Create(ItemType.Shoes, RequiredClass.None));
+            if (!p.CompanionBook)
+                GameScene.Game.CompanionForbiddenItems.Add(Tuple.Create(ItemType.Book, RequiredClass.None));
+            if (!p.CompanionBookWarrior)
+                GameScene.Game.CompanionForbiddenItems.Add(Tuple.Create(ItemType.Book, RequiredClass.Warrior));
+            if (!p.CompanionBookWizard)
+                GameScene.Game.CompanionForbiddenItems.Add(Tuple.Create(ItemType.Book, RequiredClass.Wizard));
+            if (!p.CompanionBookTaoist)
+                GameScene.Game.CompanionForbiddenItems.Add(Tuple.Create(ItemType.Book, RequiredClass.Taoist));
+            if (!p.CompanionBookAssassin)
+                GameScene.Game.CompanionForbiddenItems.Add(Tuple.Create(ItemType.Book, RequiredClass.Assassin));
+            if (!p.CompanionPotion)
+                GameScene.Game.CompanionForbiddenItems.Add(Tuple.Create(ItemType.Consumable, RequiredClass.None));
+            if (!p.CompanionMeat)
+                GameScene.Game.CompanionForbiddenItems.Add(Tuple.Create(ItemType.Meat, RequiredClass.None));
+            if (!p.CompanionCommon)
+                GameScene.Game.CompanionForbiddenGrades.Add(Rarity.Common);
+            if (!p.CompanionElite)
+                GameScene.Game.CompanionForbiddenGrades.Add(Rarity.Elite);
+            if (!p.CompanionSuperior)
+                GameScene.Game.CompanionForbiddenGrades.Add(Rarity.Superior);
+
+            GameScene.Game.CompanionOptionsBox.Refresh();
+        }
+
         public void Process(S.StorageSize p)
         {
             GameScene.Game.StorageSize = p.Size;

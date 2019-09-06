@@ -113,7 +113,7 @@ namespace Server.Models.Monsters
 
             Stats[Stat.CompanionBagWeight] += LevelInfo.InventoryWeight;
             Stats[Stat.CompanionInventory] += LevelInfo.InventorySpace;
-            
+
             RefreshWeight();
         }
 
@@ -171,6 +171,33 @@ namespace Server.Models.Monsters
                 cell = CompanionOwner.CurrentCell;
 
             Teleport(CompanionOwner.CurrentMap, cell.Location);
+        }
+
+        public bool MasterForbidsPickup(ItemCheck check)
+        {
+            ItemType type = ItemType.Nothing;
+            if (check.Info.Effect == ItemEffect.ItemPart && check.Item.Stats[Stat.ItemIndex] > 0)
+            {
+                type = SEnvir.ItemInfoList.Binding.First(x => x.Index == check.Item.Stats[Stat.ItemIndex]).ItemType;
+
+                if (type == ItemType.Book)
+                {
+                    return CompanionOwner.CompanionForbiddenItems.Contains(Tuple.Create(type, SEnvir.ItemInfoList.Binding.First(x => x.Index == check.Item.Stats[Stat.ItemIndex]).RequiredClass))
+                        || (CompanionOwner.CompanionForbiddenGrades.Contains(SEnvir.ItemInfoList.Binding.First(x => x.Index == check.Item.Stats[Stat.ItemIndex]).Rarity));
+                }
+                else
+                {
+                    return CompanionOwner.CompanionForbiddenItems.Contains(Tuple.Create(type, RequiredClass.None))
+                        || (check.Info.Effect != ItemEffect.Gold && CompanionOwner.CompanionForbiddenGrades.Contains(SEnvir.ItemInfoList.Binding.First(x => x.Index == check.Item.Stats[Stat.ItemIndex]).Rarity));
+                }
+            }
+
+            type = check.Info.ItemType;
+
+            if (type == ItemType.Book)
+                return CompanionOwner.CompanionForbiddenItems.Contains(Tuple.Create(check.Info.ItemType, check.Info.RequiredClass)) || (check.Info.Effect != ItemEffect.Gold && CompanionOwner.CompanionForbiddenGrades.Contains(check.Info.Rarity));
+            else
+                return CompanionOwner.CompanionForbiddenItems.Contains(Tuple.Create(check.Info.ItemType, RequiredClass.None)) || (check.Info.Effect != ItemEffect.Gold && CompanionOwner.CompanionForbiddenGrades.Contains(check.Info.Rarity));
         }
 
         public override void ProcessSearch()
@@ -259,7 +286,7 @@ namespace Server.Models.Monsters
             item.Auction = null;
             item.Companion = null;
             item.Guild = null;
-            
+
 
             item.Flags &= ~UserItemFlags.Locked;
         }
@@ -290,7 +317,7 @@ namespace Server.Models.Monsters
         {
             if (UserCompanion.Hunger > 0) return;
 
-            UserItem item = Equipment[(int) CompanionSlot.Food];
+            UserItem item = Equipment[(int)CompanionSlot.Food];
 
             if (item == null || !CanUseItem(item.Info)) return;
 
@@ -379,7 +406,7 @@ namespace Server.Models.Monsters
                 Level13 = UserCompanion.Level13,
                 Level15 = UserCompanion.Level15
             });
-            
+
         }
         public Stats GetSkill(int level)
         {
@@ -405,7 +432,7 @@ namespace Server.Models.Monsters
 
                 if (value >= 0) continue;
 
-                lvStats[info.StatType] = SEnvir.Random.Next( info.MaxAmount) + 1;
+                lvStats[info.StatType] = SEnvir.Random.Next(info.MaxAmount) + 1;
 
                 break;
             }
@@ -417,7 +444,7 @@ namespace Server.Models.Monsters
         protected override void MoveTo(Point target)
         {
             if (!CanMove || CurrentLocation == target) return;
-            
+
             MirDirection direction = Functions.DirectionFromPoint(CurrentLocation, target);
 
             int rotation = SEnvir.Random.Next(2) == 0 ? 1 : -1;
@@ -457,6 +484,7 @@ namespace Server.Models.Monsters
             foreach (ItemCheck check in checks)
             {
                 if ((check.Flags & UserItemFlags.QuestItem) == UserItemFlags.QuestItem) continue;
+                if (MasterForbidsPickup(check)) return false;
 
                 long count = check.Count;
 
@@ -638,7 +666,7 @@ namespace Server.Models.Monsters
                 Direction = Direction,
 
                 PetOwner = CompanionOwner.Name,
-                
+
                 Poison = Poison,
 
                 Buffs = Buffs.Where(x => x.Visible).Select(x => x.Type).ToList(),

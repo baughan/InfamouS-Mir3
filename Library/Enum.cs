@@ -327,6 +327,7 @@ namespace Library
         ItemPart,
         Emblem,
         Shield,
+        Gold
     }
 
     public enum MirAction : byte

@@ -102,6 +102,15 @@ namespace Client.Scenes.Views
             };
             PickUpCheckBox.Location = new Point(ClientArea.Right - PickUpCheckBox.Size.Width +3, ClientArea.Y + 45);
 
+            DXButton ConfigButton = new DXButton
+            {
+                LibraryFile = LibraryFile.GameInter,
+                Index = 116,
+                Parent = this,
+            };
+            ConfigButton.Location = new Point(ClientArea.X + 2, ClientArea.Y + 5);
+            ConfigButton.MouseClick += (o, e) => GameScene.Game.CompanionOptionsBox.Visible = !GameScene.Game.CompanionOptionsBox.Visible;
+
             /*
             new DXLabel
             {
@@ -391,6 +400,11 @@ namespace Client.Scenes.Views
                 Text = "Weight",
             };
             label.Location = new Point(CompanionDisplayPoint.X + 30 - label.Size.Width, CompanionDisplayPoint.Y + 120);
+
+            VisibleChanged += (o, e) =>
+            {
+                if (GameScene.Game.CompanionOptionsBox != null) GameScene.Game.CompanionOptionsBox.Visible = false;
+            };
         }
 
         #region Methods
@@ -485,6 +499,21 @@ namespace Client.Scenes.Views
 
             for (int i = 0; i < InventoryGrid.Grid.Length; i++)
                 InventoryGrid.Grid[i].Enabled = i < InventorySize;
+        }
+
+        public override Point GetBoundsPoint(Point tempPoint)
+        {
+            Rectangle rec = DisplayArea;
+            if (GameScene.Game.CompanionOptionsBox != null && GameScene.Game.CompanionOptionsBox.Visible)
+                rec.Width += GameScene.Game.CompanionOptionsBox.DisplayArea.Width;
+
+            if (tempPoint.X + rec.Width > Parent.DisplayArea.Width) tempPoint.X = Parent.DisplayArea.Width - rec.Width;
+            if (tempPoint.Y + rec.Height > Parent.DisplayArea.Height) tempPoint.Y = Parent.DisplayArea.Height - rec.Height;
+
+            if (tempPoint.X < 0) tempPoint.X = 0;
+            if (tempPoint.Y < 0) tempPoint.Y = 0;
+
+            return tempPoint;
         }
         #endregion
 

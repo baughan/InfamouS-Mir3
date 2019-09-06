@@ -588,7 +588,292 @@ namespace Server.DBModels
             }
         }
         private UserCompanion _Companion;
-        
+
+        public bool CompanionForbidGold
+        {
+            get { return _CompanionForbidGold; }
+            set
+            {
+                if (_CompanionForbidGold == value) return;
+
+                var oldValue = _CompanionForbidGold;
+                _CompanionForbidGold = value;
+
+                OnChanged(oldValue, value, "CompanionForbidGold");
+            }
+        }
+        private bool _CompanionForbidGold;
+
+        public bool CompanionForbidWeapon
+        {
+            get { return _CompanionForbidWeapon; }
+            set
+            {
+                if (_CompanionForbidWeapon == value) return;
+
+                var oldValue = _CompanionForbidWeapon;
+                _CompanionForbidWeapon = value;
+
+                OnChanged(oldValue, value, "CompanionForbidWeapon");
+            }
+        }
+        private bool _CompanionForbidWeapon;
+
+        public bool CompanionForbidArmour
+        {
+            get { return _CompanionForbidArmour; }
+            set
+            {
+                if (_CompanionForbidArmour == value) return;
+
+                var oldValue = _CompanionForbidArmour;
+                _CompanionForbidArmour = value;
+
+                OnChanged(oldValue, value, "CompanionForbidArmour");
+            }
+        }
+        private bool _CompanionForbidArmour;
+
+        public bool CompanionForbidHelmet
+        {
+            get { return _CompanionForbidHelmet; }
+            set
+            {
+                if (_CompanionForbidHelmet == value) return;
+
+                var oldValue = _CompanionForbidHelmet;
+                _CompanionForbidHelmet = value;
+
+                OnChanged(oldValue, value, "CompanionForbidHelmet");
+            }
+        }
+        private bool _CompanionForbidHelmet;
+
+        public bool CompanionForbidShield
+        {
+            get { return _CompanionForbidShield; }
+            set
+            {
+                if (_CompanionForbidShield == value) return;
+
+                var oldValue = _CompanionForbidShield;
+                _CompanionForbidShield = value;
+
+                OnChanged(oldValue, value, "CompanionForbidShield");
+            }
+        }
+        private bool _CompanionForbidShield;
+
+        public bool CompanionForbidNecklace
+        {
+            get { return _CompanionForbidNecklace; }
+            set
+            {
+                if (_CompanionForbidNecklace == value) return;
+
+                var oldValue = _CompanionForbidNecklace;
+                _CompanionForbidNecklace = value;
+
+                OnChanged(oldValue, value, "CompanionForbidNecklace");
+            }
+        }
+        private bool _CompanionForbidNecklace;
+
+        public bool CompanionForbidBracelet
+        {
+            get { return _CompanionForbidBracelet; }
+            set
+            {
+                if (_CompanionForbidBracelet == value) return;
+
+                var oldValue = _CompanionForbidBracelet;
+                _CompanionForbidBracelet = value;
+
+                OnChanged(oldValue, value, "CompanionForbidBracelet");
+            }
+        }
+        private bool _CompanionForbidBracelet;
+
+        public bool CompanionForbidRing
+        {
+            get { return _CompanionForbidRing; }
+            set
+            {
+                if (_CompanionForbidRing == value) return;
+
+                var oldValue = _CompanionForbidRing;
+                _CompanionForbidRing = value;
+
+                OnChanged(oldValue, value, "CompanionForbidRing");
+            }
+        }
+        private bool _CompanionForbidRing;
+
+        public bool CompanionForbidShoes
+        {
+            get { return _CompanionForbidShoes; }
+            set
+            {
+                if (_CompanionForbidShoes == value) return;
+
+                var oldValue = _CompanionForbidShoes;
+                _CompanionForbidShoes = value;
+
+                OnChanged(oldValue, value, "CompanionForbidShoes");
+            }
+        }
+        private bool _CompanionForbidShoes;
+
+        public bool CompanionForbidBook
+        {
+            get { return _CompanionForbidBook; }
+            set
+            {
+                if (_CompanionForbidBook == value) return;
+
+                var oldValue = _CompanionForbidBook;
+                _CompanionForbidBook = value;
+
+                OnChanged(oldValue, value, "CompanionForbidBook");
+            }
+        }
+        private bool _CompanionForbidBook;
+
+        public bool CompanionForbidBookWarrior
+        {
+            get { return _CompanionForbidBookWarrior; }
+            set
+            {
+                if (_CompanionForbidBookWarrior == value) return;
+
+                var oldValue = _CompanionForbidBookWarrior;
+                _CompanionForbidBookWarrior = value;
+
+                OnChanged(oldValue, value, "CompanionForbidBookWarrior");
+            }
+        }
+        private bool _CompanionForbidBookWarrior;
+
+        public bool CompanionForbidBookWizard
+        {
+            get { return _CompanionForbidBookWizard; }
+            set
+            {
+                if (_CompanionForbidBookWizard == value) return;
+
+                var oldValue = _CompanionForbidBookWizard;
+                _CompanionForbidBookWizard = value;
+
+                OnChanged(oldValue, value, "CompanionForbidBookWizard");
+            }
+        }
+        private bool _CompanionForbidBookWizard;
+
+        public bool CompanionForbidBookTaoist
+        {
+            get { return _CompanionForbidBookTaoist; }
+            set
+            {
+                if (_CompanionForbidBookTaoist == value) return;
+
+                var oldValue = _CompanionForbidBookTaoist;
+                _CompanionForbidBookTaoist = value;
+
+                OnChanged(oldValue, value, "CompanionForbidBookTaoist");
+            }
+        }
+        private bool _CompanionForbidBookTaoist;
+
+        public bool CompanionForbidBookAssassin
+        {
+            get { return _CompanionForbidBookAssassin; }
+            set
+            {
+                if (_CompanionForbidBookAssassin == value) return;
+
+                var oldValue = _CompanionForbidBookAssassin;
+                _CompanionForbidBookAssassin = value;
+
+                OnChanged(oldValue, value, "CompanionForbidBookAssassin");
+            }
+        }
+        private bool _CompanionForbidBookAssassin;
+
+        public bool CompanionForbidPotion
+        {
+            get { return _CompanionForbidPotion; }
+            set
+            {
+                if (_CompanionForbidPotion == value) return;
+
+                var oldValue = _CompanionForbidPotion;
+                _CompanionForbidPotion = value;
+
+                OnChanged(oldValue, value, "CompanionForbidPotion");
+            }
+        }
+        private bool _CompanionForbidPotion;
+
+        public bool CompanionForbidMeat
+        {
+            get { return _CompanionForbidMeat; }
+            set
+            {
+                if (_CompanionForbidMeat == value) return;
+
+                var oldValue = _CompanionForbidMeat;
+                _CompanionForbidMeat = value;
+
+                OnChanged(oldValue, value, "CompanionForbidMeat");
+            }
+        }
+        private bool _CompanionForbidMeat;
+
+        public bool CompanionForbidCommon
+        {
+            get { return _CompanionForbidCommon; }
+            set
+            {
+                if (_CompanionForbidCommon == value) return;
+
+                var oldValue = _CompanionForbidCommon;
+                _CompanionForbidCommon = value;
+
+                OnChanged(oldValue, value, "CompanionForbidCommon");
+            }
+        }
+        private bool _CompanionForbidCommon;
+
+        public bool CompanionForbidSuperior
+        {
+            get { return _CompanionForbidSuperior; }
+            set
+            {
+                if (_CompanionForbidSuperior == value) return;
+
+                var oldValue = _CompanionForbidSuperior;
+                _CompanionForbidSuperior = value;
+
+                OnChanged(oldValue, value, "CompanionForbidSuperior");
+            }
+        }
+        private bool _CompanionForbidSuperior;
+
+        public bool CompanionForbidElite
+        {
+            get { return _CompanionForbidElite; }
+            set
+            {
+                if (_CompanionForbidElite == value) return;
+
+                var oldValue = _CompanionForbidElite;
+                _CompanionForbidElite = value;
+
+                OnChanged(oldValue, value, "CompanionForbidElite");
+            }
+        }
+        private bool _CompanionForbidElite;
+
         [Association("Items", true)]
         public DBBindingList<UserItem> Items { get; set; }
 
