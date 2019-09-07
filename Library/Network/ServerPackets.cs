@@ -475,6 +475,10 @@ namespace Library.Network.ServerPackets
     {
         public List<ClientUserItem> Items { get; set; }
     }
+    public sealed class ItemPartsGained : Packet
+    {
+        public List<ClientUserItem> Items { get; set; }
+    }
     public sealed class ItemMove : Packet
     {
         public GridType FromGrid { get; set; }

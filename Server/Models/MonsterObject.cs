@@ -2698,35 +2698,43 @@ namespace Server.Models
                         continue;
                     }
 
-
-                    Cell cell = GetDropLocation(Config.DropDistance, owner) ?? CurrentCell;
-
-
-                    ItemObject ob = new ItemObject
+                    ItemCheck check = new ItemCheck(item, 0, item.Flags, item.ExpireTime);
+                    if (owner.CanGainPartItems(false, check))
                     {
-                        Item = item,
-                        Account = owner.Character.Account,
-                        MonsterDrop = true,
-                    };
-
-                    ob.Spawn(CurrentMap.Info, cell.Location);
-
-                    if (owner.Stats[Stat.CompanionCollection] > 0 && owner.Companion != null)
-                    {
-                        long goldAmount = 0;
-
-                        if (ob.Item.Info.Effect == ItemEffect.Gold && ob.Account.GuildMember != null &&
-                            ob.Account.GuildMember.Guild.GuildTax > 0)
-                            goldAmount = (long)Math.Ceiling(ob.Item.Count * ob.Account.GuildMember.Guild.GuildTax);
-
-                        ItemCheck check = new ItemCheck(ob.Item, ob.Item.Count - goldAmount, ob.Item.Flags,
-                            ob.Item.ExpireTime);
-
-                        if (owner.Companion.CanGainItems(true, check)) ob.PickUpItem(owner.Companion);
-
+                        owner.GainPartItem(item);
+                        continue;
                     }
+                    else
+                    {
+                        Cell cell = GetDropLocation(Config.DropDistance, owner) ?? CurrentCell;
 
-                    continue;
+
+                        ItemObject ob = new ItemObject
+                        {
+                            Item = item,
+                            Account = owner.Character.Account,
+                            MonsterDrop = true,
+                        };
+
+                        ob.Spawn(CurrentMap.Info, cell.Location);
+
+                        if (owner.Stats[Stat.CompanionCollection] > 0 && owner.Companion != null)
+                        {
+                            long goldAmount = 0;
+
+                            if (ob.Item.Info.Effect == ItemEffect.Gold && ob.Account.GuildMember != null &&
+                                ob.Account.GuildMember.Guild.GuildTax > 0)
+                                goldAmount = (long)Math.Ceiling(ob.Item.Count * ob.Account.GuildMember.Guild.GuildTax);
+
+                            check = new ItemCheck(ob.Item, ob.Item.Count - goldAmount, ob.Item.Flags,
+                                ob.Item.ExpireTime);
+
+                            if (owner.Companion.CanGainItems(true, check)) ob.PickUpItem(owner.Companion);
+
+                        }
+
+                        continue;
+                    }
                 }
 
 

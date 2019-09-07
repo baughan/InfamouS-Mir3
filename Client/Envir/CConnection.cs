@@ -692,8 +692,8 @@ namespace Client.Envir
         }
         public void Process(S.StartGame p)
         {
-            try
-            {
+            //try
+            //{
                 
             SelectScene select = DXControl.ActiveScene as SelectScene;
             if (select == null) return;
@@ -769,12 +769,12 @@ namespace Client.Envir
 
                     break;
                 }
-            }
-            catch (Exception e)
-            {
-                Console.WriteLine(e);
-                throw;
-            }
+            //}
+            //catch (Exception e)
+            //{
+            //    Console.WriteLine(e);
+            //    throw;
+            //}
         }
         public void Process(S.MapChanged p)
         {
@@ -1641,9 +1641,7 @@ namespace Client.Envir
         }
 
         public void Process(S.ItemsGained p)
-        {
-            
-
+        {           
             foreach (ClientUserItem item in p.Items)
             {
                 ItemInfo displayInfo = item.Info;
@@ -1664,6 +1662,29 @@ namespace Client.Envir
             }
             
             GameScene.Game.AddItems(p.Items);
+        }
+        public void Process(S.ItemPartsGained p)
+        {
+            foreach (ClientUserItem item in p.Items)
+            {
+                ItemInfo displayInfo = item.Info;
+
+                if (item.Info.Effect == ItemEffect.ItemPart)
+                    displayInfo = Globals.ItemInfoList.Binding.First(x => x.Index == item.AddedStats[Stat.ItemIndex]);
+
+                item.New = true;
+                string text = item.Count > 1 ? $"You gained {displayInfo.ItemName} x{item.Count}." : $"You gained {displayInfo.ItemName}.";
+
+                if ((item.Flags & UserItemFlags.QuestItem) == UserItemFlags.QuestItem)
+                    text += " (Quest)";
+
+                if (item.Info.Effect == ItemEffect.ItemPart)
+                    text += " [Part]";
+
+                GameScene.Game.ReceiveChat(text, MessageType.Combat);
+            }
+
+            GameScene.Game.AddItemParts(p.Items);
         }
         public void Process(S.ItemMove p)
         {
