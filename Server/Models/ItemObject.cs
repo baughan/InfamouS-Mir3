@@ -75,7 +75,13 @@ namespace Server.Models
 
             ItemCheck check = new ItemCheck(Item, Item.Count - amount, Item.Flags, Item.ExpireTime);
 
-            if (ob.CanGainItems(false, check))
+            if (Item.Info.Effect == ItemEffect.ItemPart && ob.CanGainPartItems(false, check))
+            {
+                ob.GainPartItem(Item);
+                Despawn();
+                return true;
+            }
+            else if (ob.CanGainItems(false, check))
             {
                 if (amount > 0)
                 {
@@ -122,7 +128,13 @@ namespace Server.Models
 
             ItemCheck check = new ItemCheck(Item, Item.Count - amount, Item.Flags, Item.ExpireTime);
 
-            if (ob.CanGainItems(false, check))
+            if (Item.Info.Effect == ItemEffect.ItemPart && ob.CompanionOwner.CanGainPartItems(false, check))
+            {
+                ob.CompanionOwner.GainPartItem(Item);
+                Despawn();
+                return;
+            }
+            else if (ob.CanGainItems(false, check))
             {
                 if (amount > 0)
                 {
