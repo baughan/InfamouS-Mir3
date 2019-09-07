@@ -211,13 +211,12 @@ namespace Server.Envir
 
         private static Dictionary<decimal, int> GoldTable = new Dictionary<decimal, int>
         {
-            [5M] = 500,
-            [10M] = 1030,
-            [15M] = 1590,
-            [20M] = 2180,
-            [30M] = 3360,
-            [50M] = 5750,
-            [100M] = 12000,
+            [5M] = 600,
+            [10M] = 2000,
+            [15M] = 3000,
+            [20M] = 4000,
+            [30M] = 6000,
+            [50M] = 11000,
         };
 
         public const string VerifiedPath = @".\Database\Store\Verified\",
