@@ -287,7 +287,7 @@ namespace Client.Scenes.Views
 
             if (cell.Item != null)
             {
-                ItemInfo info = Globals.ItemInfoList.Binding.First(x => x.Index == cell.Item.AddedStats[Stat.ItemIndex]);
+                ItemInfo info = Globals.ItemInfoList.Binding.FirstOrDefault(x => x.Index == cell.Item.AddedStats[Stat.ItemIndex]);
 
                 if (!string.IsNullOrEmpty(ItemNameTextBox.TextBox.Text) && info.ItemName.IndexOf(ItemNameTextBox.TextBox.Text, StringComparison.OrdinalIgnoreCase) < 0)
                 {
