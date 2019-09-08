@@ -36,7 +36,7 @@ namespace Client.Scenes.Views
             
             Grid = new DXItemGrid
             {
-                GridSize = new Size(7, 7),
+                GridSize = new Size(14, 14),
                 Parent = this,
                 ItemGrid = GameScene.Game.Inventory,
                 GridType = GridType.Inventory

@@ -376,7 +376,7 @@ namespace Library
         };
 
 
-        public const int InventorySize = 49,
+        public const int InventorySize = 196,
                          EquipmentSize = 16,
                          CompanionInventorySize = 40,
                          CompanionEquipmentSize = 4,

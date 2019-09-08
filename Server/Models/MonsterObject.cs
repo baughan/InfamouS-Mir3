@@ -2655,10 +2655,7 @@ namespace Server.Models
                 if (!drop.PartOnly)
                     userDrop.Progress += progress;
 
-                if (drop.PartOnly ||
-                    ((SEnvir.Random.Next() > chance ||
-                      (drop.Item.Effect != ItemEffect.Gold && owner.Character.Account.ItemBot)) &&
-                     ((long) userDrop.Progress <= userDrop.DropCount || drop.Item.Effect == ItemEffect.Gold)))
+                if (drop.PartOnly || ((SEnvir.Random.Next() > chance || (drop.Item.Effect != ItemEffect.Gold && owner.Character.Account.ItemBot)) && ((long) userDrop.Progress <= userDrop.DropCount || drop.Item.Effect == ItemEffect.Gold)))
                 {
                     if (drop.Item.PartCount <= 1) continue;
 
@@ -2699,7 +2696,7 @@ namespace Server.Models
                     }
 
                     ItemCheck check = new ItemCheck(item, 0, item.Flags, item.ExpireTime);
-                    if (owner.CanGainPartItems(false, check))
+                    if (item.Info.Effect == ItemEffect.ItemPart && owner.CanGainPartItems(false, check))
                     {
                         owner.GainPartItem(item);
                         continue;
