@@ -655,10 +655,7 @@ namespace Library
         PlayerTracker,
 
         [StatDescription(Title = "Companion Rate", Format = "x{0}", Mode = StatType.Default)]
-        CompanionRate,
-
-        [StatDescription(Title = "PvP Rate", Format = "{0:#0%;-#0%;#0%}", Mode = StatType.Percent)]
-        PVPRate,
+        CompanionRate,        
 
         [StatDescription(Title = "Weight Rate", Format = "x{0}", Mode = StatType.Default)]
         WeightRate,
@@ -773,6 +770,9 @@ namespace Library
 
         [StatDescription(Title = "Duration", Mode = StatType.Time)]
         Duration = 10000,
+
+        [StatDescription(Title = "PvP Rate", Format = "{0:#0%;-#0%;#0%}", Mode = StatType.Percent)]
+        PVPRate,
     }
 
     public enum StatSource
