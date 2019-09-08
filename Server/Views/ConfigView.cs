@@ -143,6 +143,7 @@ namespace Server.Views
             GoldRateEdit.EditValue = Config.GoldRate;
             SkillRateEdit.EditValue = Config.SkillRate;
             CompanionRateEdit.EditValue = Config.CompanionRate;
+            PVPRateEdit.EditValue = Config.PVPRate;
 
 
         }
@@ -258,6 +259,7 @@ namespace Server.Views
             Config.GoldRate = (int)GoldRateEdit.EditValue;
             Config.SkillRate = (int)SkillRateEdit.EditValue;
             Config.CompanionRate = (int)CompanionRateEdit.EditValue;
+            Config.PVPRate = (int)PVPRateEdit.EditValue;
 
 
             if (SEnvir.Started)
