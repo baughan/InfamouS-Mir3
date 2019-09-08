@@ -6558,7 +6558,7 @@ namespace Server.Models
 
                     if (Magics.TryGetValue(info.Magic, out magic))
                     {
-                        int rate = (magic.Level - 2) * 500;
+                        int rate = (magic.Level - 2) * 50;
 
                         magic.Experience++;
 
