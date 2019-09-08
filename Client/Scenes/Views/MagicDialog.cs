@@ -587,7 +587,7 @@ namespace Client.Scenes.Views
                     break;
                 default:
                     if (magic.Info.Experience3 == 0) return;
-                    percent = (float)Math.Min(1, Math.Max(0, magic.Experience / (decimal)((magic.Level - 2) * 500)));
+                    percent = (float)Math.Min(1, Math.Max(0, magic.Experience / (decimal)((magic.Level - 2) * 50)));
                     break;
             }
             
@@ -656,7 +656,7 @@ namespace Client.Scenes.Views
                             ExperienceLabel.Text = $"Experience: {magic.Experience}/{magic.Info.Experience3}";
                             break;
                         default:
-                            ExperienceLabel.Text = $"Experience: {magic.Experience}/{(magic.Level - 2) * 500}";
+                            ExperienceLabel.Text = $"Experience: {magic.Experience}/{(magic.Level - 2) * 50}";
                             break;
                     }
                     ExperienceLabel.ForeColour = Color.FromArgb(198, 166, 99);
