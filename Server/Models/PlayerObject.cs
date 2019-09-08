@@ -5605,6 +5605,104 @@ namespace Server.Models
             RefreshWeight();
         }
 
+        public bool CanGainPartItems(bool checkWeight, params ItemCheck[] checks)
+        {
+            int index = 0;
+            foreach (ItemCheck check in checks)
+            {
+                long count = check.Count;
+
+                if (check.Info.StackSize > 1 && (check.Flags & UserItemFlags.Expirable) != UserItemFlags.Expirable)
+                {
+                    foreach (UserItem oldItem in PartsStorage)
+                    {
+                        if (oldItem == null) continue;
+
+                        if (oldItem.Info != check.Info || oldItem.Count >= check.Info.StackSize) continue;
+
+                        if ((oldItem.Flags & UserItemFlags.Expirable) == UserItemFlags.Expirable) continue;
+                        if ((oldItem.Flags & UserItemFlags.Bound) != (check.Flags & UserItemFlags.Bound)) continue;
+                        if ((oldItem.Flags & UserItemFlags.Worthless) != (check.Flags & UserItemFlags.Worthless)) continue;
+                        if ((oldItem.Flags & UserItemFlags.NonRefinable) != (check.Flags & UserItemFlags.NonRefinable)) continue;
+                        if (!oldItem.Stats.Compare(check.Stats)) continue;
+
+                        count -= check.Info.StackSize - oldItem.Count;
+
+                        if (count <= 0) break;
+                    }
+
+                    if (count <= 0) break;
+                }
+
+                //Start Index
+                for (int i = index; i < PartsStorage.Length; i++)
+                {
+                    index++;
+                    UserItem item = PartsStorage[i];
+                    if (item == null)
+                    {
+                        count -= check.Info.StackSize;
+
+                        if (count <= 0) break;
+                    }
+                }
+
+                if (count > 0) return false;
+            }
+
+            return true;
+        }
+        public void GainPartItem(params UserItem[] items)
+        {
+            Enqueue(new S.ItemPartsGained { Items = items.Where(x => x.Info.Effect != ItemEffect.Experience).Select(x => x.ToClientInfo()).ToList() });
+
+            //HashSet<UserQuest> changedQuests = new HashSet<UserQuest>();
+
+            foreach (UserItem item in items)
+            {
+                bool handled = false;
+                if (item.Info.StackSize > 1 && (item.Flags & UserItemFlags.Expirable) != UserItemFlags.Expirable)
+                {
+                    foreach (UserItem oldItem in PartsStorage)
+                    {
+                        if (oldItem == null || oldItem.Info != item.Info || oldItem.Count >= oldItem.Info.StackSize) continue;
+
+                        if ((oldItem.Flags & UserItemFlags.Expirable) == UserItemFlags.Expirable) continue;
+                        if ((oldItem.Flags & UserItemFlags.Bound) != (item.Flags & UserItemFlags.Bound)) continue;
+                        if ((oldItem.Flags & UserItemFlags.Worthless) != (item.Flags & UserItemFlags.Worthless)) continue;
+                        if ((oldItem.Flags & UserItemFlags.NonRefinable) != (item.Flags & UserItemFlags.NonRefinable)) continue;
+                        if (!oldItem.Stats.Compare(item.Stats)) continue;
+
+
+                        if (oldItem.Count + item.Count <= item.Info.StackSize)
+                        {
+                            oldItem.Count += item.Count;
+                            item.IsTemporary = true;
+                            item.Delete();
+                            handled = true;
+                            break;
+                        }
+
+                        item.Count -= item.Info.StackSize - oldItem.Count;
+                        oldItem.Count = item.Info.StackSize;
+                    }
+                    if (handled) continue;
+                }
+
+                for (int i = 0; i < PartsStorage.Length; i++)
+                {
+                    if (PartsStorage[i] != null) continue;
+
+                    PartsStorage[i] = item;
+                    item.Slot = i + Globals.PartsStorageOffset;
+                    //item.Character = Character;
+                    item.Account = Character.Account;
+                    item.IsTemporary = false;
+                    break;
+                }
+            }
+        }
+
         public void ItemUse(CellLinkInfo link)
         {
             if (!ParseLinks(link)) return;
@@ -7260,6 +7358,11 @@ namespace Server.Models
                 Companion.RefreshStats();
             }
         }
+
+
+
+
+
 
         public long GetItemCount(ItemInfo info)
         {

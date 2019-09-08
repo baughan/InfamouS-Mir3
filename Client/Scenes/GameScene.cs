@@ -3347,6 +3347,58 @@ namespace Client.Scenes
                 }
             }
         }
+        public void AddItemParts(List<ClientUserItem> items)
+        {
+            foreach (ClientUserItem item in items)
+            {
+                if (item.Info.Effect == ItemEffect.Experience) continue;
+                if ((item.Flags & UserItemFlags.QuestItem) == UserItemFlags.QuestItem) continue;
+
+                if (item.Info.Effect == ItemEffect.Gold)
+                {
+                    User.Gold += item.Count;
+                    DXSoundManager.Play(SoundIndex.GoldGained);
+                    continue;
+                }
+
+                bool handled = false;
+                if (item.Info.StackSize > 1 && (item.Flags & UserItemFlags.Expirable) != UserItemFlags.Expirable)
+                {
+                    foreach (DXItemCell cell in StorageBox.PartGrid.Grid)
+                    {
+                        if (cell.Item == null || cell.Item.Info != item.Info || cell.Item.Count >= cell.Item.Info.StackSize) continue;
+
+                        if ((cell.Item.Flags & UserItemFlags.Expirable) == UserItemFlags.Expirable) continue;
+                        if ((cell.Item.Flags & UserItemFlags.Bound) != (item.Flags & UserItemFlags.Bound)) continue;
+                        if ((cell.Item.Flags & UserItemFlags.Worthless) != (item.Flags & UserItemFlags.Worthless)) continue;
+                        if ((cell.Item.Flags & UserItemFlags.NonRefinable) != (item.Flags & UserItemFlags.NonRefinable)) continue;
+                        if (!cell.Item.AddedStats.Compare(item.AddedStats)) continue;
+
+                        if (cell.Item.Count + item.Count <= item.Info.StackSize)
+                        {
+                            cell.Item.Count += item.Count;
+                            cell.RefreshItem();
+                            handled = true;
+                            break;
+                        }
+
+                        item.Count -= item.Info.StackSize - cell.Item.Count;
+                        cell.Item.Count = item.Info.StackSize;
+                        cell.RefreshItem();
+                    }
+                    if (handled) continue;
+                }
+
+                for (int i = 0; i < StorageBox.PartGrid.Grid.Length; i++)
+                {
+                    if (StorageBox.PartGrid.Grid[i].Item != null) continue;
+
+                    StorageBox.PartGrid.Grid[i].Item = item;
+                    item.Slot = i;
+                    break;
+                }
+            }
+        }
         public bool CanUseItem(ClientUserItem item)
         {
             switch (User.Gender)
