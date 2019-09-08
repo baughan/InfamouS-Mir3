@@ -8558,7 +8558,7 @@ namespace Server.Models
             stats[Stat.BaseGoldRate] += Config.GoldRate;
             stats[Stat.SkillRate] = Config.SkillRate;
             stats[Stat.CompanionRate] = Config.CompanionRate;
-
+            stats[Stat.PVPRate] = Config.PVPRate;
 
             if (stats.Count == 0) return;
 
@@ -16493,6 +16493,14 @@ namespace Server.Models
             {
                 PvPTime = SEnvir.Now;
                 ((PlayerObject)attacker).PvPTime = SEnvir.Now;
+                power = (int)(power * (Config.PVPRate / 100F));
+            }
+
+            if (attacker.Race == ObjectType.Monster)
+            {
+                MonsterObject mon = (MonsterObject)attacker;
+                if (mon.PetOwner != null && mon.PetOwner.Race == ObjectType.Player)
+                    power = (int)(power * (Config.PVPRate / 100F));
             }
 
 
@@ -17077,6 +17085,8 @@ namespace Server.Models
             {
                 PvPTime = SEnvir.Now;
                 ((PlayerObject)p.Owner).PvPTime = SEnvir.Now;
+                if (p.Type == PoisonType.Green)
+                    p.Value = (int)(p.Value * (Config.PVPRate / 100F));
             }
 
             if (Buffs.Any(x => x.Type == BuffType.Endurance))

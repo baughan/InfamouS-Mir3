@@ -211,6 +211,8 @@
             this.xtraTabPage9 = new DevExpress.XtraTab.XtraTabPage();
             this.CompanionRateEdit = new DevExpress.XtraEditors.TextEdit();
             this.labelControl68 = new DevExpress.XtraEditors.LabelControl();
+            this.PVPRateEdit = new DevExpress.XtraEditors.TextEdit();
+            this.labelControl90 = new DevExpress.XtraEditors.LabelControl();
             this.SkillRateEdit = new DevExpress.XtraEditors.TextEdit();
             this.labelControl58 = new DevExpress.XtraEditors.LabelControl();
             this.GoldRateEdit = new DevExpress.XtraEditors.TextEdit();
@@ -320,6 +322,7 @@
             ((System.ComponentModel.ISupportInitialize)(this.DropDurationEdit.Properties)).BeginInit();
             this.xtraTabPage9.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.CompanionRateEdit.Properties)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.PVPRateEdit.Properties)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.SkillRateEdit.Properties)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.GoldRateEdit.Properties)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.DropRateEdit.Properties)).BeginInit();
@@ -2211,6 +2214,8 @@
             // 
             this.xtraTabPage9.Controls.Add(this.CompanionRateEdit);
             this.xtraTabPage9.Controls.Add(this.labelControl68);
+            this.xtraTabPage9.Controls.Add(this.PVPRateEdit);
+            this.xtraTabPage9.Controls.Add(this.labelControl90);
             this.xtraTabPage9.Controls.Add(this.SkillRateEdit);
             this.xtraTabPage9.Controls.Add(this.labelControl58);
             this.xtraTabPage9.Controls.Add(this.GoldRateEdit);
@@ -2234,15 +2239,36 @@
             this.CompanionRateEdit.Properties.Mask.MaskType = DevExpress.XtraEditors.Mask.MaskType.Numeric;
             this.CompanionRateEdit.Properties.Mask.UseMaskAsDisplayFormat = true;
             this.CompanionRateEdit.Size = new System.Drawing.Size(100, 20);
-            this.CompanionRateEdit.TabIndex = 89;
+            this.CompanionRateEdit.TabIndex = 128;
             // 
             // labelControl68
             // 
             this.labelControl68.Location = new System.Drawing.Point(19, 128);
             this.labelControl68.Name = "labelControl68";
             this.labelControl68.Size = new System.Drawing.Size(83, 13);
-            this.labelControl68.TabIndex = 88;
+            this.labelControl68.TabIndex = 127;
             this.labelControl68.Text = "Companion Rate:";
+            // 
+            // PVPRateEdit
+            // 
+            this.PVPRateEdit.Location = new System.Drawing.Point(108, 151);
+            this.PVPRateEdit.MenuManager = this.ribbon;
+            this.PVPRateEdit.Name = "PVPRateEdit";
+            this.PVPRateEdit.Properties.Appearance.Options.UseTextOptions = true;
+            this.PVPRateEdit.Properties.Appearance.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
+            this.PVPRateEdit.Properties.Mask.EditMask = "n0";
+            this.PVPRateEdit.Properties.Mask.MaskType = DevExpress.XtraEditors.Mask.MaskType.Numeric;
+            this.PVPRateEdit.Properties.Mask.UseMaskAsDisplayFormat = true;
+            this.PVPRateEdit.Size = new System.Drawing.Size(100, 20);
+            this.PVPRateEdit.TabIndex = 89;
+            // 
+            // labelControl90
+            // 
+            this.labelControl90.Location = new System.Drawing.Point(54, 154);
+            this.labelControl90.Name = "labelControl90";
+            this.labelControl90.Size = new System.Drawing.Size(83, 13);
+            this.labelControl90.TabIndex = 88;
+            this.labelControl90.Text = "PVP Rate:";
             // 
             // SkillRateEdit
             // 
@@ -2493,6 +2519,7 @@
             this.xtraTabPage9.ResumeLayout(false);
             this.xtraTabPage9.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.CompanionRateEdit.Properties)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.PVPRateEdit.Properties)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.SkillRateEdit.Properties)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.GoldRateEdit.Properties)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.DropRateEdit.Properties)).EndInit();
@@ -2670,6 +2697,8 @@
         private DevExpress.XtraTab.XtraTabPage xtraTabPage9;
         private DevExpress.XtraEditors.TextEdit CompanionRateEdit;
         private DevExpress.XtraEditors.LabelControl labelControl68;
+        private DevExpress.XtraEditors.TextEdit PVPRateEdit;
+        private DevExpress.XtraEditors.LabelControl labelControl90;
         private DevExpress.XtraEditors.TextEdit SkillRateEdit;
         private DevExpress.XtraEditors.LabelControl labelControl58;
         private DevExpress.XtraEditors.TextEdit GoldRateEdit;

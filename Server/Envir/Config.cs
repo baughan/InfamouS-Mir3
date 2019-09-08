@@ -129,6 +129,7 @@ namespace Server.Envir
         public static int GoldRate { get; set; } = 0;
         public static int SkillRate { get; set; } = 0;
         public static int CompanionRate { get; set; } = 0;
+        public static int PVPRate { get; set; } = 100;
 
 
         public static void LoadVersion()
