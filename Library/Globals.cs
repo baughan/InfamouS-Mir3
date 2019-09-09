@@ -921,6 +921,7 @@ namespace Library
         public decimal Experience { get; set; }
         public bool Online { get; set; }
         public bool Observable { get; set; }
+        public int Rebirth { get; set; }
     }
     
     public class ClientMarketPlaceInfo

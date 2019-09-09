@@ -748,8 +748,11 @@ namespace Server.Envir
             LinkedListNode<CharacterInfo> node;
             while ((node = character.RankingNode.Previous) != null)
             {
-                if (node.Value.Level > character.Level) break;
-                if (node.Value.Level == character.Level && node.Value.Experience >= character.Experience) break;
+                int nodelevel = node.Value.Level + 5000 * node.Value.Rebirth;
+                int characterlevel = character.Level + 5000 * character.Rebirth;
+
+                if (nodelevel > characterlevel) break;
+                if (nodelevel == characterlevel && node.Value.Experience >= character.Experience) break;
 
                 changed = true;
 
@@ -3842,7 +3845,8 @@ namespace Server.Envir
                     Index = info.Index,
                     Class = info.Class,
                     Experience = info.Experience,
-                    Level = info.Level,
+                    Level = info.Level + (info.Rebirth * 5000),
+                    Rebirth = info.Rebirth,
                     Name = info.CharacterName,
                     Online = info.Player != null,
                     Observable = info.Observable || isGM,
