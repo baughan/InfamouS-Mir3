@@ -6542,6 +6542,13 @@ namespace Server.Models
 
                     if (SEnvir.Now < UseItemTime || Horse != HorseType.None) return;
 
+                    MagicInfo info = SEnvir.MagicInfoList.Binding.First(x => x.Index == item.Info.Shape);
+                    bool foundmagic = Magics.TryGetValue(info.Magic, out magic);
+                    if (foundmagic)
+                    {
+                        if (magic.Level >= 6) return; //MAGIC LEVEL CAP
+                    }
+
                     if (SEnvir.Random.Next(100) >= item.CurrentDurability)
                     {
                         Connection.ReceiveChat(Connection.Language.LearnBookFailed, MessageType.System);
@@ -6551,12 +6558,9 @@ namespace Server.Models
 
                         break;
                     }
+                    
 
-
-
-                    MagicInfo info = SEnvir.MagicInfoList.Binding.First(x => x.Index == item.Info.Shape);
-
-                    if (Magics.TryGetValue(info.Magic, out magic))
+                    if (foundmagic)
                     {
                         int rate = (magic.Level - 2) * 50;
 

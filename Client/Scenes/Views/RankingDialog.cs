@@ -5,7 +5,7 @@ using Client.Controls;
 using Client.Envir;
 using Client.UserModels;
 using Library;
-using S =  Library.Network.ServerPackets;
+using S = Library.Network.ServerPackets;
 using C = Library.Network.ClientPackets;
 
 //Cleaned
@@ -34,7 +34,7 @@ namespace Client.Scenes.Views
         public void OnStartIndexChanged(int oValue, int nValue)
         {
             UpdateTime = CEnvir.Now.AddMilliseconds(250);
-            
+
             if (nValue > oValue)
                 for (int i = 0; i < Lines.Length; i++)
                 {
@@ -57,7 +57,7 @@ namespace Client.Scenes.Views
                     if (nValue - oValue + i >= 0)
                     {
                         if (Lines[i + nValue - oValue].Rank != null)
-                        Lines[i].Rank = Lines[i + nValue - oValue].Rank;
+                            Lines[i].Rank = Lines[i + nValue - oValue].Rank;
                         else
                             Lines[i].Loading = true;
                     }
@@ -169,7 +169,7 @@ namespace Client.Scenes.Views
         }
 
         #endregion
-        
+
         public DateTime UpdateTime;
 
         private DXControl Panel;
@@ -188,13 +188,13 @@ namespace Client.Scenes.Views
 
         public RankingDialog()
         {
-            SetClientSize(new Size(359, 480));
+            SetClientSize(new Size(429, 480));
 
             TitleLabel.Text = "Rankings";
-            
+
             Panel = new DXControl
             {
-                Location = new Point(ClientArea.Location.X + 1, ClientArea.Location.Y+20),
+                Location = new Point(ClientArea.Location.X + 1, ClientArea.Location.Y + 20),
                 Size = new Size(ClientArea.Size.Width - 1, ClientArea.Size.Height - 20),
                 Parent = this,
             };
@@ -204,7 +204,7 @@ namespace Client.Scenes.Views
             {
                 Parent = Panel,
                 Size = new Size(14, Panel.Size.Height - 3 - 21),
-                Location = new Point(Panel.Size.Width - 16, 1 +22),
+                Location = new Point(Panel.Size.Width - 16, 1 + 22),
                 VisibleSize = Lines.Length,
                 Change = 5,
             };
@@ -222,7 +222,7 @@ namespace Client.Scenes.Views
                 Lines[i] = new RankingLine
                 {
                     Parent = Panel,
-                    Location = new Point(0, 22* (i +1)),
+                    Location = new Point(0, 22 * (i + 1)),
                     Visible = false,
                 };
                 Lines[i].MouseWheel += ScrollBar.DoMouseWheel;
@@ -270,7 +270,7 @@ namespace Client.Scenes.Views
             };
             RequiredClassBox.SelectedItemChanged += (o, e) =>
             {
-                Class = (RequiredClass?) RequiredClassBox.SelectedItem ?? RequiredClass.All;
+                Class = (RequiredClass?)RequiredClassBox.SelectedItem ?? RequiredClass.All;
                 Config.RankingClass = (int)Class;
             };
             //  RequiredClassBox.Location = new Point(ClientArea.Right - RefineQualityBox.Size.Width - 160, BlackIronGrid.Location.Y);
@@ -465,6 +465,7 @@ namespace Client.Scenes.Views
             NameLabel.Text = "Name";
             ClassLabel.Text = "Class";
             LevelLabel.Text = "Level";
+            RebirthLabel.Text = "";
 
             DrawTexture = false;
 
@@ -506,6 +507,7 @@ namespace Client.Scenes.Views
                 NameLabel.Text = "";
                 ClassLabel.Text = "";
                 LevelLabel.Text = "";
+                RebirthLabel.Text = "";
                 ObseverButton.Enabled = false;
                 Visible = !Loading;
             }
@@ -519,16 +521,24 @@ namespace Client.Scenes.Views
                 NameLabel.ForeColour = Color.Silver;
                 ClassLabel.ForeColour = Color.Silver;
                 LevelLabel.ForeColour = Color.Silver;
+                RebirthLabel.ForeColour = Color.OrangeRed;
                 OnlineImage.Index = Rank.Online ? 3625 : 3624;
 
                 ObseverButton.Enabled = Rank.Online && Rank.Observable;
 
                 decimal percent = 0;
 
+                Rank.Level -= Rank.Rebirth * 5000;
+
+                if (Rank.Level < 0) return;
+
                 if (Rank.Level < Globals.ExperienceList.Count)
-                    percent = Math.Min(1, Math.Max(0, Globals.ExperienceList[Rank.Level] > 0 ? Rank.Experience/Globals.ExperienceList[Rank.Level] : 0));
+                    percent = Math.Min(1, Math.Max(0, Globals.ExperienceList[Rank.Level] > 0 ? Rank.Experience / Globals.ExperienceList[Rank.Level] : 0));
 
                 LevelLabel.Text = $"{Rank.Level} - {percent:0.##%}";
+                if (Rank.Rebirth > 0)
+                    RebirthLabel.Text = Rank.Rebirth == 1 ? string.Format("({0} Rebirth)", Rank.Rebirth) : string.Format("({0} Rebirths)", Rank.Rebirth);
+                else RebirthLabel.Text = "";
             }
 
             RankChanged?.Invoke(this, EventArgs.Empty);
@@ -561,6 +571,7 @@ namespace Client.Scenes.Views
                 NameLabel.Text = "";
                 ClassLabel.Text = "";
                 LevelLabel.Text = "";
+                RebirthLabel.Text = "";
 
                 Visible = false;
                 return;
@@ -576,7 +587,7 @@ namespace Client.Scenes.Views
 
         #endregion
 
-        public DXLabel RankLabel, NameLabel, ClassLabel, LevelLabel;
+        public DXLabel RankLabel, NameLabel, ClassLabel, LevelLabel, RebirthLabel;
         public DXButton ObseverButton;
         public DXImageControl OnlineImage;
 
@@ -584,7 +595,7 @@ namespace Client.Scenes.Views
 
         public RankingLine()
         {
-            Size = new Size(340, 20);
+            Size = new Size(410, 20);
             DrawTexture = true;
             BackColour = Color.FromArgb(25, 20, 0);
 
@@ -600,11 +611,9 @@ namespace Client.Scenes.Views
             RankLabel = new DXLabel
             {
                 Parent = this,
-              //  Border = true,
                 AutoSize = false,
                 Location = new Point(OnlineImage.Location.X + OnlineImage.Size.Width - 4, 0),
                 Size = new Size(40, 18),
-               // BorderColour = Color.FromArgb(198, 166, 98),
                 ForeColour = Color.White,
                 DrawFormat = TextFormatFlags.HorizontalCenter | TextFormatFlags.VerticalCenter,
                 IsControl = false,
@@ -643,10 +652,21 @@ namespace Client.Scenes.Views
                 IsControl = false,
             };
 
+            RebirthLabel = new DXLabel
+            {
+                Parent = this,
+                AutoSize = false,
+                Location = new Point(LevelLabel.Location.X + LevelLabel.Size.Width + 1, 0),
+                Size = new Size(65, 18),
+                ForeColour = Color.White,
+                DrawFormat = TextFormatFlags.VerticalCenter,
+                IsControl = false,
+            };
+
             ObseverButton = new DXButton
             {
                 Parent = this,
-                Location = new Point(LevelLabel.Location.X + LevelLabel.Size.Width + 5, 1),
+                Location = new Point(RebirthLabel.Location.X + RebirthLabel.Size.Width + 5, 1),
                 ButtonType = ButtonType.SmallButton,
                 Label = { Text = "Observe" },
                 Enabled = false,
@@ -740,6 +760,14 @@ namespace Client.Scenes.Views
                         LevelLabel.Dispose();
 
                     LevelLabel = null;
+                }
+
+                if (RebirthLabel != null)
+                {
+                    if (!RebirthLabel.IsDisposed)
+                        RebirthLabel.Dispose();
+
+                    RebirthLabel = null;
                 }
 
                 if (ObseverButton != null)
