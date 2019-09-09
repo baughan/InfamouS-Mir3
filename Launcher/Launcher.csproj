@@ -38,27 +38,27 @@
   <ItemGroup>
     <Reference Include="DevExpress.BonusSkins.v18.2">
       <Private>False</Private>
-      <HintPath>..\..\DevExpress Components RUNTIME\DevExpress.BonusSkins.v18.2.dll</HintPath>
+      <HintPath>..\..\..\..\..\Desktop\Zircon latest\File Release\dev\DevExpress.BonusSkins.v18.2.dll</HintPath>
     </Reference>
     <Reference Include="DevExpress.Data.v18.2">
       <Private>False</Private>
-      <HintPath>..\..\DevExpress Components RUNTIME\DevExpress.Data.v18.2.dll</HintPath>
+      <HintPath>..\..\..\..\..\Desktop\Zircon latest\File Release\dev\DevExpress.Data.v18.2.dll</HintPath>
     </Reference>
     <Reference Include="DevExpress.Utils.v18.2">
       <Private>False</Private>
-      <HintPath>..\..\DevExpress Components RUNTIME\DevExpress.Utils.v18.2.dll</HintPath>
+      <HintPath>..\..\..\..\..\Desktop\Zircon latest\File Release\dev\DevExpress.Utils.v18.2.dll</HintPath>
     </Reference>
     <Reference Include="DevExpress.Sparkline.v18.2.Core">
       <Private>False</Private>
-      <HintPath>..\..\DevExpress Components RUNTIME\DevExpress.Sparkline.v18.2.Core.dll</HintPath>
+      <HintPath>..\..\..\..\..\Desktop\Zircon latest\File Release\dev\DevExpress.Sparkline.v18.2.Core.dll</HintPath>
     </Reference>
     <Reference Include="DevExpress.XtraBars.v18.2, Version=18.2.4.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL">
       <Private>False</Private>
-      <HintPath>..\..\DevExpress Components RUNTIME\DevExpress.XtraBars.v18.2.dll</HintPath>
+      <HintPath>..\..\..\..\..\Desktop\Zircon latest\File Release\dev\DevExpress.XtraBars.v18.2.dll</HintPath>
     </Reference>
     <Reference Include="DevExpress.XtraEditors.v18.2">
       <Private>False</Private>
-      <HintPath>..\..\DevExpress Components RUNTIME\DevExpress.XtraEditors.v18.2.dll</HintPath>
+      <HintPath>..\..\..\..\..\Desktop\Zircon latest\File Release\dev\DevExpress.XtraEditors.v18.2.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />

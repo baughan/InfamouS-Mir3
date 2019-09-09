@@ -53,7 +53,7 @@
             // StartGameButton
             // 
             this.StartGameButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.StartGameButton.Image = ((System.Drawing.Image)(resources.GetObject("StartGameButton.Image")));
+            this.StartGameButton.ImageOptions.Image = ((System.Drawing.Image)(resources.GetObject("StartGameButton.ImageOptions.Image")));
             this.StartGameButton.Location = new System.Drawing.Point(612, 354);
             this.StartGameButton.Name = "StartGameButton";
             this.StartGameButton.Size = new System.Drawing.Size(100, 46);
@@ -67,6 +67,9 @@
             | System.Windows.Forms.AnchorStyles.Right)));
             this.TotalProgressBar.Location = new System.Drawing.Point(12, 382);
             this.TotalProgressBar.Name = "TotalProgressBar";
+            // 
+            // 
+            // 
             this.TotalProgressBar.Properties.FlowAnimationEnabled = true;
             this.TotalProgressBar.Properties.ShowTitle = true;
             this.TotalProgressBar.Size = new System.Drawing.Size(594, 18);
@@ -147,13 +150,14 @@
             this.PatchNotesHyperlinkControl.Name = "PatchNotesHyperlinkControl";
             this.PatchNotesHyperlinkControl.Size = new System.Drawing.Size(90, 13);
             this.PatchNotesHyperlinkControl.TabIndex = 9;
-            this.PatchNotesHyperlinkControl.Text = "<href=https://www.zirconserver.com>Latest patch notes</href>";
+            this.PatchNotesHyperlinkControl.Text = "<href=https://www.lomcn.org/forum/threads/infamous-mir3.103484/>Latest patch note" +
+    "s</href>";
             this.PatchNotesHyperlinkControl.HyperlinkClick += new DevExpress.Utils.HyperlinkClickEventHandler(this.PatchNotesHyperlinkControl_HyperlinkClick);
             // 
             // RepairButton
             // 
             this.RepairButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.RepairButton.Image = ((System.Drawing.Image)(resources.GetObject("RepairButton.Image")));
+            this.RepairButton.ImageOptions.Image = ((System.Drawing.Image)(resources.GetObject("RepairButton.ImageOptions.Image")));
             this.RepairButton.Location = new System.Drawing.Point(612, 325);
             this.RepairButton.Name = "RepairButton";
             this.RepairButton.Size = new System.Drawing.Size(100, 23);
@@ -180,7 +184,7 @@
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Name = "LMain";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
-            this.Text = "Zircon Server Launcher";
+            this.Text = "iNfamous Server Launcher";
             this.Load += new System.EventHandler(this.LMain_Load);
             ((System.ComponentModel.ISupportInitialize)(this.TotalProgressBar.Properties)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
