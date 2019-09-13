@@ -963,6 +963,26 @@ namespace Client.Scenes
             }
         }
 
+        public override void OnKeyUp(KeyEventArgs e)
+        {
+            base.OnKeyUp(e);
+
+            if (e.Handled) return;
+
+            foreach (KeyBindAction action in CEnvir.GetKeyAction(e.KeyCode))
+            {
+                switch (action)
+                {
+                    case KeyBindAction.AutoAttackToggle:
+                        if (Observer) continue;
+
+                        User.ForceAttack = false;
+                        break;
+                }
+            }
+
+            e.Handled = true;
+        }
         public override void OnKeyDown(KeyEventArgs e)
         {
             base.OnKeyDown(e);
@@ -1157,6 +1177,11 @@ namespace Client.Scenes
                         if (Observer) continue;
 
                         AutoRun = !AutoRun;
+                        break;
+                    case KeyBindAction.AutoAttackToggle:
+                        if (Observer) continue;
+
+                        User.ForceAttack = true;
                         break;
                     case KeyBindAction.UseBelt01:
                         if (Observer) continue;

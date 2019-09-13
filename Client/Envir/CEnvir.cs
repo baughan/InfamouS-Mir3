@@ -562,6 +562,10 @@ namespace Client.Envir
                     bind.Category = "Functions";
                     bind.Key1 = Keys.K;
                     break;
+                case KeyBindAction.AutoAttackToggle:
+                    bind.Category = "Functions";
+                    bind.Key1 = Keys.X;
+                    break;
                 case KeyBindAction.ItemPickUp:
                     bind.Category = "Items";
                     bind.Key1 = Keys.Tab;

@@ -693,7 +693,26 @@ namespace Client.Scenes.Views
                 User.MagicAction = null;
                 Mining = false;
             }
-            
+
+            if (User.ForceAttack)
+            {
+                if (CEnvir.Now > User.AttackTime && User.Horse == HorseType.None)
+                {
+                    User.ForceAttack = false;
+
+                    MirDirection dir = MouseDirection();
+
+                    MapObject.User.AttemptAction(new ObjectAction(
+                                    MirAction.Attack, //RANDOMIZE
+                                    dir,
+                                    MapObject.User.CurrentLocation,
+                                    0, //Ranged Attack Target ID
+                                    MagicType.None,
+                                    Element.None));
+                    return;
+                }
+            }
+
             if (MapObject.TargetObject != null && !MapObject.TargetObject.Dead && ((MapObject.TargetObject.Race == ObjectType.Monster && string.IsNullOrEmpty(MapObject.TargetObject.PetOwner)) || CEnvir.Shift))
             {
                 if (Functions.Distance(MapObject.TargetObject.CurrentLocation, MapObject.User.CurrentLocation) ==  1 && CEnvir.Now > User.AttackTime && User.Horse == HorseType.None)

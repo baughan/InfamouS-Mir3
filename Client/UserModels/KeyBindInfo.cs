@@ -230,6 +230,8 @@ namespace Client.UserModels
         TradeRequest,
         [Description("Toggle Allow Trade")]
         TradeAllowSwitch,
+        [Description("Direct Attack")]
+        AutoAttackToggle,
 
         [Description("Pick Up Item")]
         ItemPickUp,
@@ -242,7 +244,7 @@ namespace Client.UserModels
         [Description("Toggle Auto Run")]
         AutoRunToggle,
         [Description("Change Chat Mode")]
-        ChangeChatMode,
+        ChangeChatMode,       
 
 
         [Description("Use Belt Item 1")]
@@ -327,6 +329,6 @@ namespace Client.UserModels
         ToggleItemLock,
 
         [Description("Fortune Window")]
-        FortuneWindow
+        FortuneWindow,
     }
 }
