@@ -600,6 +600,32 @@ namespace Server.Models
                     };
                 case 127:
                     return new JinchonDevil {MonsterInfo = monsterInfo, CastDelay = TimeSpan.FromSeconds(8), DeathCloudDurationMin =  2000, DeathCloudDurationRandom = 5000};
+                case 128:
+                    return new HellBringer
+                    {
+                        MonsterInfo = monsterInfo,
+                        BatInfo = SEnvir.MonsterInfoList.Binding.First(x => x.Flag == MonsterFlag.HellishBat),
+                    };
+                case 129:
+                    return new DuelHitMonster { MonsterInfo = monsterInfo };
+                case 130:
+                    return new CrawlerSlave { MonsterInfo = monsterInfo };
+                case 131:
+                    return new CursedSlave { MonsterInfo = monsterInfo };
+                case 132:
+                    return new EvilCursedSlave { MonsterInfo = monsterInfo };
+                case 133:
+                    return new PoisonousGolem { MonsterInfo = monsterInfo, PoisonType = PoisonType.Green, PoisonTicks = 20, PoisonRate = 5 };
+                case 134:
+                    return new GardenSoldier { MonsterInfo = monsterInfo };
+                case 135:
+                    return new GardenDefender { MonsterInfo = monsterInfo };
+                case 136:
+                    return new RedBlossom { MonsterInfo = monsterInfo };
+                case 137:
+                    return new BlueBlossom { MonsterInfo = monsterInfo };
+                case 138:
+                    return new FireBird { MonsterInfo = monsterInfo };
                 default:
                     return new MonsterObject { MonsterInfo = monsterInfo };
             }
@@ -2117,14 +2143,14 @@ namespace Server.Models
         }
 
 
-        public void MassCyclone()
+        public void MassCyclone(MagicType type, int chance = 30)
         {
             Direction = Functions.DirectionFromPoint(CurrentLocation, Target.CurrentLocation);
 
             List<uint> targetIDs = new List<uint>();
             List<Point> locations = new List<Point>();
 
-            Broadcast(new S.ObjectMagic { ObjectID = ObjectID, Direction = Direction, CurrentLocation = CurrentLocation, Cast = true, Type = MagicType.Cyclone, Targets = targetIDs, Locations = locations });
+            Broadcast(new S.ObjectMagic { ObjectID = ObjectID, Direction = Direction, CurrentLocation = CurrentLocation, Cast = true, Type = type, Targets = targetIDs, Locations = locations });
 
             UpdateAttackTime();
 
@@ -2133,7 +2159,7 @@ namespace Server.Models
             {
                 if (cell.Objects == null)
                 {
-                    if (SEnvir.Random.Next(30) == 0)
+                    if (SEnvir.Random.Next(chance) == 0)
                         locations.Add(cell.Location);
 
                     continue;
@@ -2155,30 +2181,30 @@ namespace Server.Models
                 }
             }
         }
-/*
-        public void MonsterIceStorm()
-        {
-            Direction = Functions.DirectionFromPoint(CurrentLocation, Target.CurrentLocation);
+        /*
+                public void MonsterIceStorm()
+                {
+                    Direction = Functions.DirectionFromPoint(CurrentLocation, Target.CurrentLocation);
 
-            List<uint> targetIDs = new List<uint>();
-            List<Point> locations = new List<Point> { Target.CurrentLocation };
+                    List<uint> targetIDs = new List<uint>();
+                    List<Point> locations = new List<Point> { Target.CurrentLocation };
 
-            Broadcast(new S.ObjectMagic { ObjectID = ObjectID, Direction = Direction, CurrentLocation = CurrentLocation, Cast = true, Type = MagicType.MonsterIceStorm, Targets = targetIDs, Locations = locations });
+                    Broadcast(new S.ObjectMagic { ObjectID = ObjectID, Direction = Direction, CurrentLocation = CurrentLocation, Cast = true, Type = MagicType.MonsterIceStorm, Targets = targetIDs, Locations = locations });
 
-            UpdateAttackTime();
+                    UpdateAttackTime();
 
-            List<MapObject> targets = GetTargets(CurrentMap, Target.CurrentLocation, 1);
+                    List<MapObject> targets = GetTargets(CurrentMap, Target.CurrentLocation, 1);
 
-            foreach (MapObject target in targets)
-            {
-                ActionList.Add(new DelayedAction(
-                    SEnvir.Now.AddMilliseconds(500),
-                    ActionType.DelayAttack,
-                    target,
-                    GetDC(),
-                    Element.Ice));
-            }
-        }*/
+                    foreach (MapObject target in targets)
+                    {
+                        ActionList.Add(new DelayedAction(
+                            SEnvir.Now.AddMilliseconds(500),
+                            ActionType.DelayAttack,
+                            target,
+                            GetDC(),
+                            Element.Ice));
+                    }
+                }*/
 
 
         public void PoisonousCloud()

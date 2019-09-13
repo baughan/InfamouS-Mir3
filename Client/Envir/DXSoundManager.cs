@@ -921,6 +921,76 @@ namespace Client.Envir
             [SoundIndex.BlueDragonStruck] = new DXSound(SoundPath + @"403-4.wav", SoundType.Monster),
             [SoundIndex.BlueDragonDie] = new DXSound(SoundPath + @"403-5.wav", SoundType.Monster),
 
+            [SoundIndex.CrazedPrimateAttack] = new DXSound(SoundPath + @"3722.wav", SoundType.Monster),
+            [SoundIndex.CrazedPrimateStruck] = new DXSound(SoundPath + @"3724.wav", SoundType.Monster),
+            [SoundIndex.CrazedPrimateDie] = new DXSound(SoundPath + @"3725.wav", SoundType.Monster),
+
+            [SoundIndex.HellBringerAttack] = new DXSound(SoundPath + @"3732.wav", SoundType.Monster),
+            [SoundIndex.HellBringerAttack2] = new DXSound(SoundPath + @"3733.wav", SoundType.Monster),
+            [SoundIndex.HellBringerAttack3] = new DXSound(SoundPath + @"3737.wav", SoundType.Monster),
+            [SoundIndex.HellBringerStruck] = new DXSound(SoundPath + @"3734.wav", SoundType.Monster),
+            [SoundIndex.HellBringerDie] = new DXSound(SoundPath + @"3735.wav", SoundType.Monster),
+
+            [SoundIndex.YurinHoundAttack] = new DXSound(SoundPath + @"3802.wav", SoundType.Monster),
+            [SoundIndex.YurinHoundStruck] = new DXSound(SoundPath + @"3804.wav", SoundType.Monster),
+            [SoundIndex.YurinHoundDie] = new DXSound(SoundPath + @"3805.wav", SoundType.Monster),
+
+            [SoundIndex.YurinTigerAttack] = new DXSound(SoundPath + @"3822.wav", SoundType.Monster),
+            [SoundIndex.YurinTigerStruck] = new DXSound(SoundPath + @"3824.wav", SoundType.Monster),
+            [SoundIndex.YurinTigerDie] = new DXSound(SoundPath + @"3825.wav", SoundType.Monster),
+
+            [SoundIndex.HardenedRhinoAttack] = new DXSound(SoundPath + @"3842.wav", SoundType.Monster),
+            [SoundIndex.HardenedRhinoStruck] = new DXSound(SoundPath + @"3844.wav", SoundType.Monster),
+            [SoundIndex.HardenedRhinoDie] = new DXSound(SoundPath + @"3845.wav", SoundType.Monster),
+
+            [SoundIndex.MammothAttack] = new DXSound(SoundPath + @"3852.wav", SoundType.Monster),
+            [SoundIndex.MammothStruck] = new DXSound(SoundPath + @"3854.wav", SoundType.Monster),
+            [SoundIndex.MammothDie] = new DXSound(SoundPath + @"3855.wav", SoundType.Monster),
+
+            [SoundIndex.CursedSlave1Attack] = new DXSound(SoundPath + @"3862.wav", SoundType.Monster),
+            [SoundIndex.CursedSlave1Attack2] = new DXSound(SoundPath + @"3869.wav", SoundType.Monster),
+            [SoundIndex.CursedSlave1Struck] = new DXSound(SoundPath + @"3864.wav", SoundType.Monster),
+            [SoundIndex.CursedSlave1Die] = new DXSound(SoundPath + @"3865.wav", SoundType.Monster),
+
+            [SoundIndex.CursedSlave2Attack] = new DXSound(SoundPath + @"3872.wav", SoundType.Monster),
+            [SoundIndex.CursedSlave2Struck] = new DXSound(SoundPath + @"3874.wav", SoundType.Monster),
+            [SoundIndex.CursedSlave2Die] = new DXSound(SoundPath + @"3875.wav", SoundType.Monster),
+
+            [SoundIndex.CursedSlave3Attack] = new DXSound(SoundPath + @"3892.wav", SoundType.Monster),
+            [SoundIndex.CursedSlave3Attack2] = new DXSound(SoundPath + @"3898.wav", SoundType.Monster),
+            [SoundIndex.CursedSlave3Struck] = new DXSound(SoundPath + @"3894.wav", SoundType.Monster),
+            [SoundIndex.CursedSlave3Die] = new DXSound(SoundPath + @"3895.wav", SoundType.Monster),
+
+            [SoundIndex.PoisonousGolemAttack] = new DXSound(SoundPath + @"3882.wav", SoundType.Monster),
+            [SoundIndex.PoisonousGolemAttack2] = new DXSound(SoundPath + @"3888.wav", SoundType.Monster),
+            [SoundIndex.PoisonousGolemStruck] = new DXSound(SoundPath + @"3884.wav", SoundType.Monster),
+            [SoundIndex.PoisonousGolemDie] = new DXSound(SoundPath + @"3885.wav", SoundType.Monster),
+
+            [SoundIndex.GardenSoldierAttack] = new DXSound(SoundPath + @"3902.wav", SoundType.Monster),
+            [SoundIndex.GardenSoldierAttack2] = new DXSound(SoundPath + @"3908.wav", SoundType.Monster),
+            [SoundIndex.GardenSoldierStruck] = new DXSound(SoundPath + @"3904.wav", SoundType.Monster),
+            [SoundIndex.GardenSoldierDie] = new DXSound(SoundPath + @"3905.wav", SoundType.Monster),
+
+            [SoundIndex.GardenDefenderAttack] = new DXSound(SoundPath + @"3912.wav", SoundType.Monster),
+            [SoundIndex.GardenDefenderAttack2] = new DXSound(SoundPath + @"3918.wav", SoundType.Monster),
+            [SoundIndex.GardenDefenderStruck] = new DXSound(SoundPath + @"3914.wav", SoundType.Monster),
+            [SoundIndex.GardenDefenderDie] = new DXSound(SoundPath + @"3915.wav", SoundType.Monster),
+
+            [SoundIndex.RedBlossomAttack] = new DXSound(SoundPath + @"3928.wav", SoundType.Monster),
+            [SoundIndex.RedBlossomAttack2] = new DXSound(SoundPath + @"3929.wav", SoundType.Monster),
+            [SoundIndex.RedBlossomStruck] = new DXSound(SoundPath + @"3924.wav", SoundType.Monster),
+            [SoundIndex.RedBlossomDie] = new DXSound(SoundPath + @"3925.wav", SoundType.Monster),
+
+            [SoundIndex.BlueBlossomAttack] = new DXSound(SoundPath + @"3938.wav", SoundType.Monster),
+            [SoundIndex.BlueBlossomStruck] = new DXSound(SoundPath + @"3934.wav", SoundType.Monster),
+            [SoundIndex.BlueBlossomDie] = new DXSound(SoundPath + @"3935.wav", SoundType.Monster),
+
+            [SoundIndex.FireBirdAttack] = new DXSound(SoundPath + @"3942.wav", SoundType.Monster),
+            [SoundIndex.FireBirdAttack2] = new DXSound(SoundPath + @"3948.wav", SoundType.Monster),
+            [SoundIndex.FireBirdAttack3] = new DXSound(SoundPath + @"3949.wav", SoundType.Monster),
+            [SoundIndex.FireBirdStruck] = new DXSound(SoundPath + @"3944.wav", SoundType.Monster),
+            [SoundIndex.FireBirdDie] = new DXSound(SoundPath + @"3945.wav", SoundType.Monster),
+
             #endregion
         };
 

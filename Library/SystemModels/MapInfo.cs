@@ -49,6 +49,21 @@ namespace Library.SystemModels
         }
         private int _MiniMap;
 
+        public int Background
+        {
+            get { return _Background; }
+            set
+            {
+                if (_Background == value) return;
+
+                var oldValue = _Background;
+                _Background = value;
+
+                OnChanged(oldValue, value, "Background");
+            }
+        }
+        private int _Background;
+
         public LightSetting Light
         {
             get { return _Light; }
