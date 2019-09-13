@@ -961,7 +961,7 @@ namespace Client.Scenes.Views
                 DownButton = { Visible = false },
                 Size = new Size(102, 18),
                 ValueTextBox = { Location = new Point(1,1), Size = new Size(100,16)},
-                MaxValue = 2000000000
+                MaxValue = 10000000000
             };
             GoldBox.ValueTextBox.ValueChanged += GoldBox_ValueChanged;
 
