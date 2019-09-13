@@ -672,6 +672,7 @@ namespace Client.Models
                     break;
             }
         }
+
         public override void MovingOffSetChanged()
         {
             base.MovingOffSetChanged();

@@ -40,7 +40,13 @@ namespace Library
             LobsterLord, LobsterSpawn,
 
             DeadTree, BobbitWorm,
-            MonasteryMon1, MonasteryMon3;
+            MonasteryMon1, MonasteryMon3,
+
+            //Yurin Forest
+            CrazedPrimate, HellBringer, YurinMon0, YurinMon1, WhiteBeardedTiger, HardenedRhino, Mammoth, CursedSlave1, CursedSlave2, CursedSlave3, PoisonousGolem,
+
+            //Blossom
+            GardenSoldier, GardenDefender, RedBlossom, BlueBlossom, FireBird;
 
 
         static FrameSet()
@@ -712,6 +718,152 @@ namespace Library
             {
                 [MirAnimation.Show] = new Frame(400, 7, 10, TimeSpan.FromMilliseconds(100)) ,
                 [MirAnimation.Hide] = new Frame(400, 7, 10, TimeSpan.FromMilliseconds(100)) { Reversed = true, },
+            };
+
+            CrazedPrimate = new Dictionary<MirAnimation, Frame>
+            {
+                [MirAnimation.Standing] = new Frame(0, 6, 10, TimeSpan.FromMilliseconds(500)),
+                [MirAnimation.Combat1] = new Frame(160, 7, 10, TimeSpan.FromMilliseconds(100)),
+                [MirAnimation.Combat3] = new Frame(400, 8, 10, TimeSpan.FromMilliseconds(100)),
+                [MirAnimation.Struck] = new Frame(240, 3, 10, TimeSpan.FromMilliseconds(100)),
+                [MirAnimation.Die] = new Frame(320, 8, 10, TimeSpan.FromMilliseconds(100)),
+                [MirAnimation.Dead] = new Frame(327, 1, 10, TimeSpan.FromMilliseconds(1000)),
+            };
+            HellBringer = new Dictionary<MirAnimation, Frame>
+            {
+                [MirAnimation.Standing] = new Frame(0, 6, 10, TimeSpan.FromMilliseconds(500)),
+                [MirAnimation.Walking] = new Frame(80, 8, 10, TimeSpan.FromMilliseconds(100)),
+                [MirAnimation.Pushed] = new Frame(80, 8, 10, TimeSpan.FromMilliseconds(50)) { Reversed = true, StaticSpeed = true },
+                [MirAnimation.Combat1] = new Frame(160, 10, 10, TimeSpan.FromMilliseconds(100)),
+                [MirAnimation.Combat2] = new Frame(480, 8, 10, TimeSpan.FromMilliseconds(100)),
+                [MirAnimation.Combat3] = new Frame(400, 10, 10, TimeSpan.FromMilliseconds(100)),
+                [MirAnimation.Combat4] = new Frame(560, 8, 10, TimeSpan.FromMilliseconds(100)),
+                [MirAnimation.Struck] = new Frame(240, 4, 10, TimeSpan.FromMilliseconds(100)),
+            };
+            YurinMon0 = new Dictionary<MirAnimation, Frame>
+            {
+                [MirAnimation.Combat1] = new Frame(160, 8, 10, TimeSpan.FromMilliseconds(100)),
+                [MirAnimation.Struck] = new Frame(240, 3, 10, TimeSpan.FromMilliseconds(100)),
+                [MirAnimation.Die] = new Frame(320, 9, 10, TimeSpan.FromMilliseconds(100)),
+                [MirAnimation.Dead] = new Frame(328, 1, 10, TimeSpan.FromMilliseconds(1000)),
+            };
+            YurinMon1 = new Dictionary<MirAnimation, Frame>
+            {
+                [MirAnimation.Combat1] = new Frame(160, 9, 10, TimeSpan.FromMilliseconds(100)),
+                [MirAnimation.Combat3] = new Frame(400, 10, 10, TimeSpan.FromMilliseconds(100)),
+                [MirAnimation.Struck] = new Frame(240, 3, 10, TimeSpan.FromMilliseconds(100)),
+            };
+            WhiteBeardedTiger = new Dictionary<MirAnimation, Frame>
+            {
+                [MirAnimation.Standing] = new Frame(0, 6, 10, TimeSpan.FromMilliseconds(500)),
+                [MirAnimation.Combat1] = new Frame(160, 7, 10, TimeSpan.FromMilliseconds(100)),
+                [MirAnimation.Combat3] = new Frame(400, 6, 10, TimeSpan.FromMilliseconds(100)),
+                [MirAnimation.Struck] = new Frame(240, 3, 10, TimeSpan.FromMilliseconds(100)),
+                [MirAnimation.Die] = new Frame(320, 9, 10, TimeSpan.FromMilliseconds(100)),
+                [MirAnimation.Dead] = new Frame(328, 1, 10, TimeSpan.FromMilliseconds(1000)),
+            };
+            HardenedRhino = new Dictionary<MirAnimation, Frame>
+            {
+                [MirAnimation.Standing] = new Frame(0, 6, 10, TimeSpan.FromMilliseconds(500)),
+                [MirAnimation.Walking] = new Frame(80, 10, 10, TimeSpan.FromMilliseconds(100)),
+                [MirAnimation.Pushed] = new Frame(80, 10, 10, TimeSpan.FromMilliseconds(50)) { Reversed = true, StaticSpeed = true },
+                [MirAnimation.Combat1] = new Frame(160, 7, 10, TimeSpan.FromMilliseconds(100)),
+                [MirAnimation.Combat2] = new Frame(400, 6, 10, TimeSpan.FromMilliseconds(100)),
+                [MirAnimation.Combat3] = new Frame(480, 7, 10, TimeSpan.FromMilliseconds(100)),
+                [MirAnimation.Struck] = new Frame(240, 3, 10, TimeSpan.FromMilliseconds(100)),
+                [MirAnimation.Die] = new Frame(320, 7, 10, TimeSpan.FromMilliseconds(100)),
+                [MirAnimation.Dead] = new Frame(326, 1, 10, TimeSpan.FromMilliseconds(1000)),
+            };
+            Mammoth = new Dictionary<MirAnimation, Frame>
+            {
+                [MirAnimation.Standing] = new Frame(0, 6, 10, TimeSpan.FromMilliseconds(500)),
+                [MirAnimation.Walking] = new Frame(80, 10, 10, TimeSpan.FromMilliseconds(100)),
+                [MirAnimation.Pushed] = new Frame(80, 10, 10, TimeSpan.FromMilliseconds(50)) { Reversed = true, StaticSpeed = true },
+                [MirAnimation.Combat2] = new Frame(400, 6, 10, TimeSpan.FromMilliseconds(100)),
+                [MirAnimation.Combat3] = new Frame(480, 6, 10, TimeSpan.FromMilliseconds(100)),
+                [MirAnimation.Struck] = new Frame(240, 3, 10, TimeSpan.FromMilliseconds(100)),
+            };
+            CursedSlave1 = new Dictionary<MirAnimation, Frame>
+            {
+                [MirAnimation.Walking] = new Frame(80, 8, 10, TimeSpan.FromMilliseconds(100)),
+                [MirAnimation.Pushed] = new Frame(80, 8, 10, TimeSpan.FromMilliseconds(50)) { Reversed = true, StaticSpeed = true },
+                [MirAnimation.Combat1] = new Frame(160, 7, 10, TimeSpan.FromMilliseconds(100)),
+                [MirAnimation.Combat3] = new Frame(400, 8, 10, TimeSpan.FromMilliseconds(100)),
+                [MirAnimation.Struck] = new Frame(240, 3, 10, TimeSpan.FromMilliseconds(100)),
+                [MirAnimation.Die] = new Frame(320, 9, 10, TimeSpan.FromMilliseconds(100)),
+                [MirAnimation.Dead] = new Frame(328, 1, 10, TimeSpan.FromMilliseconds(1000)),
+            };
+            CursedSlave2 = new Dictionary<MirAnimation, Frame>
+            {
+                [MirAnimation.Walking] = new Frame(80, 8, 10, TimeSpan.FromMilliseconds(100)),
+                [MirAnimation.Pushed] = new Frame(80, 8, 10, TimeSpan.FromMilliseconds(50)) { Reversed = true, StaticSpeed = true },
+                [MirAnimation.Combat1] = new Frame(160, 7, 10, TimeSpan.FromMilliseconds(100)),
+                [MirAnimation.Combat2] = new Frame(400, 7, 10, TimeSpan.FromMilliseconds(100)),
+                [MirAnimation.Struck] = new Frame(240, 3, 10, TimeSpan.FromMilliseconds(100)),
+                [MirAnimation.Die] = new Frame(320, 9, 10, TimeSpan.FromMilliseconds(100)),
+                [MirAnimation.Dead] = new Frame(328, 1, 10, TimeSpan.FromMilliseconds(1000)),
+            };
+            CursedSlave3 = new Dictionary<MirAnimation, Frame>
+            {
+                [MirAnimation.Walking] = new Frame(80, 8, 10, TimeSpan.FromMilliseconds(100)),
+                [MirAnimation.Pushed] = new Frame(80, 8, 10, TimeSpan.FromMilliseconds(50)) { Reversed = true, StaticSpeed = true },
+                [MirAnimation.Combat1] = new Frame(160, 9, 10, TimeSpan.FromMilliseconds(100)),
+                [MirAnimation.Combat2] = new Frame(400, 8, 10, TimeSpan.FromMilliseconds(100)),
+                [MirAnimation.Struck] = new Frame(240, 3, 10, TimeSpan.FromMilliseconds(100)),
+            };
+            PoisonousGolem = new Dictionary<MirAnimation, Frame>
+            {
+                [MirAnimation.Standing] = new Frame(0, 6, 10, TimeSpan.FromMilliseconds(500)),
+                [MirAnimation.Walking] = new Frame(80, 10, 10, TimeSpan.FromMilliseconds(80)),
+                [MirAnimation.Pushed] = new Frame(80, 10, 10, TimeSpan.FromMilliseconds(50)) { Reversed = true, StaticSpeed = true },
+                [MirAnimation.Combat3] = new Frame(400, 7, 10, TimeSpan.FromMilliseconds(100)),
+                [MirAnimation.Struck] = new Frame(240, 3, 10, TimeSpan.FromMilliseconds(100)),
+                [MirAnimation.Die] = new Frame(320, 7, 10, TimeSpan.FromMilliseconds(100)),
+                [MirAnimation.Dead] = new Frame(326, 1, 10, TimeSpan.FromMilliseconds(1000)),
+            };
+            GardenSoldier = new Dictionary<MirAnimation, Frame>
+            {
+                [MirAnimation.Standing] = new Frame(0, 10, 10, TimeSpan.FromMilliseconds(500)),
+                [MirAnimation.Combat1] = new Frame(160, 7, 10, TimeSpan.FromMilliseconds(100)),
+                [MirAnimation.Combat2] = new Frame(240, 9, 10, TimeSpan.FromMilliseconds(100)),
+                [MirAnimation.Struck] = new Frame(400, 3, 10, TimeSpan.FromMilliseconds(100)),
+                [MirAnimation.Die] = new Frame(480, 9, 10, TimeSpan.FromMilliseconds(100)),
+                [MirAnimation.Dead] = new Frame(488, 1, 10, TimeSpan.FromMilliseconds(1000)),
+            };
+            GardenDefender = new Dictionary<MirAnimation, Frame>
+            {
+                [MirAnimation.Standing] = new Frame(0, 9, 10, TimeSpan.FromMilliseconds(500)),
+                [MirAnimation.Combat1] = new Frame(160, 7, 10, TimeSpan.FromMilliseconds(100)),
+                [MirAnimation.Combat2] = new Frame(240, 8, 10, TimeSpan.FromMilliseconds(100)),
+                [MirAnimation.Struck] = new Frame(320, 3, 10, TimeSpan.FromMilliseconds(100)),
+                [MirAnimation.Die] = new Frame(400, 10, 10, TimeSpan.FromMilliseconds(100)),
+                [MirAnimation.Dead] = new Frame(409, 1, 10, TimeSpan.FromMilliseconds(1000)),
+            };
+            RedBlossom = new Dictionary<MirAnimation, Frame>
+            {
+                [MirAnimation.Standing] = new Frame(0, 10, 10, TimeSpan.FromMilliseconds(500)),
+                [MirAnimation.Combat1] = new Frame(160, 9, 10, TimeSpan.FromMilliseconds(100)),
+                [MirAnimation.Combat2] = new Frame(240, 10, 10, TimeSpan.FromMilliseconds(100)),
+                [MirAnimation.Struck] = new Frame(320, 3, 10, TimeSpan.FromMilliseconds(100)),
+                [MirAnimation.Die] = new Frame(400, 10, 10, TimeSpan.FromMilliseconds(100)),
+                [MirAnimation.Dead] = new Frame(409, 1, 10, TimeSpan.FromMilliseconds(1000)),
+            };
+            BlueBlossom = new Dictionary<MirAnimation, Frame>
+            {
+                [MirAnimation.Standing] = new Frame(0, 10, 10, TimeSpan.FromMilliseconds(500)),
+                [MirAnimation.Combat2] = new Frame(160, 10, 10, TimeSpan.FromMilliseconds(100)),
+                [MirAnimation.Struck] = new Frame(240, 3, 10, TimeSpan.FromMilliseconds(100)),
+            };
+            FireBird = new Dictionary<MirAnimation, Frame>
+            {
+                [MirAnimation.Standing] = new Frame(0, 8, 10, TimeSpan.FromMilliseconds(100)),
+                [MirAnimation.Combat1] = new Frame(160, 7, 10, TimeSpan.FromMilliseconds(100)),
+                [MirAnimation.Combat2] = new Frame(320, 5, 10, TimeSpan.FromMilliseconds(100)),
+                [MirAnimation.Combat3] = new Frame(240, 5, 10, TimeSpan.FromMilliseconds(100)),
+                [MirAnimation.Combat4] = new Frame(400, 8, 10, TimeSpan.FromMilliseconds(100)),
+                [MirAnimation.Struck] = new Frame(480, 3, 10, TimeSpan.FromMilliseconds(100)),
+                [MirAnimation.Die] = new Frame(560, 10, 10, TimeSpan.FromMilliseconds(100)),
+                [MirAnimation.Dead] = new Frame(569, 1, 10, TimeSpan.FromMilliseconds(1000)),
             };
         }
     }

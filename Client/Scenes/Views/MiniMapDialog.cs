@@ -128,7 +128,19 @@ namespace Client.Scenes.Views
 
             ScaleX = Image.Size.Width/(float) GameScene.Game.MapControl.Width;
             ScaleY = Image.Size.Height/(float) GameScene.Game.MapControl.Height;
-            
+
+            MirLibrary library;
+            if (CEnvir.LibraryList.TryGetValue(LibraryFile.Background, out library))
+            {
+                MirImage image = library.CreateImage(GameScene.Game.MapControl.MapInfo.Background, ImageType.Image);
+                GameScene.Game.MapControl.BackgroundImage = image;
+                if (image != null)
+                {
+                    GameScene.Game.MapControl.BackgroundScaleX = GameScene.Game.MapControl.Width * MapControl.CellWidth / (float)(image.Width - Config.GameSize.Width);
+                    GameScene.Game.MapControl.BackgroundScaleY = GameScene.Game.MapControl.Height * MapControl.CellHeight / (float)(image.Height - Config.GameSize.Height);
+                }
+            }
+
             foreach (NPCInfo ob in Globals.NPCInfoList.Binding)
                 Update(ob);
 

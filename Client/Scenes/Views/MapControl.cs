@@ -150,6 +150,10 @@ namespace Client.Scenes.Views
         public static int OffSetX;
         public static int OffSetY;
 
+        public MirImage BackgroundImage;
+        public float BackgroundScaleX, BackgroundScaleY;
+        public Point BackgroundMovingOffset = Point.Empty;
+
 
         #endregion
 
@@ -1182,6 +1186,18 @@ namespace Client.Scenes.Views
             protected override void OnClearTexture()
             {
                 base.OnClearTexture();
+
+                if (GameScene.Game.MapControl.BackgroundImage != null)
+                {
+                    float pixelspertileX = (GameScene.Game.MapControl.BackgroundImage.Width - Config.GameSize.Width) / GameScene.Game.MapControl.Width;
+                    float pixelspertileY = (GameScene.Game.MapControl.BackgroundImage.Height - Config.GameSize.Height) / GameScene.Game.MapControl.Height;
+                    int bgX = (int)(User.CurrentLocation.X * pixelspertileX) + GameScene.Game.MapControl.BackgroundMovingOffset.X;
+                    int bgY = (int)(User.CurrentLocation.Y * pixelspertileY) + GameScene.Game.MapControl.BackgroundMovingOffset.Y;
+                    Rectangle bgdisplay = new Rectangle(bgX, bgY, DisplayArea.Width, DisplayArea.Height);
+                    MirLibrary bglibrary;
+                    if (CEnvir.LibraryList.TryGetValue(LibraryFile.Background, out bglibrary))
+                        bglibrary.Draw(GameScene.Game.MapControl.MapInfo.Background, 0, 0, Color.White, bgdisplay, 1F, ImageType.Image);
+                }
 
                 int minX = Math.Max(0, User.CurrentLocation.X - OffSetX - 4), maxX = Math.Min(GameScene.Game.MapControl.Width - 1, User.CurrentLocation.X + OffSetX + 4);
                 int minY = Math.Max(0, User.CurrentLocation.Y - OffSetY - 4), maxY = Math.Min(GameScene.Game.MapControl.Height - 1, User.CurrentLocation.Y + OffSetY + 4);

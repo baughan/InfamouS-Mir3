@@ -70,7 +70,7 @@ namespace Server.Models.Monsters
             switch (SEnvir.Random.Next(3))
             {
                 case 0:
-                    MassCyclone();
+                    MassCyclone(MagicType.Cyclone);
                     break;
                 default:
                     Direction = Functions.DirectionFromPoint(CurrentLocation, Target.CurrentLocation);

@@ -188,6 +188,8 @@ namespace Library
             [LibraryFile.MonMagicEx7] = @"Data\MonMagicEx7.Zl", //
             [LibraryFile.MonMagicEx8] = @"Data\MonMagicEx8.Zl", //
             [LibraryFile.MonMagicEx9] = @"Data\MonMagicEx9.Zl", //
+            [LibraryFile.MonMagicEx13] = @"Data\MonMagicEx13.Zl", //
+            [LibraryFile.MonMagicEx14] = @"Data\MonMagicEx14.Zl", //
             [LibraryFile.MonMagicEx19] = @"Data\MonMagicEx19.Zl", //
             [LibraryFile.MonMagicEx20] = @"Data\MonMagicEx20.Zl", //
             [LibraryFile.MonMagicEx21] = @"Data\MonMagicEx21.Zl", //
@@ -334,6 +336,8 @@ namespace Library
             [LibraryFile.Wood_Tiles30c] = @"Data\Map Data\Wood\Tiles30c.Zl",
             [LibraryFile.Wood_Tilesc] = @"Data\Map Data\Wood\Tilesc.Zl",
             [LibraryFile.Wood_Wallsc] = @"Data\Map Data\Wood\Wallsc.Zl",
+
+            [LibraryFile.Background] = @"Data\Background.Zl",
 
         };
 
@@ -585,6 +589,8 @@ namespace Library
         MonMagicEx7,
         MonMagicEx8,
         MonMagicEx9,
+        MonMagicEx13,
+        MonMagicEx14,
         MonMagicEx19,
         MonMagicEx20,
         MonMagicEx21,
@@ -731,5 +737,7 @@ namespace Library
         Wood_Tiles30c,
         Wood_Tilesc,
         Wood_Wallsc,
+
+        Background,
     }
 }

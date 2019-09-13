@@ -647,6 +647,11 @@ namespace Library
         PinkFireBall = 530,
         GreenSludgeBall = 540,
 
+        HellBringerBats = 550,
+        PoisonousGolemLineAoE = 551,
+        IgyuScorchedEarth = 552,
+        IgyuCyclone = 553,
+
     }
 
     public enum MonsterImage
@@ -933,6 +938,27 @@ namespace Library
         MonasteryMon4,
         MonasteryMon5,
         MonasteryMon6,
+
+        //Yurin Forest
+        CrazedPrimate,
+        HellBringer,
+        YurinMon0,
+        YurinMon1,
+        WhiteBeardedTiger,
+        BlackBeardedTiger,
+        HardenedRhino,
+        Mammoth,
+        CursedSlave1,
+        CursedSlave2,
+        CursedSlave3,
+        PoisonousGolem,
+
+        //Blossom
+        GardenSoldier,
+        GardenDefender,
+        RedBlossom,
+        BlueBlossom,
+        FireBird,
     }
 
     
@@ -1312,6 +1338,8 @@ namespace Library
         QuartzTurtleSub = 205,
 
         Sacrafice = 210,
+
+        HellishBat = 211,
     }
 
     #region Packet Enums
@@ -2381,6 +2409,76 @@ namespace Library
         WhiteTigerAttack,
         WhiteTigerStruck,
         WhiteTigerDie,
+
+        CrazedPrimateAttack,
+        CrazedPrimateStruck,
+        CrazedPrimateDie,
+
+        HellBringerAttack,
+        HellBringerAttack2,
+        HellBringerAttack3,
+        HellBringerStruck,
+        HellBringerDie,
+
+        YurinHoundAttack,
+        YurinHoundStruck,
+        YurinHoundDie,
+
+        YurinTigerAttack,
+        YurinTigerStruck,
+        YurinTigerDie,
+
+        HardenedRhinoAttack,
+        HardenedRhinoStruck,
+        HardenedRhinoDie,
+
+        MammothAttack,
+        MammothStruck,
+        MammothDie,
+
+        CursedSlave1Attack,
+        CursedSlave1Attack2,
+        CursedSlave1Struck,
+        CursedSlave1Die,
+
+        CursedSlave2Attack,
+        CursedSlave2Struck,
+        CursedSlave2Die,
+
+        CursedSlave3Attack,
+        CursedSlave3Attack2,
+        CursedSlave3Struck,
+        CursedSlave3Die,
+
+        PoisonousGolemAttack,
+        PoisonousGolemAttack2,
+        PoisonousGolemStruck,
+        PoisonousGolemDie,
+
+        GardenSoldierAttack,
+        GardenSoldierAttack2,
+        GardenSoldierStruck,
+        GardenSoldierDie,
+
+        GardenDefenderAttack,
+        GardenDefenderAttack2,
+        GardenDefenderStruck,
+        GardenDefenderDie,
+
+        RedBlossomAttack,
+        RedBlossomAttack2,
+        RedBlossomStruck,
+        RedBlossomDie,
+
+        BlueBlossomAttack,
+        BlueBlossomStruck,
+        BlueBlossomDie,
+
+        FireBirdAttack,
+        FireBirdAttack2,
+        FireBirdAttack3,
+        FireBirdStruck,
+        FireBirdDie,
 
 
 
