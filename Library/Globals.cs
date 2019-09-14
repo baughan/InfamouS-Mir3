@@ -741,9 +741,9 @@ namespace Library
                     {
                         case ItemType.Weapon:
                         case ItemType.Armour:
-                            return 250000;
-                        case ItemType.Helmet:
                         case ItemType.Shield:
+                            return 250000;
+                        case ItemType.Helmet:                        
                             return 50000;
                         case ItemType.Necklace:
                         case ItemType.Bracelet:
@@ -820,13 +820,13 @@ namespace Library
                     {
                         case ItemType.Armour:
                         case ItemType.Weapon:
+                        case ItemType.Shield:
                             return 50;
                         case ItemType.Helmet:
                             return 5;
                         case ItemType.Necklace:
                         case ItemType.Bracelet:
-                        case ItemType.Ring:
-                        case ItemType.Shield:
+                        case ItemType.Ring:                        
                         case ItemType.Emblem:
                             return 10;
                         case ItemType.Shoes:
