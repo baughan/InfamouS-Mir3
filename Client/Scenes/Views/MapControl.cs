@@ -575,6 +575,8 @@ namespace Client.Scenes.Views
                     if (GameScene.Game.Observer) return;
 
                     GameScene.Game.AutoRun = false;
+                    GameScene.Game.AutoAttack = false;
+
                     if (MapObject.MouseObject == null) return;
                     NPCObject npc = MapObject.MouseObject as NPCObject;
                     if (npc != null)
@@ -588,6 +590,7 @@ namespace Client.Scenes.Views
                     break;
                 case MouseButtons.Right:
                     GameScene.Game.AutoRun = false;
+                    GameScene.Game.AutoAttack = false;
 
                     if (User.CurrentAction == MirAction.Standing)
                         GameScene.Game.CanRun = false;
@@ -694,17 +697,13 @@ namespace Client.Scenes.Views
                 Mining = false;
             }
 
-            if (User.ForceAttack)
+            if (GameScene.Game.AutoAttack)
             {
                 if (CEnvir.Now > User.AttackTime && User.Horse == HorseType.None)
                 {
-                    User.ForceAttack = false;
-
-                    MirDirection dir = MouseDirection();
-
                     MapObject.User.AttemptAction(new ObjectAction(
                                     MirAction.Attack, //RANDOMIZE
-                                    dir,
+                                    MapObject.User.Direction,
                                     MapObject.User.CurrentLocation,
                                     0, //Ranged Attack Target ID
                                     MagicType.None,

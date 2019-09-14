@@ -231,7 +231,6 @@ namespace Client.Models
 
         public DateTime NextActionTime, ServerTime, AttackTime, NextRunTime, NextMagicTime, BuffTime = CEnvir.Now, LotusTime, CombatTime, MoveTime;
         public MagicType AttackMagic;
-        public bool ForceAttack;
 
         public ObjectAction MagicAction;
         public bool CanPowerAttack;
