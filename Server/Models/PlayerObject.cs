@@ -12167,7 +12167,7 @@ namespace Server.Models
             {
                 isTemplate = true;
             }
-            else if (Inventory[p.Template.Slot].Info.ItemType != ItemType.Weapon || Inventory[p.Template.Slot].Info.Effect == ItemEffect.SpiritBlade) return;
+            else if ((Inventory[p.Template.Slot].Info.ItemType != ItemType.Weapon && Inventory[p.Template.Slot].Info.ItemType != ItemType.Shield) || Inventory[p.Template.Slot].Info.Effect == ItemEffect.SpiritBlade) return;
 
             #endregion
 

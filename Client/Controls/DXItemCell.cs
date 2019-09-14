@@ -1345,7 +1345,7 @@ namespace Client.Controls
                     }
                     break;
                 case GridType.WeaponCraftTemplate:
-                    if (Item.Info.ItemType != ItemType.Weapon && Item.Info.Effect != ItemEffect.WeaponTemplate) return false;
+                    if (Item.Info.ItemType != ItemType.Weapon && Item.Info.ItemType != ItemType.Shield &&  Item.Info.Effect != ItemEffect.WeaponTemplate) return false;
                     break;
                 case GridType.WeaponCraftBlue:
                     if (Item.Info.Effect != ItemEffect.BlueSlot) return false;
@@ -1836,6 +1836,7 @@ namespace Client.Controls
                                 switch (Item.Info.ItemType)
                                 {
                                     case ItemType.Weapon:
+                                    case ItemType.Shield:
                                         MoveItem(GameScene.Game.NPCWeaponCraftBox.TemplateCell);
                                         return;
                                 }
