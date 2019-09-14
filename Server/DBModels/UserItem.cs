@@ -581,6 +581,8 @@ namespace Server.DBModels
                 case ItemType.Bracelet:
                 case ItemType.Ring:
                 case ItemType.Shoes:
+                case ItemType.Shield:
+                case ItemType.Emblem:
                     break;
                 default:
                     return false;
@@ -602,6 +604,8 @@ namespace Server.DBModels
                         case ItemType.Bracelet:
                         case ItemType.Ring:
                         case ItemType.Shoes:
+                        case ItemType.Shield:
+                        case ItemType.Emblem:
                             return Info.RequiredAmount * 10000 / 9;
                       /*  case ItemType.Helmet:
                         case ItemType.Necklace:
@@ -622,6 +626,8 @@ namespace Server.DBModels
                         case ItemType.Bracelet:
                         case ItemType.Ring:
                         case ItemType.Shoes:
+                        case ItemType.Shield:
+                        case ItemType.Emblem:
                             return Info.RequiredAmount * 10000 / 2;
                       /*  case ItemType.Helmet:
                         case ItemType.Necklace:
@@ -639,10 +645,12 @@ namespace Server.DBModels
                         case ItemType.Armour:
                             return 250000;
                         case ItemType.Helmet:
+                        case ItemType.Shield:
                             return 50000;
                         case ItemType.Necklace:
                         case ItemType.Bracelet:
                         case ItemType.Ring:
+                        case ItemType.Emblem:
                             return 150000;
                         case ItemType.Shoes:
                             return 30000;
@@ -667,6 +675,8 @@ namespace Server.DBModels
                         case ItemType.Bracelet:
                         case ItemType.Ring:
                         case ItemType.Shoes:
+                        case ItemType.Shield:
+                        case ItemType.Emblem:
                             return Math.Max(1, Info.RequiredAmount / 2 + 5);
                       /*  case ItemType.Helmet:
                             return Math.Max(1, (Info.RequiredAmount - 30) / 6);
@@ -691,6 +701,8 @@ namespace Server.DBModels
                         case ItemType.Bracelet:
                         case ItemType.Ring:
                         case ItemType.Shoes:
+                        case ItemType.Shield:
+                        case ItemType.Emblem:
                             return Math.Max(1, Info.RequiredAmount / 2 + 5);
                      /*   case ItemType.Helmet:
                             return Math.Max(1, (Info.RequiredAmount - 30) / 6);
@@ -716,6 +728,8 @@ namespace Server.DBModels
                         case ItemType.Necklace:
                         case ItemType.Bracelet:
                         case ItemType.Ring:
+                        case ItemType.Shield:
+                        case ItemType.Emblem:
                             return 10;
                         case ItemType.Shoes:
                             return 3;
