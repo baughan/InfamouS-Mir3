@@ -701,9 +701,11 @@ namespace Client.Scenes.Views
             {
                 if (CEnvir.Now > User.AttackTime && User.Horse == HorseType.None)
                 {
+                    MirDirection dir = MouseDirection();
+
                     MapObject.User.AttemptAction(new ObjectAction(
                                     MirAction.Attack, //RANDOMIZE
-                                    MapObject.User.Direction,
+                                    dir,
                                     MapObject.User.CurrentLocation,
                                     0, //Ranged Attack Target ID
                                     MagicType.None,

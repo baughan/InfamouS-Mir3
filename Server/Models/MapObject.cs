@@ -253,7 +253,7 @@ namespace Server.Models
                             //if (ob.Race != ObjectType.Monster) continue;
                             
 
-                            if (ob.Race == ObjectType.Monster && ((MonsterObject)ob).MonsterInfo.IsBoss) continue;
+                            //if (ob.Race == ObjectType.Monster && ((MonsterObject)ob).MonsterInfo.IsBoss) continue;
 
                             if (ob.PoisonList.Any(x => x.Type == PoisonType.Infection)) continue;
 
@@ -272,7 +272,7 @@ namespace Server.Models
 
                 if (damage > 0)
                 {
-                    if (Race == ObjectType.Monster && ((MonsterObject) this).MonsterInfo.IsBoss)
+                    if (Race == ObjectType.Monster && (poison.Type != PoisonType.Infection && ((MonsterObject) this).MonsterInfo.IsBoss))
                         damage = 0;
                     else if (!infection)
                         damage = Math.Min(CurrentHP - 1, damage);
