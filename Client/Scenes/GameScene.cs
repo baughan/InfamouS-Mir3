@@ -228,6 +228,19 @@ namespace Client.Scenes
         }
         private bool _AutoRun;
 
+        public bool AutoAttack
+        {
+            get => _AutoAttack;
+            set
+            {
+                if (_AutoAttack == value) return;
+                _AutoAttack = value;
+
+                ReceiveChat(value ? "[AutoAttack: On]" : "[AutoAttack: Off]", MessageType.Hint);
+            }
+        }
+        private bool _AutoAttack;
+
         #region StorageSize
 
         public int StorageSize
@@ -962,27 +975,6 @@ namespace Client.Scenes
                     MonsterBox.Monster = mob;
             }
         }
-
-        public override void OnKeyUp(KeyEventArgs e)
-        {
-            base.OnKeyUp(e);
-
-            if (e.Handled) return;
-
-            foreach (KeyBindAction action in CEnvir.GetKeyAction(e.KeyCode))
-            {
-                switch (action)
-                {
-                    case KeyBindAction.AutoAttackToggle:
-                        if (Observer) continue;
-
-                        User.ForceAttack = false;
-                        break;
-                }
-            }
-
-            e.Handled = true;
-        }
         public override void OnKeyDown(KeyEventArgs e)
         {
             base.OnKeyDown(e);
@@ -1181,7 +1173,7 @@ namespace Client.Scenes
                     case KeyBindAction.AutoAttackToggle:
                         if (Observer) continue;
 
-                        User.ForceAttack = true;
+                        AutoAttack = !AutoAttack;
                         break;
                     case KeyBindAction.UseBelt01:
                         if (Observer) continue;
@@ -4489,6 +4481,7 @@ namespace Client.Scenes
 
                 CanRun = false;
                 AutoRun = false;
+                AutoAttack = false;
                 _NPCID = 0;
                 _Companion = null;
                 _Partner = null;
