@@ -377,7 +377,7 @@ namespace Library
 
 
         public const int InventorySize = 196,
-                         EquipmentSize = 16,
+                         EquipmentSize = 17,
                          CompanionInventorySize = 40,
                          CompanionEquipmentSize = 4,
                          PartsStorageOffset = 2000,
@@ -445,6 +445,7 @@ namespace Library
         public int Weapon { get; set; }
         public int Armour { get; set; }
         public int Shield { get; set; }
+        public int Wings { get; set; }
         public Color ArmourColour { get; set; }
         public int ArmourImage { get; set; }
 

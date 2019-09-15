@@ -336,6 +336,7 @@ namespace Client.Models
             HorseShape = info.HorseShape;
             HelmetShape = info.HelmetShape;
             ShieldShape = info.Shield;
+            WingsShape = info.Wings;
 
             Gold = info.Gold;
             GameScene.Game.DayTime = info.DayTime;
