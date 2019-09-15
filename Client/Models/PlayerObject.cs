@@ -173,6 +173,36 @@ namespace Client.Models
         };
         #endregion
 
+        #region Wings Librarys
+        public Dictionary<int, LibraryFile> WingsList = new Dictionary<int, LibraryFile>
+        {
+            [0] = LibraryFile.EquipEffect_Full,
+            [1] = LibraryFile.EquipEffect_FullEx1,
+            [2] = LibraryFile.EquipEffect_FullEx2,
+            [3] = LibraryFile.EquipEffect_FullEx3,
+
+            /*[0 + FemaleOffSet] = LibraryFile.WM_Helmet1,
+            [1 + FemaleOffSet] = LibraryFile.WM_Helmet2,
+            [2 + FemaleOffSet] = LibraryFile.WM_Helmet3,
+            [3 + FemaleOffSet] = LibraryFile.WM_Helmet4,
+            [4 + FemaleOffSet] = LibraryFile.WM_Helmet5,
+
+            [10 + FemaleOffSet] = LibraryFile.WM_Helmet11,
+            [11 + FemaleOffSet] = LibraryFile.WM_Helmet12,
+            [12 + FemaleOffSet] = LibraryFile.WM_Helmet13,
+            [13 + FemaleOffSet] = LibraryFile.WM_Helmet14,
+
+            [0 + AssassinOffSet] = LibraryFile.M_HelmetA1,
+            [1 + AssassinOffSet] = LibraryFile.M_HelmetA2,
+            [2 + AssassinOffSet] = LibraryFile.M_HelmetA3,
+            [3 + AssassinOffSet] = LibraryFile.M_HelmetA4,
+
+            [0 + AssassinOffSet + FemaleOffSet] = LibraryFile.WM_HelmetA1,
+            [1 + AssassinOffSet + FemaleOffSet] = LibraryFile.WM_HelmetA2,
+            [2 + AssassinOffSet + FemaleOffSet] = LibraryFile.WM_HelmetA3,
+            [3 + AssassinOffSet + FemaleOffSet] = LibraryFile.WM_HelmetA4,*/
+        };
+        #endregion
 
         public string GuildRank
         {
@@ -207,6 +237,10 @@ namespace Client.Models
         
         public int ShieldShape;
         public int ShieldFrame => DrawFrame + (ShieldShape % 10) * WeaponShapeOffSet;
+
+        public MirLibrary WingsLibrary;
+        public int WingsShape;
+        public int WingsFrame => DrawFrame + (WingsShape % 10) * (WeaponShapeOffSet * 2);
 
         public MirLibrary BodyLibrary;
         public int ArmourShapeOffSet;
@@ -262,6 +296,7 @@ namespace Client.Models
             HorseShape = info.HorseShape;
             HelmetShape = info.Helmet;
             ShieldShape = info.Shield;
+            WingsShape = info.Wings;
 
             ArmourImage = info.ArmourImage;
 
@@ -352,6 +387,9 @@ namespace Client.Models
                                 if (!ShieldList.TryGetValue(ShieldShape / 10, out file)) file = LibraryFile.None;
                                 CEnvir.LibraryList.TryGetValue(file, out WeaponLibrary2);
                             }
+
+                            if (!WingsList.TryGetValue(WingsShape / 10, out file)) file = LibraryFile.None;
+                            CEnvir.LibraryList.TryGetValue(file, out WingsLibrary);
                             break;
                         case MirGender.Female:
                             if (!ArmourList.TryGetValue(ArmourShape / 11 + FemaleOffSet, out file))
@@ -375,6 +413,9 @@ namespace Client.Models
                                 if (!ShieldList.TryGetValue(ShieldShape / 10 + FemaleOffSet, out file)) file = LibraryFile.None;
                                 CEnvir.LibraryList.TryGetValue(file, out WeaponLibrary2);
                             }
+
+                            if (!WingsList.TryGetValue(WingsShape / 10 /*+ FemaleOffSet*/, out file)) file = LibraryFile.None;
+                            CEnvir.LibraryList.TryGetValue(file, out WingsLibrary);
                             break;
                     }
                     break;
@@ -412,6 +453,9 @@ namespace Client.Models
                                 if (!ShieldList.TryGetValue(ShieldShape / 10, out file)) file = LibraryFile.None;
                                 CEnvir.LibraryList.TryGetValue(file, out WeaponLibrary2);
                             }
+
+                            if (!WingsList.TryGetValue(WingsShape / 10, out file)) file = LibraryFile.None;
+                            CEnvir.LibraryList.TryGetValue(file, out WingsLibrary);
                             break;
                         case MirGender.Female:
                             if (!ArmourList.TryGetValue(ArmourShape / 11 + AssassinOffSet + FemaleOffSet, out file))
@@ -439,6 +483,9 @@ namespace Client.Models
                                 if (!ShieldList.TryGetValue(ShieldShape / 10 + FemaleOffSet, out file)) file = LibraryFile.None;
                                 CEnvir.LibraryList.TryGetValue(file, out WeaponLibrary2);
                             }
+
+                            if (!WingsList.TryGetValue(WingsShape / 10 /*+ FemaleOffSet*/, out file)) file = LibraryFile.None;
+                            CEnvir.LibraryList.TryGetValue(file, out WingsLibrary);
                             break;
                     }
                     break;
@@ -722,6 +769,7 @@ namespace Client.Models
                             break;
                         default:
                             DrawWings();
+                            DrawRealWings();
                             break;
 
                     }
@@ -738,6 +786,7 @@ namespace Client.Models
                 case MirDirection.Left:
                 case MirDirection.UpLeft:
                     DrawWings();
+                    DrawRealWings();
                     break;
                 case MirDirection.DownRight:
                 case MirDirection.Down:
@@ -871,7 +920,6 @@ namespace Client.Models
                     break;
                 default:
                     if (!DrawWeapon) break;
-
                     var frame = ShieldShape >= 0 ? ShieldFrame : WeaponFrame;
                     image = WeaponLibrary2?.GetImage(frame);
 
@@ -1019,6 +1067,14 @@ namespace Client.Models
                 library.Draw(80, DrawX, DrawY - 51, Color.White, false, 1F, ImageType.Image);
                 library.Draw(79, DrawX + 1, DrawY - 51 + 1, color, new Rectangle(0, 0, (int)(size.Width * percent), size.Height), 1F, ImageType.Image);
             }
+        }
+
+        private void DrawRealWings()
+        {
+            var image = WingsLibrary?.GetImage(WingsFrame + ((byte)Gender * 5000));
+
+            if (image == null) return;
+            WingsLibrary.DrawBlend(WingsFrame, DrawX, DrawY, Color.White, true, 0.7F, ImageType.Image);
         }
 
         private void DrawWings()

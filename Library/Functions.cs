@@ -456,6 +456,8 @@ namespace Library
                     return type == ItemType.HorseArmour;
                 case EquipmentSlot.Shield:
                     return type == ItemType.Shield;
+                case EquipmentSlot.Wings:
+                    return type == ItemType.Wings;
                 default:
                     return false;
             }

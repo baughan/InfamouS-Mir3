@@ -19402,6 +19402,8 @@ namespace Server.Models
 
                 Shield = Equipment[(int)EquipmentSlot.Shield]?.Info.Shape ?? -1,
 
+                Wings = Equipment[(int)EquipmentSlot.Wings]?.Info.Shape ?? -1,
+
                 Armour = Equipment[(int)EquipmentSlot.Armour]?.Info.Shape ?? 0,
                 ArmourColour = Equipment[(int)EquipmentSlot.Armour]?.Colour ?? Color.Empty,
                 ArmourImage = Equipment[(int)EquipmentSlot.Armour]?.Info.Image ?? 0,
@@ -19478,6 +19480,7 @@ namespace Server.Models
                 Weapon = Equipment[(int)EquipmentSlot.Weapon]?.Info.Shape ?? -1,
 
                 Shield = Equipment[(int)EquipmentSlot.Shield]?.Info.Shape ?? -1,
+                Wings = Equipment[(int)EquipmentSlot.Wings]?.Info.Shape ?? -1,
 
                 Armour = Equipment[(int)EquipmentSlot.Armour]?.Info.Shape ?? 0,
                 ArmourColour = Equipment[(int)EquipmentSlot.Armour]?.Colour ?? Color.Empty,
@@ -19531,6 +19534,7 @@ namespace Server.Models
                 ArmourImage = Equipment[(int)EquipmentSlot.Armour]?.Info.Image ?? 0,
 
                 Helmet = Character.HideHelmet ? 0 : Equipment[(int)EquipmentSlot.Helmet]?.Info.Shape ?? 0,
+                Wings = Equipment[(int)EquipmentSlot.Wings]?.Info.Shape ?? -1,
 
                 HorseArmour = Equipment[(int)EquipmentSlot.HorseArmour]?.Info.Shape ?? 0,
                 //Todo Helmet
