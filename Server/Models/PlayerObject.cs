@@ -5070,8 +5070,8 @@ namespace Server.Models
             info.Account = null;
             info.Delete();
 
-            if (!guild.StarterGuild)
-                Character.Account.GuildTime = SEnvir.Now.AddDays(1);
+            //if (!guild.StarterGuild)
+            //    Character.Account.GuildTime = SEnvir.Now.AddDays(1);
 
             Connection.ReceiveChat(Connection.Language.GuildLeave, MessageType.System);
             Enqueue(new S.GuildInfo { ObserverPacket = false });
