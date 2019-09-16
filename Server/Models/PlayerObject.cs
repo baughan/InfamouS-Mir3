@@ -8649,7 +8649,7 @@ namespace Server.Models
 
             if (stats.Count == 0) return;
 
-            if (!Character.Account.GuildMember.Guild.StarterGuild && GroupMembers != null)
+            /*if (!Character.Account.GuildMember.Guild.StarterGuild && GroupMembers != null)
             {
                 foreach (PlayerObject member in GroupMembers)
                 {
@@ -8657,7 +8657,7 @@ namespace Server.Models
 
                     if (member.Character.Account.GuildMember?.Guild != Character.Account.GuildMember.Guild) return;
                 }
-            }
+            }*/
             
             BuffAdd(BuffType.Guild, TimeSpan.MaxValue, stats, false, false, TimeSpan.Zero);
         }
