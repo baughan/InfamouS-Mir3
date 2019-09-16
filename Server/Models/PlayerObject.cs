@@ -2310,6 +2310,9 @@ namespace Server.Models
 
                 for (int i = 0; i < Character.Rebirth; i++)
                     amount *= 0.5M;
+
+                if (Level < 80)
+                    amount *= 1.25M;
             }
 
             /*
