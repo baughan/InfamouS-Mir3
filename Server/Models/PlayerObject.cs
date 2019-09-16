@@ -17705,12 +17705,16 @@ namespace Server.Models
                 bool stacked = false;
                 MapObject stackedMob = null;
 
+                int level = Level;
+                if (Stats[Stat.Rebirth] > 0)
+                    level = 86 + Stats[Stat.Rebirth];
+
                 for (int c = cell.Objects.Count - 1; c >= 0; c--)
                 {
                     MapObject ob = cell.Objects[c];
                     if (!ob.Blocking) continue;
 
-                    if (!CanAttackTarget(ob) || ob.Level >= Level || SEnvir.Random.Next(16) >= 6 + magic.Level * 3 + Level - ob.Level || ob.Buffs.Any(x => x.Type == BuffType.Endurance))
+                    if (!CanAttackTarget(ob) || (ob.Stats[Stat.Rebirth] == Stats[Stat.Rebirth] && ob.Level >= Level) || ob.Stats[Stat.Rebirth] > Stats[Stat.Rebirth] || SEnvir.Random.Next(16) >= 6 + magic.Level * 3 + level - ob.Level || ob.Buffs.Any(x => x.Type == BuffType.Endurance))
                     {
                         blocked = true;
                         break;
@@ -17756,7 +17760,7 @@ namespace Server.Models
                         MapObject ob = cell.Objects[c];
                         if (!ob.Blocking) continue;
 
-                        if (!CanAttackTarget(ob) || ob.Level >= Level || SEnvir.Random.Next(16) >= 6 + magic.Level * 3 + Level - ob.Level || ob.Buffs.Any(x => x.Type == BuffType.Endurance))
+                        if (!CanAttackTarget(ob) || (ob.Stats[Stat.Rebirth] == Stats[Stat.Rebirth] && ob.Level >= Level) || ob.Stats[Stat.Rebirth] > Stats[Stat.Rebirth] || SEnvir.Random.Next(16) >= 6 + magic.Level * 3 + level - ob.Level || ob.Buffs.Any(x => x.Type == BuffType.Endurance))
                         {
                             blocked = true;
                             break;
@@ -17799,7 +17803,7 @@ namespace Server.Models
                     MapObject ob = cell.Objects[c];
                     if (!ob.Blocking) continue;
 
-                    if (!CanAttackTarget(ob) || ob.Level >= Level || SEnvir.Random.Next(16) >= 6 + magic.Level * 3 + Level - ob.Level || ob.Buffs.Any(x => x.Type == BuffType.Endurance))
+                    if (!CanAttackTarget(ob) || (ob.Stats[Stat.Rebirth] == Stats[Stat.Rebirth] && ob.Level >= Level) || ob.Stats[Stat.Rebirth] > Stats[Stat.Rebirth] || SEnvir.Random.Next(16) >= 6 + magic.Level * 3 + level - ob.Level || ob.Buffs.Any(x => x.Type == BuffType.Endurance))
                     {
                         blocked = true;
                         break;
@@ -17946,7 +17950,7 @@ namespace Server.Models
             {
                 case ObjectType.Player:
                     if (!CanAttackTarget(ob)) return;
-                    if (ob.Level >= Level || ob.Buffs.Any(x => x.Type == BuffType.Endurance)) return;
+                    if ((ob.Stats[Stat.Rebirth] == Stats[Stat.Rebirth] && ob.Level >= Level) || ob.Stats[Stat.Rebirth] > Stats[Stat.Rebirth] || ob.Buffs.Any(x => x.Type == BuffType.Endurance)) return;
 
                    /* if (CurrentMap.Info.SkillDelay > 0)
                     {
@@ -18137,10 +18141,14 @@ namespace Server.Models
         {
             if (cell?.Objects == null) return;
 
+            int level = Level;
+            if (Stats[Stat.Rebirth] > 0)
+                level = 86 + Stats[Stat.Rebirth];
+
             for (int i = cell.Objects.Count - 1; i >= 0; i--)
-            {
-                MapObject ob = cell.Objects[i];
-                if (!CanAttackTarget(ob) || ob.Level >= Level || SEnvir.Random.Next(16) >= 6 + magic.Level * 3 + Level - ob.Level) continue;
+            {               
+                MapObject ob = cell.Objects[i];                
+                if (!CanAttackTarget(ob) || (ob.Stats[Stat.Rebirth] == Stats[Stat.Rebirth] && ob.Level >= Level) || ob.Stats[Stat.Rebirth] > Stats[Stat.Rebirth] || SEnvir.Random.Next(16) >= 6 + magic.Level * 3 + level - ob.Level) continue;
 
                 //CanPush check ?
 
