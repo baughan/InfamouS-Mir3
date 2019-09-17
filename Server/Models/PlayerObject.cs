@@ -901,7 +901,7 @@ namespace Server.Models
                 con.Enqueue(new S.RefineList { List = refines });
 
 
-            con.Enqueue(new S.StatsUpdate { Stats = Stats, HermitStats = Character.HermitStats, HermitPoints = Math.Max(0, Level - 39 - Character.SpentPoints) });
+            con.Enqueue(new S.StatsUpdate { Stats = Stats, HermitStats = Character.HermitStats, HermitPoints = Math.Max(0, (Level - 39) * 3 - Character.SpentPoints) });
 
             con.Enqueue(new S.WeightUpdate { BagWeight = BagWeight, WearWeight = WearWeight, HandWeight = HandWeight });
 
@@ -2235,7 +2235,7 @@ namespace Server.Models
                 Gender = target.Gender,
                 Stats = target.LastStats,
                 HermitStats = target.HermitStats,
-                HermitPoints = Math.Max(0, target.Level - 39 - target.SpentPoints),
+                HermitPoints = Math.Max(0, (target.Level - 39) * 3 - target.SpentPoints),
                 Level = target.Level,
 
                 Hair = target.HairType,
@@ -2704,7 +2704,7 @@ namespace Server.Models
             Stats[Stat.DropRate] += 20 * Stats[Stat.Rebirth];
             Stats[Stat.GoldRate] += 20 * Stats[Stat.Rebirth];
 
-            Enqueue(new S.StatsUpdate { Stats = Stats, HermitStats = Character.HermitStats, HermitPoints = Math.Max(0, Level - 39 - Character.SpentPoints) });
+            Enqueue(new S.StatsUpdate { Stats = Stats, HermitStats = Character.HermitStats, HermitPoints = Math.Max(0, (Level - 39) * 3 - Character.SpentPoints) });
 
             S.DataObjectMaxHealthMana p = new S.DataObjectMaxHealthMana { ObjectID = ObjectID, MaxHealth = Stats[Stat.Health], MaxMana = Stats[Stat.Mana] };
 
@@ -2780,7 +2780,7 @@ namespace Server.Models
         }
         public void AssignHermit(Stat stat)
         {
-            if (Level - 39 - Character.SpentPoints <= 0) return;
+            if ((Level - 39) * 3 - Character.SpentPoints <= 0) return;
 
             switch (stat)
             {
@@ -19442,7 +19442,7 @@ namespace Server.Models
                 InSafeZone = InSafeZone,
 
                 Observable = Character.Observable,
-                HermitPoints = Math.Max(0, Level - 39 - Character.SpentPoints),
+                HermitPoints = Math.Max(0, (Level - 39) * 3 - Character.SpentPoints),
 
                 Dead = Dead,
 
