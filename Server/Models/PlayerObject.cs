@@ -581,8 +581,74 @@ namespace Server.Models
         {
             NameColour = Color.White;
 
+
+
             if (Stats[Stat.Rebirth] > 0)
-                NameColour = Color.DeepPink;
+            {
+                switch (Stats[Stat.Rebirth])
+                {
+                    case 1:
+                        NameColour = Color.DeepPink;
+                        break;
+                    case 2:
+                        NameColour = Color.DarkMagenta;
+                        break;
+                    case 3:
+                        NameColour = Color.DarkSlateBlue;
+                        break;
+                    case 4:
+                        NameColour = Color.DarkViolet;
+                        break;
+                    case 5:
+                        NameColour = Color.DodgerBlue;
+                        break;
+                    case 6:
+                        NameColour = Color.Green;
+                        break;
+                    case 7:
+                        NameColour = Color.SeaGreen;
+                        break;
+                    case 8:
+                        NameColour = Color.Purple;
+                        break;
+                    case 9:
+                        NameColour = Color.Salmon;
+                        break;
+                    case 10:
+                        NameColour = Color.Indigo;
+                        break;
+                    case 11:
+                        NameColour = Color.Teal;
+                        break;
+                    case 12:
+                        NameColour = Color.Violet;
+                        break;
+                    case 13:
+                        NameColour = Color.LightBlue;
+                        break;
+                    case 14:
+                        NameColour = Color.SkyBlue;
+                        break;
+                    case 15:
+                        NameColour = Color.LightGreen;
+                        break;
+                    case 16:
+                        NameColour = Color.LightPink;
+                        break;
+                    case 17:
+                        NameColour = Color.Orchid;
+                        break;
+                    case 18:
+                        NameColour = Color.PaleGreen;
+                        break;
+                    case 19:
+                        NameColour = Color.PaleVioletRed;
+                        break;
+                    case 20:
+                        NameColour = Color.MediumVioletRed;
+                        break;
+                }
+            }
             
 
             if (Stats[Stat.PKPoint] >= Config.RedPoint)
