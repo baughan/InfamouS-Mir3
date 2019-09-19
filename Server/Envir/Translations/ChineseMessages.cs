@@ -291,5 +291,16 @@ namespace Server.Envir.Translations
         public override string HorseDead { get; set; } = "You cannot ride your horse when dead.";
         public override string HorseOwner { get; set; } = "You do not own a horse to ride.";
         public override string HorseMap { get; set; } = "You cannot ride your horse on this map.";
+
+        public override string MasterRebirthTooLow { get; set; } = "You must be Rebirth 4 or higher.";
+        public override string MasterRebirthTooHigh { get; set; } = "Target must be Rebirth 3 or lower.";
+        public override string MasterAlreadyStudent { get; set; } = "Target is already a student.";
+        public override string MasterInviteNotAllowed { get; set; } = "Player: {0}, is not allowing master invites.";
+        public override string MasterAlreadyInvited { get; set; } = "Player: {0}, is currently being invited by another master.";
+        public override string MasterTeleportTime { get; set; } = "{0} seconds remaining before next use.";
+        public override string MasterNotOnline { get; set; } = "Your master is not online.";
+        public override string MasterForceEnd { get; set; } = "The master relationship was ended by {0}.";
+        public override string MasterReachRebirth { get; set; } = "Your student {0} has been successfully trained to Rebirth 4.";
+        public override string StudentReachRebirth { get; set; } = "Master relationship completed. You can now become a master.";
     }
 }

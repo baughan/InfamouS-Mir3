@@ -97,7 +97,7 @@ namespace Server.Models
             set { Character.Direction = value; }
         }
 
-        public DateTime ShoutTime, UseItemTime, TorchTime, CombatTime, PvPTime, SentCombatTime, AutoPotionTime, AutoPotionCheckTime, ItemTime, FlamingSwordTime, DragonRiseTime, BladeStormTime, RevivalTime, TeleportTime;
+        public DateTime ShoutTime, UseItemTime, TorchTime, CombatTime, PvPTime, SentCombatTime, AutoPotionTime, AutoPotionCheckTime, ItemTime, FlamingSwordTime, DragonRiseTime, BladeStormTime, RevivalTime, TeleportTime, MasterTeleportTime;
         public bool PacketWaiting;
 
         public bool CanPowerAttack, GameMaster, Observer;
@@ -135,8 +135,7 @@ namespace Server.Models
 
         public MapObject LastHitter;
 
-        public PlayerObject GroupInvitation,
-            GuildInvitation, MarriageInvitation;
+        public PlayerObject GroupInvitation, GuildInvitation, MarriageInvitation, MasterInvitation;
 
         public PlayerObject TradePartner, TradePartnerRequest;
         public Dictionary<UserItem, CellLinkInfo> TradeItems = new Dictionary<UserItem, CellLinkInfo>();
@@ -210,6 +209,7 @@ namespace Server.Models
             if (GroupInvitation != null && GroupInvitation.Node == null) GroupInvitation = null;
             if (GuildInvitation != null && GuildInvitation.Node == null) GuildInvitation = null;
             if (MarriageInvitation != null && MarriageInvitation.Node == null) MarriageInvitation = null;
+            if (MasterInvitation != null && MasterInvitation.Node == null) MasterInvitation = null;
 
             if (CombatTime != SentCombatTime)
             {
@@ -728,6 +728,8 @@ namespace Server.Models
             if (Character.Partner?.Player != null)
                 Character.Partner.Player.Enqueue(new S.MarriageOnlineChanged());
 
+            if (Character.MasterCharacter?.Player != null)
+                Character.MasterCharacter.Player.Enqueue(new S.MasterOnlineChanged() { Type = Character.MasterCharacter.MasterType });
 
             Despawn();
 
@@ -762,6 +764,8 @@ namespace Server.Models
             Connection.ReceiveChat(Connection.Language.Welcome, MessageType.Announcement);
 
             SendGuildInfo();
+
+            SendMasterInfo();
 
             if (Level > 0)
             {
@@ -842,6 +846,9 @@ namespace Server.Models
 
             if (Character.Partner?.Player != null)
                 Character.Partner.Player.Enqueue(new S.MarriageOnlineChanged { ObjectID = ObjectID });
+
+            if (Character.MasterCharacter?.Player != null)
+                Character.MasterCharacter.Player.Enqueue(new S.MasterOnlineChanged { ObjectID = ObjectID, Type = Character.MasterCharacter.MasterType });
 
             ApplyMapBuff();
             ApplyServerBuff();
@@ -1251,6 +1258,8 @@ namespace Server.Models
             GuildInvitation = null;
 
             MarriageInvitation = null;
+
+            MasterInvitation = null;
 
             TradePartner = null;
 
@@ -2117,7 +2126,27 @@ namespace Server.Models
                         
                         SendGuildInfo();
                         break;
-                    
+                    case "MASTERTELEPORT":
+                        if (Character.MasterCharacter == null) return;
+                        if (Character.MasterType != MasterType.Student) return;
+
+                        if (Character.MasterCharacter.Player == null)
+                        {
+                            Connection.ReceiveChat(Connection.Language.MasterNotOnline, MessageType.System);
+                            return;
+                        }
+                        if (SEnvir.Now < MasterTeleportTime)
+                        {
+                            Connection.ReceiveChat(string.Format(Connection.Language.MasterTeleportTime, (SEnvir.Now - MasterTeleportTime).Seconds), MessageType.System);
+                            return;
+                        }
+
+                        MasterTeleportTime = SEnvir.Now + TimeSpan.FromSeconds(15);
+
+                        player = Character.MasterCharacter.Player;
+                        Teleport(player.CurrentMap, player.CurrentLocation);
+                        break;
+
                 }
 
             }
@@ -2368,6 +2397,7 @@ namespace Server.Models
 
         public void GainExperience(decimal amount, bool huntGold, int gainLevel = Int32.MaxValue, bool rateEffected = true)
         {
+            var masterexp = 0M;
             if (rateEffected)
             {
                 amount *= 1M + Stats[Stat.ExperienceRate] / 100M;
@@ -2379,6 +2409,17 @@ namespace Server.Models
 
                 if (Level < 80)
                     amount *= 1.25M;
+
+                if (Character.MasterCharacter?.Player != null && Functions.InRange(CurrentLocation, Character.MasterCharacter.Player.CurrentLocation, Config.MaxViewRange))
+                {
+                    var oamount = amount;
+                    if (Character.MasterType == MasterType.Master)
+                        amount *= 1.5M;
+                    else
+                        amount *= 2.5M;                    
+                    masterexp = amount - oamount;
+                    Character.MasterExperience += masterexp;
+                }
             }
 
             /*
@@ -2398,7 +2439,7 @@ namespace Server.Models
         if (amount == 0) return;
 
             Experience += amount;
-            Enqueue(new S.GainedExperience { Amount = amount });
+            Enqueue(new S.GainedExperience { Amount = amount, MasterAmount = masterexp });
 
             UserItem weapon = Equipment[(int)EquipmentSlot.Weapon];
 
@@ -11422,6 +11463,25 @@ namespace Server.Models
             Character.SpentPoints = 0;
             Character.HermitStats.Clear();
 
+            if (Character.Rebirth == 4 && Character.MasterCharacter != null)
+            {
+                var master = Character.MasterCharacter;
+
+                master.MasterCount++;
+                master.MasterTotalCount++;
+                Character.MasterCharacter = null;
+                master.MasterCharacter = null;
+                Enqueue(new S.MasterEnd { });
+                Connection.ReceiveChat(Connection.Language.StudentReachRebirth, MessageType.System);
+                if (master.Player != null)
+                {
+                    master.Player.Connection.ReceiveChat(string.Format(Connection.Language.MasterReachRebirth, Name), MessageType.System);
+                    master.Player.Enqueue(new S.MasterEnd { StudentsTrained = master.MasterTotalCount });
+                }
+
+            }
+
+
             RefreshStats();
         }
 
@@ -19491,6 +19551,9 @@ namespace Server.Models
                 DayTime = SEnvir.DayTime,
                 AllowGroup = Character.Account.AllowGroup,
 
+                AllowMaster = Character.Account.AllowMaster,
+                StudentsTrained = Character.MasterTotalCount,
+
                 CurrentHP = DisplayHP,
                 CurrentMP = DisplayMP,
 
@@ -19974,8 +20037,153 @@ namespace Server.Models
             RefreshStats();
         }
 
+        public void MasterInvite(string name)
+        {
+            if (Character.MasterCharacter != null)
+                return;
 
+            if (Stats[Stat.Rebirth] < 4)
+            {
+                Connection.ReceiveChat(Connection.Language.MasterRebirthTooLow, MessageType.System);
 
+                foreach (SConnection con in Connection.Observers)
+                    con.ReceiveChat(con.Language.MasterRebirthTooLow, MessageType.System);
+                return;
+            }
+
+            PlayerObject player = SEnvir.GetPlayerByCharacter(name);
+
+            if (player == null)
+            {
+                Connection.ReceiveChat(string.Format(Connection.Language.CannotFindPlayer, name), MessageType.System);
+
+                foreach (SConnection con in Connection.Observers)
+                    con.ReceiveChat(string.Format(con.Language.CannotFindPlayer, name), MessageType.System);
+                return;
+            }
+
+            if (player.Stats[Stat.Rebirth] > 3)
+            {
+                Connection.ReceiveChat(Connection.Language.MasterRebirthTooHigh, MessageType.System);
+
+                foreach (SConnection con in Connection.Observers)
+                    con.ReceiveChat(con.Language.MasterRebirthTooHigh, MessageType.System);
+                return;
+            }
+
+            if (player.Character.MasterCharacter != null)
+            {
+                Connection.ReceiveChat(Connection.Language.MasterAlreadyStudent, MessageType.System);
+
+                foreach (SConnection con in Connection.Observers)
+                    con.ReceiveChat(con.Language.MasterAlreadyStudent, MessageType.System);
+                return;
+            }
+
+            if (player.MasterInvitation != null)
+            {
+                Connection.ReceiveChat(string.Format(Connection.Language.MasterAlreadyInvited, name), MessageType.System);
+
+                foreach (SConnection con in Connection.Observers)
+                    con.ReceiveChat(string.Format(con.Language.MasterAlreadyInvited, name), MessageType.System);
+                return;
+            }
+
+            if (!player.Character.Account.AllowMaster || SEnvir.IsBlocking(Character.Account, player.Character.Account))
+            {
+                Connection.ReceiveChat(string.Format(Connection.Language.MasterInviteNotAllowed, name), MessageType.System);
+
+                foreach (SConnection con in Connection.Observers)
+                    con.ReceiveChat(string.Format(con.Language.MasterInviteNotAllowed, name), MessageType.System);
+                return;
+            }
+
+            player.MasterInvitation = this;
+            player.Enqueue(new S.MasterInvite { Name = Name, ObserverPacket = false });
+        }
+
+        public void MasterJoin()
+        {
+            if (MasterInvitation != null && MasterInvitation.Node == null) MasterInvitation = null;
+
+            if (MasterInvitation == null) return;
+
+            if (Stats[Stat.Rebirth] > 3) return;
+            if (MasterInvitation.Stats[Stat.Rebirth] < 4) return;
+
+            Character.MasterCharacter = MasterInvitation.Character;
+            Character.MasterType = MasterType.Student;
+            Character.MasterTime = SEnvir.Now;
+            Character.MasterExperience = 0;
+
+            MasterInvitation.Character.MasterCharacter = Character;
+            MasterInvitation.Character.MasterType = MasterType.Master;
+            MasterInvitation.Character.MasterTime = SEnvir.Now;
+            MasterInvitation.Character.MasterExperience = 0;
+
+            AddAllObjects();
+            RefreshStats();
+
+            MasterInvitation.AddAllObjects();
+            MasterInvitation.RefreshStats();
+
+            SendMasterInfo();
+            MasterInvitation.SendMasterInfo();
+        }
+
+        public void MasterSwitch(bool allowMaster)
+        {
+            if (Character.Account.AllowMaster == allowMaster) return;
+
+            Character.Account.AllowMaster = allowMaster;
+
+            Enqueue(new S.MasterSwitch { Allow = Character.Account.AllowMaster });
+        }
+
+        public void MasterEnd()
+        {
+            if (Character.MasterCharacter == null) return;
+
+            CharacterInfo master = Character.MasterCharacter;
+
+            Character.MasterCharacter.MasterCharacter = null;
+            Character.MasterCharacter = null;
+
+            Enqueue(new S.MasterEnd { });
+            Connection.ReceiveChat(string.Format(Connection.Language.MasterForceEnd, Name), MessageType.System);
+            if (master.Player != null)
+            {
+                master.Player.Enqueue(new S.MasterEnd { StudentsTrained = master.MasterTotalCount });
+                master.Player.Connection.ReceiveChat(string.Format(Connection.Language.MasterForceEnd, Name), MessageType.System);
+            }
+        }
+
+        public void SendMasterInfo()
+        {
+            if (Character.MasterCharacter != null)
+            {
+                switch (Character.MasterType)
+                {
+                    case MasterType.Student:
+                        Enqueue(new S.MasterInfo()
+                        {
+                            Master = new ClientPlayerInfo { Name = Character.MasterCharacter?.CharacterName, ObjectID = Character.MasterCharacter?.Player != null ? Character.MasterCharacter.Player.ObjectID : 0 },
+                            Duration = SEnvir.Now - Character.MasterTime,
+                            Experience = Character.MasterExperience,                            
+                        });
+                        break;
+                    case MasterType.Master:
+                        Enqueue(new S.StudentInfo()
+                        {
+                            Student = new ClientPlayerInfo { Name = Character.MasterCharacter?.CharacterName, ObjectID = Character.MasterCharacter?.Player != null ? Character.MasterCharacter.Player.ObjectID : 0 },
+                            Duration = SEnvir.Now - Character.MasterTime,
+                            Experience = Character.MasterExperience,
+                            StudentsTrained = Character.MasterTotalCount,
+                        });
+                        break;
+                }
+            }
+        }
     }
 
 }

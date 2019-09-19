@@ -308,6 +308,17 @@ namespace Server.Envir
         public abstract string HorseOwner { get; set; }
         public abstract string HorseMap { get; set; }
 
+        [ConfigSection("Master")]
+        public abstract string MasterRebirthTooLow { get; set; }
+        public abstract string MasterRebirthTooHigh { get; set; }
+        public abstract string MasterAlreadyStudent { get; set; }
+        public abstract string MasterInviteNotAllowed { get; set; }
+        public abstract string MasterAlreadyInvited { get; set; }
+        public abstract string MasterTeleportTime { get; set; }
+        public abstract string MasterNotOnline { get; set; }
+        public abstract string MasterForceEnd { get; set; }
+        public abstract string MasterReachRebirth { get; set; }
+        public abstract string StudentReachRebirth { get; set; }
     }
 
 

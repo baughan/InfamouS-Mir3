@@ -386,6 +386,21 @@ namespace Server.DBModels
         }
         private bool _AllowTrade;
 
+        public bool AllowMaster
+        {
+            get { return _AllowMaster; }
+            set
+            {
+                if (_AllowMaster == value) return;
+
+                var oldValue = _AllowMaster;
+                _AllowMaster = value;
+
+                OnChanged(oldValue, value, "AllowMaster");
+            }
+        }
+        private bool _AllowMaster;
+
         public bool AllowGuild
         {
             get { return _AllowGuild; }

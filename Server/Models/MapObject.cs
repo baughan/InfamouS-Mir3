@@ -887,7 +887,9 @@ namespace Server.Models
                     if (player.InGuild(ob)) return true;
 
                     if (player.Character?.Partner?.Player == ob) return true;
-                    
+
+                    if (player.Character?.MasterCharacter?.Player == ob) return true;
+
                     if (ob.CurrentMap == CurrentMap && ob.Stats[Stat.PlayerTracker] > 0) return true;
 
                     break;
@@ -930,6 +932,9 @@ namespace Server.Models
                     if (player.InGuild(ob)) return true;
 
                     if (player.Character?.Partner?.Player == ob) return true;
+
+                    if (player.Character?.MasterCharacter?.Player == ob) return true;
+
                 }
 
                 if (ob.Level < Level || !Functions.InRange(CurrentLocation, ob.CurrentLocation, Globals.CloakRange))

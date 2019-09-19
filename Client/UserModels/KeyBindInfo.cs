@@ -330,5 +330,8 @@ namespace Client.UserModels
 
         [Description("Fortune Window")]
         FortuneWindow,
+
+        [Description("Master/Student Window")]
+        MasterWindow,
     }
 }

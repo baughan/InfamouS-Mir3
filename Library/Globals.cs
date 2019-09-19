@@ -462,6 +462,9 @@ namespace Library
         public float DayTime { get; set; }
         public bool AllowGroup { get; set; }
 
+        public bool AllowMaster { get; set; }
+        public int StudentsTrained { get; set; }
+
         public List<ClientUserItem> Items { get; set; }
         public List<ClientBeltLink> BeltLinks { get; set; }
         public List<ClientAutoPotionLink> AutoPotionLinks { get; set; }

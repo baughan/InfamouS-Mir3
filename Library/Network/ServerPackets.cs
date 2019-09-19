@@ -392,6 +392,7 @@ namespace Library.Network.ServerPackets
     public sealed class GainedExperience : Packet
     {
         public decimal Amount { get; set; }
+        public decimal MasterAmount { get; set; }
     }
 
     public sealed class NewMagic : Packet
@@ -655,7 +656,33 @@ namespace Library.Network.ServerPackets
     {
         public string Name { get; set; }
     }
-    
+
+    public sealed class MasterInvite : Packet
+    {
+        public string Name { get; set; }
+    }
+    public sealed class MasterInfo : Packet
+    {
+        public ClientPlayerInfo Master { get; set; }
+        public TimeSpan Duration { get; set; }
+        public decimal Experience { get; set; }
+    }
+    public sealed class MasterSwitch : Packet
+    {
+        public bool Allow { get; set; }
+    }
+    public sealed class StudentInfo : Packet
+    {
+        public ClientPlayerInfo Student { get; set; }
+        public TimeSpan Duration { get; set; }
+        public decimal Experience { get; set; }
+        public int StudentsTrained { get; set; }
+    }
+    public sealed class MasterEnd : Packet
+    {
+        public int StudentsTrained { get; set; }
+    }
+
     public sealed class BuffAdd : Packet
     {
         public ClientBuffInfo Buff { get; set; }
@@ -1126,6 +1153,12 @@ namespace Library.Network.ServerPackets
     public sealed class MarriageOnlineChanged : Packet
     {
         public uint ObjectID { get; set; }
+    }
+
+    public sealed class MasterOnlineChanged : Packet
+    {
+        public uint ObjectID { get; set; }
+        public MasterType Type { get; set; }
     }
 
     public sealed class DataObjectRemove : Packet

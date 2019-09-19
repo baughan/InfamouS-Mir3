@@ -772,6 +772,10 @@ namespace Client.Envir
                     bind.Key1 = Keys.W;
                     bind.Control1 = true;
                     break;
+                case KeyBindAction.MasterWindow:
+                    bind.Category = "Windows";
+                    bind.Key1 = Keys.H;
+                    break;
             }
         }
 
