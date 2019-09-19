@@ -97,4 +97,8 @@ Release
 *.csproj
 Components/SlimDX.dll
 PatchManager/PatchManager.csproj
+<<<<<<< HEAD
 >>>>>>> f9f3c0e... Uploading correct code
+=======
+/Server/SlimDX.dll
+>>>>>>> 0649096... IP/Port changed to default
