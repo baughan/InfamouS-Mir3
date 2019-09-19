@@ -300,7 +300,7 @@ namespace Server.Envir.Translations
         public override string MasterTeleportTime { get; set; } = "{0} seconds remaining before next use.";
         public override string MasterNotOnline { get; set; } = "Your master is not online.";
         public override string MasterForceEnd { get; set; } = "The master relationship was ended by {0}.";
-        public override string MasterReachRebirth { get; set; } = "Your student {0} has been successfully trained to Rebirth 4.";
+        public override string MasterReachRebirth { get; set; } = "Your student {0} has been successfully trained to Rebirth 4. You have recieved some GameGold";
         public override string StudentReachRebirth { get; set; } = "Master relationship completed. You can now become a master.";
     }
 }
