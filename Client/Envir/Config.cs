@@ -13,7 +13,7 @@ namespace Client.Envir
     {
         public static readonly Size IntroSceneSize = new Size(1024, 768);
         
-        public const string DefaultIPAddress = "151.228.141.205";
+        public const string DefaultIPAddress = "188.222.138.137";
         public const int DefaultPort = 8000;
 
         [ConfigSection("Network")]
@@ -24,7 +24,7 @@ namespace Client.Envir
 
 
         [ConfigSection("Graphics")]
-        public static bool FullScreen { get; set; } = true;
+        public static bool FullScreen { get; set; } = false;
         public static bool VSync { get; set; }
         public static bool LimitFPS { get; set; }
         public static Size GameSize { get; set; } = IntroSceneSize;
