@@ -11467,16 +11467,17 @@ namespace Server.Models
             {
                 var master = Character.MasterCharacter;
 
-                master.MasterCount++;
                 master.MasterTotalCount++;
                 Character.MasterCharacter = null;
                 master.MasterCharacter = null;
                 Enqueue(new S.MasterEnd { });
                 Connection.ReceiveChat(Connection.Language.StudentReachRebirth, MessageType.System);
+                master.Account.GameGold += 25;
                 if (master.Player != null)
                 {
                     master.Player.Connection.ReceiveChat(string.Format(Connection.Language.MasterReachRebirth, Name), MessageType.System);
                     master.Player.Enqueue(new S.MasterEnd { StudentsTrained = master.MasterTotalCount });
+                    master.Player.Enqueue(new S.GameGoldChanged { GameGold = master.Account.GameGold });
                 }
 
             }

@@ -972,21 +972,6 @@ namespace Server.DBModels
         }
         private decimal _MasterExperience;
 
-        public int MasterCount
-        {
-            get { return _MasterCount; }
-            set
-            {
-                if (_MasterCount == value) return;
-
-                var oldValue = _MasterCount;
-                _MasterCount = value;
-
-                OnChanged(oldValue, value, "MasterCount");
-            }
-        }
-        private int _MasterCount;
-
         public int MasterTotalCount
         {
             get { return _MasterTotalCount; }
