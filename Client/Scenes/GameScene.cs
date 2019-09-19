@@ -196,6 +196,7 @@ namespace Client.Scenes
         public FortuneCheckerDialog FortuneCheckerBox;
         public NPCWeaponCraftWindow NPCWeaponCraftBox;
         public NPCAccessoryRefineDialog NPCAccessoryRefineBox;
+        public MasterDialog MasterBox;
 
         public ClientUserItem[] Inventory = new ClientUserItem[Globals.InventorySize];
         public ClientUserItem[] Equipment = new ClientUserItem[Globals.EquipmentSize];
@@ -643,6 +644,12 @@ namespace Client.Scenes
                 Visible = false,
             };
 
+            MasterBox = new MasterDialog
+            {
+                Parent = this,
+                Visible = false,
+            };
+
             NPCWeaponCraftBox = new NPCWeaponCraftWindow
             {
                 Visible = false,
@@ -739,6 +746,8 @@ namespace Client.Scenes
             FortuneCheckerBox.Location = new Point((Size.Width - FortuneCheckerBox.Size.Width) / 2, (Size.Height - FortuneCheckerBox.Size.Height) / 2);
 
             NPCWeaponCraftBox.Location = new Point((Size.Width - NPCWeaponCraftBox.Size.Width) / 2, (Size.Height - NPCWeaponCraftBox.Size.Height) / 2);
+
+            MasterBox.Location = new Point((Size.Width - MasterBox.Size.Width) / 2, (Size.Height - MasterBox.Size.Height) / 2);
         }
 
         public void SaveChatTabs()
@@ -1007,6 +1016,9 @@ namespace Client.Scenes
                         break;
                     case KeyBindAction.FortuneWindow:
                         FortuneCheckerBox.Visible = !FortuneCheckerBox.Visible;
+                        break;
+                    case KeyBindAction.MasterWindow:
+                        MasterBox.Visible = !MasterBox.Visible;
                         break;
                     case KeyBindAction.MagicWindow:
                         MagicBox.Visible = !MagicBox.Visible;
@@ -4305,6 +4317,14 @@ namespace Client.Scenes
                         GroupBox.Dispose();
 
                     GroupBox = null;
+                }
+
+                if (MasterBox != null)
+                {
+                    if (!MasterBox.IsDisposed)
+                        MasterBox.Dispose();
+
+                    MasterBox = null;
                 }
 
                 if (BuffBox != null)

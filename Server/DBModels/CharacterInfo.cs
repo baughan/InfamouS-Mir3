@@ -911,12 +911,104 @@ namespace Server.DBModels
         }
         private CharacterInfo _Partner;
 
+        [Association("Master")]
+        public CharacterInfo MasterCharacter
+        {
+            get { return _MasterCharacter; }
+            set
+            {
+                if (_MasterCharacter == value) return;
+
+                var oldValue = _MasterCharacter;
+                _MasterCharacter = value;
+
+                OnChanged(oldValue, value, "MasterCharacter");
+            }
+        }
+        private CharacterInfo _MasterCharacter;
+
+        public MasterType MasterType
+        {
+            get { return _MasterType; }
+            set
+            {
+                if (_MasterType == value) return;
+
+                var oldValue = _MasterType;
+                _MasterType = value;
+
+                OnChanged(oldValue, value, "MasterType");
+            }
+        }
+        private MasterType _MasterType;
+
+        public DateTime MasterTime
+        {
+            get { return _MasterTime; }
+            set
+            {
+                if (_MasterTime == value) return;
+
+                var oldValue = _MasterTime;
+                _MasterTime = value;
+
+                OnChanged(oldValue, value, "MasterTime");
+            }
+        }
+        private DateTime _MasterTime;
+
+        public decimal MasterExperience
+        {
+            get { return _MasterExperience; }
+            set
+            {
+                if (_MasterExperience == value) return;
+
+                var oldValue = _MasterExperience;
+                _MasterExperience = value;
+
+                OnChanged(oldValue, value, "MasterExperience");
+            }
+        }
+        private decimal _MasterExperience;
+
+        public int MasterCount
+        {
+            get { return _MasterCount; }
+            set
+            {
+                if (_MasterCount == value) return;
+
+                var oldValue = _MasterCount;
+                _MasterCount = value;
+
+                OnChanged(oldValue, value, "MasterCount");
+            }
+        }
+        private int _MasterCount;
+
+        public int MasterTotalCount
+        {
+            get { return _MasterTotalCount; }
+            set
+            {
+                if (_MasterTotalCount == value) return;
+
+                var oldValue = _MasterTotalCount;
+                _MasterTotalCount = value;
+
+                OnChanged(oldValue, value, "MasterTotalCount");
+            }
+        }
+        private int _MasterTotalCount;
+
 
         protected override void OnDeleted()
         {
             Account = null;
             Companion = null;
             Partner = null;
+            MasterCharacter = null;
             
             base.OnDeleted();
         }

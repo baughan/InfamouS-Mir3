@@ -119,6 +119,12 @@ namespace Library
         Food = 3,
     }
 
+    public enum MasterType
+    {
+        Master = 0,
+        Student = 1,
+    }
+
 
     public enum GridType
     {

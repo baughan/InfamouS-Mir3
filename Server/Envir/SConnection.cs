@@ -646,6 +646,35 @@ namespace Server.Envir
             Player.GroupInvitation = null;
         }
 
+        public void Process(C.MasterInvite p)
+        {
+            if (Stage != GameStage.Game) return;
+
+            Player.MasterInvite(p.Name);
+        }
+        public void Process(C.MasterResponse p)
+        {
+            if (Stage != GameStage.Game) return;
+
+            if (p.Accept)
+                Player.MasterJoin();
+
+            Player.MasterInvitation = null;
+        }
+        public void Process(C.MasterSwitch p)
+        {
+            if (Stage != GameStage.Game) return;
+
+            Player.MasterSwitch(p.Allow);
+        }
+        public void Process(C.MasterEnd p)
+        {
+            if (Stage != GameStage.Game) return;
+
+            Player.MasterEnd();
+        }
+
+
         public void Process(C.Inspect p)
         {
             if (Stage == GameStage.Game)

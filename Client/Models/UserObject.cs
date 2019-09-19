@@ -342,6 +342,9 @@ namespace Client.Models
             GameScene.Game.DayTime = info.DayTime;
             GameScene.Game.GroupBox.AllowGroup = info.AllowGroup;
 
+            GameScene.Game.MasterBox.AllowMaster = info.AllowMaster;
+            GameScene.Game.MasterBox.StudentCount = info.StudentsTrained;
+
             HermitPoints = info.HermitPoints;
 
             foreach (ClientUserMagic magic in info.Magics)

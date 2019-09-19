@@ -1570,6 +1570,9 @@ namespace Client.Envir
         public void Process(S.GainedExperience p)
         {
             MapObject.User.Experience += p.Amount;
+            GameScene.Game.MasterBox.Experience += p.MasterAmount;
+            if (GameScene.Game.MasterBox.Visible)
+                GameScene.Game.MasterBox.UpdateInterface();
 
             ClientUserItem weapon = GameScene.Game.Equipment[(int)EquipmentSlot.Weapon];
 
@@ -2955,9 +2958,7 @@ namespace Client.Envir
             }
         }
         public void Process(S.GroupInvite p)
-        {
-            
-
+        {           
             DXMessageBox messageBox = new DXMessageBox($"Do you want to group with {p.Name}?", "Group Invitation", DXMessageBoxButtons.YesNo);
             
             messageBox.YesButton.MouseClick += (o, e) => CEnvir.Enqueue(new C.GroupResponse { Accept = true });
@@ -2967,7 +2968,85 @@ namespace Client.Envir
             messageBox.CloseButton.Visible = false;
             
         }
-        
+
+        public void Process(S.MasterInvite p)
+        {
+            DXMessageBox messageBox = new DXMessageBox($"Do you want to become {p.Name}'s student?", "Master Invitation", DXMessageBoxButtons.YesNo);
+
+            messageBox.YesButton.MouseClick += (o, e) => CEnvir.Enqueue(new C.MasterResponse { Accept = true });
+            messageBox.NoButton.MouseClick += (o, e) => CEnvir.Enqueue(new C.MasterResponse { Accept = false });
+            messageBox.CloseButton.MouseClick += (o, e) => CEnvir.Enqueue(new C.MasterResponse { Accept = false });
+            messageBox.Modal = false;
+            messageBox.CloseButton.Visible = false;
+        }
+        public void Process(S.MasterInfo p)
+        {
+
+            ClientObjectData data;
+            GameScene.Game.DataDictionary.TryGetValue(GameScene.Game.MasterBox.Master?.ObjectID ?? p.Master.ObjectID, out data);
+
+            GameScene.Game.MasterBox.Master = p.Master;
+            GameScene.Game.MasterBox.Experience = p.Experience;
+            GameScene.Game.MasterBox.Duration = p.Duration;
+
+            GameScene.Game.MasterBox.UpdateInterface();
+
+            if (data == null) return;
+
+            GameScene.Game.BigMapBox.Update(data);
+            GameScene.Game.MiniMapBox.Update(data);
+        }
+        public void Process(S.StudentInfo p)
+        {
+            ClientObjectData data;
+            GameScene.Game.DataDictionary.TryGetValue(GameScene.Game.MasterBox.Student?.ObjectID ?? p.Student.ObjectID, out data);
+
+            GameScene.Game.MasterBox.Student = p.Student;
+            GameScene.Game.MasterBox.Experience = p.Experience;
+            GameScene.Game.MasterBox.Duration = p.Duration;
+
+            GameScene.Game.MasterBox.UpdateInterface();
+
+            if (data == null) return;
+
+            GameScene.Game.BigMapBox.Update(data);
+            GameScene.Game.MiniMapBox.Update(data);
+        }
+        public void Process(S.MasterSwitch p)
+        {
+            GameScene.Game.MasterBox.AllowMaster = p.Allow;
+        }
+        public void Process(S.MasterOnlineChanged p)
+        {
+            ClientObjectData data;
+
+            if (p.Type == MasterType.Master)
+            {
+                GameScene.Game.DataDictionary.TryGetValue(GameScene.Game.MasterBox.Student.ObjectID > 0 ? GameScene.Game.MasterBox.Student.ObjectID : p.ObjectID, out data);
+                GameScene.Game.MasterBox.Student.ObjectID = p.ObjectID;
+            }
+            else
+            {                
+                GameScene.Game.DataDictionary.TryGetValue(GameScene.Game.MasterBox.Master.ObjectID > 0 ? GameScene.Game.MasterBox.Master.ObjectID : p.ObjectID, out data);
+                GameScene.Game.MasterBox.Master.ObjectID = p.ObjectID;
+            }
+
+            if (data == null) return;
+
+            GameScene.Game.BigMapBox.Update(data);
+            GameScene.Game.MiniMapBox.Update(data);
+        }
+        public void Process(S.MasterEnd p)
+        {
+            GameScene.Game.MasterBox.Master = null;
+            GameScene.Game.MasterBox.Student = null;
+            GameScene.Game.MasterBox.Experience = 0;
+            GameScene.Game.MasterBox.Duration = TimeSpan.Zero;
+            GameScene.Game.MasterBox.StudentCount = p.StudentsTrained;
+
+            GameScene.Game.MasterBox.UpdateInterface();
+        }
+
         public void Process(S.BuffAdd p)
         {
             MapObject.User.Buffs.Add(p.Buff);

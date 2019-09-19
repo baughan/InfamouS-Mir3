@@ -316,6 +316,25 @@ namespace Library.Network.ClientPackets
         public bool Accept { get; set; }
     }
 
+    public sealed class MasterInvite : Packet
+    {
+        public string Name { get; set; }
+    }
+
+    public sealed class MasterResponse : Packet
+    {
+        public bool Accept { get; set; }
+    }
+
+    public sealed class MasterSwitch : Packet
+    {
+        public bool Allow { get; set; }
+    }
+
+    public sealed class MasterEnd : Packet
+    {
+    }
+
     public sealed class Inspect : Packet
     {
         public int Index { get; set; }
