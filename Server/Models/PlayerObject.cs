@@ -17394,6 +17394,7 @@ namespace Server.Models
 
                     foreach (PlayerObject player in SEnvir.Players)
                     {
+                        if (player == this) continue;
                         //if (player.Character.Rebirth > 0 || player.Character.Level >= 86) continue;
 
                         targets.Add(player);
