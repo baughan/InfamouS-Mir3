@@ -2438,8 +2438,11 @@ namespace Server.Models
 
         if (amount == 0) return;
 
-            Experience += amount;
-            Enqueue(new S.GainedExperience { Amount = amount, MasterAmount = masterexp });
+            if (Experience < MaxExperience)
+            {
+                Experience += amount;
+                Enqueue(new S.GainedExperience { Amount = amount, MasterAmount = masterexp });
+            }
 
             UserItem weapon = Equipment[(int)EquipmentSlot.Weapon];
 
