@@ -519,7 +519,10 @@ namespace Client.Controls
 
         public Point Location
         {
-            get => _Location;
+            get
+            {
+                return new Point(_Location.X + _Offset.X, _Location.Y + _Offset.Y);
+            }
             set
             {
                 if (_Location == value) return;
@@ -536,6 +539,60 @@ namespace Client.Controls
         {
             UpdateDisplayArea();
             LocationChanged?.Invoke(this, EventArgs.Empty);
+        }
+
+        #endregion
+
+        #region ChildOffset
+
+        public Point ChildOffset
+        {
+            get => _ChildOffset;
+            set
+            {
+                if (_ChildOffset == value) return;
+
+                Point oldValue = _ChildOffset;
+                _ChildOffset = value;
+
+                OnChildOffsetChanged(oldValue, value);
+            }
+        }
+        private Point _ChildOffset;
+        public event EventHandler<EventArgs> ChildOffsetChanged;
+        public virtual void OnChildOffsetChanged(Point oValue, Point nValue)
+        {
+            for (int i = 0; i < Controls.Count; i++)
+            {
+                Controls[i].Offset = nValue;
+                Controls[i].UpdateDisplayArea();
+                UpdateDisplayArea();
+            }
+            ChildOffsetChanged?.Invoke(this, EventArgs.Empty);
+        }
+
+        #endregion
+
+        #region Offset
+
+        public Point Offset
+        {
+            get => _Offset;
+            set
+            {
+                if (_Offset == value) return;
+
+                Point oldValue = _Offset;
+                _Offset = value;
+
+                OnOffsetChanged(oldValue, value);
+            }
+        }
+        private Point _Offset;
+        public event EventHandler<EventArgs> OffsetChanged;
+        public virtual void OnOffsetChanged(Point oValue, Point nValue)
+        {
+            OffsetChanged?.Invoke(this, EventArgs.Empty);
         }
 
         #endregion

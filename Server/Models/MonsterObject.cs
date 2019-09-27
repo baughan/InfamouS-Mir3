@@ -2351,7 +2351,7 @@ namespace Server.Models
 
             if (SEnvir.Random.Next(100) < attacker.Stats[Stat.CriticalChance] && canCrit && power > 0)
             {
-                power += power + (power * attacker.Stats[Stat.CriticalDamage] / 100);
+                power = (int)Math.Min(int.MaxValue, (long)power +  (power + (power * attacker.Stats[Stat.CriticalDamage] / 100)));
                 Critical();
             }
 

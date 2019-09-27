@@ -25,7 +25,7 @@ namespace Client.Scenes.Views
 
         public DXCheckBox ShowHelmetBox;
 
-        public DXLabel WearWeightLabel, HandWeightLabel;
+        public DXLabel WearWeightLabel, HandWeightLabel, RebirthPVELabel, RebirthPVPLabel, RebirthDropRateLabel, RebirthGoldRateLabel, RebirthEXPLabel;
         public Dictionary<Stat, DXLabel> DisplayStats = new Dictionary<Stat, DXLabel>();
         public Dictionary<Stat, DXLabel> AttackStats = new Dictionary<Stat, DXLabel>();
         public Dictionary<Stat, DXLabel> AdvantageStats = new Dictionary<Stat, DXLabel>();
@@ -38,6 +38,9 @@ namespace Client.Scenes.Views
         public override WindowType Type => WindowType.CharacterBox;
         public override bool CustomSize => false;
         public override bool AutomaticVisiblity => true;
+
+        public DXVScrollBar ScrollBar;
+        public DXControl StatsPanel;
 
         #endregion
 
@@ -52,26 +55,43 @@ namespace Client.Scenes.Views
                 Parent = this,
                 Location = ClientArea.Location,
                 Size = ClientArea.Size,
-            };
+            };            
             CharacterTab = new DXTab
             {
                 Parent = TabControl,
                 Border = true,
                 TabButton = { Label = { Text = "Character" } },
             };
-            CharacterTab.BeforeChildrenDraw += CharacterTab_BeforeChildrenDraw;
+            CharacterTab.BeforeChildrenDraw += CharacterTab_BeforeChildrenDraw;            
             StatsTab = new DXTab
             {
                 Parent = TabControl,
                 Border = true,
                 TabButton = { Label = { Text = "Stats" } },
-            };
+            };            
             HermitTab = new DXTab
             {
                 Parent = TabControl,
                 Border = true,
                 TabButton = { Label = { Text = "Hermit" } },
             };
+            ScrollBar = new DXVScrollBar
+            {
+                Parent = StatsTab,
+                Size = new Size(14, Size.Height / 2 - 30),
+                Location = new Point(Size.Width - 34, 0),                
+                VisibleSize = Size.Height,
+            };
+            ScrollBar.MaxValue = ScrollBar.Size.Height + 420;
+            ScrollBar.ValueChanged += (o, e) => UpdateLocations();            
+            StatsPanel = new DXControl
+            {
+                Parent = StatsTab,
+                Size = new Size(Size.Width - 35, Size.Height / 2 - 30),
+                Border = true,
+                BorderColour = Color.FromArgb(198, 166, 99),
+            };
+            StatsPanel.MouseWheel += ScrollBar.DoMouseWheel;
             DXControl namePanel = new DXControl
             {
                 Parent = CharacterTab,
@@ -346,290 +366,13 @@ namespace Client.Scenes.Views
                 CEnvir.Enqueue(new C.HelmetToggle{ HideHelmet = ShowHelmetBox.Checked});
             };
 
-            int y = 0;
-            DXLabel label = new DXLabel
-            {
-                Parent = StatsTab,
-                Text = "AC:"
-            };
-            label.Location = new Point(StatsTab.Size.Width / 4 - label.Size.Width + 25, y += 10);
-
-            DisplayStats[Stat.MaxAC] = new DXLabel
-            {
-                Parent = StatsTab,
-                Location = new Point(label.Location.X + label.Size.Width - 5, y),
-                ForeColour = Color.White,
-                Text = "0-0"
-            };
-
-            label = new DXLabel
-            {
-                Parent = StatsTab,
-                Text = "MR:"
-            };
-            label.Location = new Point(StatsTab.Size.Width / 4 * 2 - label.Size.Width + 25, y);
-
-            DisplayStats[Stat.MaxMR] = new DXLabel
-            {
-                Parent = StatsTab,
-                Location = new Point(label.Location.X + label.Size.Width - 5, y),
-                ForeColour = Color.White,
-                Text = "0-0"
-            };
-
-            label = new DXLabel
-            {
-                Parent = StatsTab,
-                Text = "DC:"
-            };
-            label.Location = new Point(StatsTab.Size.Width / 4 - label.Size.Width + 25, y += 20);
-
-            DisplayStats[Stat.MaxDC] = new DXLabel
-            {
-                Parent = StatsTab,
-                Location = new Point(label.Location.X + label.Size.Width - 5, y),
-                ForeColour = Color.White,
-                Text = "0-0"
-            };
-
-            label = new DXLabel
-            {
-                Parent = StatsTab,
-                Text = "MC:"
-            };
-            label.Location = new Point(StatsTab.Size.Width / 4 * 2 - label.Size.Width + 25, y);
-
-            DisplayStats[Stat.MaxMC] = new DXLabel
-            {
-                Parent = StatsTab,
-                Location = new Point(label.Location.X + label.Size.Width - 5, y),
-                ForeColour = Color.White,
-                Text = "0-0"
-            };
-
-            label = new DXLabel
-            {
-                Parent = StatsTab,
-                Text = "SC:"
-            };
-            label.Location = new Point(StatsTab.Size.Width / 4 * 3 - label.Size.Width + 25, y);
-
-            DisplayStats[Stat.MaxSC] = new DXLabel
-            {
-                Parent = StatsTab,
-                Location = new Point(label.Location.X + label.Size.Width - 5, y),
-                ForeColour = Color.White,
-                Text = "0-0"
-            };
-
-
-            label = new DXLabel
-            {
-                Parent = StatsTab,
-                Text = "Accuracy:"
-            };
-            label.Location = new Point(StatsTab.Size.Width / 4 - label.Size.Width + 25, y += 20);
-
-            DisplayStats[Stat.Accuracy] = new DXLabel
-            {
-                Parent = StatsTab,
-                Location = new Point(label.Location.X + label.Size.Width - 5, y),
-                ForeColour = Color.White,
-                Text = "0"
-            };
-
-
-            label = new DXLabel
-            {
-                Parent = StatsTab,
-                Text = "Agility:"
-            };
-            label.Location = new Point(StatsTab.Size.Width / 4 * 2 - label.Size.Width + 25, y);
-
-            DisplayStats[Stat.Agility] = new DXLabel
-            {
-                Parent = StatsTab,
-                Location = new Point(label.Location.X + label.Size.Width - 5, y),
-                ForeColour = Color.White,
-                Text = "0"
-            };
-
-            label = new DXLabel
-            {
-                Parent = StatsTab,
-                Text = "Body W:"
-            };
-            label.Location = new Point(StatsTab.Size.Width / 4 - label.Size.Width + 25, y += 20);
-
-            WearWeightLabel = new DXLabel
-            {
-                Parent = StatsTab,
-                Location = new Point(label.Location.X + label.Size.Width - 5, y),
-                ForeColour = Color.White,
-                Text = "0"
-            };
-
-            label = new DXLabel
-            {
-                Parent = StatsTab,
-                Text = "Hand W:"
-            };
-            label.Location = new Point(StatsTab.Size.Width / 4 * 3 - label.Size.Width + 25, y);
-
-            HandWeightLabel = new DXLabel
-            {
-                Parent = StatsTab,
-                Location = new Point(label.Location.X + label.Size.Width - 5, y),
-                ForeColour = Color.White,
-                Text = "0"
-            };
-
-
-
-            label = new DXLabel
-            {
-                Parent = StatsTab,
-                Text = "A. Speed:"
-            };
-            label.Location = new Point(StatsTab.Size.Width / 4 - label.Size.Width + 25, y += 20);
-
-            DisplayStats[Stat.AttackSpeed] = new DXLabel
-            {
-                Parent = StatsTab,
-                Location = new Point(label.Location.X + label.Size.Width - 5, y),
-                ForeColour = Color.White,
-                Text = "0"
-            };
-
-
-            label = new DXLabel
-            {
-                Parent = StatsTab,
-                Text = "Luck:"
-            };
-            label.Location = new Point(StatsTab.Size.Width / 4 * 2 - label.Size.Width + 25, y);
-
-            DisplayStats[Stat.Luck] = new DXLabel
-            {
-                Parent = StatsTab,
-                Location = new Point(label.Location.X + label.Size.Width - 5, y),
-                ForeColour = Color.White,
-                Text = "0"
-            };
-
-            label = new DXLabel
-            {
-                Parent = StatsTab,
-                Text = "Comfort:"
-            };
-            label.Location = new Point(StatsTab.Size.Width / 4 * 3 - label.Size.Width + 25, y);
-
-            DisplayStats[Stat.Comfort] = new DXLabel
-            {
-                Parent = StatsTab,
-                Location = new Point(label.Location.X + label.Size.Width - 5, y),
-                ForeColour = Color.White,
-                Text = "0"
-            };
-
-
-
-            label = new DXLabel
-            {
-                Parent = StatsTab,
-                Text = "Life Steal:"
-            };
-            label.Location = new Point(StatsTab.Size.Width / 4 - label.Size.Width + 25, y += 20);
-
-            DisplayStats[Stat.LifeSteal] = new DXLabel
-            {
-                Parent = StatsTab,
-                Location = new Point(label.Location.X + label.Size.Width - 5, y),
-                ForeColour = Color.White,
-                Text = "0"
-            };
-
-            label = new DXLabel
-            {
-                Parent = StatsTab,
-                Text = "Gold Rate:"
-            };
-            label.Location = new Point(StatsTab.Size.Width / 4 * 3 - label.Size.Width + 25, y);
-
-            DisplayStats[Stat.GoldRate] = new DXLabel
-            {
-                Parent = StatsTab,
-                Location = new Point(label.Location.X + label.Size.Width - 5, y),
-                ForeColour = Color.White,
-                Text = "0"
-            };
-
-            label = new DXLabel
-            {
-                Parent = StatsTab,
-                Text = "Critical Chance:"
-            };
-            label.Location = new Point(StatsTab.Size.Width / 4 - label.Size.Width + 25, y += 20);
-
-            DisplayStats[Stat.CriticalChance] = new DXLabel
-            {
-                Parent = StatsTab,
-                Location = new Point(label.Location.X + label.Size.Width - 5, y),
-                ForeColour = Color.White,
-                Text = "0"
-            };
-
-            label = new DXLabel
-            {
-                Parent = StatsTab,
-                Text = "Drop Rate:"
-            };
-            label.Location = new Point(StatsTab.Size.Width / 4 * 3 - label.Size.Width + 25, y);
-
-            DisplayStats[Stat.DropRate] = new DXLabel
-            {
-                Parent = StatsTab,
-                Location = new Point(label.Location.X + label.Size.Width - 5, y),
-                ForeColour = Color.White,
-                Text = "0"
-            };
-
-            label = new DXLabel
-            {
-                Parent = StatsTab,
-                Text = "Pick Up Radius:"
-            };
-            label.Location = new Point(StatsTab.Size.Width / 4  - label.Size.Width + 25, y += 20);
-
-            DisplayStats[Stat.PickUpRadius] = new DXLabel
-            {
-                Parent = StatsTab,
-                Location = new Point(label.Location.X + label.Size.Width - 5, y),
-                ForeColour = Color.White,
-                Text = "0"
-            };
-
-
-            label = new DXLabel
-            {
-                Parent = StatsTab,
-                Text = "Exp. Rate:"
-            };
-            label.Location = new Point(StatsTab.Size.Width / 4 * 3 - label.Size.Width + 25, y);
-
-            DisplayStats[Stat.ExperienceRate] = new DXLabel
-            {
-                Parent = StatsTab,
-                Location = new Point(label.Location.X + label.Size.Width - 5, y),
-                ForeColour = Color.White,
-                Text = "0"
-            };
+            DrawStats();
 
 
             #region Attack
 
 
-            label = new DXLabel
+            var label = new DXLabel
             {
                 Parent = StatsTab,
                 Text = "E. Att:"
@@ -1610,7 +1353,460 @@ namespace Client.Scenes.Views
 
             InterfaceLibrary.Draw(index, x, y, Color.White, false, 0.2F, ImageType.Image);
         }
-        
+
+        public void DrawStats()
+        {
+            int y = 0;
+            DXLabel label = new DXLabel
+            {
+                Parent = StatsPanel,
+                PassThrough = true,
+                Text = "AC:"
+            };
+            label.Location = new Point(StatsTab.Size.Width / 4 - label.Size.Width + 25, y += 10);
+
+            DisplayStats[Stat.MaxAC] = new DXLabel
+            {
+                Parent = StatsPanel,
+                PassThrough = true,
+                Location = new Point(label.Location.X + label.Size.Width - 5, y),
+                ForeColour = Color.White,
+                Text = "0-0"
+            };
+
+            label = new DXLabel
+            {
+                Parent = StatsPanel,
+                PassThrough = true,
+                Text = "MR:"
+            };
+            label.Location = new Point(StatsTab.Size.Width / 4 * 2 - label.Size.Width + 25, y);
+
+            DisplayStats[Stat.MaxMR] = new DXLabel
+            {
+                Parent = StatsPanel,
+                PassThrough = true,
+                Location = new Point(label.Location.X + label.Size.Width - 5, y),
+                ForeColour = Color.White,
+                Text = "0-0"
+            };
+
+            label = new DXLabel
+            {
+                Parent = StatsPanel,
+                PassThrough = true,
+                Text = "DC:"
+            };
+            label.Location = new Point(StatsTab.Size.Width / 4 - label.Size.Width, y += 20);
+
+            DisplayStats[Stat.MaxDC] = new DXLabel
+            {
+                Parent = StatsPanel,
+                PassThrough = true,
+                Location = new Point(label.Location.X + label.Size.Width - 5, y),
+                ForeColour = Color.White,
+                Text = "0-0"
+            };
+
+            label = new DXLabel
+            {
+                Parent = StatsPanel,
+                PassThrough = true,
+                Text = "MC:"
+            };
+            label.Location = new Point(StatsTab.Size.Width / 4 * 2 - label.Size.Width, y);
+
+            DisplayStats[Stat.MaxMC] = new DXLabel
+            {
+                Parent = StatsPanel,
+                PassThrough = true,
+                Location = new Point(label.Location.X + label.Size.Width - 5, y),
+                ForeColour = Color.White,
+                Text = "0-0"
+            };
+
+            label = new DXLabel
+            {
+                Parent = StatsPanel,
+                PassThrough = true,
+                Text = "SC:"
+            };
+            label.Location = new Point(StatsTab.Size.Width / 4 * 3 - label.Size.Width, y);
+
+            DisplayStats[Stat.MaxSC] = new DXLabel
+            {
+                Parent = StatsPanel,
+                PassThrough = true,
+                Location = new Point(label.Location.X + label.Size.Width - 5, y),
+                ForeColour = Color.White,
+                Text = "0-0"
+            };
+
+
+            label = new DXLabel
+            {
+                Parent = StatsPanel,
+                PassThrough = true,
+                Text = "Accuracy:"
+            };
+            label.Location = new Point(StatsTab.Size.Width / 4 - label.Size.Width + 25, y += 20);
+
+            DisplayStats[Stat.Accuracy] = new DXLabel
+            {
+                Parent = StatsPanel,
+                PassThrough = true,
+                Location = new Point(label.Location.X + label.Size.Width - 5, y),
+                ForeColour = Color.White,
+                Text = "0"
+            };
+
+
+            label = new DXLabel
+            {
+                Parent = StatsPanel,
+                PassThrough = true,
+                Text = "Agility:"
+            };
+            label.Location = new Point(StatsTab.Size.Width / 4 * 2 - label.Size.Width + 25, y);
+
+            DisplayStats[Stat.Agility] = new DXLabel
+            {
+                Parent = StatsPanel,
+                PassThrough = true,
+                Location = new Point(label.Location.X + label.Size.Width - 5, y),
+                ForeColour = Color.White,
+                Text = "0"
+            };
+
+            label = new DXLabel
+            {
+                Parent = StatsPanel,
+                PassThrough = true,
+                Text = "Body W:"
+            };
+            label.Location = new Point(StatsTab.Size.Width / 4 - label.Size.Width + 15, y += 20);
+
+            WearWeightLabel = new DXLabel
+            {
+                Parent = StatsPanel,
+                PassThrough = true,
+                Location = new Point(label.Location.X + label.Size.Width - 5, y),
+                ForeColour = Color.White,
+                Text = "0"
+            };
+
+            label = new DXLabel
+            {
+                Parent = StatsPanel,
+                PassThrough = true,
+                Text = "Hand W:"
+            };
+            label.Location = new Point(StatsTab.Size.Width / 4 * 3 - label.Size.Width + 15, y);
+
+            HandWeightLabel = new DXLabel
+            {
+                Parent = StatsPanel,
+                PassThrough = true,
+                Location = new Point(label.Location.X + label.Size.Width - 5, y),
+                ForeColour = Color.White,
+                Text = "0"
+            };
+
+
+
+            label = new DXLabel
+            {
+                Parent = StatsPanel,
+                PassThrough = true,
+                Text = "A. Speed:"
+            };
+            label.Location = new Point(StatsTab.Size.Width / 4 - label.Size.Width + 25, y += 20);
+
+            DisplayStats[Stat.AttackSpeed] = new DXLabel
+            {
+                Parent = StatsPanel,
+                PassThrough = true,
+                Location = new Point(label.Location.X + label.Size.Width - 5, y),
+                ForeColour = Color.White,
+                Text = "0"
+            };
+
+
+            label = new DXLabel
+            {
+                Parent = StatsPanel,
+                PassThrough = true,
+                Text = "Luck:"
+            };
+            label.Location = new Point(StatsTab.Size.Width / 4 * 2 - label.Size.Width + 25, y);
+
+            DisplayStats[Stat.Luck] = new DXLabel
+            {
+                Parent = StatsPanel,
+                PassThrough = true,
+                Location = new Point(label.Location.X + label.Size.Width - 5, y),
+                ForeColour = Color.White,
+                Text = "0"
+            };
+
+            label = new DXLabel
+            {
+                Parent = StatsPanel,
+                PassThrough = true,
+                Text = "Comfort:"
+            };
+            label.Location = new Point(StatsTab.Size.Width / 4 * 3 - label.Size.Width + 25, y);
+
+            DisplayStats[Stat.Comfort] = new DXLabel
+            {
+                Parent = StatsPanel,
+                PassThrough = true,
+                Location = new Point(label.Location.X + label.Size.Width - 5, y),
+                ForeColour = Color.White,
+                Text = "0"
+            };
+
+
+
+            label = new DXLabel
+            {
+                Parent = StatsPanel,
+                PassThrough = true,
+                Text = "Life Steal:"
+            };
+            label.Location = new Point(StatsTab.Size.Width / 4 - label.Size.Width + 25, y += 20);
+
+            DisplayStats[Stat.LifeSteal] = new DXLabel
+            {
+                Parent = StatsPanel,
+                PassThrough = true,
+                Location = new Point(label.Location.X + label.Size.Width - 5, y),
+                ForeColour = Color.White,
+                Text = "0"
+            };
+
+            label = new DXLabel
+            {
+                Parent = StatsPanel,
+                PassThrough = true,
+                Text = "Gold Rate:"
+            };
+            label.Location = new Point(StatsTab.Size.Width / 4 * 3 - label.Size.Width, y);
+
+            DisplayStats[Stat.GoldRate] = new DXLabel
+            {
+                Parent = StatsPanel,
+                PassThrough = true,
+                Location = new Point(label.Location.X + label.Size.Width - 5, y),
+                ForeColour = Color.White,
+                Text = "0"
+            };
+
+            label = new DXLabel
+            {
+                Parent = StatsPanel,
+                PassThrough = true,
+                Text = "Critical Chance:"
+            };
+            label.Location = new Point(StatsTab.Size.Width / 4 - label.Size.Width + 25, y += 20);
+
+            DisplayStats[Stat.CriticalChance] = new DXLabel
+            {
+                Parent = StatsPanel,
+                PassThrough = true,
+                Location = new Point(label.Location.X + label.Size.Width - 5, y),
+                ForeColour = Color.White,
+                Text = "0"
+            };
+
+            label = new DXLabel
+            {
+                Parent = StatsPanel,
+                PassThrough = true,
+                Text = "Drop Rate:"
+            };
+            label.Location = new Point(StatsTab.Size.Width / 4 * 3 - label.Size.Width, y);
+
+            DisplayStats[Stat.DropRate] = new DXLabel
+            {
+                Parent = StatsPanel,
+                PassThrough = true,
+                Location = new Point(label.Location.X + label.Size.Width - 5, y),
+                ForeColour = Color.White,
+                Text = "0"
+            };
+
+            label = new DXLabel
+            {
+                Parent = StatsPanel,
+                PassThrough = true,
+                Text = "Critical Damage (PvE):"
+            };
+            label.Location = new Point(StatsTab.Size.Width / 4 - label.Size.Width + 105, y += 20);
+
+            DisplayStats[Stat.CriticalDamage] = new DXLabel
+            {
+                Parent = StatsPanel,
+                PassThrough = true,
+                Location = new Point(label.Location.X + label.Size.Width - 5, y),
+                ForeColour = Color.White,
+                Text = "0"
+            };
+
+            label = new DXLabel
+            {
+                Parent = StatsPanel,
+                PassThrough = true,
+                Text = "Pick Up Radius:"
+            };
+            label.Location = new Point(StatsTab.Size.Width / 4 - label.Size.Width + 25, y += 20);
+
+            DisplayStats[Stat.PickUpRadius] = new DXLabel
+            {
+                Parent = StatsPanel,
+                PassThrough = true,
+                Location = new Point(label.Location.X + label.Size.Width - 5, y),
+                ForeColour = Color.White,
+                Text = "0"
+            };
+
+
+            label = new DXLabel
+            {
+                Parent = StatsPanel,
+                PassThrough = true,
+                Text = "Exp. Rate:"
+            };
+            label.Location = new Point(StatsTab.Size.Width / 4 * 3 - label.Size.Width, y);
+
+            DisplayStats[Stat.ExperienceRate] = new DXLabel
+            {
+                Parent = StatsPanel,
+                PassThrough = true,
+                Location = new Point(label.Location.X + label.Size.Width - 5, y),
+                ForeColour = Color.White,
+                Text = "0"
+            };
+
+            label = new DXLabel
+            {
+                Parent = StatsPanel,
+                PassThrough = true,
+                Text = "Rebirth:",
+                ForeColour = Color.MediumPurple,
+            };
+            label.Location = new Point(StatsTab.Size.Width / 4 - label.Size.Width + 85, y += 30);
+
+            label = new DXLabel
+            {
+                Parent = StatsPanel,
+                PassThrough = true,
+                Text = "Rebirth Level:"
+            };
+            label.Location = new Point(25, y += 20);
+
+            DisplayStats[Stat.Rebirth] = new DXLabel
+            {
+                Parent = StatsPanel,
+                PassThrough = true,
+                Location = new Point(label.Location.X + label.Size.Width - 5, y),
+                ForeColour = Color.White,
+                Text = "0"
+            };
+
+            label = new DXLabel
+            {
+                Parent = StatsPanel,
+                PassThrough = true,
+                Text = "Bonus Damage (PvE):"
+            };
+            label.Location = new Point(25, y += 20);
+
+            RebirthPVELabel = new DXLabel
+            {
+                Parent = StatsPanel,
+                Location = new Point(label.Location.X + label.Size.Width - 5, y),
+                PassThrough = true,
+                ForeColour = Color.White,
+                Text = "0"
+            };
+
+            label = new DXLabel
+            {
+                Parent = StatsPanel,
+                PassThrough = true,
+                Text = "Bonus Damage (PvP):"
+            };
+            label.Location = new Point(25, y += 20);
+
+            RebirthPVPLabel = new DXLabel
+            {
+                Parent = StatsPanel,
+                Location = new Point(label.Location.X + label.Size.Width - 5, y),
+                PassThrough = true,
+                ForeColour = Color.White,
+                Text = "0"
+            };
+
+            label = new DXLabel
+            {
+                Parent = StatsPanel,
+                PassThrough = true,
+                Text = "Bonus Drop Rate:"
+            };
+            label.Location = new Point(25, y += 20);
+
+            RebirthDropRateLabel = new DXLabel
+            {
+                Parent = StatsPanel,
+                Location = new Point(label.Location.X + label.Size.Width - 5, y),
+                PassThrough = true,
+                ForeColour = Color.White,
+                Text = "0"
+            };
+
+            label = new DXLabel
+            {
+                Parent = StatsPanel,
+                PassThrough = true,
+                Text = "Bonus Gold Rate:"
+            };
+            label.Location = new Point(25, y += 20);
+
+            RebirthGoldRateLabel = new DXLabel
+            {
+                Parent = StatsPanel,
+                Location = new Point(label.Location.X + label.Size.Width - 5, y),
+                PassThrough = true,
+                ForeColour = Color.White,
+                Text = "0"
+            };
+
+            label = new DXLabel
+            {
+                Parent = StatsPanel,
+                PassThrough = true,
+                Text = "Experience Reduction:"
+            };
+            label.Location = new Point(25, y += 20);
+
+            RebirthEXPLabel = new DXLabel
+            {
+                Parent = StatsPanel,
+                Location = new Point(label.Location.X + label.Size.Width - 5, y),
+                PassThrough = true,
+                ForeColour = Color.Red,
+                Text = "0"
+            };
+        }
+
+        public void UpdateLocations()
+        {
+            int y = -ScrollBar.Value + 5;
+
+            StatsPanel.ChildOffset = new Point(0, y);
+        }
+
         private void CharacterTab_BeforeChildrenDraw(object sender, EventArgs e)
         {
             MirLibrary library;
@@ -1901,6 +2097,24 @@ namespace Client.Scenes.Views
                 }
             }
 
+            double c = 100;
+            for (int i = 0; i < GameScene.Game.User.Stats[Stat.Rebirth]; i++)
+                c *= 1.5;
+            RebirthPVELabel.Text = $"{(int)c}%";
+
+            c = 100;
+            for (int i = 0; i < GameScene.Game.User.Stats[Stat.Rebirth]; i++)
+                c *= 1.2;
+            RebirthPVPLabel.Text = $"{(int)c}%";
+
+            RebirthDropRateLabel.Text = $"{GameScene.Game.User.Stats[Stat.Rebirth] * 20}%";
+            RebirthGoldRateLabel.Text = $"{GameScene.Game.User.Stats[Stat.Rebirth] * 20}%";
+
+            c = 100;
+            for (int i = 0; i < GameScene.Game.User.Stats[Stat.Rebirth]; i++)
+                c *= 0.5;
+            RebirthEXPLabel.Text = $"-{100 - (int)c}%";
+
 
             foreach (KeyValuePair<Stat, DXLabel> pair in HermitDisplayStats)
                 pair.Value.Text = MapObject.User.HermitStats.GetFormat(pair.Key);
@@ -1924,6 +2138,8 @@ namespace Client.Scenes.Views
             }
 
             RemainingLabel.Text = MapObject.User.HermitPoints.ToString();
+
+
 
         }
         #endregion
@@ -2016,6 +2232,14 @@ namespace Client.Scenes.Views
                     Grid = null;
                 }
 
+                if (ScrollBar != null)
+                {
+                    if (!ScrollBar.IsDisposed)
+                        ScrollBar.Dispose();
+
+                    ScrollBar = null;
+                }
+
                 if (WearWeightLabel != null)
                 {
                     if (!WearWeightLabel.IsDisposed)
@@ -2030,6 +2254,14 @@ namespace Client.Scenes.Views
                         HandWeightLabel.Dispose();
 
                     HandWeightLabel = null;
+                }
+
+                if (RebirthPVELabel != null)
+                {
+                    if (!RebirthPVELabel.IsDisposed)
+                        RebirthPVELabel.Dispose();
+
+                    RebirthPVELabel = null;
                 }
 
                 foreach (KeyValuePair<Stat, DXLabel> pair in DisplayStats)
