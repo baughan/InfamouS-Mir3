@@ -1767,6 +1767,18 @@ namespace Server.Models
                             Level15 = Companion.UserCompanion.Level15
                         });
                         break;
+                    case "RESETGUILDTIME":
+                        if (!Character.Account.TempAdmin) return;
+
+                        if (parts.Length < 2) return;
+
+                        target = SEnvir.GetCharacter(parts[1]);
+
+                        if (target == null) return;
+
+                        target.Account.GuildTime = SEnvir.Now;
+                        Connection.ReceiveChat($"Guild Time Reset: [{target.CharacterName}]", MessageType.System);
+                        break;
                     case "MONSTER":
                         if (!Character.Account.TempAdmin)
                             return;
@@ -4768,7 +4780,7 @@ namespace Server.Models
             PlayerObject player = info.Account.Connection?.Player;
             string memberName = info.Account.LastCharacter.CharacterName;
 
-            info.Account.GuildTime = SEnvir.Now.AddDays(1);
+            //info.Account.GuildTime = SEnvir.Now.AddDays(1);
 
             info.Guild = null;
             info.Account = null;
@@ -15644,7 +15656,7 @@ namespace Server.Models
                 if (Pets[i].Target == null)
                     Pets[i].Target = ob;
 
-            int power = GetDC();
+            decimal power = GetDC();
             int karmaDamage = 0;
             bool ignoreAccuracy = false, hasFlameSplash = false, hasLotus = false, hasDestructiveSurge = false;
             bool hasBladeStorm = false, hasDanceOfSallows = false;
@@ -15949,17 +15961,17 @@ namespace Server.Models
                 return;
             }
 
-            int damage = 0;
+            decimal damage = 0;
             if (hasBladeStorm)
             {
                 power /= 2;
-                ActionList.Add(new DelayedAction(SEnvir.Now.AddMilliseconds(300), ActionType.DelayedAttackDamage, ob, power, element, true, true, ob.Stats[Stat.MagicShield] == 0, true));
+                ActionList.Add(new DelayedAction(SEnvir.Now.AddMilliseconds(300), ActionType.DelayedAttackDamage, ob, (int)Math.Min(int.MaxValue, power), element, true, true, ob.Stats[Stat.MagicShield] == 0, true));
             }
 
             if (karmaDamage > 0)
                 damage += ob.Attacked(this, karmaDamage, Element.None, false, true, false);
 
-            damage += ob.Attacked(this, power, element, true, false, !hasMassacre);
+            damage += ob.Attacked(this, (int)(Math.Min(int.MaxValue, power)), element, true, false, !hasMassacre);
 
             if (damage <= 0) return;
 
@@ -16098,7 +16110,7 @@ namespace Server.Models
                             target,
                             magics,
                             false,
-                            power));
+                            (int)Math.Min(int.MaxValue, power)));
                     }
                 }
             }
@@ -16124,7 +16136,7 @@ namespace Server.Models
 
             bool canStuck = true;
 
-            int power = 0;
+            decimal power = 0;
             UserMagic asteroid = null;
 
             foreach (UserMagic magic in magics)
@@ -16335,22 +16347,22 @@ namespace Server.Models
                     case MagicType.FrozenEarth:
                     case MagicType.GreaterFrozenEarth:
                         if (!primary)
-                            power = (int) (power * 0.3F);
+                            power = (int) (power * 0.3M);
                         break;
                     case MagicType.FireWall:
-                        power = (int) (power * 0.60F);
+                        power = (int) (power * 0.60M);
                         break;
                     case MagicType.Tempest:
-                        power = (int) (power * 0.80F);
+                        power = (int) (power * 0.80M);
                         break;
 
                     case MagicType.ExplosiveTalisman:
                         if (stats != null && stats[Stat.DarkAffinity] >= 1)
-                            power += (int) (power * 0.3F);
+                            power += (int) (power * 0.3M);
 
                         if (!primary)
                         {
-                            power = (int) (power * 0.65F);
+                            power = (int) (power * 0.65M);
                             //  if (ob.Race == ObjectType.Player)
                             //      power = (int)(power * 0.5F);
                         }
@@ -16358,11 +16370,11 @@ namespace Server.Models
                         break;
                     case MagicType.ImprovedExplosiveTalisman:
                         if (stats != null && stats[Stat.DarkAffinity] >= 1)
-                            power += (int) (power * 0.6F);
+                            power += (int) (power * 0.6M);
 
                         if (!primary)
                         {
-                            power = (int) (power * 0.65F);
+                            power = (int) (power * 0.65M);
                             //  if (ob.Race == ObjectType.Player)
                             //      power = (int)(power * 0.5F);
                         }
@@ -16371,11 +16383,11 @@ namespace Server.Models
 
                     case MagicType.EvilSlayer:
                         if (stats != null && stats[Stat.HolyAffinity] >= 1)
-                            power += (int) (power * 0.3F);
+                            power += (int) (power * 0.3M);
 
                         if (!primary)
                         {
-                            power = (int) (power * 0.65F);
+                            power = (int) (power * 0.65M);
                             //  if (ob.Race == ObjectType.Player)
                             //      power = (int)(power * 0.5F);
                         }
@@ -16384,11 +16396,11 @@ namespace Server.Models
 
                     case MagicType.GreaterEvilSlayer:
                         if (stats != null && stats[Stat.HolyAffinity] >= 1)
-                            power += (int) (power * 0.6F);
+                            power += (int) (power * 0.6M);
 
                         if (!primary)
                         {
-                            power = (int) (power * 0.65F);
+                            power = (int) (power * 0.65M);
                             //  if (ob.Race == ObjectType.Player)
                             //      power = (int)(power * 0.5F);
                         }
@@ -16451,9 +16463,9 @@ namespace Server.Models
             }
 
 
-            int damage = ob.Attacked(this, power, element, false, false, true, canStuck);
+            decimal damage = ob.Attacked(this, (int)(Math.Min(int.MaxValue, power)), element, false, false, true, canStuck);
 
-            if (damage <= 0) return damage;
+            if (damage <= 0) return (int)(Math.Min(int.MaxValue, damage));
 
             int psnRate = 100;
 
@@ -16594,7 +16606,7 @@ namespace Server.Models
                 LevelMagic(temp);
 
 
-            return damage;
+            return (int)(Math.Min(int.MaxValue, damage));
         }
 
         public override int Attacked(MapObject attacker, int power, Element element, bool canReflect = true, bool ignoreShield = false, bool canCrit = true, bool canStruck = true)

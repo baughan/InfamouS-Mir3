@@ -656,6 +656,12 @@ namespace Server.Models
             MapDropRate = SEnvir.Random.Next(CurrentMap.Info.DropRate + offset, CurrentMap.Info.MaxDropRate + offset);
             MapGoldRate = SEnvir.Random.Next(CurrentMap.Info.GoldRate + offset, CurrentMap.Info.MaxGoldRate + offset);
 
+            if (MonsterInfo.IsBoss && SEnvir.Random.Next(2) > 0)
+            {
+                SummonLevel = SEnvir.Random.Next(7) + 4;
+            }
+
+
             MapHealthRate -= offset;
             MapDamageRate -= offset;
             MapExperienceRate -= offset;
@@ -675,6 +681,8 @@ namespace Server.Models
             Level = MonsterInfo.Level;
 
             CoolEye = SEnvir.Random.Next(100) < MonsterInfo.CoolEye;
+
+
 
             AddAllObjects();
 
@@ -715,8 +723,8 @@ namespace Server.Models
                 Stats[Stat.Accuracy] += Stats[Stat.Accuracy]*SummonLevel/10;
                 Stats[Stat.Agility] += Stats[Stat.Agility]*SummonLevel/10;
             }
-            
-            
+
+
             Stats[Stat.CriticalChance] = 1;
 
             if (Buffs.Any(x => x.Type == BuffType.MagicWeakness))
@@ -918,7 +926,35 @@ namespace Server.Models
         public override void ProcessNameColour()
         {
             NameColour = Color.White;
-            
+
+            if (MonsterInfo.IsBoss)
+            {
+                switch (SummonLevel)
+                {
+                    case 4:
+                        NameColour = Color.Aqua;
+                        break;
+                    case 5:
+                        NameColour = Color.Aquamarine;
+                        break;
+                    case 6:
+                        NameColour = Color.LightSeaGreen;
+                        break;
+                    case 7:
+                        NameColour = Color.SlateBlue;
+                        break;
+                    case 8:
+                        NameColour = Color.SteelBlue;
+                        break;
+                    case 9:
+                        NameColour = Color.Blue;
+                        break;
+                    case 10:
+                        NameColour = Color.Navy;
+                        break;
+                }
+            }
+
             if (SEnvir.Now < ShockTime)
                 NameColour = Color.Peru;
             else if (SEnvir.Now < RageTime)
@@ -2339,7 +2375,7 @@ namespace Server.Models
                 power = (int)(power * 1.2F);
 
             for (int i = 0; i < attacker.Stats[Stat.Rebirth]; i++)
-                power = (int)(power * 1.5F);
+                power = (int)(power * 1.2F);
 
 
             BuffInfo buff = Buffs.FirstOrDefault(x => x.Type == BuffType.MagicShield);
@@ -2577,7 +2613,7 @@ namespace Server.Models
             if (PetOwner == null && CurrentMap != null)
                 eRate *= 1 + MapExperienceRate / 100M;
             
-            decimal exp = Math.Min(Experience * eRate, 50000000000);
+            decimal exp = Math.Min(Experience * eRate, 50000000000000);
 
             if (ePlayers.Count == 0)
             {
@@ -2606,6 +2642,9 @@ namespace Server.Models
                     player.GainExperience(expfinal, PlayerTagged, Level);
                 }
             }
+
+            if (MonsterInfo.IsBoss)
+                dRate += SummonLevel * 0.1M;
 
             if (dPlayers.Count == 0)
             {
