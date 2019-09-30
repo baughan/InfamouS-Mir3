@@ -2826,6 +2826,8 @@ namespace Server.Models
             Stats[Stat.DropRate] += 20 * Stats[Stat.Rebirth];
             Stats[Stat.GoldRate] += 20 * Stats[Stat.Rebirth];
 
+            ApplyStatCaps();
+
             Enqueue(new S.StatsUpdate { Stats = Stats, HermitStats = Character.HermitStats, HermitPoints = Math.Max(0, (Level - 39) * 3 - Character.SpentPoints) });
 
             S.DataObjectMaxHealthMana p = new S.DataObjectMaxHealthMana { ObjectID = ObjectID, MaxHealth = Stats[Stat.Health], MaxMana = Stats[Stat.Mana] };
@@ -2843,6 +2845,15 @@ namespace Server.Models
                 RemoveAllObjects();
                 AddAllObjects();
             }
+        }
+        public void ApplyStatCaps()
+        {
+            Stats[Stat.CriticalDamage] = Math.Min(Stats[Stat.CriticalDamage], Globals.CriticalDamageCap);
+            Stats[Stat.ParalysisChance] = Math.Min(Stats[Stat.ParalysisChance], Globals.ParalysisChanceCap);
+            Stats[Stat.SlowChance] = Math.Min(Stats[Stat.SlowChance], Globals.SlowChanceCap);
+            Stats[Stat.SilenceChance] = Math.Min(Stats[Stat.SilenceChance], Globals.SilenceChanceCap);
+            Stats[Stat.BlockChance] = Math.Min(Stats[Stat.BlockChance], Globals.BlockChanceCap);
+            Stats[Stat.EvasionChance] = Math.Min(Stats[Stat.EvasionChance], Globals.EvasionChanceCap);
         }
         public void AddBaseStats()
         {
@@ -6351,7 +6362,7 @@ namespace Server.Models
 
                                 if (mob.Spawn(CurrentMap.Info, CurrentMap.GetRandomLocation(CurrentLocation, 2)))
                                 {
-                                    if (SEnvir.Random.Next(item.Info.Stats[Stat.MapSummoning]) == 0)
+                                    /*if (SEnvir.Random.Next(item.Info.Stats[Stat.MapSummoning]) == 0)
                                     {
                                         for (int i = CurrentMap.Objects.Count - 1; i >= 0; i--)
                                         {
@@ -6371,22 +6382,23 @@ namespace Server.Models
 
                                             mob.Teleport(CurrentMap, CurrentMap.GetRandomLocation(CurrentLocation, 30));
                                         }
+                                    }*/
 
 
-                                        string text = $"A [{item.Info.ItemName}] has been used in {CurrentMap.Info.Description}";
+                                    string text = $"A [{item.Info.ItemName}] has been used in {CurrentMap.Info.Description}";
 
-                                        foreach (SConnection con in SEnvir.Connections)
+                                    foreach (SConnection con in SEnvir.Connections)
+                                    {
+                                        switch (con.Stage)
                                         {
-                                            switch (con.Stage)
-                                            {
-                                                case GameStage.Game:
-                                                case GameStage.Observer:
-                                                    con.ReceiveChat(text, MessageType.System);
-                                                    break;
-                                                default: continue;
-                                            }
+                                            case GameStage.Game:
+                                            case GameStage.Observer:
+                                                con.ReceiveChat(text, MessageType.System);
+                                                break;
+                                            default: continue;
                                         }
                                     }
+
                                 }
                             }
                             break;

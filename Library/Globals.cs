@@ -87,7 +87,14 @@ namespace Library
 
             CommonCraftWeaponPercentCost = 30000000,
             SuperiorCraftWeaponPercentCost = 60000000,
-            EliteCraftWeaponPercentCost = 80000000;
+            EliteCraftWeaponPercentCost = 80000000,
+
+            CriticalDamageCap = 850,
+            ParalysisChanceCap = 40,
+            SlowChanceCap = 40,
+            SilenceChanceCap = 40,
+            BlockChanceCap = 40,
+            EvasionChanceCap = 40;
 
         public static decimal MarketPlaceTax = 0.07M;  //2.5x Item cost
 
