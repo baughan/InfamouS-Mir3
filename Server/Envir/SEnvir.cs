@@ -1826,42 +1826,42 @@ namespace Server.Envir
 
         public static void UpgradeWeapon(UserItem item)
         {
-            if (Random.Next(2) == 0)
+            if (Random.Next(10) < 9)
             {
                 float value = 0.04F;
 
-                if (Random.Next(12) == 0)
+                if (Random.Next(6) == 0)
                     value += 0.04F;
 
-                if (Random.Next(60) == 0)
+                if (Random.Next(30) == 0)
                     value += 0.02F;
 
-                item.AddStat(Stat.MaxDC, (int)(item.Stats[Stat.MaxDC] * value), StatSource.Added);
+                item.AddStat(Stat.MaxDC, (int)(item.Info.Stats[Stat.MaxDC] * value), StatSource.Added);
             }
 
-            if (Random.Next(2) == 0)
+            if (Random.Next(10) < 9)
             {
                 float value = 0.04F;
 
-                if (Random.Next(12) == 0)
+                if (Random.Next(6) == 0)
                     value += 0.04F;
 
-                if (Random.Next(60) == 0)
+                if (Random.Next(30) == 0)
                     value += 0.02F;
 
                 //No perticular Magic Power
                 if (item.Info.Stats[Stat.MinMC] == 0 && item.Info.Stats[Stat.MaxMC] == 0 && item.Info.Stats[Stat.MinSC] == 0 && item.Info.Stats[Stat.MaxSC] == 0)
                 {
-                    item.AddStat(Stat.MaxMC, (int)(item.Stats[Stat.MaxMC] * value), StatSource.Added);
-                    item.AddStat(Stat.MaxSC, (int)(item.Stats[Stat.MaxSC] * value), StatSource.Added);
+                    item.AddStat(Stat.MaxMC, (int)(item.Info.Stats[Stat.MaxMC] * value), StatSource.Added);
+                    item.AddStat(Stat.MaxSC, (int)(item.Info.Stats[Stat.MaxSC] * value), StatSource.Added);
                 }
 
 
                 if (item.Info.Stats[Stat.MinMC] > 0 || item.Info.Stats[Stat.MaxMC] > 0)
-                    item.AddStat(Stat.MaxMC, (int)(item.Stats[Stat.MaxMC] * value), StatSource.Added);
+                    item.AddStat(Stat.MaxMC, (int)(item.Info.Stats[Stat.MaxMC] * value), StatSource.Added);
 
                 if (item.Info.Stats[Stat.MinSC] > 0 || item.Info.Stats[Stat.MaxSC] > 0)
-                    item.AddStat(Stat.MaxSC, (int)(item.Stats[Stat.MaxSC] * value), StatSource.Added);
+                    item.AddStat(Stat.MaxSC, (int)(item.Info.Stats[Stat.MaxSC] * value), StatSource.Added);
 
             }
 
@@ -1869,10 +1869,10 @@ namespace Server.Envir
             {
                 int value = 1;
 
-                if (Random.Next(60) == 0)
+                if (Random.Next(30) == 0)
                     value += 1;
 
-                if (Random.Next(300) == 0)
+                if (Random.Next(150) == 0)
                     value += 1;
 
                 item.AddStat(Stat.Accuracy, value, StatSource.Added);
@@ -1901,71 +1901,71 @@ namespace Server.Envir
         }
         public static void UpgradeShield(UserItem item)
         {
-            if (Random.Next(2) == 0)
+            if (Random.Next(10) < 9)
             {
                 float value = 0.04F;
 
-                if (Random.Next(12) == 0)
+                if (Random.Next(6) == 0)
                     value += 0.04F;
 
-                if (Random.Next(60) == 0)
+                if (Random.Next(30) == 0)
                     value += 0.02F;
 
-                item.AddStat(Stat.DCPercent, (int)(item.Stats[Stat.DCPercent] * value), StatSource.Added);
+                item.AddStat(Stat.DCPercent, (int)(item.Info.Stats[Stat.DCPercent] * value), StatSource.Added);
             }
 
-            if (Random.Next(2) == 0)
+            if (Random.Next(10) < 9)
             {
                 float value = 0.04F;
 
-                if (Random.Next(12) == 0)
+                if (Random.Next(6) == 0)
                     value += 0.04F;
 
-                if (Random.Next(60) == 0)
+                if (Random.Next(30) == 0)
                     value += 0.02F;
 
-                item.AddStat(Stat.MCPercent, (int)(item.Stats[Stat.MCPercent] * value), StatSource.Added);
-                item.AddStat(Stat.SCPercent, (int)(item.Stats[Stat.SCPercent] * value), StatSource.Added);
+                item.AddStat(Stat.MCPercent, (int)(item.Info.Stats[Stat.MCPercent] * value), StatSource.Added);
+                item.AddStat(Stat.SCPercent, (int)(item.Info.Stats[Stat.SCPercent] * value), StatSource.Added);
 
             }
 
-            if (Random.Next(2) == 0)
+            if (Random.Next(10) < 9)
             {
                 float value = 0.04F;
 
-                if (Random.Next(12) == 0)
+                if (Random.Next(6) == 0)
                     value += 0.04F;
 
-                if (Random.Next(60) == 0)
+                if (Random.Next(30) == 0)
                     value += 0.02F;
 
-                item.AddStat(Stat.BlockChance, (int)(item.Stats[Stat.BlockChance] * value), StatSource.Added);
+                item.AddStat(Stat.BlockChance, (int)(item.Info.Stats[Stat.BlockChance] * value), StatSource.Added);
             }
 
-            if (Random.Next(2) == 0)
+            if (Random.Next(10) < 9)
             {
                 float value = 0.04F;
 
-                if (Random.Next(12) == 0)
+                if (Random.Next(6) == 0)
                     value += 0.04F;
 
-                if (Random.Next(60) == 0)
+                if (Random.Next(30) == 0)
                     value += 0.02F;
                 
-                item.AddStat(Stat.EvasionChance, (int)(item.Stats[Stat.EvasionChance] * value), StatSource.Added);
+                item.AddStat(Stat.EvasionChance, (int)(item.Info.Stats[Stat.EvasionChance] * value), StatSource.Added);
             }
 
-            if (Random.Next(2) == 0)
+            if (Random.Next(10) < 9)
             {
                 float value = 0.04F;
 
-                if (Random.Next(12) == 0)
+                if (Random.Next(6) == 0)
                     value += 0.04F;
 
-                if (Random.Next(60) == 0)
+                if (Random.Next(30) == 0)
                     value += 0.02F;
                 
-                item.AddStat(Stat.PoisonResistance, (int)(item.Stats[Stat.PoisonResistance] * value), StatSource.Added);
+                item.AddStat(Stat.PoisonResistance, (int)(item.Info.Stats[Stat.PoisonResistance] * value), StatSource.Added);
             }
 
             List<Stat> Elements = new List<Stat>
@@ -2056,30 +2056,30 @@ namespace Server.Envir
         }
         public static void UpgradeArmour(UserItem item)
         {
-            if (Random.Next(2) == 0)
+            if (Random.Next(10) < 9)
             {
                 float value = 0.04F;
 
                 if (Random.Next(7) == 0)
                     value += 0.04F;
 
-                if (Random.Next(35) == 0)
+                if (Random.Next(30) == 0)
                     value += 0.02F;
 
-                item.AddStat(Stat.MaxAC, (int)(item.Stats[Stat.MaxAC] * value), StatSource.Added);
+                item.AddStat(Stat.MaxAC, (int)(item.Info.Stats[Stat.MaxAC] * value), StatSource.Added);
             }
 
-            if (Random.Next(2) == 0)
+            if (Random.Next(10) < 9)
             {
                 float value = 0.04F;
 
                 if (Random.Next(7) == 0)
                     value += 0.04F;
 
-                if (Random.Next(35) == 0)
+                if (Random.Next(30) == 0)
                     value += 0.02F;
 
-                item.AddStat(Stat.MaxMR, (int)(item.Stats[Stat.MaxMR] * value), StatSource.Added);
+                item.AddStat(Stat.MaxMR, (int)(item.Info.Stats[Stat.MaxMR] * value), StatSource.Added);
             }
 
             List<Stat> Elements = new List<Stat>
@@ -2170,30 +2170,30 @@ namespace Server.Envir
         }
         public static void UpgradeHelmet(UserItem item)
         {
-            if (Random.Next(2) == 0)
+            if (Random.Next(10) < 9)
             {
                 float value = 0.04F;
 
-                if (Random.Next(6) == 0)
+                if (Random.Next(3) == 0)
                     value += 0.04F;
 
-                if (Random.Next(60) == 0)
+                if (Random.Next(30) == 0)
                     value += 0.02F;
 
-                item.AddStat(Stat.MaxAC, (int)(item.Stats[Stat.MaxAC] * value), StatSource.Added);
+                item.AddStat(Stat.MaxAC, (int)(item.Info.Stats[Stat.MaxAC] * value), StatSource.Added);
             }
 
-            if (Random.Next(2) == 0)
+            if (Random.Next(10) < 9)
             {
                 float value = 0.04F;
 
-                if (Random.Next(6) == 0)
+                if (Random.Next(3) == 0)
                     value += 0.04F;
 
-                if (Random.Next(60) == 0)
+                if (Random.Next(30) == 0)
                     value += 0.02F;
 
-                item.AddStat(Stat.MaxMR, (int)(item.Stats[Stat.MaxMR] * value), StatSource.Added);
+                item.AddStat(Stat.MaxMR, (int)(item.Info.Stats[Stat.MaxMR] * value), StatSource.Added);
             }
 
 
@@ -2284,54 +2284,54 @@ namespace Server.Envir
         }
         public static void UpgradeNecklace(UserItem item)
         {
-            if (Random.Next(2) == 0)
+            if (Random.Next(10) < 9)
             {
                 float value = 0.04F;
 
-                if (Random.Next(6) == 0)
+                if (Random.Next(3) == 0)
                     value += 0.04F;
 
-                if (Random.Next(60) == 0)
+                if (Random.Next(30) == 0)
                     value += 0.02F;
 
-                item.AddStat(Stat.MaxDC, (int)(item.Stats[Stat.MaxDC] * value), StatSource.Added);
+                item.AddStat(Stat.MaxDC, (int)(item.Info.Stats[Stat.MaxDC] * value), StatSource.Added);
             }
 
 
-            if (Random.Next(2) == 0)
+            if (Random.Next(10) < 9)
             {
                 float value = 0.04F;
 
-                if (Random.Next(6) == 0)
+                if (Random.Next(3) == 0)
                     value += 0.04F;
 
-                if (Random.Next(60) == 0)
+                if (Random.Next(30) == 0)
                     value += 0.02F;
 
                 //No perticular Magic Power
                 if (item.Info.Stats[Stat.MinMC] == 0 && item.Info.Stats[Stat.MaxMC] == 0 && item.Info.Stats[Stat.MinSC] == 0 && item.Info.Stats[Stat.MaxSC] == 0)
                 {
-                    item.AddStat(Stat.MaxMC, (int)(item.Stats[Stat.MaxMC] * value), StatSource.Added);
-                    item.AddStat(Stat.MaxSC, (int)(item.Stats[Stat.MaxSC] * value), StatSource.Added);
+                    item.AddStat(Stat.MaxMC, (int)(item.Info.Stats[Stat.MaxMC] * value), StatSource.Added);
+                    item.AddStat(Stat.MaxSC, (int)(item.Info.Stats[Stat.MaxSC] * value), StatSource.Added);
                 }
 
 
                 if (item.Info.Stats[Stat.MinMC] > 0 || item.Info.Stats[Stat.MaxMC] > 0)
-                    item.AddStat(Stat.MaxMC, (int)(item.Stats[Stat.MaxMC] * value), StatSource.Added);
+                    item.AddStat(Stat.MaxMC, (int)(item.Info.Stats[Stat.MaxMC] * value), StatSource.Added);
 
                 if (item.Info.Stats[Stat.MinSC] > 0 || item.Info.Stats[Stat.MaxSC] > 0)
-                    item.AddStat(Stat.MaxSC, (int)(item.Stats[Stat.MaxSC] * value), StatSource.Added);
+                    item.AddStat(Stat.MaxSC, (int)(item.Info.Stats[Stat.MaxSC] * value), StatSource.Added);
             }
-            
 
-            if (Random.Next(2) == 0)
+
+            if (Random.Next(10) < 9)
             {
                 int value = 1;
 
-                if (Random.Next(12) == 0)
+                if (Random.Next(6) == 0)
                     value += 1;
 
-                if (Random.Next(60) == 0)
+                if (Random.Next(30) == 0)
                     value += 1;
 
 
@@ -2339,14 +2339,14 @@ namespace Server.Envir
             }
 
 
-            if (Random.Next(2) == 0)
+            if (Random.Next(10) < 9)
             {
                 int value = 1;
 
-                if (Random.Next(12) == 0)
+                if (Random.Next(6) == 0)
                     value += 1;
 
-                if (Random.Next(60) == 0)
+                if (Random.Next(30) == 0)
                     value += 1;
 
                 item.AddStat(Stat.Agility, value, StatSource.Added);
@@ -2373,7 +2373,7 @@ namespace Server.Envir
         }
         public static void UpgradeBracelet(UserItem item)
         {
-            if (Random.Next(2) == 0)
+            if (Random.Next(10) < 9)
             {
                 float value = 0.04F;
 
@@ -2383,10 +2383,10 @@ namespace Server.Envir
                 if (Random.Next(30) == 0)
                     value += 0.02F;
 
-                item.AddStat(Stat.MaxAC, (int)(item.Stats[Stat.MaxAC] * value), StatSource.Added);
+                item.AddStat(Stat.MaxAC, (int)(item.Info.Stats[Stat.MaxAC] * value), StatSource.Added);
             }
 
-            if (Random.Next(2) == 0)
+            if (Random.Next(10) < 9)
             {
                 float value = 0.04F;
 
@@ -2396,69 +2396,69 @@ namespace Server.Envir
                 if (Random.Next(30) == 0)
                     value += 0.02F;
 
-                item.AddStat(Stat.MaxMR, (int)(item.Stats[Stat.MaxMR] * value), StatSource.Added);
+                item.AddStat(Stat.MaxMR, (int)(item.Info.Stats[Stat.MaxMR] * value), StatSource.Added);
             }
 
 
-            if (Random.Next(2) == 0)
+            if (Random.Next(10) < 9)
             {
                 float value = 0.04F;
 
                 if (Random.Next(6) == 0)
                     value += 0.04F;
 
-                if (Random.Next(60) == 0)
+                if (Random.Next(30) == 0)
                     value += 0.02F;
 
-                item.AddStat(Stat.MaxDC, (int)(item.Stats[Stat.MaxDC] * value), StatSource.Added);
+                item.AddStat(Stat.MaxDC, (int)(item.Info.Stats[Stat.MaxDC] * value), StatSource.Added);
             }
 
-            if (Random.Next(2) == 0)
+            if (Random.Next(10) < 9)
             {
                 float value = 0.04F;
 
                 if (Random.Next(6) == 0)
                     value += 0.04F;
 
-                if (Random.Next(60) == 0)
+                if (Random.Next(30) == 0)
                     value += 0.02F;
 
                 //No perticular Magic Power
                 if (item.Info.Stats[Stat.MinMC] == 0 && item.Info.Stats[Stat.MaxMC] == 0 && item.Info.Stats[Stat.MinSC] == 0 && item.Info.Stats[Stat.MaxSC] == 0)
                 {
-                    item.AddStat(Stat.MaxMC, (int)(item.Stats[Stat.MaxMC] * value), StatSource.Added);
-                    item.AddStat(Stat.MaxSC, (int)(item.Stats[Stat.MaxSC] * value), StatSource.Added);
+                    item.AddStat(Stat.MaxMC, (int)(item.Info.Stats[Stat.MaxMC] * value), StatSource.Added);
+                    item.AddStat(Stat.MaxSC, (int)(item.Info.Stats[Stat.MaxSC] * value), StatSource.Added);
                 }
 
 
                 if (item.Info.Stats[Stat.MinMC] > 0 || item.Info.Stats[Stat.MaxMC] > 0)
-                    item.AddStat(Stat.MaxMC, (int)(item.Stats[Stat.MaxMC] * value), StatSource.Added);
+                    item.AddStat(Stat.MaxMC, (int)(item.Info.Stats[Stat.MaxMC] * value), StatSource.Added);
 
                 if (item.Info.Stats[Stat.MinSC] > 0 || item.Info.Stats[Stat.MaxSC] > 0)
-                    item.AddStat(Stat.MaxSC, (int)(item.Stats[Stat.MaxSC] * value), StatSource.Added);
+                    item.AddStat(Stat.MaxSC, (int)(item.Info.Stats[Stat.MaxSC] * value), StatSource.Added);
             }
 
-            if (Random.Next(2) == 0)
+            if (Random.Next(10) < 9)
             {
                 int value = 1;
 
-                if (Random.Next(12) == 0)
+                if (Random.Next(6) == 0)
                     value += 1;
 
-                if (Random.Next(60) == 0)
+                if (Random.Next(30) == 0)
                     value += 1;
 
                 item.AddStat(Stat.Accuracy, value, StatSource.Added);
             }
 
-            if (Random.Next(2) == 0)
+            if (Random.Next(10) < 9)
             {
                 int value = 1;
 
-                if (Random.Next(12) == 0)
+                if (Random.Next(6) == 0)
                     value += 1;
 
-                if (Random.Next(60) == 0)
+                if (Random.Next(30) == 0)
                     value += 1;
 
                 item.AddStat(Stat.Agility, value, StatSource.Added);
@@ -2553,52 +2553,52 @@ namespace Server.Envir
         }
         public static void UpgradeRing(UserItem item)
         {
-            if (Random.Next(2) == 0)
+            if (Random.Next(10) < 9)
             {
                 float value = 0.04F;
 
                 if (Random.Next(6) == 0)
                     value += 0.04F;
 
-                if (Random.Next(60) == 0)
+                if (Random.Next(30) == 0)
                     value += 0.02F;
 
-                item.AddStat(Stat.MaxDC, (int)(item.Stats[Stat.MaxDC] * value), StatSource.Added);
+                item.AddStat(Stat.MaxDC, (int)(item.Info.Stats[Stat.MaxDC] * value), StatSource.Added);
             }
 
-            if (Random.Next(2) == 0)
+            if (Random.Next(10) < 9)
             {
                 float value = 0.04F;
 
                 if (Random.Next(6) == 0)
                     value += 0.04F;
 
-                if (Random.Next(60) == 0)
+                if (Random.Next(30) == 0)
                     value += 0.02F;
 
                 //No perticular Magic Power
                 if (item.Info.Stats[Stat.MinMC] == 0 && item.Info.Stats[Stat.MaxMC] == 0 && item.Info.Stats[Stat.MinSC] == 0 && item.Info.Stats[Stat.MaxSC] == 0)
                 {
-                    item.AddStat(Stat.MaxMC, (int)(item.Stats[Stat.MaxMC] * value), StatSource.Added);
-                    item.AddStat(Stat.MaxSC, (int)(item.Stats[Stat.MaxSC] * value), StatSource.Added);
+                    item.AddStat(Stat.MaxMC, (int)(item.Info.Stats[Stat.MaxMC] * value), StatSource.Added);
+                    item.AddStat(Stat.MaxSC, (int)(item.Info.Stats[Stat.MaxSC] * value), StatSource.Added);
                 }
 
 
                 if (item.Info.Stats[Stat.MinMC] > 0 || item.Info.Stats[Stat.MaxMC] > 0)
-                    item.AddStat(Stat.MaxMC, (int)(item.Stats[Stat.MaxMC] * value), StatSource.Added);
+                    item.AddStat(Stat.MaxMC, (int)(item.Info.Stats[Stat.MaxMC] * value), StatSource.Added);
 
                 if (item.Info.Stats[Stat.MinSC] > 0 || item.Info.Stats[Stat.MaxSC] > 0)
-                    item.AddStat(Stat.MaxSC, (int)(item.Stats[Stat.MaxSC] * value), StatSource.Added);
+                    item.AddStat(Stat.MaxSC, (int)(item.Info.Stats[Stat.MaxSC] * value), StatSource.Added);
             }
-            
-            if (Random.Next(2) == 0)
+
+            if (Random.Next(10) < 9)
             {
                 int value = 1;
 
-                if (Random.Next(15) == 0)
+                if (Random.Next(6) == 0)
                     value += 1;
 
-                if (Random.Next(60) == 0)
+                if (Random.Next(30) == 0)
                     value += 1;
 
                 item.AddStat(Stat.PickUpRadius, value, StatSource.Added);
@@ -2625,40 +2625,40 @@ namespace Server.Envir
         }
         public static void UpgradeShoes(UserItem item)
         {
-            if (Random.Next(2) == 0)
+            if (Random.Next(10) < 9)
             {
                 float value = 0.04F;
 
                 if (Random.Next(7) == 0)
                     value += 0.04F;
 
-                if (Random.Next(35) == 0)
+                if (Random.Next(30) == 0)
                     value += 0.02F;
 
-                item.AddStat(Stat.MaxAC, (int)(item.Stats[Stat.MaxAC] * value), StatSource.Added);
+                item.AddStat(Stat.MaxAC, (int)(item.Info.Stats[Stat.MaxAC] * value), StatSource.Added);
             }
 
-            if (Random.Next(2) == 0)
+            if (Random.Next(10) < 9)
             {
                 float value = 0.04F;
 
                 if (Random.Next(7) == 0)
                     value += 0.04F;
 
-                if (Random.Next(35) == 0)
+                if (Random.Next(30) == 0)
                     value += 0.02F;
 
-                item.AddStat(Stat.MaxMR, (int)(item.Stats[Stat.MaxMR] * value), StatSource.Added);
+                item.AddStat(Stat.MaxMR, (int)(item.Info.Stats[Stat.MaxMR] * value), StatSource.Added);
             }
-            
-            if (Random.Next(2) == 0)
+
+            if (Random.Next(10) < 9)
             {
                 int value = 1;
 
                 if (Random.Next(12) == 0)
                     value += 1;
 
-                if (Random.Next(125) == 0)
+                if (Random.Next(30) == 0)
                     value += 1;
 
                 item.AddStat(Stat.Comfort, value, StatSource.Added);

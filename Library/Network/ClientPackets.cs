@@ -143,6 +143,14 @@ namespace Library.Network.ClientPackets
         public long Count { get; set; }
     }
 
+    public sealed class ItemUpgrade : Packet
+    {
+        public GridType FromGrid { get; set; }
+        public int FromSlot { get; set; }
+        public GridType ToGrid { get; set; }
+        public int ToSlot { get; set; }
+    }
+
     public sealed class ItemDrop : Packet
     {
         public CellLinkInfo Link { get; set; }

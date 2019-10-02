@@ -2045,20 +2045,6 @@ namespace Client.Scenes.Views
             foreach (KeyValuePair<Stat, DXLabel> pair in DisplayStats)
                 pair.Value.Text = MapObject.User.Stats.GetFormat(pair.Key);
 
-            if (MapObject.User.Stats[Stat.CriticalDamage] >= Globals.CriticalDamageCap)
-                DisplayStats[Stat.CriticalDamage].Text = "Max";
-            if (MapObject.User.Stats[Stat.ParalysisChance] >= Globals.ParalysisChanceCap)
-                DisplayStats[Stat.ParalysisChance].Text = "Max";
-            if (MapObject.User.Stats[Stat.SlowChance] >= Globals.SlowChanceCap)
-                DisplayStats[Stat.SlowChance].Text = "Max";
-            if (MapObject.User.Stats[Stat.SilenceChance] >= Globals.SilenceChanceCap)
-                DisplayStats[Stat.SilenceChance].Text = "Max";
-            if (MapObject.User.Stats[Stat.BlockChance] >= Globals.BlockChanceCap)
-                DisplayStats[Stat.BlockChance].Text = "Max";
-            if (MapObject.User.Stats[Stat.EvasionChance] >= Globals.EvasionChanceCap)
-                DisplayStats[Stat.EvasionChance].Text = "Max";
-
-
             foreach (KeyValuePair<Stat, DXLabel> pair in AttackStats)
             {
 

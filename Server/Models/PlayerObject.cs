@@ -2824,9 +2824,7 @@ namespace Server.Models
             Stats[Stat.Rebirth] = Character.Rebirth;
 
             Stats[Stat.DropRate] += 20 * Stats[Stat.Rebirth];
-            Stats[Stat.GoldRate] += 20 * Stats[Stat.Rebirth];
-
-            ApplyStatCaps();
+            Stats[Stat.GoldRate] += 20 * Stats[Stat.Rebirth];            
 
             Enqueue(new S.StatsUpdate { Stats = Stats, HermitStats = Character.HermitStats, HermitPoints = Math.Max(0, (Level - 39) * 3 - Character.SpentPoints) });
 
@@ -2845,16 +2843,7 @@ namespace Server.Models
                 RemoveAllObjects();
                 AddAllObjects();
             }
-        }
-        public void ApplyStatCaps()
-        {
-            Stats[Stat.CriticalDamage] = Math.Min(Stats[Stat.CriticalDamage], Globals.CriticalDamageCap);
-            Stats[Stat.ParalysisChance] = Math.Min(Stats[Stat.ParalysisChance], Globals.ParalysisChanceCap);
-            Stats[Stat.SlowChance] = Math.Min(Stats[Stat.SlowChance], Globals.SlowChanceCap);
-            Stats[Stat.SilenceChance] = Math.Min(Stats[Stat.SilenceChance], Globals.SilenceChanceCap);
-            Stats[Stat.BlockChance] = Math.Min(Stats[Stat.BlockChance], Globals.BlockChanceCap);
-            Stats[Stat.EvasionChance] = Math.Min(Stats[Stat.EvasionChance], Globals.EvasionChanceCap);
-        }
+        }        
         public void AddBaseStats()
         {
             MaxExperience = Level < Globals.ExperienceList.Count ? Globals.ExperienceList[Level] : 0;
@@ -7502,6 +7491,243 @@ namespace Server.Models
 
 
 
+        public void ItemUpgrade(C.ItemUpgrade p)
+        {
+            S.ItemUpgrade result = new S.ItemUpgrade
+            {
+                FromGrid = p.FromGrid,
+                FromSlot = p.FromSlot,
+                ToGrid = p.ToGrid,
+                ToSlot = p.ToSlot,
+
+                ObserverPacket = p.ToGrid != GridType.GuildStorage && p.FromGrid != GridType.GuildStorage,
+            };
+
+            Enqueue(result);
+
+
+            if (Dead || (p.FromGrid == p.ToGrid && p.FromSlot == p.ToSlot)) return;
+
+            UserItem[] fromArray, toArray;
+
+            switch (p.FromGrid)
+            {
+                case GridType.Inventory:
+                    fromArray = Inventory;
+                    break;
+                case GridType.Storage:
+                    if (!InSafeZone && !Character.Account.TempAdmin)
+                    {
+                        Connection.ReceiveChat(Connection.Language.StorageSafeZone, MessageType.System);
+
+                        foreach (SConnection con in Connection.Observers)
+                            con.ReceiveChat(con.Language.StorageSafeZone, MessageType.System);
+                        return;
+                    }
+
+                    fromArray = Storage;
+
+                    if (p.FromSlot >= Character.Account.StorageSize) return;
+                    break;
+                case GridType.GuildStorage:
+                    if (Character.Account.GuildMember == null) return;
+
+                    if ((Character.Account.GuildMember.Permission & GuildPermission.Storage) != GuildPermission.Storage)
+                    {
+                        Connection.ReceiveChat(Connection.Language.GuildStoragePermission, MessageType.System);
+                        return;
+                    }
+
+                    if (!InSafeZone && (p.ToGrid != GridType.Storage || p.ToGrid != GridType.PartsStorage))
+                    {
+                        Connection.ReceiveChat(Connection.Language.GuildStorageSafeZone, MessageType.System);
+                        return;
+                    }
+
+                    fromArray = Character.Account.GuildMember.Guild.Storage;
+
+                    if (p.FromSlot >= Character.Account.GuildMember.Guild.StorageSize) return;
+                    break;
+                case GridType.CompanionInventory:
+                    if (Companion == null) return;
+
+                    fromArray = Companion.Inventory;
+                    if (p.FromSlot >= Companion.Stats[Stat.CompanionInventory]) return;
+                    break;
+                default:
+                    return;
+            }
+
+            if (p.FromSlot < 0 || p.FromSlot >= fromArray.Length) return;
+
+            UserItem fromItem = fromArray[p.FromSlot];
+
+            if (fromItem == null) return;
+
+            if ((fromItem.Flags & UserItemFlags.Marriage) == UserItemFlags.Marriage) return;
+            if (fromItem.Info.ItemType != ItemType.Gem && fromItem.Info.ItemType != ItemType.Orb) return;
+
+            switch (p.ToGrid)
+            {
+                case GridType.Inventory:
+                    toArray = Inventory;
+                    break;
+                case GridType.Equipment:
+                    toArray = Equipment;
+                    break;
+                case GridType.Storage:
+                    if (!InSafeZone && !Character.Account.TempAdmin)
+                    {
+                        Connection.ReceiveChat(Connection.Language.StorageSafeZone, MessageType.System);
+
+                        foreach (SConnection con in Connection.Observers)
+                            con.ReceiveChat(con.Language.StorageSafeZone, MessageType.System);
+                        return;
+                    }
+
+                    toArray = Storage;
+
+                    if (p.ToSlot >= Character.Account.StorageSize) return;
+                    break;
+                case GridType.GuildStorage:
+                    if (Character.Account.GuildMember == null) return;
+
+                    if ((Character.Account.GuildMember.Permission & GuildPermission.Storage) != GuildPermission.Storage)
+                    {
+                        Connection.ReceiveChat(Connection.Language.GuildStoragePermission, MessageType.System);
+                        return;
+                    }
+
+                    if (!InSafeZone && p.FromGrid != GridType.Storage)
+                    {
+                        Connection.ReceiveChat(Connection.Language.GuildStorageSafeZone, MessageType.System);
+                        return;
+                    }
+
+                    toArray = Character.Account.GuildMember.Guild.Storage;
+
+                    if (p.ToSlot >= Character.Account.GuildMember.Guild.StorageSize) return;
+                    break;
+                case GridType.CompanionInventory:
+                    if (Companion == null) return;
+
+                    toArray = Companion.Inventory;
+
+                    if (p.ToSlot >= Companion.Stats[Stat.CompanionInventory]) return;
+                    break;
+                default:
+                    return;
+            }
+
+            if (p.ToSlot < 0 || p.ToSlot >= toArray.Length) return;
+
+            UserItem toItem = toArray[p.ToSlot];
+
+            if (toItem != null && (toItem.Flags & UserItemFlags.Marriage) == UserItemFlags.Marriage) return;
+
+            bool success = false;
+            ItemType totype = toItem.Info.ItemType;
+            switch (fromItem.Info.Shape)
+            {
+                default:
+                    success = totype == ItemType.Weapon || totype == ItemType.Armour || totype == ItemType.Helmet || totype == ItemType.Necklace || totype == ItemType.Bracelet || totype == ItemType.Ring || totype == ItemType.Shoes;
+                    break;
+                case 1:
+                    success = totype == ItemType.Weapon || totype == ItemType.Necklace || totype == ItemType.Bracelet || totype == ItemType.Ring;
+                    break;
+                case 2:
+                    success = totype == ItemType.Armour || totype == ItemType.Helmet || totype == ItemType.Bracelet || totype == ItemType.Ring || totype == ItemType.Shoes;
+                    break;
+            }
+            if (!success) return;
+
+            S.ItemStatsChanged statschange = new S.ItemStatsChanged { GridType = p.ToGrid, Slot = p.ToSlot, NewStats = new Stats() };            
+            foreach (KeyValuePair<Stat, int> s in fromItem.Info.Stats.Values)
+            {
+                toItem.AddStat(s.Key, s.Value, StatSource.GemOrb);
+                statschange.NewStats[s.Key] = s.Value;
+            }
+            toItem.StatsChanged();
+            Enqueue(statschange);
+
+            fromItem.Count -= 1;
+            Packet guildpacket;            
+
+            switch (p.FromGrid)
+            {
+                case GridType.GuildStorage:
+                    if (fromItem.Count > 1)
+                    {
+                        guildpacket = new S.ItemChanged
+                        {
+                            Link = new CellLinkInfo()
+                            {
+                                GridType = p.FromGrid,
+                                Slot = p.FromSlot,
+                                Count = fromItem.Count,
+                            },
+                            Success = true,
+                        };
+                    }
+                    else
+                    {
+                        guildpacket = new S.ItemChanged
+                        {
+                            Link = new CellLinkInfo()
+                            {
+                                GridType = p.FromGrid,
+                                Slot = p.FromSlot,
+                                Count = fromItem.Count,
+                            },
+                            Success = true,
+                        };
+                    }
+
+                    foreach (GuildMemberInfo member in Character.Account.GuildMember.Guild.Members)
+                    {
+                        PlayerObject player = member.Account.Connection?.Player;
+
+                        if (player == null || player == this) continue;
+
+                        //Send Removal Command
+                        player.Enqueue(guildpacket);
+                    }
+                    break;
+            }
+
+            Enqueue(new S.ItemChanged
+            {
+                Link = new CellLinkInfo()
+                {
+                    GridType = p.FromGrid,
+                    Slot = p.FromSlot,
+                    Count = fromItem.Count,
+                },
+                Success = true,
+            });
+            if (fromItem.Count == 0)
+                RemoveItem(fromItem);
+
+            switch (p.ToGrid)
+            {
+                case GridType.GuildStorage:
+                    foreach (GuildMemberInfo member in Character.Account.GuildMember.Guild.Members)
+                    {
+                        PlayerObject player = member.Account.Connection?.Player;
+
+                        if (player == null || player == this) continue;
+
+                        player.Enqueue(statschange);
+                    }
+
+                    break;
+            }
+
+            result.Success = true;
+            RefreshStats();
+        }
+
+
 
 
 
@@ -8006,6 +8232,8 @@ namespace Server.Models
                 case ItemType.Amulet:
                 case ItemType.Scroll:
                 case ItemType.Gold:
+                case ItemType.Gem:
+                case ItemType.Orb:
                     return false;
                 case ItemType.Weapon:
                     if (SEnvir.Random.Next(Stats[Stat.Strength]) > 0) return false;

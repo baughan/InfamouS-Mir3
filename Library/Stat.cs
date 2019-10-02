@@ -782,6 +782,7 @@ namespace Library
         Refine,
         Enhancement, //Temporary Buff!?
         Other,
+        GemOrb,
     }
 
     public enum StatType
