@@ -1735,7 +1735,10 @@ namespace Client.Envir
             toCell.Locked = false;
             fromCell.Locked = false;
 
+            if (!p.Success) return;
+
             toCell.UpgradeEffect();
+            DXSoundManager.Play(SoundIndex.MagicShieldStart);
         }
         public void Process(S.ItemMove p)
         {
