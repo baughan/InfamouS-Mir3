@@ -1690,6 +1690,53 @@ namespace Client.Envir
 
             GameScene.Game.AddItemParts(p.Items);
         }
+        public void Process(S.ItemUpgrade p)
+        {
+            DXItemCell fromCell, toCell;
+
+            switch (p.FromGrid)
+            {
+                case GridType.Inventory:
+                    fromCell = GameScene.Game.InventoryBox.Grid.Grid[p.FromSlot];
+                    break;
+                case GridType.Storage:
+                    fromCell = GameScene.Game.StorageBox.Grid.Grid[p.FromSlot];
+                    break;
+                case GridType.GuildStorage:
+                    fromCell = GameScene.Game.GuildBox.StorageGrid.Grid[p.FromSlot];
+                    break;
+                case GridType.CompanionInventory:
+                    fromCell = GameScene.Game.CompanionBox.InventoryGrid.Grid[p.FromSlot];
+                    break;
+                default: return;
+            }
+
+            switch (p.ToGrid)
+            {
+                case GridType.Inventory:
+                    toCell = GameScene.Game.InventoryBox.Grid.Grid[p.ToSlot];
+                    break;
+                case GridType.Equipment:
+                    toCell = GameScene.Game.CharacterBox.Grid[p.ToSlot];
+                    break;
+                case GridType.Storage:
+                    toCell = GameScene.Game.StorageBox.Grid.Grid[p.ToSlot];
+                    break;
+                case GridType.GuildStorage:
+                    toCell = GameScene.Game.GuildBox.StorageGrid.Grid[p.ToSlot];
+                    break;
+                case GridType.CompanionInventory:
+                    toCell = GameScene.Game.CompanionBox.InventoryGrid.Grid[p.ToSlot];
+                    break;
+                default:
+                    return;
+            }
+
+            toCell.Locked = false;
+            fromCell.Locked = false;
+
+            toCell.UpgradeEffect();
+        }
         public void Process(S.ItemMove p)
         {
             DXItemCell fromCell, toCell;
@@ -1985,6 +2032,9 @@ namespace Client.Envir
                 case GridType.Storage:
                     grid = GameScene.Game.StorageBox.Grid.Grid;
                     break;
+                case GridType.GuildStorage:
+                    grid = GameScene.Game.GuildBox.StorageGrid.Grid;
+                    break;
                 case GridType.PartsStorage:
                     grid = GameScene.Game.StorageBox.PartGrid.Grid;
                     break;
@@ -2001,25 +2051,28 @@ namespace Client.Envir
 
             fromCell.Item.AddedStats.Add(p.NewStats);
 
-            if (p.NewStats.Count == 0)
+            if (p.GridType != GridType.GuildStorage)
             {
-                GameScene.Game.ReceiveChat($"Nothing happen to your {fromCell.Item.Info.ItemName}", MessageType.Hint);
-                return;
-            }
-
-            foreach (KeyValuePair<Stat, int> pair in p.NewStats.Values)
-            {
-                if (pair.Key == Stat.WeaponElement)
+                if (p.NewStats.Count == 0)
                 {
-                    GameScene.Game.ReceiveChat($"Your {fromCell.Item.Info.ItemName} has been effected: New Element {(Element)fromCell.Item.AddedStats[Stat.WeaponElement]}", MessageType.Hint);
-                    continue;
+                    GameScene.Game.ReceiveChat($"Nothing happen to your {fromCell.Item.Info.ItemName}", MessageType.Hint);
+                    return;
                 }
 
-                string msg = p.NewStats.GetDisplay(pair.Key);
+                foreach (KeyValuePair<Stat, int> pair in p.NewStats.Values)
+                {
+                    if (pair.Key == Stat.WeaponElement)
+                    {
+                        GameScene.Game.ReceiveChat($"Your {fromCell.Item.Info.ItemName} has been effected: New Element {(Element)fromCell.Item.AddedStats[Stat.WeaponElement]}", MessageType.Hint);
+                        continue;
+                    }
 
-                if (string.IsNullOrEmpty(msg)) continue;
+                    string msg = p.NewStats.GetDisplay(pair.Key);
 
-                GameScene.Game.ReceiveChat($"Your {fromCell.Item.Info.ItemName} has been effected: {msg}", MessageType.Hint);
+                    if (string.IsNullOrEmpty(msg)) continue;
+
+                    GameScene.Game.ReceiveChat($"Your {fromCell.Item.Info.ItemName} has been effected: {msg}", MessageType.Hint);
+                }
             }
 
             fromCell.RefreshItem();

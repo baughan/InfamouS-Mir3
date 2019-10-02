@@ -336,6 +336,8 @@ namespace Library
         Shield,
         Gold,
         Wings,
+        Gem,
+        Orb,
     }
 
     public enum MirAction : byte

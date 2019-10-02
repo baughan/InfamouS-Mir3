@@ -448,6 +448,12 @@ namespace Server.Envir
 
             Player.ItemMove(p);
         }
+        public void Process(C.ItemUpgrade p)
+        {
+            if (Stage != GameStage.Game) return;
+
+            Player.ItemUpgrade(p);
+        }
         public void Process(C.ItemDrop p)
         {
             if (Stage != GameStage.Game) return;

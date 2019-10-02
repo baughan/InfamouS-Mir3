@@ -492,6 +492,15 @@ namespace Library.Network.ServerPackets
 
         public bool Success { get; set; }
     }
+    public sealed class ItemUpgrade : Packet
+    {
+        public GridType FromGrid { get; set; }
+        public GridType ToGrid { get; set; }
+        public int FromSlot { get; set; }
+        public int ToSlot { get; set; }
+
+        public bool Success { get; set; }
+    }
 
     public sealed class ItemSplit : Packet
     {

@@ -454,13 +454,15 @@ namespace Server.DBModels
 
             StatsChanged();
         }
-
+        
         public void StatsChanged()
         {
             Stats.Clear();
 
             foreach (UserItemStat stat in AddedStats)
                 Stats[stat.Stat] += stat.Amount;
+
+            ApplyStatCaps();
         }
         public void AddStat(Stat stat, int amount, StatSource source)
         {
@@ -482,6 +484,15 @@ namespace Server.DBModels
             newStat.Stat = stat;
             newStat.Amount = amount;
             newStat.Item = this;
+        }
+        public void ApplyStatCaps()
+        {
+            Stats[Stat.CriticalDamage] = Math.Min(Stats[Stat.CriticalDamage], Globals.CriticalDamageCap);
+            Stats[Stat.ParalysisChance] = Math.Min(Stats[Stat.ParalysisChance], Globals.ParalysisChanceCap);
+            Stats[Stat.SlowChance] = Math.Min(Stats[Stat.SlowChance], Globals.SlowChanceCap);
+            Stats[Stat.SilenceChance] = Math.Min(Stats[Stat.SilenceChance], Globals.SilenceChanceCap);
+            Stats[Stat.BlockChance] = Math.Min(Stats[Stat.BlockChance], Globals.BlockChanceCap);
+            Stats[Stat.EvasionChance] = Math.Min(Stats[Stat.EvasionChance], Globals.EvasionChanceCap);
         }
 
         public ClientUserItem ToClientInfo()

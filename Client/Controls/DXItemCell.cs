@@ -500,7 +500,11 @@ namespace Client.Controls
         }
 
         #endregion
+
+        int CurrentUpgradeEffectIndex = 9;
+        DateTime NextUpgradeEffect;
         
+
         public DXLabel CountLabel;
 
         public override void OnIsVisibleChanged(bool oValue, bool nValue)
@@ -640,6 +644,28 @@ namespace Client.Controls
                     }
                     else
                         PresentTexture(image.Image, this, area, Item.Count > 0 ? Color.White : Color.Gray, this);
+
+                    if (CurrentUpgradeEffectIndex < 9)
+                    {
+                        if (CEnvir.Now > NextUpgradeEffect)
+                        {
+                            NextUpgradeEffect = CEnvir.Now.AddMilliseconds(100);
+                            CurrentUpgradeEffectIndex++;
+                        }
+
+                        if (CEnvir.LibraryList.TryGetValue(LibraryFile.ProgUse, out MirLibrary library))
+                        {
+                            image = library.CreateImage(40 + CurrentUpgradeEffectIndex, ImageType.Image);
+                            if (image != null)
+                            {
+                                bool oldBlend = DXManager.Blending;
+                                float oldRate = DXManager.BlendRate;
+                                DXManager.SetBlend(true, 0.8F);
+                                PresentTexture(image.Image, this, area, Item.Count > 0 ? Color.White : Color.Gray, this, 12, 12);
+                                DXManager.SetBlend(oldBlend, oldRate);
+                            }
+                        }
+                    }
                 }
             }
 
@@ -662,7 +688,7 @@ namespace Client.Controls
                 image = InterfaceLibrary.CreateImage(103, ImageType.Image);
                 if (Item != null && GameScene.Game != null && image != null && Item.Info.Effect == ItemEffect.ItemPart)
                     PresentTexture(image.Image, this, new Rectangle(DisplayArea.Right - 16, DisplayArea.Y + 1, image.Width, image.Height), Item.Count > 0 ? Color.White : Color.Gray, this);
-            }
+            }            
 
             base.DrawControl();
         }
@@ -712,6 +738,40 @@ namespace Client.Controls
 
             CountLabel.Visible = ShowCountLabel && Item != null && (Item.Info.Effect != ItemEffect.Gold && Item.Info.Effect != ItemEffect.Experience)  && (Item.Info.StackSize > 1 || Item.Count > 1);
             CountLabel.Text = Linked ? LinkedCount.ToString() : Item?.Count.ToString();
+        }
+        public bool GemItem()
+        {
+            if (SelectedCell == null)
+                return false;
+            if (!(SelectedCell.Item.Info.ItemType == ItemType.Gem || SelectedCell.Item.Info.ItemType == ItemType.Orb))
+                return false;
+
+            //Put Item back where it came from
+            if (SelectedCell == this || SelectedCell.Item == null)
+            {
+                SelectedCell = null;
+                return false;
+            }
+
+            DXMessageBox box = new DXMessageBox("Upgrade Item?", "Upgrade", DXMessageBoxButtons.YesNo);
+
+            box.YesButton.MouseClick += (o1, e1) =>
+            {               
+
+                C.ItemUpgrade packet = new C.ItemUpgrade
+                {
+                    FromGrid = SelectedCell.GridType,
+                    ToGrid = GridType,
+                    FromSlot = SelectedCell.Slot,
+                    ToSlot = Slot
+                };
+
+                Locked = true;
+                SelectedCell = null;
+                CEnvir.Enqueue(packet);
+            };
+
+            return true;
         }
         public void MoveItem()
         {
@@ -1712,6 +1772,11 @@ namespace Client.Controls
                         
                         return;
                     }
+                    if (CEnvir.Ctrl)
+                    {
+                        if (GemItem())
+                            return;
+                    }
 
                     if (Item != null && SelectedCell == null)
                         PlayItemSound();
@@ -2399,6 +2464,10 @@ namespace Client.Controls
                 }
 
             }
+        }
+        public void UpgradeEffect()
+        {
+            CurrentUpgradeEffectIndex = 0;
         }
 
         #endregion

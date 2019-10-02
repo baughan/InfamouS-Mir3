@@ -1589,7 +1589,7 @@ namespace Client.Scenes
                 case ItemType.Consumable:
                 case ItemType.Scroll:
                     if (MouseItem.Info.Effect == ItemEffect.StatExtractor || MouseItem.Info.Effect == ItemEffect.RefineExtractor)
-                        EquipmentItemInfo();
+                        EquipmentItemInfo(string.Empty);
                     else
                         CreatePotionLabel();
                     break;
@@ -1635,8 +1635,12 @@ namespace Client.Scenes
                         ItemLabel.Size = new Size(label.DisplayArea.Right + 4, ItemLabel.Size.Height);
                     }
                     break;
+                case ItemType.Gem:
+                case ItemType.Orb:
+                    EquipmentItemInfo("Adds: ");
+                    break;
                 default:
-                    EquipmentItemInfo();
+                    EquipmentItemInfo(string.Empty);
                     break;
             }
 
@@ -1989,6 +1993,50 @@ namespace Client.Scenes
                 ItemLabel.Size = new Size(ItemLabel.Size.Width, ItemLabel.Size.Height);
                 spacer = true;
             }
+            else if (MouseItem.Info.ItemType == ItemType.Orb || MouseItem.Info.ItemType == ItemType.Gem)
+            {
+                string str = "Can be used on:" + Environment.NewLine;
+                switch (MouseItem.Info.Shape)
+                {                    
+                    case 1:
+                        str += "-Weapon" + Environment.NewLine + "-Necklace" + Environment.NewLine + "-Bracelet" + Environment.NewLine + "-Ring";
+                        break;
+                    case 2:
+                        str += "-Armour" + Environment.NewLine + "-Helmet" + Environment.NewLine + "-Bracelet" + Environment.NewLine + "-Ring" + Environment.NewLine + "-Belt" + Environment.NewLine + "-Boots";
+                        break;
+                    default:
+                        str += "-All Items";
+                        break;
+                }
+                label = new DXLabel
+                {
+                    Location = new Point(4, ItemLabel.DisplayArea.Bottom),
+                    Parent = ItemLabel,
+                    ForeColour = Color.White,
+                    Text = str,
+                };
+
+                ItemLabel.Size = new Size(label.DisplayArea.Right + 4 > ItemLabel.Size.Width ? label.DisplayArea.Right + 4 : ItemLabel.Size.Width,
+                    label.DisplayArea.Bottom > ItemLabel.Size.Height ? label.DisplayArea.Bottom : ItemLabel.Size.Height);
+                ItemLabel.Size = new Size(ItemLabel.Size.Width, ItemLabel.Size.Height);
+                ItemLabel.Size = new Size(ItemLabel.Size.Width, ItemLabel.Size.Height + 4);
+
+                label = new DXLabel
+                {
+                    Location = new Point(4, ItemLabel.DisplayArea.Bottom),
+                    Parent = ItemLabel,
+                    ForeColour = Color.White,
+                    Text = "Hold CTRL and left click to combine with an item.",
+                };
+
+                ItemLabel.Size = new Size(label.DisplayArea.Right + 4 > ItemLabel.Size.Width ? label.DisplayArea.Right + 4 : ItemLabel.Size.Width,
+                    label.DisplayArea.Bottom > ItemLabel.Size.Height ? label.DisplayArea.Bottom : ItemLabel.Size.Height);
+                ItemLabel.Size = new Size(ItemLabel.Size.Width, ItemLabel.Size.Height);
+                spacer = true;
+            }
+            if (spacer)
+                ItemLabel.Size = new Size(ItemLabel.Size.Width, ItemLabel.Size.Height + 4);
+
 
             if (!string.IsNullOrEmpty(displayInfo.Description))
             {
@@ -2185,7 +2233,7 @@ namespace Client.Scenes
 
 
         }
-        private void EquipmentItemInfo()
+        private void EquipmentItemInfo(string prefix)
         {
             Stats stats = new Stats();
 
@@ -2238,7 +2286,7 @@ namespace Client.Scenes
                     ForeColour = Color.White,
                     Location = new Point(4, ItemLabel.DisplayArea.Bottom),
                     Parent = ItemLabel,
-                    Text = text
+                    Text = prefix + text
                 };
 
                 switch (pair.Key)
