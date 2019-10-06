@@ -2002,7 +2002,7 @@ namespace Client.Scenes
                         str += "-Weapon" + Environment.NewLine + "-Necklace" + Environment.NewLine + "-Bracelet" + Environment.NewLine + "-Ring";
                         break;
                     case 2:
-                        str += "-Armour" + Environment.NewLine + "-Helmet" + Environment.NewLine + "-Bracelet" + Environment.NewLine + "-Ring" + Environment.NewLine + "-Belt" + Environment.NewLine + "-Boots";
+                        str += "-Armour" + Environment.NewLine + "-Shield" + Environment.NewLine + "-Helmet" + Environment.NewLine + "-Bracelet" + Environment.NewLine + "-Ring" + Environment.NewLine + "-Belt" + Environment.NewLine + "-Boots";
                         break;
                     default:
                         str += "-All Items";
@@ -2275,6 +2275,10 @@ namespace Client.Scenes
             bool firstele = stats.HasElementalWeakness();
             foreach (KeyValuePair<Stat, int> pair in stats.Values)
             {
+                bool useprefix = true;
+                if (pair.Key == Stat.GemOrbBrake || pair.Key == Stat.GemOrbSuccess)
+                    useprefix = false;
+
                 string text = stats.GetDisplay(pair.Key);
 
                 if (text == null) continue;
@@ -2286,7 +2290,7 @@ namespace Client.Scenes
                     ForeColour = Color.White,
                     Location = new Point(4, ItemLabel.DisplayArea.Bottom),
                     Parent = ItemLabel,
-                    Text = prefix + text
+                    Text = useprefix? prefix + text : text
                 };
 
                 switch (pair.Key)
