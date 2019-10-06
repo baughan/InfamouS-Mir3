@@ -7722,7 +7722,11 @@ namespace Server.Models
                 Success = true,
             });
             if (fromItem.Count <= 0)
-                RemoveItem(fromItem);
+            {
+                fromArray[fromItem.Slot] = null;
+                RemoveItem(fromItem);                
+                fromItem.Delete();
+            }
 
             switch (p.ToGrid)
             {
@@ -7764,7 +7768,9 @@ namespace Server.Models
                     Success = true,
                 });
                 Connection.ReceiveChat($"Your {toItem.Info.ItemName} broke.", MessageType.System);
+                toArray[toItem.Slot] = null;
                 RemoveItem(toItem);                
+                toItem.Delete();
             }
             
             RefreshStats();
