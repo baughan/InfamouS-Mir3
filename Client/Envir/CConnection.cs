@@ -2064,11 +2064,13 @@ namespace Client.Envir
 
                 foreach (KeyValuePair<Stat, int> pair in p.NewStats.Values)
                 {
+                    if (pair.Key == Stat.GemCount) continue;
+
                     if (pair.Key == Stat.WeaponElement)
                     {
                         GameScene.Game.ReceiveChat($"Your {fromCell.Item.Info.ItemName} has been effected: New Element {(Element)fromCell.Item.AddedStats[Stat.WeaponElement]}", MessageType.Hint);
                         continue;
-                    }
+                    }                    
 
                     string msg = p.NewStats.GetDisplay(pair.Key);
 

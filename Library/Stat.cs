@@ -773,6 +773,15 @@ namespace Library
 
         [StatDescription(Title = "PvP Rate", Format = "{0:#0%;-#0%;#0%}", Mode = StatType.Percent)]
         PVPRate,
+
+        [StatDescription(Title = "Success Chance", Format = "{0:#0%;-#0%;#0%}", Mode = StatType.Percent)]
+        GemOrbSuccess,
+
+        [StatDescription(Title = "Brake Chance", Format = "{0:#0%;-#0%;#0%}", Mode = StatType.Percent)]
+        GemOrbBrake,
+
+        [StatDescription(Title = "Gems/Orbs Used ", Format = "{0}", Mode = StatType.Default)]
+        GemCount,
     }
 
     public enum StatSource

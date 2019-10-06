@@ -7623,7 +7623,15 @@ namespace Server.Models
 
             UserItem toItem = toArray[p.ToSlot];
 
-            if (toItem != null && (toItem.Flags & UserItemFlags.Marriage) == UserItemFlags.Marriage) return;
+            if (toItem == null) return;
+
+            if ((toItem.Flags & UserItemFlags.Marriage) == UserItemFlags.Marriage) return;
+
+            if (toItem.Stats[Stat.GemCount] >= Globals.MaxGemOrbCount)
+            {
+                Connection.ReceiveChat($"Your {toItem.Info.ItemName} has reached the maximum upgrades.", MessageType.System);
+                return;
+            }
 
             bool success = false;
             ItemType totype = toItem.Info.ItemType;
@@ -7636,52 +7644,60 @@ namespace Server.Models
                     success = totype == ItemType.Weapon || totype == ItemType.Necklace || totype == ItemType.Bracelet || totype == ItemType.Ring;
                     break;
                 case 2:
-                    success = totype == ItemType.Armour || totype == ItemType.Helmet || totype == ItemType.Bracelet || totype == ItemType.Ring || totype == ItemType.Shoes;
+                    success = totype == ItemType.Armour || totype == ItemType.Shield || totype == ItemType.Helmet || totype == ItemType.Bracelet || totype == ItemType.Ring || totype == ItemType.Shoes;
                     break;
             }
-            if (!success) return;
+            if (!success) return;            
 
-            S.ItemStatsChanged statschange = new S.ItemStatsChanged { GridType = p.ToGrid, Slot = p.ToSlot, NewStats = new Stats() };            
-            foreach (KeyValuePair<Stat, int> s in fromItem.Info.Stats.Values)
+            S.ItemStatsChanged statschange = new S.ItemStatsChanged { GridType = p.ToGrid, Slot = p.ToSlot, NewStats = new Stats() };
+            if (SEnvir.Random.Next(100) < fromItem.Info.Stats[Stat.GemOrbSuccess])
             {
-                toItem.AddStat(s.Key, s.Value, StatSource.GemOrb);
-                statschange.NewStats[s.Key] = s.Value;
+                foreach (KeyValuePair<Stat, int> s in fromItem.Info.Stats.Values)
+                {
+                    if (s.Key == Stat.GemOrbBrake || s.Key == Stat.GemOrbSuccess) continue;
+                    toItem.AddStat(s.Key, s.Value, StatSource.GemOrb);
+                    statschange.NewStats[s.Key] = s.Value;
+                }
+                toItem.AddStat(Stat.GemCount, 1, StatSource.None);
+                statschange.NewStats[Stat.GemCount] = 1;
+                toItem.StatsChanged();
             }
-            toItem.StatsChanged();
-            Enqueue(statschange);
+            else
+                success = false;
+
+            result.Success = success;
+
+            if (!success)
+            {
+                if (SEnvir.Random.Next(100) >= fromItem.Info.Stats[Stat.GemOrbBrake])
+                {
+                    success = true;
+                }
+
+            }
+
+            if (success)
+                Enqueue(statschange);
+            
 
             fromItem.Count -= 1;
-            Packet guildpacket;            
+            if (fromItem.Count < 0) fromItem.Count = 0;
+
+            Packet guildpacket;
 
             switch (p.FromGrid)
             {
                 case GridType.GuildStorage:
-                    if (fromItem.Count > 1)
+                    guildpacket = new S.ItemChanged
                     {
-                        guildpacket = new S.ItemChanged
+                        Link = new CellLinkInfo()
                         {
-                            Link = new CellLinkInfo()
-                            {
-                                GridType = p.FromGrid,
-                                Slot = p.FromSlot,
-                                Count = fromItem.Count,
-                            },
-                            Success = true,
-                        };
-                    }
-                    else
-                    {
-                        guildpacket = new S.ItemChanged
-                        {
-                            Link = new CellLinkInfo()
-                            {
-                                GridType = p.FromGrid,
-                                Slot = p.FromSlot,
-                                Count = fromItem.Count,
-                            },
-                            Success = true,
-                        };
-                    }
+                            GridType = p.FromGrid,
+                            Slot = p.FromSlot,
+                            Count = fromItem.Count,
+                        },
+                        Success = true,
+                    };
 
                     foreach (GuildMemberInfo member in Character.Account.GuildMember.Guild.Members)
                     {
@@ -7705,7 +7721,7 @@ namespace Server.Models
                 },
                 Success = true,
             });
-            if (fromItem.Count == 0)
+            if (fromItem.Count <= 0)
                 RemoveItem(fromItem);
 
             switch (p.ToGrid)
@@ -7717,13 +7733,40 @@ namespace Server.Models
 
                         if (player == null || player == this) continue;
 
-                        player.Enqueue(statschange);
+                        if (success)
+                            player.Enqueue(statschange);
+                        else
+                            player.Enqueue(new S.ItemChanged
+                            {
+                                Link = new CellLinkInfo()
+                                {
+                                    GridType = p.ToGrid,
+                                    Slot = p.ToSlot,
+                                    Count = 0,
+                                },
+                                Success = true,
+                            });
                     }
 
                     break;
             }
 
-            result.Success = true;
+            if (!success)
+            {
+                Enqueue(new S.ItemChanged
+                {
+                    Link = new CellLinkInfo()
+                    {
+                        GridType = p.ToGrid,
+                        Slot = p.ToSlot,
+                        Count = 0,
+                    },
+                    Success = true,
+                });
+                Connection.ReceiveChat($"Your {toItem.Info.ItemName} broke.", MessageType.System);
+                RemoveItem(toItem);                
+            }
+            
             RefreshStats();
         }
 

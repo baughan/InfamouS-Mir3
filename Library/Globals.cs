@@ -426,6 +426,8 @@ namespace Library
         public static bool RealNameRequired = false,
                            BirthDateRequired = false;
 
+        public const int MaxGemOrbCount = 30;
+
         public static Dictionary<RefineQuality, TimeSpan> RefineTimes = new Dictionary<RefineQuality, TimeSpan>
         {
             [RefineQuality.Rush] = TimeSpan.FromMinutes(1),
