@@ -2203,6 +2203,87 @@ namespace Client.Models
                     StruckSound = SoundIndex.FireBirdStruck;
                     DieSound = SoundIndex.FireBirdDie;
                     break;
+                case MonsterImage.AxeOma:
+                    CEnvir.LibraryList.TryGetValue(LibraryFile.AxeOma, out BodyLibrary);
+                    foreach (KeyValuePair<MirAnimation, Frame> frame in FrameSet.AxeOma)
+                        Frames[frame.Key] = frame.Value;
+                    BodyShape = 0;
+                    AttackSound = SoundIndex.ShellNipperAttack;
+                    StruckSound = SoundIndex.ShellNipperStruck;
+                    DieSound = SoundIndex.ShellNipperDie;
+                    break;
+                case MonsterImage.SwordOma:
+                    CEnvir.LibraryList.TryGetValue(LibraryFile.AxeOma, out BodyLibrary);
+                    foreach (KeyValuePair<MirAnimation, Frame> frame in FrameSet.FireBird)
+                        Frames[frame.Key] = frame.Value;
+                    BodyShape = 0;
+                    AttackSound = SoundIndex.ShellNipperAttack;
+                    StruckSound = SoundIndex.ShellNipperStruck;
+                    DieSound = SoundIndex.ShellNipperDie;
+                    break;
+                case MonsterImage.CrossbowOma:
+                    CEnvir.LibraryList.TryGetValue(LibraryFile.CrossbowOma, out BodyLibrary);
+                    foreach (KeyValuePair<MirAnimation, Frame> frame in FrameSet.FireBird)
+                        Frames[frame.Key] = frame.Value;
+                    BodyShape = 0;
+                    AttackSound = SoundIndex.ShellNipperAttack;
+                    StruckSound = SoundIndex.ShellNipperStruck;
+                    DieSound = SoundIndex.ShellNipperDie;
+                    break;
+                case MonsterImage.WingedOma:
+                    CEnvir.LibraryList.TryGetValue(LibraryFile.WingedOma, out BodyLibrary);
+                    foreach (KeyValuePair<MirAnimation, Frame> frame in FrameSet.FireBird)
+                        Frames[frame.Key] = frame.Value;
+                    BodyShape = 0;
+                    AttackSound = SoundIndex.ShellNipperAttack;
+                    StruckSound = SoundIndex.ShellNipperStruck;
+                    DieSound = SoundIndex.ShellNipperDie;
+                    break;
+                case MonsterImage.FlailOma:
+                    CEnvir.LibraryList.TryGetValue(LibraryFile.FlailOma, out BodyLibrary);
+                    foreach (KeyValuePair<MirAnimation, Frame> frame in FrameSet.FireBird)
+                        Frames[frame.Key] = frame.Value;
+                    BodyShape = 0;
+                    AttackSound = SoundIndex.ShellNipperAttack;
+                    StruckSound = SoundIndex.ShellNipperStruck;
+                    DieSound = SoundIndex.ShellNipperDie;
+                    break;
+                case MonsterImage.OmaGuard:
+                    CEnvir.LibraryList.TryGetValue(LibraryFile.OmaGuard, out BodyLibrary);
+                    foreach (KeyValuePair<MirAnimation, Frame> frame in FrameSet.FireBird)
+                        Frames[frame.Key] = frame.Value;
+                    BodyShape = 0;
+                    AttackSound = SoundIndex.ShellNipperAttack;
+                    StruckSound = SoundIndex.ShellNipperStruck;
+                    DieSound = SoundIndex.ShellNipperDie;
+                    break;
+                case MonsterImage.YinDevilNode:
+                    CEnvir.LibraryList.TryGetValue(LibraryFile.YinDevilNode, out BodyLibrary);
+                    foreach (KeyValuePair<MirAnimation, Frame> frame in FrameSet.FireBird)
+                        Frames[frame.Key] = frame.Value;
+                    BodyShape = 0;
+                    AttackSound = SoundIndex.ShellNipperAttack;
+                    StruckSound = SoundIndex.ShellNipperStruck;
+                    DieSound = SoundIndex.ShellNipperDie;
+                    break;
+                case MonsterImage.YangDevilNode:
+                    CEnvir.LibraryList.TryGetValue(LibraryFile.YangDevilNode, out BodyLibrary);
+                    foreach (KeyValuePair<MirAnimation, Frame> frame in FrameSet.FireBird)
+                        Frames[frame.Key] = frame.Value;
+                    BodyShape = 0;
+                    AttackSound = SoundIndex.ShellNipperAttack;
+                    StruckSound = SoundIndex.ShellNipperStruck;
+                    DieSound = SoundIndex.ShellNipperDie;
+                    break;
+                case MonsterImage.OmaKing:
+                    CEnvir.LibraryList.TryGetValue(LibraryFile.OmaKing, out BodyLibrary);
+                    foreach (KeyValuePair<MirAnimation, Frame> frame in FrameSet.FireBird)
+                        Frames[frame.Key] = frame.Value;
+                    BodyShape = 0;
+                    AttackSound = SoundIndex.ShellNipperAttack;
+                    StruckSound = SoundIndex.ShellNipperStruck;
+                    DieSound = SoundIndex.ShellNipperDie;
+                    break;
                 default:
                     CEnvir.LibraryList.TryGetValue(LibraryFile.Mon_1, out BodyLibrary);
                     BodyShape = 0;
