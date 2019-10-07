@@ -299,7 +299,7 @@ namespace Client.Scenes.Views
                 Location = new Point(105, 5),
                 Size =  new Size(80, 20),
                 ValueTextBox = { Size = new Size(40, 18)},
-                MaxValue = 50000,
+                MaxValue = 70000,
                 MinValue = 0,
                 UpButton = { Location = new Point(63, 1) }
             };
