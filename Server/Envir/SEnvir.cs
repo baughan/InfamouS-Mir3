@@ -1711,7 +1711,7 @@ namespace Server.Envir
 
             return item;
         }
-        public static UserItem CreateDropItem(ItemInfo info, int chance = 15)
+        public static UserItem CreateDropItem(ItemInfo info, int chance = 2)
         {
             UserItem item = UserItemList.CreateNewObject();
 
