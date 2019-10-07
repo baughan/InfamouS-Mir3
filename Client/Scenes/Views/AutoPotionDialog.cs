@@ -297,11 +297,11 @@ namespace Client.Scenes.Views
             {
                 Parent = this,
                 Location = new Point(105, 5),
-                Size =  new Size(80, 20),
-                ValueTextBox = { Size = new Size(40, 18)},
-                MaxValue = 70000,
+                Size =  new Size(90, 20),
+                ValueTextBox = { Size = new Size(50, 18)},
+                MaxValue = 150000,
                 MinValue = 0,
-                UpButton = { Location = new Point(63, 1) }
+                UpButton = { Location = new Point(73, 1) }
             };
             HealthTargetBox.ValueTextBox.ValueChanged += (o, e) => SendUpdate();
 
@@ -309,11 +309,11 @@ namespace Client.Scenes.Views
             {
                 Parent = this,
                 Location = new Point(105, 25),
-                Size = new Size(80, 20),
-                ValueTextBox = { Size = new Size(40, 18) },
-                MaxValue = 50000,
+                Size = new Size(90, 20),
+                ValueTextBox = { Size = new Size(50, 18) },
+                MaxValue = 150000,
                 MinValue = 0,
-                UpButton = { Location = new Point(63, 1) }
+                UpButton = { Location = new Point(73, 1) }
             };
             ManaTargetBox.ValueTextBox.ValueChanged += (o, e) => SendUpdate();
 

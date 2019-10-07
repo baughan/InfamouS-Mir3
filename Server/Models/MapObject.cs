@@ -95,7 +95,7 @@ namespace Server.Models
         public List<PlayerObject> DataSeenByPlayers;
 
         public PoisonType Poison;
-        public List<Poison> PoisonList;
+        public List<Poison> PoisonList;        
         public List<PlayerObject> GroupMembers;
 
         protected MapObject()
@@ -233,7 +233,7 @@ namespace Server.Models
                             damage += poison.Value;
 
                             for (int x = 0; x < poison.Owner.Stats[Stat.Rebirth]; x++)
-                                damage = (int)(damage * 1.35F);
+                                damage = (int)(damage * 1.2F);
                         }
                         
                         infection = true;
