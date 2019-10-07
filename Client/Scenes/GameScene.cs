@@ -2002,7 +2002,7 @@ namespace Client.Scenes
                         str += "-Weapon" + Environment.NewLine + "-Necklace" + Environment.NewLine + "-Bracelet" + Environment.NewLine + "-Ring";
                         break;
                     case 2:
-                        str += "-Armour" + Environment.NewLine + "-Shield" + Environment.NewLine + "-Helmet" + Environment.NewLine + "-Bracelet" + Environment.NewLine + "-Ring" + Environment.NewLine + "-Belt" + Environment.NewLine + "-Boots";
+                        str += "-Armour" + Environment.NewLine + "-Shield" + Environment.NewLine + "-Helmet" + Environment.NewLine + "-Bracelet" + Environment.NewLine + "-Ring" + Environment.NewLine + "-Shoes";
                         break;
                     default:
                         str += "-All Items";
