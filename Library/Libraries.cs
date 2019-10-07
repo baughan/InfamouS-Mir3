@@ -261,7 +261,18 @@ namespace Library
             [LibraryFile.Mon_54] = @"Data\Mon-54.Zl",
             [LibraryFile.Mon_55] = @"Data\Mon-55.Zl",
             [LibraryFile.Mon_56] = @"Data\Mon-56.Zl",
-            
+
+            [LibraryFile.AxeOma] = @"Data\Mir2\Monster\118.Zl",
+            [LibraryFile.SwordOma] = @"Data\Mir2\Monster\119.Zl",
+            [LibraryFile.CrossbowOma] = @"Data\Mir2\Monster\120.Zl",
+            [LibraryFile.WingedOma] = @"Data\Mir2\Monster\121.Zl",
+            [LibraryFile.FlailOma] = @"Data\Mir2\Monster\122.Zl",
+            [LibraryFile.OmaGuard] = @"Data\Mir2\Monster\123.Zl",
+            [LibraryFile.YinDevilNode] = @"Data\Mir2\Monster\124.Zl",
+            [LibraryFile.YangDevilNode] = @"Data\Mir2\Monster\125.Zl",
+            [LibraryFile.OmaKing] = @"Data\Mir2\Monster\126.Zl",
+
+
             [LibraryFile.Magic] = @"Data\Magic.Zl",
             [LibraryFile.MagicEx] = @"Data\MagicEx.Zl",
             [LibraryFile.MagicEx2] = @"Data\MagicEx2.Zl",
@@ -666,6 +677,16 @@ namespace Library
         Mon_54,
         Mon_55,
         Mon_56,
+
+        AxeOma,
+        SwordOma,
+        CrossbowOma,
+        WingedOma,
+        FlailOma,
+        OmaGuard,
+        YinDevilNode,
+        YangDevilNode,
+        OmaKing,
 
 
         Magic, 

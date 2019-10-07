@@ -969,6 +969,16 @@ namespace Library
         RedBlossom,
         BlueBlossom,
         FireBird,
+
+        AxeOma,
+        SwordOma,
+        CrossbowOma,
+        WingedOma,
+        FlailOma,
+        OmaGuard,
+        YinDevilNode,
+        YangDevilNode,
+        OmaKing,
     }
 
     

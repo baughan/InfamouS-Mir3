@@ -14,12 +14,12 @@ namespace Library
         public static Dictionary<MirAnimation, Frame> DefaultMonster;
 
 
-        public static Dictionary<MirAnimation, Frame> 
+        public static Dictionary<MirAnimation, Frame>
             ForestYeti, ChestnutTree, CarnivorousPlant,
-            DevouringGhost, 
-            Larva, 
+            DevouringGhost,
+            Larva,
             ZumaGuardian, ZumaKing,
-            Monkey, 
+            Monkey,
             NumaMage, CursedCactus, NetherWorldGate,
             WestDesertLizard,
             BanyaGuard, EmperorSaWoo,
@@ -36,7 +36,7 @@ namespace Library
             OrangeTiger, RedTiger, OrangeBossTiger, BigBossTiger,
 
             SDMob3, SDMob8, SDMob15, SDMob16, SDMob17, SDMob18, SDMob19, SDMob21, SDMob22, SDMob23, SDMob24, SDMob25, SDMob26,
-            
+
             LobsterLord, LobsterSpawn,
 
             DeadTree, BobbitWorm,
@@ -46,7 +46,10 @@ namespace Library
             CrazedPrimate, HellBringer, YurinMon0, YurinMon1, WhiteBeardedTiger, HardenedRhino, Mammoth, CursedSlave1, CursedSlave2, CursedSlave3, PoisonousGolem,
 
             //Blossom
-            GardenSoldier, GardenDefender, RedBlossom, BlueBlossom, FireBird;
+            GardenSoldier, GardenDefender, RedBlossom, BlueBlossom, FireBird,
+
+            //Mir2 PB
+            AxeOma, SwordOma, CrossbowOma, WingedOma, FlailOma, OmaGuard, YinDevilNode, YangDevilNode, OmaKing;
 
 
         static FrameSet()
@@ -864,6 +867,15 @@ namespace Library
                 [MirAnimation.Struck] = new Frame(480, 3, 10, TimeSpan.FromMilliseconds(100)),
                 [MirAnimation.Die] = new Frame(560, 10, 10, TimeSpan.FromMilliseconds(100)),
                 [MirAnimation.Dead] = new Frame(569, 1, 10, TimeSpan.FromMilliseconds(1000)),
+            };
+            AxeOma = new Dictionary<MirAnimation, Frame>
+            {
+                [MirAnimation.Standing] = new Frame(0, 4, 4, TimeSpan.FromMilliseconds(500)),
+                [MirAnimation.Walking] = new Frame(32, 6, 6, TimeSpan.FromMilliseconds(100)),
+                [MirAnimation.Combat1] = new Frame(80, 6, 6, TimeSpan.FromMilliseconds(100)),
+                [MirAnimation.Struck] = new Frame(128, 2, 2, TimeSpan.FromMilliseconds(100)),
+                [MirAnimation.Die] = new Frame(144, 10, 10, TimeSpan.FromMilliseconds(100)),
+                [MirAnimation.Dead] = new Frame(153, 1, 10, TimeSpan.FromMilliseconds(1000)),
             };
         }
     }
