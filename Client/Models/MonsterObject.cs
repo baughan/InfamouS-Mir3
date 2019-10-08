@@ -2213,8 +2213,8 @@ namespace Client.Models
                     DieSound = SoundIndex.ShellNipperDie;
                     break;
                 case MonsterImage.SwordOma:
-                    CEnvir.LibraryList.TryGetValue(LibraryFile.AxeOma, out BodyLibrary);
-                    foreach (KeyValuePair<MirAnimation, Frame> frame in FrameSet.FireBird)
+                    CEnvir.LibraryList.TryGetValue(LibraryFile.SwordOma, out BodyLibrary);
+                    foreach (KeyValuePair<MirAnimation, Frame> frame in FrameSet.AxeOma)
                         Frames[frame.Key] = frame.Value;
                     BodyShape = 0;
                     AttackSound = SoundIndex.ShellNipperAttack;
@@ -2223,7 +2223,7 @@ namespace Client.Models
                     break;
                 case MonsterImage.CrossbowOma:
                     CEnvir.LibraryList.TryGetValue(LibraryFile.CrossbowOma, out BodyLibrary);
-                    foreach (KeyValuePair<MirAnimation, Frame> frame in FrameSet.FireBird)
+                    foreach (KeyValuePair<MirAnimation, Frame> frame in FrameSet.CrossbowOma)
                         Frames[frame.Key] = frame.Value;
                     BodyShape = 0;
                     AttackSound = SoundIndex.ShellNipperAttack;
@@ -2232,7 +2232,7 @@ namespace Client.Models
                     break;
                 case MonsterImage.WingedOma:
                     CEnvir.LibraryList.TryGetValue(LibraryFile.WingedOma, out BodyLibrary);
-                    foreach (KeyValuePair<MirAnimation, Frame> frame in FrameSet.FireBird)
+                    foreach (KeyValuePair<MirAnimation, Frame> frame in FrameSet.AxeOma)
                         Frames[frame.Key] = frame.Value;
                     BodyShape = 0;
                     AttackSound = SoundIndex.ShellNipperAttack;
@@ -2241,7 +2241,7 @@ namespace Client.Models
                     break;
                 case MonsterImage.FlailOma:
                     CEnvir.LibraryList.TryGetValue(LibraryFile.FlailOma, out BodyLibrary);
-                    foreach (KeyValuePair<MirAnimation, Frame> frame in FrameSet.FireBird)
+                    foreach (KeyValuePair<MirAnimation, Frame> frame in FrameSet.AxeOma)
                         Frames[frame.Key] = frame.Value;
                     BodyShape = 0;
                     AttackSound = SoundIndex.ShellNipperAttack;
@@ -2250,7 +2250,7 @@ namespace Client.Models
                     break;
                 case MonsterImage.OmaGuard:
                     CEnvir.LibraryList.TryGetValue(LibraryFile.OmaGuard, out BodyLibrary);
-                    foreach (KeyValuePair<MirAnimation, Frame> frame in FrameSet.FireBird)
+                    foreach (KeyValuePair<MirAnimation, Frame> frame in FrameSet.AxeOma)
                         Frames[frame.Key] = frame.Value;
                     BodyShape = 0;
                     AttackSound = SoundIndex.ShellNipperAttack;
@@ -2259,7 +2259,7 @@ namespace Client.Models
                     break;
                 case MonsterImage.YinDevilNode:
                     CEnvir.LibraryList.TryGetValue(LibraryFile.YinDevilNode, out BodyLibrary);
-                    foreach (KeyValuePair<MirAnimation, Frame> frame in FrameSet.FireBird)
+                    foreach (KeyValuePair<MirAnimation, Frame> frame in FrameSet.YinDevilNode)
                         Frames[frame.Key] = frame.Value;
                     BodyShape = 0;
                     AttackSound = SoundIndex.ShellNipperAttack;
@@ -2268,7 +2268,7 @@ namespace Client.Models
                     break;
                 case MonsterImage.YangDevilNode:
                     CEnvir.LibraryList.TryGetValue(LibraryFile.YangDevilNode, out BodyLibrary);
-                    foreach (KeyValuePair<MirAnimation, Frame> frame in FrameSet.FireBird)
+                    foreach (KeyValuePair<MirAnimation, Frame> frame in FrameSet.YinDevilNode)
                         Frames[frame.Key] = frame.Value;
                     BodyShape = 0;
                     AttackSound = SoundIndex.ShellNipperAttack;
@@ -2502,7 +2502,16 @@ namespace Client.Models
                     if (!CEnvir.LibraryList.TryGetValue(LibraryFile.MonMagicEx14, out library)) break;
                     library.DrawBlend(DrawFrame + 2000, x, y, Color.White, true, 1f, ImageType.Image);
                     break;
-
+                case MonsterImage.YinDevilNode:
+                    if (CurrentAction != MirAction.Standing) break;
+                    if (!CEnvir.LibraryList.TryGetValue(LibraryFile.YinDevilNode, out library)) break;
+                    library.DrawBlend(DrawFrame + 22, x, y, Color.White, true, 1f, ImageType.Image);
+                    break;
+                case MonsterImage.YangDevilNode:
+                    if (CurrentAction != MirAction.Standing) break;
+                    if (!CEnvir.LibraryList.TryGetValue(LibraryFile.YangDevilNode, out library)) break;
+                    library.DrawBlend(DrawFrame + 22, x, y, Color.White, true, 1f, ImageType.Image);
+                    break;
             }
 
             if (CompanionObject != null && CompanionObject.HeadShape > 0)
@@ -2952,6 +2961,38 @@ namespace Client.Models
                             attackTarget.Effects.Add(effect = new MirEffect(1140, 10, TimeSpan.FromMilliseconds(100), LibraryFile.MonMagicEx13, 10, 35, Globals.FireColour)
                             {
                                 Blend = true,
+                                Target = attackTarget,
+                            });
+                            effect.Process();
+                        };
+                        effect.Process();
+                    }
+                    break;
+                case MonsterImage.CrossbowOma:
+                    foreach (MapObject attackTarget in AttackTargets)
+                    {
+                        Effects.Add(new MirProjectile(38, 1, TimeSpan.FromMilliseconds(100), LibraryFile.CrossbowOma, 0, 0, Globals.NoneColour, CurrentLocation)
+                        {
+                            Target = attackTarget,
+                            Skip = 7,
+                        });
+                    }
+                    break;
+                case MonsterImage.WingedOma:
+                    foreach (MapObject attackTarget in AttackTargets)
+                    {
+                        MirEffect effect;
+                        Effects.Add(effect = new MirProjectile(224, 6, TimeSpan.FromMilliseconds(80), LibraryFile.WingedOma, 0, 0, Globals.NoneColour, CurrentLocation)
+                        {
+                            Target = attackTarget,
+                            Has16Directions = false,
+                            Skip = 6,
+                        });
+
+                        effect.CompleteAction = () =>
+                        {
+                            attackTarget.Effects.Add(effect = new MirEffect(272, 2, TimeSpan.FromMilliseconds(100), LibraryFile.WingedOma, 0, 0, Globals.NoneColour)
+                            {
                                 Target = attackTarget,
                             });
                             effect.Process();
@@ -3973,6 +4014,44 @@ namespace Client.Models
                                     });
                                     break;
                             }
+                            break;
+                    }
+                    break;
+                case MonsterImage.YinDevilNode:
+                    switch (CurrentAction)
+                    {
+                        case MirAction.Attack:
+                            Effects.Add(new MirEffect(26, 26, TimeSpan.FromMilliseconds(40), LibraryFile.YinDevilNode, 10, 35, Globals.NoneColour)
+                            {
+                                Blend = true,
+                                Target = this,
+                            });
+                            break;
+                        case MirAction.Die:
+                            Effects.Add(new MirEffect(52, 20, TimeSpan.FromMilliseconds(40), LibraryFile.YinDevilNode, 10, 35, Globals.NoneColour)
+                            {
+                                Blend = true,
+                                Target = this,
+                            });
+                            break;
+                    }
+                    break;
+                case MonsterImage.YangDevilNode:
+                    switch (CurrentAction)
+                    {
+                        case MirAction.Attack:
+                            Effects.Add(new MirEffect(26, 26, TimeSpan.FromMilliseconds(40), LibraryFile.YangDevilNode, 10, 35, Globals.NoneColour)
+                            {
+                                Blend = true,
+                                Target = this,
+                            });
+                            break;
+                        case MirAction.Die:
+                            Effects.Add(new MirEffect(52, 20, TimeSpan.FromMilliseconds(40), LibraryFile.YangDevilNode, 10, 35, Globals.NoneColour)
+                            {
+                                Blend = true,
+                                Target = this,
+                            });
                             break;
                     }
                     break;

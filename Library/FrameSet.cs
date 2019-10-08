@@ -49,7 +49,7 @@ namespace Library
             GardenSoldier, GardenDefender, RedBlossom, BlueBlossom, FireBird,
 
             //Mir2 PB
-            AxeOma, SwordOma, CrossbowOma, WingedOma, FlailOma, OmaGuard, YinDevilNode, YangDevilNode, OmaKing;
+            AxeOma, CrossbowOma, YinDevilNode, OmaKing;
 
 
         static FrameSet()
@@ -873,9 +873,27 @@ namespace Library
                 [MirAnimation.Standing] = new Frame(0, 4, 4, TimeSpan.FromMilliseconds(500)),
                 [MirAnimation.Walking] = new Frame(32, 6, 6, TimeSpan.FromMilliseconds(100)),
                 [MirAnimation.Combat1] = new Frame(80, 6, 6, TimeSpan.FromMilliseconds(100)),
+                [MirAnimation.Combat2] = new Frame(80, 6, 6, TimeSpan.FromMilliseconds(100)),
                 [MirAnimation.Struck] = new Frame(128, 2, 2, TimeSpan.FromMilliseconds(100)),
                 [MirAnimation.Die] = new Frame(144, 10, 10, TimeSpan.FromMilliseconds(100)),
                 [MirAnimation.Dead] = new Frame(153, 1, 10, TimeSpan.FromMilliseconds(1000)),
+            };
+            CrossbowOma = new Dictionary<MirAnimation, Frame>
+            {
+                [MirAnimation.Standing] = new Frame(0, 4, 4, TimeSpan.FromMilliseconds(500)),
+                [MirAnimation.Walking] = new Frame(32, 6, 7, TimeSpan.FromMilliseconds(100)),
+                [MirAnimation.Combat2] = new Frame(88, 6, 7, TimeSpan.FromMilliseconds(100)),
+                [MirAnimation.Struck] = new Frame(144, 2, 2, TimeSpan.FromMilliseconds(100)),
+                [MirAnimation.Die] = new Frame(160, 10, 10, TimeSpan.FromMilliseconds(100)),
+                [MirAnimation.Dead] = new Frame(169, 1, 10, TimeSpan.FromMilliseconds(1000)),
+            };
+            YinDevilNode = new Dictionary<MirAnimation, Frame>
+            {
+                [MirAnimation.Standing] = new Frame(0, 4, 4, TimeSpan.FromMilliseconds(500)),
+                [MirAnimation.Combat1] = new Frame(4, 6, 6, TimeSpan.FromMilliseconds(100)),
+                [MirAnimation.Struck] = new Frame(10, 2, 2, TimeSpan.FromMilliseconds(100)),
+                [MirAnimation.Die] = new Frame(13, 9, 9, TimeSpan.FromMilliseconds(100)),
+                [MirAnimation.Dead] = new Frame(21, 1, 9, TimeSpan.FromMilliseconds(1000)),
             };
         }
     }
