@@ -18849,7 +18849,7 @@ namespace Server.Models
         {
             Stats buffStats = new Stats
             {
-                [Stat.HealthPercent] = -(1 + magic.Level) * 10,
+                [Stat.HealthPercent] = -(1 + magic.Level) * 6,
                 [Stat.MCPercent] = (1 + magic.Level) * 10,
             };
 
