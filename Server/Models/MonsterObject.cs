@@ -626,6 +626,12 @@ namespace Server.Models
                     return new BlueBlossom { MonsterInfo = monsterInfo };
                 case 138:
                     return new FireBird { MonsterInfo = monsterInfo };
+                case 139:
+                    return new WingedOma { MonsterInfo = monsterInfo };
+                case 140:
+                    return new YinDevilNode { MonsterInfo = monsterInfo };
+                case 141:
+                    return new YangDevilNode { MonsterInfo = monsterInfo };
                 default:
                     return new MonsterObject { MonsterInfo = monsterInfo };
             }

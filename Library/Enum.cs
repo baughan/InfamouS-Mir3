@@ -242,6 +242,8 @@ namespace Library
         FrostBite = 411,
 
         MagicWeakness = 500,
+        YinDevilNode = 501,
+        YangDevilNode = 502,
     }
 
     public enum RequiredType : byte
