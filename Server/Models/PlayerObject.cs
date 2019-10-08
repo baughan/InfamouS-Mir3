@@ -7768,7 +7768,7 @@ namespace Server.Models
                     Success = true,
                 });
                 Connection.ReceiveChat($"Your {toItem.Info.ItemName} broke.", MessageType.System);
-                toArray[toItem.Slot] = null;
+                toArray[p.ToSlot] = null;
                 RemoveItem(toItem);
                 toItem.Delete();
             }
