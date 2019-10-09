@@ -516,16 +516,16 @@ namespace Server.Models
 
                         if (buff.TickTime > TimeSpan.Zero) continue;
 
-                        buff.TickTime += buff.TickFrequency.Add(buff.TickFrequency);
+                        buff.TickTime += buff.TickFrequency;
                         
                         player = this as PlayerObject;
-
                         
                         if (player != null)
                         {
                             if (SEnvir.ConquestWars.Any(war => war.Map == CurrentMap))
                             {
-                                player.Enqueue(new S.HuntGoldChanged { HuntGold = ++player.Character.Account.HuntGold });
+                                player.Character.Account.HuntGold += 2;
+                                player.Enqueue(new S.HuntGoldChanged { HuntGold = player.Character.Account.HuntGold });
                                 continue;
                             }
                         }
