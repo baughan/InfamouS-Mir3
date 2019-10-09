@@ -2208,81 +2208,81 @@ namespace Client.Models
                     foreach (KeyValuePair<MirAnimation, Frame> frame in FrameSet.AxeOma)
                         Frames[frame.Key] = frame.Value;
                     BodyShape = 0;
-                    AttackSound = SoundIndex.ShellNipperAttack;
-                    StruckSound = SoundIndex.ShellNipperStruck;
-                    DieSound = SoundIndex.ShellNipperDie;
+                    AttackSound = SoundIndex.AxeOmaAttack;
+                    StruckSound = SoundIndex.AxeOmaStruck;
+                    DieSound = SoundIndex.AxeOmaDie;
                     break;
                 case MonsterImage.SwordOma:
                     CEnvir.LibraryList.TryGetValue(LibraryFile.SwordOma, out BodyLibrary);
                     foreach (KeyValuePair<MirAnimation, Frame> frame in FrameSet.AxeOma)
                         Frames[frame.Key] = frame.Value;
                     BodyShape = 0;
-                    AttackSound = SoundIndex.ShellNipperAttack;
-                    StruckSound = SoundIndex.ShellNipperStruck;
-                    DieSound = SoundIndex.ShellNipperDie;
+                    AttackSound = SoundIndex.SwordOmaAttack;
+                    StruckSound = SoundIndex.SwordOmaStruck;
+                    DieSound = SoundIndex.SwordOmaDie;
                     break;
                 case MonsterImage.CrossbowOma:
                     CEnvir.LibraryList.TryGetValue(LibraryFile.CrossbowOma, out BodyLibrary);
                     foreach (KeyValuePair<MirAnimation, Frame> frame in FrameSet.CrossbowOma)
                         Frames[frame.Key] = frame.Value;
                     BodyShape = 0;
-                    AttackSound = SoundIndex.ShellNipperAttack;
-                    StruckSound = SoundIndex.ShellNipperStruck;
-                    DieSound = SoundIndex.ShellNipperDie;
+                    AttackSound = SoundIndex.CrossbowOmaAttack;
+                    StruckSound = SoundIndex.CrossbowOmaStruck;
+                    DieSound = SoundIndex.CrossbowOmaDie;
                     break;
                 case MonsterImage.WingedOma:
                     CEnvir.LibraryList.TryGetValue(LibraryFile.WingedOma, out BodyLibrary);
                     foreach (KeyValuePair<MirAnimation, Frame> frame in FrameSet.AxeOma)
                         Frames[frame.Key] = frame.Value;
                     BodyShape = 0;
-                    AttackSound = SoundIndex.ShellNipperAttack;
-                    StruckSound = SoundIndex.ShellNipperStruck;
-                    DieSound = SoundIndex.ShellNipperDie;
+                    AttackSound = SoundIndex.WingedOmaAttack;
+                    StruckSound = SoundIndex.WingedOmaStruck;
+                    DieSound = SoundIndex.WingedOmaDie;
                     break;
                 case MonsterImage.FlailOma:
                     CEnvir.LibraryList.TryGetValue(LibraryFile.FlailOma, out BodyLibrary);
                     foreach (KeyValuePair<MirAnimation, Frame> frame in FrameSet.AxeOma)
                         Frames[frame.Key] = frame.Value;
                     BodyShape = 0;
-                    AttackSound = SoundIndex.ShellNipperAttack;
-                    StruckSound = SoundIndex.ShellNipperStruck;
-                    DieSound = SoundIndex.ShellNipperDie;
+                    AttackSound = SoundIndex.FlailOmaAttack;
+                    StruckSound = SoundIndex.FlailOmaStruck;
+                    DieSound = SoundIndex.FlailOmaDie;
                     break;
                 case MonsterImage.OmaGuard:
                     CEnvir.LibraryList.TryGetValue(LibraryFile.OmaGuard, out BodyLibrary);
                     foreach (KeyValuePair<MirAnimation, Frame> frame in FrameSet.AxeOma)
                         Frames[frame.Key] = frame.Value;
                     BodyShape = 0;
-                    AttackSound = SoundIndex.ShellNipperAttack;
-                    StruckSound = SoundIndex.ShellNipperStruck;
-                    DieSound = SoundIndex.ShellNipperDie;
+                    AttackSound = SoundIndex.OmaGuardAttack;
+                    StruckSound = SoundIndex.OmaGuardStruck;
+                    DieSound = SoundIndex.OmaGuardDie;
                     break;
                 case MonsterImage.YinDevilNode:
                     CEnvir.LibraryList.TryGetValue(LibraryFile.YinDevilNode, out BodyLibrary);
                     foreach (KeyValuePair<MirAnimation, Frame> frame in FrameSet.YinDevilNode)
                         Frames[frame.Key] = frame.Value;
                     BodyShape = 0;
-                    AttackSound = SoundIndex.ShellNipperAttack;
-                    StruckSound = SoundIndex.ShellNipperStruck;
-                    DieSound = SoundIndex.ShellNipperDie;
+                    AttackSound = SoundIndex.YinDevilNodeAttack;
+                    StruckSound = SoundIndex.YinDevilNodeStruck;
+                    DieSound = SoundIndex.YinDevilNodeDie;
                     break;
                 case MonsterImage.YangDevilNode:
                     CEnvir.LibraryList.TryGetValue(LibraryFile.YangDevilNode, out BodyLibrary);
                     foreach (KeyValuePair<MirAnimation, Frame> frame in FrameSet.YinDevilNode)
                         Frames[frame.Key] = frame.Value;
                     BodyShape = 0;
-                    AttackSound = SoundIndex.ShellNipperAttack;
-                    StruckSound = SoundIndex.ShellNipperStruck;
-                    DieSound = SoundIndex.ShellNipperDie;
+                    AttackSound = SoundIndex.YangDevilNodeAttack;
+                    StruckSound = SoundIndex.YangDevilNodeStruck;
+                    DieSound = SoundIndex.YangDevilNodeDie;
                     break;
                 case MonsterImage.OmaKing:
                     CEnvir.LibraryList.TryGetValue(LibraryFile.OmaKing, out BodyLibrary);
-                    foreach (KeyValuePair<MirAnimation, Frame> frame in FrameSet.FireBird)
+                    foreach (KeyValuePair<MirAnimation, Frame> frame in FrameSet.OmaKing)
                         Frames[frame.Key] = frame.Value;
                     BodyShape = 0;
-                    AttackSound = SoundIndex.ShellNipperAttack;
-                    StruckSound = SoundIndex.ShellNipperStruck;
-                    DieSound = SoundIndex.ShellNipperDie;
+                    AttackSound = SoundIndex.OmaKingAttack;
+                    StruckSound = SoundIndex.OmaKingStruck;
+                    DieSound = SoundIndex.OmaKingDie;
                     break;
                 default:
                     CEnvir.LibraryList.TryGetValue(LibraryFile.Mon_1, out BodyLibrary);
@@ -2511,6 +2511,11 @@ namespace Client.Models
                     if (CurrentAction != MirAction.Standing) break;
                     if (!CEnvir.LibraryList.TryGetValue(LibraryFile.YangDevilNode, out library)) break;
                     library.DrawBlend(DrawFrame + 22, x, y, Color.White, true, 1f, ImageType.Image);
+                    break;
+                case MonsterImage.OmaKing:
+                    if (CurrentAction != MirAction.Die) break;
+                    if (!CEnvir.LibraryList.TryGetValue(LibraryFile.OmaKing, out library)) break;
+                    library.DrawBlend(DrawFrame + 160, x, y, Color.White, true, 1f, ImageType.Image);
                     break;
             }
 
@@ -3051,6 +3056,18 @@ namespace Client.Models
                                     Blend = true,
                                     Target = this,
                                     Direction = Direction,
+                                });
+                            }
+                            break;
+                        case MonsterImage.OmaKing:
+                            if (FrameIndex == 2)
+                            {                                
+                                Effects.Add(new MirEffect(624, 4, TimeSpan.FromMilliseconds(100), LibraryFile.OmaKing, 0, 0, Globals.NoneColour)
+                                {
+                                    Blend = true,
+                                    Target = this,
+                                    Direction = Direction,
+                                    Skip = 4,
                                 });
                             }
                             break;
@@ -4048,6 +4065,19 @@ namespace Client.Models
                             break;
                         case MirAction.Die:
                             Effects.Add(new MirEffect(52, 20, TimeSpan.FromMilliseconds(40), LibraryFile.YangDevilNode, 10, 35, Globals.NoneColour)
+                            {
+                                Blend = true,
+                                Target = this,
+                            });
+                            break;
+                    }
+                    break;
+                case MonsterImage.OmaKing:
+                    switch (CurrentAction)
+                    {                        
+                        case MirAction.RangeAttack:
+                            DXSoundManager.Play(SoundIndex.OmaKingAttack2);
+                            Effects.Add(new MirEffect(656, 20, TimeSpan.FromMilliseconds(100), LibraryFile.OmaKing, 10, 35, Globals.NoneColour)
                             {
                                 Blend = true,
                                 Target = this,

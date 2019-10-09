@@ -895,6 +895,16 @@ namespace Library
                 [MirAnimation.Die] = new Frame(13, 9, 9, TimeSpan.FromMilliseconds(100)),
                 [MirAnimation.Dead] = new Frame(21, 1, 9, TimeSpan.FromMilliseconds(1000)),
             };
+            OmaKing = new Dictionary<MirAnimation, Frame>
+            {
+                [MirAnimation.Standing] = new Frame(0, 4, 4, TimeSpan.FromMilliseconds(500)),
+                [MirAnimation.Walking] = new Frame(32, 6, 6, TimeSpan.FromMilliseconds(100)),
+                [MirAnimation.Combat1] = new Frame(80, 6, 6, TimeSpan.FromMilliseconds(100)),
+                [MirAnimation.Combat2] = new Frame(464, 20, 20, TimeSpan.FromMilliseconds(100)),
+                [MirAnimation.Struck] = new Frame(128, 2, 2, TimeSpan.FromMilliseconds(100)),
+                [MirAnimation.Die] = new Frame(144, 20, 20, TimeSpan.FromMilliseconds(100)),
+                [MirAnimation.Dead] = new Frame(163, 1, 20, TimeSpan.FromMilliseconds(1000)),
+            };
         }
     }
 

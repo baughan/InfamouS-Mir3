@@ -632,6 +632,8 @@ namespace Server.Models
                     return new YinDevilNode { MonsterInfo = monsterInfo };
                 case 141:
                     return new YangDevilNode { MonsterInfo = monsterInfo };
+                case 142:
+                    return new OmaKing { MonsterInfo = monsterInfo };
                 default:
                     return new MonsterObject { MonsterInfo = monsterInfo };
             }
