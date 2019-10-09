@@ -20,3 +20,5 @@
 Components/SlimDX.dll
 PatchManager/PatchManager.csproj
 /Server/SlimDX.dll
+
+*.csproj
