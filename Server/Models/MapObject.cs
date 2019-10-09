@@ -516,7 +516,7 @@ namespace Server.Models
 
                         if (buff.TickTime > TimeSpan.Zero) continue;
 
-                        buff.TickTime += buff.TickFrequency;
+                        buff.TickTime += buff.TickFrequency.Add(buff.TickFrequency);
                         
                         player = this as PlayerObject;
 
