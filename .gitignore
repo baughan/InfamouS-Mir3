@@ -101,4 +101,9 @@ PatchManager/PatchManager.csproj
 >>>>>>> f9f3c0e... Uploading correct code
 =======
 /Server/SlimDX.dll
+<<<<<<< HEAD
 >>>>>>> 0649096... IP/Port changed to default
+=======
+
+*.csproj
+>>>>>>> 10bcc40... *.csproj
