@@ -5811,7 +5811,7 @@ namespace Server.Models
                         item.Count -= item.Info.StackSize - oldItem.Count;
                         oldItem.Count = item.Info.StackSize;
                     }
-                    if (handled) continue;
+                    if (handled) return;
                 }
 
                 for (int i = 0; i < PartsStorage.Length; i++)
