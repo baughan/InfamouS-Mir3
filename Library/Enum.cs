@@ -2502,7 +2502,42 @@ namespace Library
         FireBirdStruck,
         FireBirdDie,
 
+        AxeOmaAttack,
+        AxeOmaStruck,
+        AxeOmaDie,
 
+        SwordOmaAttack,
+        SwordOmaStruck,
+        SwordOmaDie,
+
+        CrossbowOmaAttack,
+        CrossbowOmaStruck,
+        CrossbowOmaDie,
+
+        WingedOmaAttack,
+        WingedOmaStruck,
+        WingedOmaDie,
+
+        FlailOmaAttack,
+        FlailOmaStruck,
+        FlailOmaDie,
+
+        OmaGuardAttack,
+        OmaGuardStruck,
+        OmaGuardDie,
+
+        YinDevilNodeAttack,
+        YinDevilNodeStruck,
+        YinDevilNodeDie,
+
+        YangDevilNodeAttack,
+        YangDevilNodeStruck,
+        YangDevilNodeDie,
+
+        OmaKingAttack,
+        OmaKingAttack2,
+        OmaKingStruck,
+        OmaKingDie,
 
 
         #endregion

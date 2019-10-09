@@ -12,6 +12,7 @@ namespace Client.Envir
     public static class DXSoundManager
     {
         private const string SoundPath = @".\Sound\";
+        private const string Mir2MonsterSoundPath = @".\Sound\Mir2\Monster\";
 
         public static DirectSound Device;
         public static bool Error;
@@ -990,6 +991,43 @@ namespace Client.Envir
             [SoundIndex.FireBirdAttack3] = new DXSound(SoundPath + @"3949.wav", SoundType.Monster),
             [SoundIndex.FireBirdStruck] = new DXSound(SoundPath + @"3944.wav", SoundType.Monster),
             [SoundIndex.FireBirdDie] = new DXSound(SoundPath + @"3945.wav", SoundType.Monster),
+
+            [SoundIndex.AxeOmaAttack] = new DXSound(Mir2MonsterSoundPath + @"118-1.wav", SoundType.Monster),
+            [SoundIndex.AxeOmaStruck] = new DXSound(Mir2MonsterSoundPath + @"118-2.wav", SoundType.Monster),
+            [SoundIndex.AxeOmaDie] = new DXSound(Mir2MonsterSoundPath + @"118-3.wav", SoundType.Monster),
+
+            [SoundIndex.SwordOmaAttack] = new DXSound(Mir2MonsterSoundPath + @"119-1.wav", SoundType.Monster),
+            [SoundIndex.SwordOmaStruck] = new DXSound(Mir2MonsterSoundPath + @"119-2.wav", SoundType.Monster),
+            [SoundIndex.SwordOmaDie] = new DXSound(Mir2MonsterSoundPath + @"119-3.wav", SoundType.Monster),
+
+            [SoundIndex.CrossbowOmaAttack] = new DXSound(Mir2MonsterSoundPath + @"120-1.wav", SoundType.Monster),
+            [SoundIndex.CrossbowOmaStruck] = new DXSound(Mir2MonsterSoundPath + @"120-2.wav", SoundType.Monster),
+            [SoundIndex.CrossbowOmaDie] = new DXSound(Mir2MonsterSoundPath + @"120-3.wav", SoundType.Monster),
+
+            [SoundIndex.WingedOmaAttack] = new DXSound(Mir2MonsterSoundPath + @"121-1.wav", SoundType.Monster),
+            [SoundIndex.WingedOmaStruck] = new DXSound(Mir2MonsterSoundPath + @"121-2.wav", SoundType.Monster),
+            [SoundIndex.WingedOmaDie] = new DXSound(Mir2MonsterSoundPath + @"121-3.wav", SoundType.Monster),
+
+            [SoundIndex.FlailOmaAttack] = new DXSound(Mir2MonsterSoundPath + @"122-1.wav", SoundType.Monster),
+            [SoundIndex.FlailOmaStruck] = new DXSound(Mir2MonsterSoundPath + @"122-2.wav", SoundType.Monster),
+            [SoundIndex.FlailOmaDie] = new DXSound(Mir2MonsterSoundPath + @"122-3.wav", SoundType.Monster),
+
+            [SoundIndex.OmaGuardAttack] = new DXSound(Mir2MonsterSoundPath + @"123-1.wav", SoundType.Monster),
+            [SoundIndex.OmaGuardStruck] = new DXSound(Mir2MonsterSoundPath + @"123-2.wav", SoundType.Monster),
+            [SoundIndex.OmaGuardDie] = new DXSound(Mir2MonsterSoundPath + @"123-3.wav", SoundType.Monster),
+
+            [SoundIndex.YinDevilNodeAttack] = new DXSound(Mir2MonsterSoundPath + @"124-1.wav", SoundType.Monster),
+            [SoundIndex.YinDevilNodeStruck] = new DXSound(Mir2MonsterSoundPath + @"124-2.wav", SoundType.Monster),
+            [SoundIndex.YinDevilNodeDie] = new DXSound(Mir2MonsterSoundPath + @"124-3.wav", SoundType.Monster),
+
+            [SoundIndex.YangDevilNodeAttack] = new DXSound(Mir2MonsterSoundPath + @"125-1.wav", SoundType.Monster),
+            [SoundIndex.YangDevilNodeStruck] = new DXSound(Mir2MonsterSoundPath + @"125-2.wav", SoundType.Monster),
+            [SoundIndex.YangDevilNodeDie] = new DXSound(Mir2MonsterSoundPath + @"125-3.wav", SoundType.Monster),
+
+            [SoundIndex.OmaKingAttack] = new DXSound(Mir2MonsterSoundPath + @"126-1.wav", SoundType.Monster),
+            [SoundIndex.OmaKingAttack2] = new DXSound(Mir2MonsterSoundPath + @"126-6.wav", SoundType.Monster),
+            [SoundIndex.OmaKingStruck] = new DXSound(Mir2MonsterSoundPath + @"126-2.wav", SoundType.Monster),
+            [SoundIndex.OmaKingDie] = new DXSound(Mir2MonsterSoundPath + @"126-3.wav", SoundType.Monster),
 
             #endregion
         };

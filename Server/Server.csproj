@@ -116,6 +116,7 @@
     <Compile Include="Models\Map.cs" />
     <Compile Include="Models\MapObject.cs" />
     <Compile Include="Models\MonsterObject.cs" />
+    <Compile Include="Models\Monsters\OmaKing.cs" />
     <Compile Include="Models\Monsters\YangDevilNode.cs" />
     <Compile Include="Models\Monsters\YinDevilNode.cs" />
     <Compile Include="Models\Monsters\FireBird.cs" />
