@@ -2284,6 +2284,15 @@ namespace Client.Models
                     StruckSound = SoundIndex.OmaKingStruck;
                     DieSound = SoundIndex.OmaKingDie;
                     break;
+                case MonsterImage.BlackFoxman:
+                    CEnvir.LibraryList.TryGetValue(LibraryFile.BlackFoxman, out BodyLibrary);
+                    foreach (KeyValuePair<MirAnimation, Frame> frame in FrameSet.BlackFoxman)
+                        Frames[frame.Key] = frame.Value;
+                    BodyShape = 0;
+                    AttackSound = SoundIndex.OmaKingAttack;
+                    StruckSound = SoundIndex.OmaKingStruck;
+                    DieSound = SoundIndex.OmaKingDie;
+                    break;
                 default:
                     CEnvir.LibraryList.TryGetValue(LibraryFile.Mon_1, out BodyLibrary);
                     BodyShape = 0;
@@ -3061,7 +3070,7 @@ namespace Client.Models
                             break;
                         case MonsterImage.OmaKing:
                             if (FrameIndex == 2)
-                            {                                
+                            {
                                 Effects.Add(new MirEffect(624, 4, TimeSpan.FromMilliseconds(100), LibraryFile.OmaKing, 0, 0, Globals.NoneColour)
                                 {
                                     Blend = true,
@@ -3078,6 +3087,23 @@ namespace Client.Models
                     CreateProjectile();
                     PlayAttackSound();
                     break;
+                case MirAction.Spell:
+                    switch (Image)
+                    {
+                        case MonsterImage.BlackFoxman:
+                            if (FrameIndex == 2)
+                            {
+                                Effects.Add(new MirEffect(234, 4, TimeSpan.FromMilliseconds(100), LibraryFile.BlackFoxman, 0, 0, Globals.NoneColour)
+                                {
+                                    Blend = true,
+                                    Target = this,
+                                    Direction = Direction,
+                                    Skip = 4,
+                                });
+                            }
+                            break;
+                    }                            
+                    break;            
                 case MirAction.Die:
                     if (FrameIndex == 0)
                         PlayDieSound();
@@ -4078,6 +4104,19 @@ namespace Client.Models
                         case MirAction.RangeAttack:
                             DXSoundManager.Play(SoundIndex.OmaKingAttack2);
                             Effects.Add(new MirEffect(656, 20, TimeSpan.FromMilliseconds(100), LibraryFile.OmaKing, 10, 35, Globals.NoneColour)
+                            {
+                                Blend = true,
+                                Target = this,
+                            });
+                            break;
+                    }
+                    break;
+                case MonsterImage.BlackFoxman:
+                    switch (CurrentAction)
+                    {
+                        case MirAction.Die:
+                            DXSoundManager.Play(SoundIndex.OmaKingAttack2);
+                            Effects.Add(new MirEffect(224, 10, TimeSpan.FromMilliseconds(100), LibraryFile.BlackFoxman, 10, 35, Globals.NoneColour)
                             {
                                 Blend = true,
                                 Target = this,

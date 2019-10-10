@@ -981,6 +981,17 @@ namespace Library
         YinDevilNode,
         YangDevilNode,
         OmaKing,
+
+        BlackFoxman,
+        RedFoxman,
+        WhiteFoxman,
+        TrapRock,
+        GuardianRock,
+        ThunderElement,
+        CloudElement,
+        GreatFoxSpirit,
+        HedgeKektal,
+        BigHedgeKektal,
     }
 
     
