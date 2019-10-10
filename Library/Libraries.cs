@@ -271,6 +271,16 @@ namespace Library
             [LibraryFile.YinDevilNode] = @"Data\Mir2\Monster\124.Zl",
             [LibraryFile.YangDevilNode] = @"Data\Mir2\Monster\125.Zl",
             [LibraryFile.OmaKing] = @"Data\Mir2\Monster\126.Zl",
+            [LibraryFile.BlackFoxman] = @"Data\Mir2\Monster\127.Zl",
+            [LibraryFile.RedFoxman] = @"Data\Mir2\Monster\128.Zl",
+            [LibraryFile.WhiteFoxman] = @"Data\Mir2\Monster\129.Zl",
+            [LibraryFile.TrapRock] = @"Data\Mir2\Monster\130.Zl",
+            [LibraryFile.GuardianRock] = @"Data\Mir2\Monster\131.Zl",
+            [LibraryFile.ThunderElement] = @"Data\Mir2\Monster\132.Zl",
+            [LibraryFile.CloudElement] = @"Data\Mir2\Monster\133.Zl",
+            [LibraryFile.GreatFoxSpirit] = @"Data\Mir2\Monster\134.Zl",
+            [LibraryFile.HedgeKektal] = @"Data\Mir2\Monster\135.Zl",
+            [LibraryFile.BigHedgeKektal] = @"Data\Mir2\Monster\136.Zl",
 
 
             [LibraryFile.Magic] = @"Data\Magic.Zl",
@@ -687,6 +697,16 @@ namespace Library
         YinDevilNode,
         YangDevilNode,
         OmaKing,
+        BlackFoxman,
+        RedFoxman,
+        WhiteFoxman,
+        TrapRock,
+        GuardianRock,
+        ThunderElement,
+        CloudElement,
+        GreatFoxSpirit,
+        HedgeKektal,
+        BigHedgeKektal,
 
 
         Magic, 
