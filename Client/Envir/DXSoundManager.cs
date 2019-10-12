@@ -1029,6 +1029,28 @@ namespace Client.Envir
             [SoundIndex.OmaKingStruck] = new DXSound(Mir2MonsterSoundPath + @"126-2.wav", SoundType.Monster),
             [SoundIndex.OmaKingDie] = new DXSound(Mir2MonsterSoundPath + @"126-3.wav", SoundType.Monster),
 
+            [SoundIndex.BlackFoxmanAttack] = new DXSound(Mir2MonsterSoundPath + @"127-1.wav", SoundType.Monster),
+            [SoundIndex.BlackFoxmanAttack2] = new DXSound(Mir2MonsterSoundPath + @"127-6.wav", SoundType.Monster),
+            [SoundIndex.BlackFoxmanStruck] = new DXSound(Mir2MonsterSoundPath + @"127-2.wav", SoundType.Monster),
+
+            [SoundIndex.RedFoxmanAttack] = new DXSound(Mir2MonsterSoundPath + @"128-6.wav", SoundType.Monster),
+            [SoundIndex.RedFoxmanAttack2] = new DXSound(Mir2MonsterSoundPath + @"128-7.wav", SoundType.Monster),
+            [SoundIndex.RedFoxmanStruck] = new DXSound(Mir2MonsterSoundPath + @"128-2.wav", SoundType.Monster),
+
+            [SoundIndex.WhiteFoxmanAttack] = new DXSound(Mir2MonsterSoundPath + @"129-1.wav", SoundType.Monster),
+            [SoundIndex.WhiteFoxmanExplode] = new DXSound(Mir2MonsterSoundPath + @"129-6.wav", SoundType.Monster),
+            [SoundIndex.WhiteFoxmanAttack2] = new DXSound(Mir2MonsterSoundPath + @"129-7.wav", SoundType.Monster),
+            [SoundIndex.WhiteFoxmanAttack3] = new DXSound(Mir2MonsterSoundPath + @"129-xatt3.wav", SoundType.Monster),
+            [SoundIndex.WhiteFoxmanStruck] = new DXSound(Mir2MonsterSoundPath + @"129-2.wav", SoundType.Monster),
+
+            [SoundIndex.GreatFoxSpiritAttack] = new DXSound(Mir2MonsterSoundPath + @"134-1.wav", SoundType.Monster),
+            [SoundIndex.GreatFoxSpiritAttack2] = new DXSound(Mir2MonsterSoundPath + @"134-5.wav", SoundType.Monster),
+            [SoundIndex.GreatFoxSpiritAttack3] = new DXSound(Mir2MonsterSoundPath + @"134-8.wav", SoundType.Monster),
+            [SoundIndex.GreatFoxSpiritAttack4] = new DXSound(Mir2MonsterSoundPath + @"134-9.wav", SoundType.Monster),
+            [SoundIndex.GreatFoxSpiritStruck] = new DXSound(Mir2MonsterSoundPath + @"134-2.wav", SoundType.Monster),
+            [SoundIndex.GreatFoxSpiritDie] = new DXSound(Mir2MonsterSoundPath + @"134-3.wav", SoundType.Monster),
+
+
             #endregion
         };
 

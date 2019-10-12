@@ -93,6 +93,7 @@ namespace Client.Models
             PetOwner = info.PetOwner;
             NameColour = info.NameColour;
             Extra = info.Extra;
+            ExtraInt = info.ExtraInt;
             
             CurrentLocation = info.Location;
             Direction = info.Direction;
@@ -2289,9 +2290,34 @@ namespace Client.Models
                     foreach (KeyValuePair<MirAnimation, Frame> frame in FrameSet.BlackFoxman)
                         Frames[frame.Key] = frame.Value;
                     BodyShape = 0;
-                    AttackSound = SoundIndex.OmaKingAttack;
-                    StruckSound = SoundIndex.OmaKingStruck;
-                    DieSound = SoundIndex.OmaKingDie;
+                    AttackSound = SoundIndex.BlackFoxmanAttack;
+                    StruckSound = SoundIndex.BlackFoxmanStruck;
+                    DieSound = SoundIndex.WolfDie;
+                    break;
+                case MonsterImage.RedFoxman:
+                    CEnvir.LibraryList.TryGetValue(LibraryFile.RedFoxman, out BodyLibrary);
+                    foreach (KeyValuePair<MirAnimation, Frame> frame in FrameSet.BlackFoxman)
+                        Frames[frame.Key] = frame.Value;
+                    BodyShape = 0;
+                    StruckSound = SoundIndex.RedFoxmanStruck;
+                    DieSound = SoundIndex.WolfDie;
+                    break;
+                case MonsterImage.WhiteFoxman:
+                    CEnvir.LibraryList.TryGetValue(LibraryFile.WhiteFoxman, out BodyLibrary);
+                    foreach (KeyValuePair<MirAnimation, Frame> frame in FrameSet.WhiteFoxman)
+                        Frames[frame.Key] = frame.Value;
+                    BodyShape = 0;
+                    StruckSound = SoundIndex.WhiteFoxmanStruck;
+                    DieSound = SoundIndex.WolfDie;
+                    break;
+                case MonsterImage.GreatFoxSpirit:
+                    CEnvir.LibraryList.TryGetValue(LibraryFile.GreatFoxSpirit, out BodyLibrary);
+                    foreach (KeyValuePair<MirAnimation, Frame> frame in FrameSet.GreatFoxSpirit)
+                        Frames[frame.Key] = frame.Value;
+                    BodyShape = 0;
+                    AttackSound = SoundIndex.GreatFoxSpiritAttack;
+                    StruckSound = SoundIndex.GreatFoxSpiritStruck;
+                    DieSound = SoundIndex.GreatFoxSpiritDie;
                     break;
                 default:
                     CEnvir.LibraryList.TryGetValue(LibraryFile.Mon_1, out BodyLibrary);
@@ -2400,6 +2426,9 @@ namespace Client.Models
                         case MagicType.IgyuCyclone:
                             animation = MirAnimation.Combat4;
                             break;
+                        case MagicType.FoxCyclone:
+                            animation = MirAnimation.Combat4;
+                            break;
                     }
                     break;
              //   case MirAction.Struck:
@@ -2424,6 +2453,16 @@ namespace Client.Models
             CurrentAnimation = animation;
             if (!Frames.TryGetValue(CurrentAnimation, out CurrentFrame))
                 CurrentFrame = Frame.EmptyFrame;
+        }
+        public override void UpdateFrame()
+        {
+            base.UpdateFrame();
+
+            if (Image == MonsterImage.GreatFoxSpirit)
+            {
+                if (CurrentAction == MirAction.Die || CurrentAction == MirAction.Dead) return;
+                DrawFrame += 60 * ExtraInt;
+            }
         }
 
         public override void Draw()
@@ -2482,7 +2521,6 @@ namespace Client.Models
                     break;
             }
 
-
             MirLibrary library;
             switch (Image)
             {
@@ -2525,6 +2563,11 @@ namespace Client.Models
                     if (CurrentAction != MirAction.Die) break;
                     if (!CEnvir.LibraryList.TryGetValue(LibraryFile.OmaKing, out library)) break;
                     library.DrawBlend(DrawFrame + 160, x, y, Color.White, true, 1f, ImageType.Image);
+                    break;
+                case MonsterImage.GreatFoxSpirit:
+                    if (CurrentAction == MirAction.Die || CurrentAction == MirAction.Dead) break;
+                    if (!CEnvir.LibraryList.TryGetValue(LibraryFile.GreatFoxSpirit, out library)) break;
+                    library.DrawBlend(DrawFrame + 30, x, y, Color.White, true, 1f, ImageType.Image);
                     break;
             }
 
@@ -3014,6 +3057,41 @@ namespace Client.Models
                         effect.Process();
                     }
                     break;
+                case MonsterImage.RedFoxman:
+                    foreach (MapObject attackTarget in AttackTargets)
+                    {
+                        DXSoundManager.Play(SoundIndex.RedFoxmanAttack2);
+                        Effects.Add(new MirEffect(233, 10, TimeSpan.FromMilliseconds(100), LibraryFile.RedFoxman, 10, 35, Globals.FireColour)
+                        {
+                            Blend = true,
+                            Target = attackTarget,
+                        });
+                    }
+                    break;
+                case MonsterImage.WhiteFoxman:
+                    foreach (MapObject attackTarget in AttackTargets)
+                    {
+                        MirEffect effect;
+                        Effects.Add(effect = new MirProjectile(980, 3, TimeSpan.FromMilliseconds(40), LibraryFile.Magic, 0, 0, Globals.NoneColour, CurrentLocation)
+                        {
+                            Target = attackTarget,
+                            Has16Directions = true,
+                            Skip = 10,
+                        });
+
+                        effect.CompleteAction = () =>
+                        {
+                            DXSoundManager.Play(SoundIndex.WhiteFoxmanExplode);
+                            attackTarget.Effects.Add(effect = new MirEffect(352, 10, TimeSpan.FromMilliseconds(80), LibraryFile.WhiteFoxman, 10, 35, Globals.NoneColour)
+                            {
+                                Target = attackTarget,
+                                Blend = true,
+                            });
+                            effect.Process();
+                        };
+                        effect.Process();
+                    }
+                    break;
             }
 
         }
@@ -3093,6 +3171,7 @@ namespace Client.Models
                         case MonsterImage.BlackFoxman:
                             if (FrameIndex == 2)
                             {
+                                DXSoundManager.Play(SoundIndex.BlackFoxmanAttack2);
                                 Effects.Add(new MirEffect(234, 4, TimeSpan.FromMilliseconds(100), LibraryFile.BlackFoxman, 0, 0, Globals.NoneColour)
                                 {
                                     Blend = true,
@@ -3100,6 +3179,34 @@ namespace Client.Models
                                     Direction = Direction,
                                     Skip = 4,
                                 });
+                            }
+                            break;
+                        case MonsterImage.RedFoxman:
+                            if (FrameIndex == 4)
+                            {
+                                foreach (MapObject attackTarget in AttackTargets)
+                                {
+                                    DXSoundManager.Play(SoundIndex.RedFoxmanAttack);
+                                    Effects.Add(new MirEffect(224, 8, TimeSpan.FromMilliseconds(100), LibraryFile.RedFoxman, 10, 35, Globals.FireColour)
+                                    {
+                                        Target = attackTarget,
+                                        Blend = true,
+                                    });
+                                }
+                            }
+                            break;
+                        case MonsterImage.WhiteFoxman:
+                            if (FrameIndex == 4)
+                            {
+                                foreach (MapObject attackTarget in AttackTargets)
+                                {
+                                    DXSoundManager.Play(SoundIndex.WhiteFoxmanAttack2);
+                                    Effects.Add(new MirEffect(362, 20, TimeSpan.FromMilliseconds(80), LibraryFile.WhiteFoxman, 10, 35, Globals.NoneColour)
+                                    {
+                                        Target = attackTarget,
+                                        Blend = true,
+                                    });
+                                }
                             }
                             break;
                     }                            
@@ -4111,12 +4218,60 @@ namespace Client.Models
                             break;
                     }
                     break;
-                case MonsterImage.BlackFoxman:
+                case MonsterImage.BlackFoxman:                
+                case MonsterImage.RedFoxman:
                     switch (CurrentAction)
                     {
                         case MirAction.Die:
-                            DXSoundManager.Play(SoundIndex.OmaKingAttack2);
                             Effects.Add(new MirEffect(224, 10, TimeSpan.FromMilliseconds(100), LibraryFile.BlackFoxman, 10, 35, Globals.NoneColour)
+                            {
+                                Blend = true,
+                                Target = this,
+                            });
+                            break;
+                    }
+                    break;
+                case MonsterImage.WhiteFoxman:
+                    switch (CurrentAction)
+                    {
+                        case MirAction.Attack:
+                            DXSoundManager.Play(SoundIndex.WhiteFoxmanAttack3);
+                            break;
+                        case MirAction.Die:
+                            Effects.Add(new MirEffect(224, 10, TimeSpan.FromMilliseconds(100), LibraryFile.BlackFoxman, 10, 35, Globals.NoneColour)
+                            {
+                                Blend = true,
+                                Target = this,
+                            });
+                            break;
+                    }
+                    break;
+                case MonsterImage.GreatFoxSpirit:
+                    switch (CurrentAction)
+                    {
+                        case MirAction.Attack:
+                            Effects.Add(new MirEffect(355, 20, TimeSpan.FromMilliseconds(60), LibraryFile.GreatFoxSpirit, 10, 35, Globals.NoneColour)
+                            {
+                                Blend = true,
+                                Target = this,
+                            });
+                            break;
+                        case MirAction.Spell:                            
+                            switch (CurrentAnimation)
+                            {
+                                case MirAnimation.DragonRepulseStart:
+                                    DXSoundManager.Play(SoundIndex.GreatFoxSpiritAttack2);
+                                    break;
+                                case MirAnimation.Combat3:
+                                    DXSoundManager.Play(SoundIndex.GreatFoxSpiritAttack4);
+                                    break;
+                                case MirAnimation.Combat4:
+                                    DXSoundManager.Play(SoundIndex.GreatFoxSpiritAttack3);
+                                    break;
+                            }
+                            break;
+                        case MirAction.Die:
+                            Effects.Add(new MirEffect(318, 17, TimeSpan.FromMilliseconds(80), LibraryFile.GreatFoxSpirit, 10, 35, Globals.NoneColour)
                             {
                                 Blend = true,
                                 Target = this,

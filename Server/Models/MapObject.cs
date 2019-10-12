@@ -755,7 +755,7 @@ namespace Server.Models
                 foreach (PlayerObject player in DataSeenByPlayers)
                     player.Enqueue(p);
             }
-        }
+        }        
         public virtual void CheckSpellObjects()
         {
             Cell cell = CurrentCell;
@@ -774,13 +774,13 @@ namespace Server.Models
         protected virtual void OnMapChanged() { }
         protected virtual void OnSpawned() { }
 
-        public void TeleportNearby(int minDistance, int maxDistance)
+        public void TeleportNearby(int minDistance, int maxDistance, Effect teleportouteffect = Effect.TeleportOut, Effect teleportineffect = Effect.TeleportIn)
         {
             List<Cell> cells = CurrentMap.GetCells(CurrentLocation, minDistance, maxDistance);
             
             if (cells.Count == 0) return;
 
-            Teleport(CurrentMap, cells[SEnvir.Random.Next(cells.Count)].Location);
+            Teleport(CurrentMap, cells[SEnvir.Random.Next(cells.Count)].Location, true, teleportouteffect, teleportineffect);
         }
         public bool Teleport(MapRegion region, bool leaveEffect = true)
         {
@@ -790,7 +790,7 @@ namespace Server.Models
             
             return Teleport(map, point, leaveEffect);
         }
-        public virtual bool Teleport(Map map, Point location, bool leaveEffect = true)
+        public virtual bool Teleport(Map map, Point location, bool leaveEffect = true, Effect teleportouteffect = Effect.TeleportOut, Effect teleportineffect = Effect.TeleportIn)
         {
             if (Race == ObjectType.Player && map.Info.MinimumLevel > Level && !((PlayerObject)this).Character.Account.TempAdmin) return false;
             if (Race == ObjectType.Player && map.Info.MaximumLevel > 0 && map.Info.MaximumLevel < Level && !((PlayerObject)this).Character.Account.TempAdmin) return false;
@@ -800,14 +800,14 @@ namespace Server.Models
             if (cell == null || cell.Movements != null) return false;
 
             if (leaveEffect)
-                Broadcast(new S.ObjectEffect { ObjectID = ObjectID, Effect = Effect.TeleportOut });
+                Broadcast(new S.ObjectEffect { ObjectID = ObjectID, Effect = teleportouteffect });
 
             CurrentCell = cell.GetMovement(this);
             RemoveAllObjects();
             AddAllObjects();
 
             Broadcast(new S.ObjectTurn { ObjectID = ObjectID, Direction = Direction, Location = CurrentLocation });
-            Broadcast(new S.ObjectEffect { ObjectID = ObjectID, Effect = Effect.TeleportIn });
+            Broadcast(new S.ObjectEffect { ObjectID = ObjectID, Effect = teleportineffect });
 
             return true;
         }

@@ -197,22 +197,22 @@ namespace Client.Scenes.Views
 
         #region Price
 
-        public int Price
+        public long Price
         {
             get => _Price;
             set
             {
                 if (_Price == value) return;
 
-                int oldValue = _Price;
+                long oldValue = _Price;
                 _Price = value;
 
                 OnPriceChanged(oldValue, value);
             }
         }
-        private int _Price;
+        private long _Price;
         public event EventHandler<EventArgs> PriceChanged;
-        public void OnPriceChanged(int oValue, int nValue)
+        public void OnPriceChanged(long oValue, long nValue)
         {
             ConsignCostBox.TextBox.Text = Cost.ToString("#,##0");
 
@@ -588,7 +588,7 @@ namespace Client.Scenes.Views
                 ValueTextBox = { Size = new Size(85, 18), ReadOnly = true, Editable = false, ForeColour = Color.FromArgb(198, 166, 99), },
                 UpButton = { Visible = false, },
                 DownButton = { Visible = false, },
-                MaxValue = 200000000,
+                MaxValue = long.MaxValue,
                 MinValue = 0
             };
             BuyPriceBox.ValueTextBox.ValueChanged += UpdateBuyTotal;
@@ -805,8 +805,8 @@ namespace Client.Scenes.Views
             };
             ConsignPriceBox.TextBox.TextChanged += (o, e) =>
             {
-                int price;
-                int.TryParse(ConsignPriceBox.TextBox.Text, out price);
+                long price;
+                long.TryParse(ConsignPriceBox.TextBox.Text, out price);
 
                 Price = price;
             };
@@ -1261,7 +1261,7 @@ namespace Client.Scenes.Views
                 ValueTextBox = { Size = new Size(85, 18), ReadOnly = true, Editable = false, ForeColour = Color.FromArgb(198, 166, 99), },
                 UpButton = { Visible = false, },
                 DownButton = { Visible = false, },
-                MaxValue = 200000000,
+                MaxValue = long.MaxValue,
                 MinValue = 0
             };
             StoreBuyPriceBox.ValueTextBox.ValueChanged += UpdateStoreBuyTotal;

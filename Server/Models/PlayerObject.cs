@@ -1622,6 +1622,20 @@ namespace Server.Models
                         if (!Character.Account.TempAdmin) return;
                         GameMaster = !GameMaster;
                         break;
+                    case "RESETAUCTIONHISTORY":
+                        if (!Character.Account.TempAdmin) return;
+                        long c = 0;
+                        for (int i = 0; i < SEnvir.AuctionHistoryInfoList.Binding.Count; i++)
+                        {
+                            AuctionHistoryInfo history = SEnvir.AuctionHistoryInfoList.Binding[i];
+                            if (history == null) continue;
+                            history.Average = new long[20];
+                            history.LastPrice = 0;
+                            history.SaleCount = 0;
+                            c++;
+                        }
+                        Connection.ReceiveChat($"{c} Histories reset.", MessageType.System);
+                        break;
                     case "GOLDBOT":
                         if (!Character.Account.TempAdmin) return;
 
@@ -3126,7 +3140,7 @@ namespace Server.Models
         }
         #endregion
 
-        public override bool Teleport(Map map, Point location, bool leaveEffect = true)
+        public override bool Teleport(Map map, Point location, bool leaveEffect = true, Effect teleportouteffect = Effect.TeleportOut, Effect teleportineffect = Effect.TeleportIn)
         {
             bool res = base.Teleport(map, location, leaveEffect);
 

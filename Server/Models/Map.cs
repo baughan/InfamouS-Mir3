@@ -193,9 +193,9 @@ namespace Server.Models
         public Point GetRandomLocation(Point location, int range, int attempts = 25)
         {
             int minX = Math.Max(0, location.X - range);
-            int maxX = Math.Min(Width, location.X + range);
+            int maxX = Math.Min(Width, location.X + range + 1);
             int minY = Math.Max(0, location.Y - range);
-            int maxY = Math.Min(Height, location.Y + range);
+            int maxY = Math.Min(Height, location.Y + range + 1);
 
             for (int i = 0; i < attempts; i++)
             {

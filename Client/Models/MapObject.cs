@@ -72,6 +72,7 @@ namespace Client.Models
         public virtual int Level { get; set; }
         public virtual int CurrentHP { get; set; }
         public virtual int CurrentMP { get; set; }
+        public int ExtraInt;
 
         public uint AttackerID;
 
@@ -543,7 +544,6 @@ namespace Client.Models
 
             FrameIndex = frame;
             DrawFrame = FrameIndex + CurrentFrame.StartIndex + CurrentFrame.OffSet * (int)Direction;
-
         }
 
         public abstract void SetAnimation(ObjectAction action);
@@ -2273,6 +2273,23 @@ namespace Client.Models
                             }
 
                             //DXSoundManager.Play(SoundIndex.CycloneEnd);
+                            break;
+
+                        #endregion
+
+                        #region FoxCyclone
+
+                        case MagicType.FoxCyclone:
+                            foreach (Point point in MagicLocations)
+                            {
+                                spell = new MirEffect(375 + 20 * ExtraInt, 20, TimeSpan.FromMilliseconds(80), LibraryFile.GreatFoxSpirit, 50, 80, Globals.NoneColour)
+                                {
+                                    Blend = true,
+                                    MapTarget = point,
+                                };
+
+                                spell.Process();
+                            }
                             break;
 
                         #endregion

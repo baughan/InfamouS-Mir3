@@ -42,9 +42,14 @@ namespace Server.Models
 
                 if (_Target == null)
                     SearchTime = DateTime.MinValue;
+
+                OnTargetChanged();
             }
         }
         private MapObject _Target;
+        protected virtual void OnTargetChanged()
+        {
+        }
 
         public bool PlayerTagged;
 
@@ -116,6 +121,7 @@ namespace Server.Models
 
         public Element AttackElement => Stats.GetAffinityElement();
 
+        public virtual bool CanTurn => true;
         public override bool CanMove => base.CanMove && (Poison & PoisonType.Silenced) != PoisonType.Silenced && MoveDelay > 0 && (PetOwner == null || PetOwner.PetMode == PetMode.Both || PetOwner.PetMode == PetMode.Move || PetOwner.PetMode == PetMode.PvP);
         public override bool CanAttack => base.CanAttack && (Poison & PoisonType.Silenced) != PoisonType.Silenced && AttackDelay > 0 && (PetOwner == null || PetOwner.PetMode == PetMode.Both || PetOwner.PetMode == PetMode.Attack || PetOwner.PetMode == PetMode.PvP);
 
@@ -636,6 +642,12 @@ namespace Server.Models
                     return new OmaKing { MonsterInfo = monsterInfo };
                 case 143:
                     return new BlackFoxman { MonsterInfo = monsterInfo };
+                case 144:
+                    return new RedFoxman { MonsterInfo = monsterInfo };
+                case 145:
+                    return new WhiteFoxman { MonsterInfo = monsterInfo };
+                case 146:
+                    return new GreatFoxSpirit { MonsterInfo = monsterInfo };
                 default:
                     return new MonsterObject { MonsterInfo = monsterInfo };
             }
@@ -2148,7 +2160,8 @@ namespace Server.Models
 
         public void Purification()
         {
-            Direction = Functions.DirectionFromPoint(CurrentLocation, Target.CurrentLocation);
+            if (CanTurn)
+                Direction = Functions.DirectionFromPoint(CurrentLocation, Target.CurrentLocation);
 
             Broadcast(new S.ObjectMagic { ObjectID = ObjectID, Direction = Direction, CurrentLocation = CurrentLocation, Cast = true, Type = MagicType.Purification, Targets = new List<uint> { Target.ObjectID } });
 
@@ -2191,7 +2204,8 @@ namespace Server.Models
 
         public void MassCyclone(MagicType type, int chance = 30)
         {
-            Direction = Functions.DirectionFromPoint(CurrentLocation, Target.CurrentLocation);
+            if (CanTurn)
+                Direction = Functions.DirectionFromPoint(CurrentLocation, Target.CurrentLocation);
 
             List<uint> targetIDs = new List<uint>();
             List<Point> locations = new List<Point>();
@@ -2286,7 +2300,8 @@ namespace Server.Models
 
         public void DragonRepulse()
         {
-            Direction = Functions.DirectionFromPoint(CurrentLocation, Target.CurrentLocation);
+            if (CanTurn)
+                Direction = Functions.DirectionFromPoint(CurrentLocation, Target.CurrentLocation);
 
             List<uint> targetIDs = new List<uint>();
             List<Point> locations = new List<Point>();
