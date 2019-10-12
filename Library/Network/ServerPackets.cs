@@ -301,10 +301,11 @@ namespace Library.Network.ServerPackets
         public List<BuffType> Buffs { get; set; }
         public bool Extra { get; set; }
 
+
         public ClientCompanionObject CompanionObject { get; set; }
 
         //public bool Extra { get; set; }
-        //public int ExtraInt { get; set; }
+        public int ExtraInt { get; set; }
 
     }
     public sealed class ObjectNPC : Packet
@@ -1313,6 +1314,12 @@ namespace Library.Network.ServerPackets
         public GridType GridType { get; set; }
         public int Slot { get; set; }
         public Stats NewStats { get; set; }
+    }
+
+    public sealed class FoxStageChange : Packet
+    {
+        public uint ObjectID { get; set; }
+        public byte Stage { get; set; }
     }
 }
 

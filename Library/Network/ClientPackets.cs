@@ -381,7 +381,7 @@ namespace Library.Network.ClientPackets
     {
         public CellLinkInfo Link { get; set; }
 
-        public int Price { get; set; }
+        public long Price { get; set; }
 
         public string Message { get; set; }
         public bool GuildFunds { get; set; }

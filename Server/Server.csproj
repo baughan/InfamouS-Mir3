@@ -117,6 +117,9 @@
     <Compile Include="Models\MapObject.cs" />
     <Compile Include="Models\MonsterObject.cs" />
     <Compile Include="Models\Monsters\BlackFoxman.cs" />
+    <Compile Include="Models\Monsters\GreatFoxSpirit.cs" />
+    <Compile Include="Models\Monsters\WhiteFoxman.cs" />
+    <Compile Include="Models\Monsters\RedFoxman.cs" />
     <Compile Include="Models\Monsters\OmaKing.cs" />
     <Compile Include="Models\Monsters\YangDevilNode.cs" />
     <Compile Include="Models\Monsters\YinDevilNode.cs" />

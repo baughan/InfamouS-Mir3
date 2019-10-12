@@ -52,7 +52,7 @@ namespace Library
             AxeOma, CrossbowOma, YinDevilNode, OmaKing,
 
             //Mir2 Fox
-            BlackFoxman;
+            BlackFoxman, WhiteFoxman, GreatFoxSpirit;
 
 
         static FrameSet()
@@ -913,10 +913,35 @@ namespace Library
                 [MirAnimation.Standing] = new Frame(0, 4, 4, TimeSpan.FromMilliseconds(500)),
                 [MirAnimation.Walking] = new Frame(32, 6, 6, TimeSpan.FromMilliseconds(100)),
                 [MirAnimation.Combat1] = new Frame(80, 6, 6, TimeSpan.FromMilliseconds(100)),
+                [MirAnimation.Combat2] = new Frame(80, 6, 6, TimeSpan.FromMilliseconds(100)),
                 [MirAnimation.Combat3] = new Frame(80, 6, 6, TimeSpan.FromMilliseconds(100)),
                 [MirAnimation.Struck] = new Frame(128, 2, 2, TimeSpan.FromMilliseconds(100)),
                 [MirAnimation.Die] = new Frame(144, 10, 10, TimeSpan.FromMilliseconds(100)),
                 [MirAnimation.Dead] = new Frame(153, 1, 10, TimeSpan.FromMilliseconds(1000)),
+            };
+            WhiteFoxman = new Dictionary<MirAnimation, Frame>
+            {
+                [MirAnimation.Standing] = new Frame(0, 4, 4, TimeSpan.FromMilliseconds(500)),
+                [MirAnimation.Walking] = new Frame(32, 6, 6, TimeSpan.FromMilliseconds(100)),
+                [MirAnimation.Combat1] = new Frame(80, 6, 6, TimeSpan.FromMilliseconds(100)),
+                [MirAnimation.Combat2] = new Frame(224, 6, 6, TimeSpan.FromMilliseconds(100)),
+                [MirAnimation.Combat3] = new Frame(272, 10, 10, TimeSpan.FromMilliseconds(100)),
+                [MirAnimation.Struck] = new Frame(128, 2, 2, TimeSpan.FromMilliseconds(100)),
+                [MirAnimation.Die] = new Frame(144, 10, 10, TimeSpan.FromMilliseconds(100)),
+                [MirAnimation.Dead] = new Frame(153, 1, 10, TimeSpan.FromMilliseconds(1000)),
+            };
+            GreatFoxSpirit = new Dictionary<MirAnimation, Frame>
+            {
+                [MirAnimation.Standing] = new Frame(0, 20, 20, TimeSpan.FromMilliseconds(80)),
+                [MirAnimation.Combat1] = new Frame(20, 6, 6, TimeSpan.FromMilliseconds(100)),
+                [MirAnimation.Combat3] = new Frame(20, 6, 6, TimeSpan.FromMilliseconds(100)),
+                [MirAnimation.Combat4] = new Frame(20, 6, 6, TimeSpan.FromMilliseconds(100)),
+                [MirAnimation.DragonRepulseStart] = new Frame(20, 6, 6, TimeSpan.FromMilliseconds(100)), //Summon Puppet ?
+                [MirAnimation.DragonRepulseMiddle] = new Frame(20, 6, 6, TimeSpan.FromMilliseconds(100)), //Summon Puppet ?
+                [MirAnimation.DragonRepulseEnd] = new Frame(20, 6, 6, TimeSpan.FromMilliseconds(100)), //Summon Puppet ?
+                [MirAnimation.Struck] = new Frame(27, 3, 3, TimeSpan.FromMilliseconds(100)),
+                [MirAnimation.Die] = new Frame(300, 18, 18, TimeSpan.FromMilliseconds(100)),
+                [MirAnimation.Dead] = new Frame(317, 1, 18, TimeSpan.FromMilliseconds(1000)),
             };
         }
     }

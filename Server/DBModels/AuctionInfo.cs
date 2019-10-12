@@ -53,7 +53,7 @@ namespace Server.DBModels
         }
         private CharacterInfo _Character;
         
-        public int Price
+        public long Price
         {
             get { return _Price; }
             set
@@ -66,7 +66,7 @@ namespace Server.DBModels
                 OnChanged(oldValue, value, "Price");
             }
         }
-        private int _Price;
+        private long _Price;
 
         public string Message
         {

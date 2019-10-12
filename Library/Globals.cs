@@ -976,7 +976,7 @@ namespace Library
         public int Index { get; set; }
         public ClientUserItem Item { get; set; }
         
-        public int Price { get; set; }
+        public long Price { get; set; }
 
         public string Seller { get; set; }
         public string Message { get; set; }

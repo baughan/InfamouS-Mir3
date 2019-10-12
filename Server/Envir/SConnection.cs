@@ -749,7 +749,7 @@ namespace Server.Envir
             long average = 0;
             int count = 0;
 
-            foreach (int value in info.Average)
+            foreach (long value in info.Average)
             {
                 if (value == 0) break;
 

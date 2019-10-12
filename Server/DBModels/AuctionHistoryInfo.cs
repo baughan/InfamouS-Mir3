@@ -40,7 +40,7 @@ namespace Server.DBModels
         }
         private long _SaleCount;
 
-        public int LastPrice
+        public long LastPrice
         {
             get { return _LastPrice; }
             set
@@ -53,9 +53,9 @@ namespace Server.DBModels
                 OnChanged(oldValue, value, "LastPrice");
             }
         }
-        private int _LastPrice;
+        private long _LastPrice;
         
-        public int[] Average
+        public long[] Average
         {
             get { return _Average; }
             set
@@ -68,7 +68,7 @@ namespace Server.DBModels
                 OnChanged(oldValue, value, "Average");
             }
         }
-        private int[] _Average;
+        private long[] _Average;
 
         public int PartIndex
         {
@@ -90,7 +90,7 @@ namespace Server.DBModels
         {
             base.OnCreated();
 
-            Average = new int[20];
+            Average = new long[20];
         }
     }
 }

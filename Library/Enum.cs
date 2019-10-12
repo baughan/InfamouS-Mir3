@@ -663,7 +663,7 @@ namespace Library
         PoisonousGolemLineAoE = 551,
         IgyuScorchedEarth = 552,
         IgyuCyclone = 553,
-
+        FoxCyclone = 554,
     }
 
     public enum MonsterImage
@@ -985,13 +985,7 @@ namespace Library
         BlackFoxman,
         RedFoxman,
         WhiteFoxman,
-        TrapRock,
-        GuardianRock,
-        ThunderElement,
-        CloudElement,
         GreatFoxSpirit,
-        HedgeKektal,
-        BigHedgeKektal,
     }
 
     
@@ -1032,7 +1026,10 @@ namespace Library
         FlashOfLight,
 
         DemonExplosion,
-        FrostBiteEnd
+        FrostBiteEnd,
+
+        FoxTeleportOut,
+        FoxTeleportIn,
     }
 
     [Flags]
@@ -2549,6 +2546,28 @@ namespace Library
         OmaKingAttack2,
         OmaKingStruck,
         OmaKingDie,
+
+        BlackFoxmanAttack,
+        BlackFoxmanAttack2,
+        BlackFoxmanStruck,
+
+        RedFoxmanAttack,
+        RedFoxmanAttack2,
+        RedFoxmanStruck,
+
+        WhiteFoxmanAttack,
+        WhiteFoxmanAttack2,
+        WhiteFoxmanAttack3,
+        WhiteFoxmanExplode,
+        WhiteFoxmanStruck,
+
+        GreatFoxSpiritAttack,
+        GreatFoxSpiritAttack2,
+        GreatFoxSpiritAttack3,
+        GreatFoxSpiritAttack4,
+        GreatFoxSpiritStruck,
+        GreatFoxSpiritDie,
+            
 
 
         #endregion
