@@ -299,7 +299,7 @@ namespace Client.Scenes.Views
                     MirLibrary library;
                     LibraryFile file;
 
-                    if (Libraries.KROrder.TryGetValue(cell.MiddleFile, out file) && file != LibraryFile.Tilesc && CEnvir.LibraryList.TryGetValue(file, out library))
+                    if (Libraries.KROrder.TryGetValue(cell.MiddleFile, out file) && file != LibraryFile.WemadeMir3_Tilesc && CEnvir.LibraryList.TryGetValue(file, out library))
                     {
                         int index = cell.MiddleImage - 1;
 
@@ -323,9 +323,9 @@ namespace Client.Scenes.Views
 
 
 
-                    if (Libraries.KROrder.TryGetValue(cell.FrontFile, out file) && file != LibraryFile.Tilesc && CEnvir.LibraryList.TryGetValue(file, out library))
+                    if (Libraries.KROrder.TryGetValue(cell.FrontFile, out file) && file != LibraryFile.WemadeMir3_Tilesc && CEnvir.LibraryList.TryGetValue(file, out library))
                     {
-                        int index = cell.FrontImage - 1;
+                        int index = (cell.FrontImage & 0x7FFF) - 1;
 
                         bool blend = false;
                         if (cell.FrontAnimationFrame > 1 && cell.FrontAnimationFrame < 255)
@@ -342,7 +342,7 @@ namespace Client.Scenes.Views
                             if (!blend)
                                 library.Draw(index, drawX, drawY - s.Height, Color.White, false, 1F, ImageType.Image);
                             else
-                                library.DrawBlend(index, drawX, drawY - s.Height, Color.White, false, 0.5F, ImageType.Image);
+                                library.DrawBlend(index, drawX, drawY - s.Height, Color.White, (index >= 2723 && index <= 2732), 0.5F, ImageType.Image);
                         }
                     }
                 }
@@ -391,16 +391,49 @@ namespace Client.Scenes.Views
 
         }
 
-
         private void LoadMap()
         {
             try
             {
                 if (!File.Exists(Config.MapPath + MapInfo.FileName + ".map")) return;
 
-                using (MemoryStream mStream = new MemoryStream(File.ReadAllBytes(Config.MapPath + MapInfo.FileName + ".map")))
+                byte[] Bytes = File.ReadAllBytes(Config.MapPath + MapInfo.FileName + ".map");
+                //c# custom map format
+                if ((Bytes[2] == 0x43) && (Bytes[3] == 0x23))
+                    LoadMapType100(Bytes);
+                //wemade mir3 maps have no title they just start with blank bytes
+                else if (Bytes[0] == 0)
+                    LoadMapType5(Bytes);
+                //shanda mir3 maps start with title: (C) SNDA, MIR3.
+                else if ((Bytes[0] == 0x0F) && (Bytes[5] == 0x53) && (Bytes[14] == 0x33))
+                    LoadMapType6(Bytes);
+                //wemades antihack map (laby maps) title start with: Mir2 AntiHack
+                else if ((Bytes[0] == 0x15) && (Bytes[4] == 0x32) && (Bytes[6] == 0x41) && (Bytes[19] == 0x31))
+                    LoadMapType4(Bytes);
+                //wemades 2010 map format i guess title starts with: Map 2010 Ver 1.0
+                else if ((Bytes[0] == 0x10) && (Bytes[2] == 0x61) && (Bytes[7] == 0x31) && (Bytes[14] == 0x31))
+                    LoadMapType1(Bytes);
+                //shanda's 2012 format and one of shandas(wemades) older formats share same header info, only difference is the filesize
+                else if ((Bytes[4] == 0x0F) || (Bytes[4] == 0x03) && (Bytes[18] == 0x0D) && (Bytes[19] == 0x0A))
+                {
+                    int W = Bytes[0] + (Bytes[1] << 8);
+                    int H = Bytes[2] + (Bytes[3] << 8);
+                    if (Bytes.Length > (52 + (W * H * 14)))
+                        LoadMapType3(Bytes);
+                    else
+                        LoadMapType2(Bytes);
+                }
+                //3/4 heroes map format (myth/lifcos i guess)
+                else if ((Bytes[0] == 0x0D) && (Bytes[1] == 0x4C) && (Bytes[7] == 0x20) && (Bytes[11] == 0x6D))
+                    LoadMapType7(Bytes);
+                else
+                //if it's none of the above load the default old school format
+                    LoadMapType0(Bytes);
+
+                /*using (MemoryStream mStream = new MemoryStream(File.ReadAllBytes(Config.MapPath + MapInfo.FileName + ".map")))
                 using (BinaryReader reader = new BinaryReader(mStream))
                 {
+
                     mStream.Seek(22, SeekOrigin.Begin);
                     Width = reader.ReadInt16();
                     Height = reader.ReadInt16();
@@ -443,7 +476,7 @@ namespace Client.Scenes.Views
 
                             Cells[x, y].Flag = ((flag & 0x01) != 1) || ((flag & 0x02) != 2);
                         }
-                }
+                }*/
             }
             catch (Exception ex)
             {
@@ -454,6 +487,473 @@ namespace Client.Scenes.Views
                 if (ob.CurrentLocation.X < Width && ob.CurrentLocation.Y < Height)
                     Cells[ob.CurrentLocation.X, ob.CurrentLocation.Y].AddObject(ob);
         }
+
+        private void LoadMapType0(byte[] Bytes)
+        {
+            try
+            {
+                int offset = 0;
+                Width = BitConverter.ToInt16(Bytes, offset);
+                offset += 2;
+                Height = BitConverter.ToInt16(Bytes, offset);
+                Cells = new Cell[Width, Height];
+                offset = 52;
+                for (int x = 0; x < Width; x++)
+                    for (int y = 0; y < Height; y++)
+                    {//12
+                        Cells[x, y] = new Cell();
+                        Cells[x, y].BackFile = 0;
+                        Cells[x, y].MiddleFile = 1;
+                        Cells[x, y].BackImage = (short)BitConverter.ToInt16(Bytes, offset);
+                        offset += 2;
+                        Cells[x, y].MiddleImage = (short)BitConverter.ToInt16(Bytes, offset);
+                        offset += 2;
+                        Cells[x, y].FrontImage = (short)BitConverter.ToInt16(Bytes, offset);
+                        offset += 2;
+                        Cells[x, y].DoorIndex = (byte)(Bytes[offset++] & 0x7F);
+                        Cells[x, y].DoorOffset = Bytes[offset++];
+                        Cells[x, y].FrontAnimationFrame = Bytes[offset++];
+                        Cells[x, y].FrontAnimationTick = Bytes[offset++];
+                        Cells[x, y].FrontFile = (short)(Bytes[offset++] + 2);
+                        Cells[x, y].Light = Bytes[offset++];
+                        if ((Cells[x, y].BackImage & 0x8000) != 0)
+                            Cells[x, y].BackImage = (Cells[x, y].BackImage & 0x7FFF) | 0x20000000;
+
+                        if (Cells[x, y].Light >= 100 && Cells[x, y].Light <= 119)
+                            Cells[x, y].FishingCell = true;
+
+                        if ((Cells[x, y].BackImage & 0x20000000) != 0 || (Cells[x, y].FrontImage & 0x8000) != 0)
+                            Cells[x, y].Flag = true;
+                    }
+            }
+            catch (Exception ex)
+            {
+                CEnvir.SaveError(ex.ToString());
+            }
+
+        }
+
+        private void LoadMapType1(byte[] Bytes)
+        {
+            try
+            {
+                int offSet = 21;
+
+                int w = BitConverter.ToInt16(Bytes, offSet);
+                offSet += 2;
+                int xor = BitConverter.ToInt16(Bytes, offSet);
+                offSet += 2;
+                int h = BitConverter.ToInt16(Bytes, offSet);
+                Width = w ^ xor;
+                Height = h ^ xor;
+                Cells = new Cell[Width, Height];
+
+                offSet = 54;
+
+                for (int x = 0; x < Width; x++)
+                    for (int y = 0; y < Height; y++)
+                    {
+                        Cells[x, y] = new Cell
+                        {
+                            BackFile = 0,
+                            BackImage = (int)(BitConverter.ToInt32(Bytes, offSet) ^ 0xAA38AA38),
+                            MiddleFile = 1,
+                            MiddleImage = (short)(BitConverter.ToInt16(Bytes, offSet += 4) ^ xor),
+                            FrontImage = (short)(BitConverter.ToInt16(Bytes, offSet += 2) ^ xor),
+                            DoorIndex = (byte)(Bytes[offSet += 2] & 0x7F),
+                            DoorOffset = Bytes[++offSet],
+                            FrontAnimationFrame = Bytes[++offSet],
+                            FrontAnimationTick = Bytes[++offSet],
+                            FrontFile = (short)(Bytes[++offSet] + 2),
+                            Light = Bytes[++offSet],
+                            Unknown = Bytes[++offSet],
+                        };
+                        offSet++;
+
+                        if (Cells[x, y].Light >= 100 && Cells[x, y].Light <= 119)
+                            Cells[x, y].FishingCell = true;
+
+                        if ((Cells[x, y].BackImage & 0x20000000) != 0 || (Cells[x, y].FrontImage & 0x8000) != 0)
+                            Cells[x, y].Flag = true;
+                    }
+            }
+            catch (Exception ex)
+            {
+                CEnvir.SaveError(ex.ToString());
+            }
+        }
+
+        private void LoadMapType2(byte[] Bytes)
+        {
+            try
+            {
+                int offset = 0;
+                Width = BitConverter.ToInt16(Bytes, offset);
+                offset += 2;
+                Height = BitConverter.ToInt16(Bytes, offset);
+                Cells = new Cell[Width, Height];
+                offset = 52;
+                for (int x = 0; x < Width; x++)
+                    for (int y = 0; y < Height; y++)
+                    {//14
+                        Cells[x, y] = new Cell();
+                        Cells[x, y].BackImage = (short)BitConverter.ToInt16(Bytes, offset);
+                        offset += 2;
+                        Cells[x, y].MiddleImage = (short)BitConverter.ToInt16(Bytes, offset);
+                        offset += 2;
+                        Cells[x, y].FrontImage = (short)BitConverter.ToInt16(Bytes, offset);
+                        offset += 2;
+                        Cells[x, y].DoorIndex = (byte)(Bytes[offset++] & 0x7F);
+                        Cells[x, y].DoorOffset = Bytes[offset++];
+                        Cells[x, y].FrontAnimationFrame = Bytes[offset++];
+                        Cells[x, y].FrontAnimationTick = Bytes[offset++];
+                        Cells[x, y].FrontFile = (short)(Bytes[offset++] + 120);
+                        Cells[x, y].Light = Bytes[offset++];
+                        Cells[x, y].BackFile = (short)(Bytes[offset++] + 100);
+                        Cells[x, y].MiddleFile = (short)(Bytes[offset++] + 110);
+                        if ((Cells[x, y].BackImage & 0x8000) != 0)
+                            Cells[x, y].BackImage = (Cells[x, y].BackImage & 0x7FFF) | 0x20000000;
+
+                        if (Cells[x, y].Light >= 100 && Cells[x, y].Light <= 119)
+                            Cells[x, y].FishingCell = true;
+
+                        if ((Cells[x, y].BackImage & 0x20000000) != 0 || (Cells[x, y].FrontImage & 0x8000) != 0)
+                            Cells[x, y].Flag = true;
+                    }
+            }
+            catch (Exception ex)
+            {
+                CEnvir.SaveError(ex.ToString());
+            }
+
+        }
+
+        private void LoadMapType3(byte[] Bytes)
+        {
+            try
+            {
+                int offset = 0;
+                Width = BitConverter.ToInt16(Bytes, offset);
+                offset += 2;
+                Height = BitConverter.ToInt16(Bytes, offset);
+                Cells = new Cell[Width, Height];
+                offset = 52;
+                for (int x = 0; x < Width; x++)
+                    for (int y = 0; y < Height; y++)
+                    {//36
+                        Cells[x, y] = new Cell();
+                        Cells[x, y].BackImage = (short)BitConverter.ToInt16(Bytes, offset);
+                        offset += 2;
+                        Cells[x, y].MiddleImage = (short)BitConverter.ToInt16(Bytes, offset);
+                        offset += 2;
+                        Cells[x, y].FrontImage = (short)BitConverter.ToInt16(Bytes, offset);
+                        offset += 2;
+                        Cells[x, y].DoorIndex = (byte)(Bytes[offset++] & 0x7F);
+                        Cells[x, y].DoorOffset = Bytes[offset++];
+                        Cells[x, y].FrontAnimationFrame = Bytes[offset++];
+                        Cells[x, y].FrontAnimationTick = Bytes[offset++];
+                        Cells[x, y].FrontFile = (short)(Bytes[offset++] + 120);
+                        Cells[x, y].Light = Bytes[offset++];
+                        Cells[x, y].BackFile = (short)(Bytes[offset++] + 100);
+                        Cells[x, y].MiddleFile = (short)(Bytes[offset++] + 110);
+                        Cells[x, y].TileAnimationImage = (short)BitConverter.ToInt16(Bytes, offset);
+                        offset += 7;//2bytes from tileanimframe, 2 bytes always blank?, 2bytes potentialy 'backtiles index', 1byte fileindex for the backtiles?
+                        Cells[x, y].TileAnimationFrames = Bytes[offset++];
+                        Cells[x, y].TileAnimationOffset = (short)BitConverter.ToInt16(Bytes, offset);
+                        offset += 14; //tons of light, blending, .. related options i hope
+                        if ((Cells[x, y].BackImage & 0x8000) != 0)
+                            Cells[x, y].BackImage = (Cells[x, y].BackImage & 0x7FFF) | 0x20000000;
+
+                        if (Cells[x, y].Light >= 100 && Cells[x, y].Light <= 119)
+                            Cells[x, y].FishingCell = true;
+
+                        if ((Cells[x, y].BackImage & 0x20000000) != 0 || (Cells[x, y].FrontImage & 0x8000) != 0)
+                            Cells[x, y].Flag = true;
+                    }
+
+            }
+            catch (Exception ex)
+            {
+                CEnvir.SaveError(ex.ToString());
+            }
+        }
+
+        private void LoadMapType4(byte[] Bytes)
+        {
+            try
+            {
+                int offset = 31;
+                int w = BitConverter.ToInt16(Bytes, offset);
+                offset += 2;
+                int xor = BitConverter.ToInt16(Bytes, offset);
+                offset += 2;
+                int h = BitConverter.ToInt16(Bytes, offset);
+                Width = w ^ xor;
+                Height = h ^ xor;
+                Cells = new Cell[Width, Height];
+                offset = 64;
+                for (int x = 0; x < Width; x++)
+                    for (int y = 0; y < Height; y++)
+                    {//12
+                        Cells[x, y] = new Cell();
+                        Cells[x, y].BackFile = 0;
+                        Cells[x, y].MiddleFile = 1;
+                        Cells[x, y].BackImage = (short)(BitConverter.ToInt16(Bytes, offset) ^ xor);
+                        offset += 2;
+                        Cells[x, y].MiddleImage = (short)(BitConverter.ToInt16(Bytes, offset) ^ xor);
+                        offset += 2;
+                        Cells[x, y].FrontImage = (short)(BitConverter.ToInt16(Bytes, offset) ^ xor);
+                        offset += 2;
+                        Cells[x, y].DoorIndex = (byte)(Bytes[offset++] & 0x7F);
+                        Cells[x, y].DoorOffset = Bytes[offset++];
+                        Cells[x, y].FrontAnimationFrame = Bytes[offset++];
+                        Cells[x, y].FrontAnimationTick = Bytes[offset++];
+                        Cells[x, y].FrontFile = (short)(Bytes[offset++] + 2);
+                        Cells[x, y].Light = Bytes[offset++];
+                        if ((Cells[x, y].BackImage & 0x8000) != 0)
+                            Cells[x, y].BackImage = (Cells[x, y].BackImage & 0x7FFF) | 0x20000000;
+
+                        if (Cells[x, y].Light >= 100 && Cells[x, y].Light <= 119)
+                            Cells[x, y].FishingCell = true;
+
+                        if ((Cells[x, y].BackImage & 0x20000000) != 0 || (Cells[x, y].FrontImage & 0x8000) != 0)
+                            Cells[x, y].Flag = true;
+                    }
+            }
+            catch (Exception ex)
+            {
+                CEnvir.SaveError(ex.ToString());
+            }
+        }
+
+        private void LoadMapType5(byte[] Bytes)
+        {
+            try
+            {
+                byte flag = 0;
+                int offset = 20;
+                short Attribute = (short)(BitConverter.ToInt16(Bytes, offset));
+                Width = (int)(BitConverter.ToInt16(Bytes, offset += 2));
+                Height = (int)(BitConverter.ToInt16(Bytes, offset += 2));
+                //ignoring eventfile and fogcolor for now (seems unused in maps i checked)
+                offset = 28;
+                //initiate all cells
+                Cells = new Cell[Width, Height];
+                for (int x = 0; x < Width; x++)
+                    for (int y = 0; y < Height; y++)
+                        Cells[x, y] = new Cell();
+                //read all back tiles
+                for (int x = 0; x < (Width / 2); x++)
+                    for (int y = 0; y < (Height / 2); y++)
+                    {
+                        for (int i = 0; i < 4; i++)
+                        {
+                            Cells[(x * 2) + (i % 2), (y * 2) + (i / 2)].BackFile = (short)(Bytes[offset] != 255 ? Bytes[offset] + 200 : -1);
+                            Cells[(x * 2) + (i % 2), (y * 2) + (i / 2)].BackImage = (int)(BitConverter.ToUInt16(Bytes, offset + 1) + 1);
+                        }
+                        offset += 3;
+                    }
+                //read rest of data
+                offset = 28 + (3 * ((Width / 2) + (Width % 2)) * (Height / 2));
+                for (int x = 0; x < Width; x++)
+                    for (int y = 0; y < Height; y++)
+                    {
+
+                        flag = Bytes[offset++];
+                        Cells[x, y].MiddleAnimationFrame = Bytes[offset++];
+
+                        Cells[x, y].FrontAnimationFrame = Bytes[offset] == 255 ? (byte)0 : Bytes[offset];
+                        Cells[x, y].FrontAnimationFrame &= 0x8F;
+                        offset++;
+                        Cells[x, y].MiddleAnimationTick = 0;
+                        Cells[x, y].FrontAnimationTick = 0;
+                        Cells[x, y].FrontFile = (short)(Bytes[offset] != 255 ? Bytes[offset] + 200 : -1);
+                        offset++;
+                        Cells[x, y].MiddleFile = (short)(Bytes[offset] != 255 ? Bytes[offset] + 200 : -1);
+                        offset++;
+                        Cells[x, y].MiddleImage = (ushort)(BitConverter.ToUInt16(Bytes, offset) + 1);
+                        offset += 2;
+                        Cells[x, y].FrontImage = (ushort)(BitConverter.ToUInt16(Bytes, offset) + 1);
+                        if ((Cells[x, y].FrontImage == 1) && (Cells[x, y].FrontFile == 200))
+                            Cells[x, y].FrontFile = -1;
+                        offset += 2;
+                        offset += 3;//mir3 maps dont have doors so dont bother reading the info
+                        Cells[x, y].Light = (byte)(Bytes[offset] & 0x0F);
+                        offset += 2;
+                        if ((flag & 0x01) != 1) Cells[x, y].BackImage |= 0x20000000;
+                        if ((flag & 0x02) != 2) Cells[x, y].FrontImage = (ushort)((UInt16)Cells[x, y].FrontImage | 0x8000);
+
+                        if (Cells[x, y].Light >= 100 && Cells[x, y].Light <= 119)
+                            Cells[x, y].FishingCell = true;
+                        else
+                            Cells[x, y].Light *= 2;//expand general mir3 lighting as default range is small. Might break new colour lights.
+
+                        if ((Cells[x, y].BackImage & 0x20000000) != 0 || (Cells[x, y].FrontImage & 0x8000) != 0)
+                            Cells[x, y].Flag = true;
+                    }
+            }
+            catch (Exception ex)
+            {
+                CEnvir.SaveError(ex.ToString());
+            }
+        }
+
+        private void LoadMapType6(byte[] Bytes)
+        {
+            try
+            {
+                byte flag = 0;
+                int offset = 16;
+                Width = BitConverter.ToInt16(Bytes, offset);
+                offset += 2;
+                Height = BitConverter.ToInt16(Bytes, offset);
+                Cells = new Cell[Width, Height];
+                offset = 40;
+                for (int x = 0; x < Width; x++)
+                    for (int y = 0; y < Height; y++)
+                    {
+                        Cells[x, y] = new Cell();
+                        flag = Bytes[offset++];
+                        Cells[x, y].BackFile = (short)(Bytes[offset] != 255 ? Bytes[offset] + 300 : -1);
+                        offset++;
+                        Cells[x, y].MiddleFile = (short)(Bytes[offset] != 255 ? Bytes[offset] + 300 : -1);
+                        offset++;
+                        Cells[x, y].FrontFile = (short)(Bytes[offset] != 255 ? Bytes[offset] + 300 : -1);
+                        offset++;
+                        Cells[x, y].BackImage = (short)(BitConverter.ToInt16(Bytes, offset) + 1);
+                        offset += 2;
+                        Cells[x, y].MiddleImage = (short)(BitConverter.ToInt16(Bytes, offset) + 1);
+                        offset += 2;
+                        Cells[x, y].FrontImage = (short)(BitConverter.ToInt16(Bytes, offset) + 1);
+                        offset += 2;
+                        if ((Cells[x, y].FrontImage == 1) && (Cells[x, y].FrontFile == 200))
+                            Cells[x, y].FrontFile = -1;
+                        Cells[x, y].MiddleAnimationFrame = Bytes[offset++];
+                        Cells[x, y].FrontAnimationFrame = Bytes[offset] == 255 ? (byte)0 : Bytes[offset];
+                        if (Cells[x, y].FrontAnimationFrame > 0x0F)//assuming shanda used same value not sure
+                            Cells[x, y].FrontAnimationFrame = (byte)(/*0x80 ^*/ (Cells[x, y].FrontAnimationFrame & 0x0F));
+                        offset++;
+                        Cells[x, y].MiddleAnimationTick = 1;
+                        Cells[x, y].FrontAnimationTick = 1;
+                        Cells[x, y].Light = (byte)(Bytes[offset] & 0x0F);
+                        Cells[x, y].Light *= 4;//far wants all light on mir3 maps to be maxed :p
+                        offset += 8;
+                        if ((flag & 0x01) != 1) Cells[x, y].BackImage |= 0x20000000;
+                        if ((flag & 0x02) != 2) Cells[x, y].FrontImage = (short)((UInt16)Cells[x, y].FrontImage | 0x8000);
+
+                        if ((Cells[x, y].BackImage & 0x20000000) != 0 || (Cells[x, y].FrontImage & 0x8000) != 0)
+                            Cells[x, y].Flag = true;
+
+                    }
+            }
+            catch (Exception ex)
+            {
+                CEnvir.SaveError(ex.ToString());
+            }
+
+        }
+
+        private void LoadMapType7(byte[] Bytes)
+        {
+            try
+            {
+                int offset = 21;
+                Width = BitConverter.ToInt16(Bytes, offset);
+                offset += 4;
+                Height = BitConverter.ToInt16(Bytes, offset);
+                Cells = new Cell[Width, Height];
+
+                offset = 54;
+
+                for (int x = 0; x < Width; x++)
+                    for (int y = 0; y < Height; y++)
+                    {//total 15
+                        Cells[x, y] = new Cell
+                        {
+                            BackFile = 0,
+                            BackImage = (int)BitConverter.ToInt32(Bytes, offset),
+                            MiddleFile = 1,
+                            MiddleImage = (short)BitConverter.ToInt16(Bytes, offset += 4),
+                            FrontImage = (short)BitConverter.ToInt16(Bytes, offset += 2),
+                            DoorIndex = (byte)(Bytes[offset += 2] & 0x7F),
+                            DoorOffset = Bytes[++offset],
+                            FrontAnimationFrame = Bytes[++offset],
+                            FrontAnimationTick = Bytes[++offset],
+                            FrontFile = (short)(Bytes[++offset] + 2),
+                            Light = Bytes[++offset],
+                            Unknown = Bytes[++offset],
+                        };
+                        if ((Cells[x, y].BackImage & 0x8000) != 0)
+                            Cells[x, y].BackImage = (Cells[x, y].BackImage & 0x7FFF) | 0x20000000;
+                        offset++;
+
+                        if (Cells[x, y].Light >= 100 && Cells[x, y].Light <= 119)
+                            Cells[x, y].FishingCell = true;
+
+                        if ((Cells[x, y].BackImage & 0x20000000) != 0 || (Cells[x, y].FrontImage & 0x8000) != 0)
+                            Cells[x, y].Flag = true;
+                    }
+            }
+            catch (Exception ex)
+            {
+                CEnvir.SaveError(ex.ToString());
+            }
+        }
+
+        private void LoadMapType100(byte[] Bytes)
+        {
+            try
+            {
+                int offset = 4;
+                if ((Bytes[0] != 1) || (Bytes[1] != 0)) return;//only support version 1 atm
+                Width = BitConverter.ToInt16(Bytes, offset);
+                offset += 2;
+                Height = BitConverter.ToInt16(Bytes, offset);
+                Cells = new Cell[Width, Height];
+                offset = 8;
+                for (int x = 0; x < Width; x++)
+                    for (int y = 0; y < Height; y++)
+                    {
+                        Cells[x, y] = new Cell();
+                        Cells[x, y].BackFile = (short)BitConverter.ToInt16(Bytes, offset);
+                        offset += 2;
+                        Cells[x, y].BackImage = (int)BitConverter.ToInt32(Bytes, offset);
+                        offset += 4;
+                        Cells[x, y].MiddleFile = (short)BitConverter.ToInt16(Bytes, offset);
+                        offset += 2;
+                        Cells[x, y].MiddleImage = (short)BitConverter.ToInt16(Bytes, offset);
+                        offset += 2;
+                        Cells[x, y].FrontFile = (short)BitConverter.ToInt16(Bytes, offset);
+                        offset += 2;
+                        Cells[x, y].FrontImage = (short)BitConverter.ToInt16(Bytes, offset);
+                        offset += 2;
+                        Cells[x, y].DoorIndex = (byte)(Bytes[offset++] & 0x7F);
+                        Cells[x, y].DoorOffset = Bytes[offset++];
+                        Cells[x, y].FrontAnimationFrame = Bytes[offset++];
+                        Cells[x, y].FrontAnimationTick = Bytes[offset++];
+                        Cells[x, y].MiddleAnimationFrame = Bytes[offset++];
+                        Cells[x, y].MiddleAnimationTick = Bytes[offset++];
+                        Cells[x, y].TileAnimationImage = (short)BitConverter.ToInt16(Bytes, offset);
+                        offset += 2;
+                        Cells[x, y].TileAnimationOffset = (short)BitConverter.ToInt16(Bytes, offset);
+                        offset += 2;
+                        Cells[x, y].TileAnimationFrames = Bytes[offset++];
+                        Cells[x, y].Light = Bytes[offset++];
+
+                        if (Cells[x, y].Light >= 100 && Cells[x, y].Light <= 119)
+                            Cells[x, y].FishingCell = true;
+
+                        if ((Cells[x, y].BackImage & 0x20000000) != 0 || (Cells[x, y].FrontImage & 0x8000) != 0)
+                            Cells[x, y].Flag = true;
+                    }
+            }
+            catch (Exception ex)
+            {
+                CEnvir.SaveError(ex.ToString());
+            }
+        }
+
+
 
         public override void OnMouseMove(MouseEventArgs e)
         {
@@ -1247,7 +1747,7 @@ namespace Client.Scenes.Views
 
                             if (!CEnvir.LibraryList.TryGetValue(file, out library)) continue;
 
-                            library.Draw(tile.BackImage, drawX, drawY, Color.White, false, 1F, ImageType.Image);
+                            library.Draw((tile.BackImage & 0x1FFFF) - 1, drawX, drawY, Color.White, false, 1F, ImageType.Image);
                         }
                     }
                 }
@@ -1265,7 +1765,7 @@ namespace Client.Scenes.Views
                         MirLibrary library;
                         LibraryFile file;
 
-                        if (Libraries.KROrder.TryGetValue(cell.MiddleFile, out file) && file != LibraryFile.Tilesc && CEnvir.LibraryList.TryGetValue(file, out library))
+                        if (Libraries.KROrder.TryGetValue(cell.MiddleFile, out file) && file != LibraryFile.WemadeMir3_Tilesc && CEnvir.LibraryList.TryGetValue(file, out library))
                         {
                             int index = cell.MiddleImage - 1;
 
@@ -1279,7 +1779,7 @@ namespace Client.Scenes.Views
                         }
 
                         
-                        if (Libraries.KROrder.TryGetValue(cell.FrontFile, out file) && file != LibraryFile.Tilesc && CEnvir.LibraryList.TryGetValue(file, out library))
+                        if (Libraries.KROrder.TryGetValue(cell.FrontFile, out file) && file != LibraryFile.WemadeMir3_Tilesc && CEnvir.LibraryList.TryGetValue(file, out library))
                         {
                             int index = cell.FrontImage - 1;
 
@@ -1492,24 +1992,31 @@ namespace Client.Scenes.Views
 
     public sealed class Cell
     {
-        public int BackFile;
+        public short BackFile;
         public int BackImage;
-
-        public int MiddleFile;
+        public short MiddleFile;
         public int MiddleImage;
-
-        public int FrontFile;
+        public short FrontFile;
         public int FrontImage;
 
-        public int FrontAnimationFrame;
-        public int FrontAnimationTick;
+        public byte DoorIndex;
+        public byte DoorOffset;
 
-        public int MiddleAnimationFrame;
-        public int MiddleAnimationTick;
+        public byte FrontAnimationFrame;
+        public byte FrontAnimationTick;
 
-        public int Light;
+        public byte MiddleAnimationFrame;
+        public byte MiddleAnimationTick;
+
+        public short TileAnimationImage;
+        public short TileAnimationOffset;
+        public byte TileAnimationFrames;
+
+        public byte Light;
+        public byte Unknown;
 
         public bool Flag;
+        public bool FishingCell;
 
         public List<MapObject> Objects;
 
