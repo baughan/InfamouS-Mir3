@@ -1628,12 +1628,10 @@ namespace Server.Models
                         for (int i = 0; i < SEnvir.AuctionHistoryInfoList.Binding.Count; i++)
                         {
                             AuctionHistoryInfo history = SEnvir.AuctionHistoryInfoList.Binding[i];
-                            if (history == null) continue;
-                            history.Average = new long[20];
-                            history.LastPrice = 0;
-                            history.SaleCount = 0;
+                            history.Delete();
                             c++;
                         }
+                        SEnvir.AuctionHistoryInfoList.Binding.Clear();
                         Connection.ReceiveChat($"{c} Histories reset.", MessageType.System);
                         break;
                     case "GOLDBOT":
