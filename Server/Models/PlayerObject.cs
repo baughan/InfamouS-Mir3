@@ -1631,7 +1631,6 @@ namespace Server.Models
                             history.Delete();
                             c++;
                         }
-                        SEnvir.AuctionHistoryInfoList.Binding.Clear();
                         Connection.ReceiveChat($"{c} Histories reset.", MessageType.System);
                         break;
                     case "GOLDBOT":
@@ -3154,6 +3153,8 @@ namespace Server.Models
 
         public void TeleportRing(Point location, int MapIndex)
         {
+            if (location.X < 0 || location.Y < 0) return;
+
             MapInfo destInfo = SEnvir.MapInfoList.Binding.FirstOrDefault(x => x.Index == MapIndex);
 
             if (destInfo == null) return;
@@ -16961,7 +16962,7 @@ namespace Server.Models
                 power = (int)(power * 1.2F);
 
             for (int i = 0; i < attacker.Stats[Stat.Rebirth]; i++)
-                power = (int)(power * 1.2F);
+                power = (int)(power * 1.1F);
 
             if (SEnvir.Random.Next(100) < attacker.Stats[Stat.CriticalChance] && canCrit)
             {

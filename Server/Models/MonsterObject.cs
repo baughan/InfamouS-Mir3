@@ -2363,9 +2363,7 @@ namespace Server.Models
         {
             if (attacker?.Node == null || power == 0 || Dead || attacker.CurrentMap != CurrentMap || !Functions.InRange(attacker.CurrentLocation, CurrentLocation, Config.MaxViewRange)) return 0;
 
-            PlayerObject player;
-
-            
+            PlayerObject player;            
 
             switch (attacker.Race)
             {
