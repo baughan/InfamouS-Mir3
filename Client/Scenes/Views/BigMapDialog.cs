@@ -365,10 +365,10 @@ namespace Client.Scenes.Views
             if ((e.Button & MouseButtons.Right) == MouseButtons.Right)
             {
                 //TODO Teleport Ring
-                uint x = (uint)((e.Location.X - Image.DisplayArea.X) / ScaleX);
-                uint y = (uint)((e.Location.Y - Image.DisplayArea.Y) / ScaleY);
+                int x = (int)((e.Location.X - Image.DisplayArea.X) / ScaleX);
+                int y = (int)((e.Location.Y - Image.DisplayArea.Y) / ScaleY);
                
-                CEnvir.Enqueue(new C.TeleportRing { LocationX = x, LocationY = y, Index = SelectedInfo.Index });
+                CEnvir.Enqueue(new C.TeleportRing { Location = new Point(x, y), Index = SelectedInfo.Index });
             }
         }
 

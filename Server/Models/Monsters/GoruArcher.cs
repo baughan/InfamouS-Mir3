@@ -13,7 +13,7 @@ namespace Server.Models.Monsters
     {
         private bool CanTeleport = true;
 
-        public override int Attacked(MapObject attacker, int power, Element element, bool canReflect = true, bool ignoreShield = false, bool canCrit = true, bool canStruck = true)
+        public override int Attacked(MapObject attacker, long power, Element element, bool canReflect = true, bool ignoreShield = false, bool canCrit = true, bool canStruck = true)
         {
 
             int result = base.Attacked(attacker, power, element, canReflect, ignoreShield, canCrit);

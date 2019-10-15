@@ -2359,7 +2359,7 @@ namespace Server.Models
             }
         }
 
-        public override int Attacked(MapObject attacker, int power, Element element, bool canReflect = true, bool ignoreShield = false, bool canCrit = true, bool canStruck = true)
+        public override int Attacked(MapObject attacker, long power, Element element, bool canReflect = true, bool ignoreShield = false, bool canCrit = true, bool canStruck = true)
         {
             if (attacker?.Node == null || power == 0 || Dead || attacker.CurrentMap != CurrentMap || !Functions.InRange(attacker.CurrentLocation, CurrentLocation, Config.MaxViewRange)) return 0;
 
@@ -2395,10 +2395,10 @@ namespace Server.Models
             }
 
             if ((Poison & PoisonType.Red) == PoisonType.Red)
-                power = (int)(power * 1.2F);
+                power = Math.Min(int.MaxValue, (long)(power * 1.2F));
 
             for (int i = 0; i < attacker.Stats[Stat.Rebirth]; i++)
-                power = (int)(power * 1.2F);
+                power = Math.Min(int.MaxValue, (long)(power * 1.2F));
 
 
             BuffInfo buff = Buffs.FirstOrDefault(x => x.Type == BuffType.MagicShield);
@@ -2410,24 +2410,23 @@ namespace Server.Models
 
             if (SEnvir.Random.Next(100) < attacker.Stats[Stat.CriticalChance] && canCrit && power > 0)
             {
-                power = (int)Math.Min(int.MaxValue, (long)power +  (power + (power * attacker.Stats[Stat.CriticalDamage] / 100)));
+                power = Math.Min(int.MaxValue, power + power + (power * attacker.Stats[Stat.CriticalDamage] / 100));
                 Critical();
             }
 
+            int finalpower = (int)power;
+
+            ChangeHP(-finalpower);        
 
 
-            ChangeHP(-power);
-            
 
-
-
-            if (Dead) return power;
+            if (Dead) return finalpower;
             
             if (CanAttackTarget(attacker)&& PetOwner == null || Target == null)
                 Target = attacker;
 
 
-            return power;
+            return finalpower;
         }
         public override bool ApplyPoison(Poison p)
         {
