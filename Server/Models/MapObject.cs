@@ -1392,7 +1392,7 @@ namespace Server.Models
             if (info != null)
                 BuffRemove(info);
         }
-        public virtual int Attacked(MapObject attacker, int power, Element elemnet, bool canReflect = true, bool ignoreShield = false, bool canCrit = true, bool canStruck = true) { return 0; }
+        public virtual int Attacked(MapObject attacker, long power, Element elemnet, bool canReflect = true, bool ignoreShield = false, bool canCrit = true, bool canStruck = true) { return 0; }
 
         public List<MapObject> GetTargets(Map map, Point location, int radius)
         {

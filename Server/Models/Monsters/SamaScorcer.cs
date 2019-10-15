@@ -17,7 +17,7 @@ namespace Server.Models.Monsters
             return Target.CurrentLocation != CurrentLocation && Functions.InRange(CurrentLocation, Target.CurrentLocation, 3);
         }
 
-        public override int Attacked(MapObject attacker, int power, Element element, bool canReflect = true, bool ignoreShield = false, bool canCrit = true, bool canStruck = true)
+        public override int Attacked(MapObject attacker, long power, Element element, bool canReflect = true, bool ignoreShield = false, bool canCrit = true, bool canStruck = true)
         {
             foreach (MapObject ob in CurrentMap.Objects) //Expensive.
             {

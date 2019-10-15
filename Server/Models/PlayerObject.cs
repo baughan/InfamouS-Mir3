@@ -16532,7 +16532,7 @@ namespace Server.Models
                     case MagicType.ImprovedExplosiveTalisman:
                         element = Element.Dark;
                         power += magic.GetPower() + GetSC();
-                        //power += power;
+                        power *= 3;
                         break;
                     case MagicType.EvilSlayer:
                     case MagicType.GreaterEvilSlayer:
@@ -16911,7 +16911,7 @@ namespace Server.Models
             return (int)(Math.Min(int.MaxValue, damage));
         }
 
-        public override int Attacked(MapObject attacker, int power, Element element, bool canReflect = true, bool ignoreShield = false, bool canCrit = true, bool canStruck = true)
+        public override int Attacked(MapObject attacker, long power, Element element, bool canReflect = true, bool ignoreShield = false, bool canCrit = true, bool canStruck = true)
         {
             if (attacker?.Node == null || power == 0 || Dead || attacker.CurrentMap != CurrentMap || !Functions.InRange(attacker.CurrentLocation, CurrentLocation, Config.MaxViewRange)) return 0;
 
@@ -16976,13 +16976,15 @@ namespace Server.Models
                 Critical();
             }
 
+            power = Math.Min(int.MaxValue, power);
+
             BuffInfo buff;
 
             buff = Buffs.FirstOrDefault(x => x.Type == BuffType.FrostBite);
 
             if (buff != null)
             {
-                buff.Stats[Stat.FrostBiteDamage] += power;
+                buff.Stats[Stat.FrostBiteDamage] += (int)power;
                 Enqueue(new S.BuffChanged() { Index = buff.Index, Stats = new Stats(buff.Stats) });
                 return 0;
             }
@@ -17046,27 +17048,27 @@ namespace Server.Models
                 switch (attacker.Race)
                 {
                     case ObjectType.Player:
-                        conquest.PvPDamageTaken += power;
+                        conquest.PvPDamageTaken += (int)power;
 
                         conquest = SEnvir.GetConquestStats((PlayerObject)attacker);
 
                         if (conquest != null)
-                            conquest.PvPDamageDealt += power;
+                            conquest.PvPDamageDealt += (int)power;
 
                         break;
                     case ObjectType.Monster:
                         MonsterObject mob = (MonsterObject)attacker;
 
                         if (mob is CastleLord)
-                            conquest.BossDamageTaken += power;
+                            conquest.BossDamageTaken += (int)power;
                         else if (mob.PetOwner != null)
                         {
-                            conquest.PvPDamageTaken += power;
+                            conquest.PvPDamageTaken += (int)power;
 
                             conquest = SEnvir.GetConquestStats(mob.PetOwner);
 
                             if (conquest != null)
-                                conquest.PvPDamageDealt += power;
+                                conquest.PvPDamageDealt += (int)power;
                         }
                         break;
                 }
@@ -17076,7 +17078,7 @@ namespace Server.Models
 
 
             LastHitter = attacker;
-            ChangeHP(-power);
+            ChangeHP(-(int)power);
             LastHitter = null;
 
             if (canReflect && CanAttackTarget(attacker) && attacker.Race != ObjectType.Player)
@@ -17113,7 +17115,7 @@ namespace Server.Models
             if (Magics.TryGetValue(MagicType.AdventOfDevil, out magic) && element != Element.None)
                 LevelMagic(magic);
 
-            return power;
+            return (int)power;
         }
 
         public override bool CanAttackTarget(MapObject ob)
