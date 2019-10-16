@@ -6096,7 +6096,7 @@ namespace Server.Models
                                 switch (pois.Type)
                                 {
                                     case PoisonType.Green:
-                                    case PoisonType.Red:
+                                    //case PoisonType.Red:
                                     case PoisonType.Slow:
                                     case PoisonType.Paralysis:
                                     case PoisonType.HellFire:
@@ -18361,11 +18361,11 @@ namespace Server.Models
             {
                 case ObjectType.Player:
                     if (!CanAttackTarget(ob)) return;
-                    if (ob.Level >= Level || ob.Buffs.Any(x => x.Type == BuffType.Endurance)) return;
+                    if (/*ob.Level >= Level ||*/ ob.Buffs.Any(x => x.Type == BuffType.Endurance)) return;
                     break;
                 case ObjectType.Monster:
                     if (!CanAttackTarget(ob)) return;
-                    if (ob.Level >= Level || !((MonsterObject)ob).MonsterInfo.CanPush) return;
+                    if (/*ob.Level >= Level ||*/ !((MonsterObject)ob).MonsterInfo.CanPush) return;
                     break;
                 case ObjectType.Item:
                     break;
@@ -18544,7 +18544,7 @@ namespace Server.Models
                 [Stat.DCPercent] = value,
             };
 
-            BuffAdd(BuffType.Might, TimeSpan.FromSeconds(60 + magic.Level * 30), buffStats, false, false, TimeSpan.Zero);
+            BuffAdd(BuffType.Might, TimeSpan.FromSeconds(180 + magic.Level * 90), buffStats, false, false, TimeSpan.Zero);
 
             LevelMagic(magic);
         }
