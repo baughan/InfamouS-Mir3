@@ -44,7 +44,8 @@ namespace MirDB
                 [typeof(UInt64).FullName] = typeof(UInt64),
                 [typeof(Point[]).FullName] = typeof(Point[]),
                 [typeof(Stats).FullName] = typeof(Stats),
-                [typeof(BitArray).FullName] = typeof(BitArray)
+                [typeof(BitArray).FullName] = typeof(BitArray),
+                [typeof(Int64[]).FullName] = typeof(Int64[]),
             };
             #endregion
 
@@ -105,6 +106,19 @@ namespace MirDB
                     if (!r.ReadBoolean()) return null;
 
                     return new BitArray(r.ReadBytes(r.ReadInt32()));
+                },
+                [typeof(Int64[])] = r =>
+                {
+                    if (!r.ReadBoolean()) return null;
+
+                    int length = r.ReadInt32();
+
+                    Int64[] values = new Int64[length];
+                    for (int i = 0; i < length; i++)
+                        values[i] = r.ReadInt64();
+
+                    return values;
+
                 },
             };
 
@@ -191,6 +205,17 @@ namespace MirDB
                     
                     w.Write(bytes.Length);
                     w.Write(bytes);
+                },
+                [typeof(Int64[])] = (v, w) =>
+                {
+                    w.Write(v != null);
+                    if (v == null) return;
+                    Int64[] values = (Int64[])v;
+
+                    w.Write(values.Length);
+
+                    foreach (Int64 value in values)
+                        w.Write(value);
                 },
             };
 
