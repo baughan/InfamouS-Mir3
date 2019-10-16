@@ -733,43 +733,28 @@ namespace Server.Envir
 
         public void Process(C.MarketPlaceHistory p)
         {
-            int err = 0;
-            try
+            if (Stage != GameStage.Game && Stage != GameStage.Observer) return;
+            S.MarketPlaceHistory result = new S.MarketPlaceHistory { Index = p.Index, Display = p.Display, ObserverPacket = false };
+            Enqueue(result);
+
+            AuctionHistoryInfo info = SEnvir.AuctionHistoryInfoList.Binding.FirstOrDefault(x => x.Info == p.Index && x.PartIndex == p.PartIndex);
+
+            if (info == null) return;
+            result.SaleCount = info.SaleCount;
+            result.LastPrice = info.LastPrice;
+
+            long average = 0;
+            long count = 0;
+            foreach (long value in info.Average)
             {
-                if (Stage != GameStage.Game && Stage != GameStage.Observer) return;
-                err = 1;
-                S.MarketPlaceHistory result = new S.MarketPlaceHistory { Index = p.Index, Display = p.Display, ObserverPacket = false };
-                Enqueue(result);
-                err = 2;
+                if (value == 0) break;
 
-                AuctionHistoryInfo info = SEnvir.AuctionHistoryInfoList.Binding.FirstOrDefault(x => x.Info == p.Index && x.PartIndex == p.PartIndex);
-
-                if (info == null) return;
-                err = 3;
-                result.SaleCount = info.SaleCount;
-                result.LastPrice = info.LastPrice;
-
-                long average = 0;
-                long count = 0;
-                err = 4;
-                foreach (long value in info.Average)
-                {
-                    if (value == 0) break;
-
-                    average += value;
-                    count++;
-                }
-                err = 5;
-
-                if (count == 0) return;
-                err = 6;
-                result.AveragePrice = average / count;
+                average += value;
+                count++;
             }
-            catch (Exception e)
-            {
-                Console.WriteLine($"CODE: {err} : {e}");
-                throw;
-            }
+
+            if (count == 0) return;
+            result.AveragePrice = average / count;
         }
         public void Process(C.MarketPlaceConsign p)
         {
