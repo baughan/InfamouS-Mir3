@@ -13,7 +13,7 @@ namespace Server.Models.Monsters
             bufftype = BuffType.YangDevilNode;
             buffstats = new List<Stat>
             {
-                Stat.MinMR, Stat.MaxMR,
+                Stat.MRPercent
             };
         }
     }

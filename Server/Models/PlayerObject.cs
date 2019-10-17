@@ -2807,6 +2807,12 @@ namespace Server.Models
             Stats[Stat.Health] += (Stats[Stat.Health] * Stats[Stat.HealthPercent]) / 100;
             Stats[Stat.Mana] += (Stats[Stat.Mana] * Stats[Stat.ManaPercent]) / 100;
 
+            Stats[Stat.MinAC] += Stats[Stat.MinAC] * Stats[Stat.ACPercent] / 100;
+            Stats[Stat.MaxAC] += Stats[Stat.MaxAC] * Stats[Stat.ACPercent] / 100;
+
+            Stats[Stat.MinMR] += Stats[Stat.MinMR] * Stats[Stat.MRPercent] / 100;
+            Stats[Stat.MaxMR] += Stats[Stat.MaxMR] * Stats[Stat.MRPercent] / 100;
+
             Stats[Stat.MinDC] += (Stats[Stat.MinDC] * Stats[Stat.DCPercent]) / 100;
             Stats[Stat.MaxDC] += (Stats[Stat.MaxDC] * Stats[Stat.DCPercent]) / 100;
 
