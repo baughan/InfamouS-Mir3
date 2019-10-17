@@ -2440,8 +2440,7 @@ namespace Server.Models
                         amount *= 1.5M;
                     else
                         amount *= 2.5M;
-                    masterexp = amount - oamount;
-                    Character.MasterExperience += masterexp;
+                    masterexp = amount - oamount;                    
                 }
             }
 
@@ -2461,10 +2460,11 @@ namespace Server.Models
 
             if (amount == 0) return;
 
-            if (Experience < MaxExperience)
+            if (Experience < MaxExperience && Level < 86 + Character.Rebirth)
             {
                 Experience += amount;
                 Enqueue(new S.GainedExperience { Amount = amount, MasterAmount = masterexp });
+                Character.MasterExperience += masterexp;
             }
 
             UserItem weapon = Equipment[(int)EquipmentSlot.Weapon];
