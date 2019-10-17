@@ -776,12 +776,15 @@ namespace Library
 
         [StatDescription(Title = "Success Chance", Format = "{0:#0%;-#0%;#0%}", Mode = StatType.Percent)]
         GemOrbSuccess,
-
         [StatDescription(Title = "Brake Chance", Format = "{0:#0%;-#0%;#0%}", Mode = StatType.Percent)]
         GemOrbBrake,
-
         [StatDescription(Title = "Gems/Orbs Used ", Format = "{0}", Mode = StatType.Default)]
         GemCount,
+
+        [StatDescription(Title = "AC", Format = "{0:+#0%;-#0%;#0%}", Mode = StatType.Percent)]
+        ACPercent,
+        [StatDescription(Title = "MR", Format = "{0:+#0%;-#0%;#0%}", Mode = StatType.Percent)]
+        MRPercent,
     }
 
     public enum StatSource

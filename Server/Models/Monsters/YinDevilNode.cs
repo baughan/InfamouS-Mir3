@@ -19,7 +19,7 @@ namespace Server.Models.Monsters
             bufftype = BuffType.YinDevilNode;
             buffstats = new List<Stat>
             {
-                Stat.MinAC, Stat.MaxAC,
+                Stat.ACPercent
             };
         }
 
