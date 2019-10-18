@@ -480,7 +480,7 @@ namespace Library
 
         public decimal Experience { get; set; }
 
-        public int CurrentHP { get; set; }
+        public long CurrentHP { get; set; }
         public int CurrentMP { get; set; }
 
         public AttackMode AttackMode { get; set; }
@@ -1177,8 +1177,8 @@ namespace Library
 
         public string PetOwner;
 
-        public int Health;
-        public int MaxHealth;
+        public long Health;
+        public long MaxHealth;
 
         public int Mana;
         public int MaxMana;

@@ -52,7 +52,9 @@ namespace Library
             AxeOma, CrossbowOma, YinDevilNode, OmaKing,
 
             //Mir2 Fox
-            BlackFoxman, WhiteFoxman, GreatFoxSpirit;
+            BlackFoxman, WhiteFoxman, GreatFoxSpirit,
+            
+            Terracotta1;
 
 
         static FrameSet()
@@ -942,6 +944,18 @@ namespace Library
                 [MirAnimation.Struck] = new Frame(27, 3, 3, TimeSpan.FromMilliseconds(100)),
                 [MirAnimation.Die] = new Frame(300, 18, 18, TimeSpan.FromMilliseconds(100)),
                 [MirAnimation.Dead] = new Frame(317, 1, 18, TimeSpan.FromMilliseconds(1000)),
+            };
+
+            Terracotta1 = new Dictionary<MirAnimation, Frame>
+            {
+                [MirAnimation.Standing] = new Frame(160, 4, 10, TimeSpan.FromMilliseconds(500)),
+                [MirAnimation.Walking] = new Frame(240, 6, 10, TimeSpan.FromMilliseconds(100)),
+                [MirAnimation.Combat1] = new Frame(320, 8, 10, TimeSpan.FromMilliseconds(100)),
+                [MirAnimation.Struck] = new Frame(400, 3, 10, TimeSpan.FromMilliseconds(100)),
+                [MirAnimation.Show] = new Frame(0, 13, 20, TimeSpan.FromMilliseconds(100)),
+                [MirAnimation.Die] = new Frame(480, 11, 20, TimeSpan.FromMilliseconds(100)),
+                [MirAnimation.Dead] = new Frame(490, 1, 20, TimeSpan.FromMilliseconds(1000)),
+                [MirAnimation.Hide] = new Frame(0, 13, 20, TimeSpan.FromMilliseconds(100)) { Reversed = true, },
             };
         }
     }

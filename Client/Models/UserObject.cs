@@ -107,7 +107,7 @@ namespace Client.Models
         #endregion
 
         #region CurrentHP
-        public override int CurrentHP
+        public override long CurrentHP
         {
             get { return _CurrentHP; }
             set
@@ -117,7 +117,7 @@ namespace Client.Models
                 GameScene.Game.HealthChanged();
             }
         }
-        private int _CurrentHP;
+        private long _CurrentHP;
         #endregion
 
         #region CurrentMP

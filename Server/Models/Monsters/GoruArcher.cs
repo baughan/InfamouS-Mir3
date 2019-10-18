@@ -13,12 +13,12 @@ namespace Server.Models.Monsters
     {
         private bool CanTeleport = true;
 
-        public override int Attacked(MapObject attacker, long power, Element element, bool canReflect = true, bool ignoreShield = false, bool canCrit = true, bool canStruck = true)
+        public override long Attacked(MapObject attacker, long power, Element element, bool canReflect = true, bool ignoreShield = false, bool canCrit = true, bool canStruck = true)
         {
 
-            int result = base.Attacked(attacker, power, element, canReflect, ignoreShield, canCrit);
+            long result = base.Attacked(attacker, power, element, canReflect, ignoreShield, canCrit);
 
-            if (result < 0 || Dead || !CanTeleport || CurrentHP > Stats[Stat.Health] / 2) return result;
+            if (result < 0 || Dead || !CanTeleport || CurrentHP > MaximumHP / 2) return result;
 
             CanTeleport = false;
 

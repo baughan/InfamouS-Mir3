@@ -30,7 +30,7 @@ namespace Server.Models.Monsters
             ActionTime = SEnvir.Now.AddMilliseconds(1500);
 
             Dead = false;
-            SetHP((int)(Stats[Stat.Health] / Math.Pow(2, DeathCount)));
+            SetHP((int)(MaximumHP / Math.Pow(2, DeathCount)));
             ReviveCount--;
         }
 

@@ -785,6 +785,9 @@ namespace Library
         ACPercent,
         [StatDescription(Title = "MR", Format = "{0:+#0%;-#0%;#0%}", Mode = StatType.Percent)]
         MRPercent,
+
+        [StatDescription(Title = "Health Count", Format = "{0:+#0;-#0;#0}", Mode = StatType.Default)]
+        HealthCount,
     }
 
     public enum StatSource

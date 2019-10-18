@@ -253,7 +253,7 @@ namespace Server.DBModels
         }
         private SafeZoneInfo _BindPoint;
 
-        public int CurrentHP
+        public long CurrentHP
         {
             get { return _CurrentHP; }
             set
@@ -266,7 +266,7 @@ namespace Server.DBModels
                 OnChanged(oldValue, value, "CurrentHP");
             }
         }
-        private int _CurrentHP;
+        private long _CurrentHP;
 
         public int CurrentMP
         {

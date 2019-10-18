@@ -15,7 +15,7 @@ namespace Server.Models.Monsters
     {
         public ConquestWar War;
 
-        public override int Attacked(MapObject attacker, long power, Element element, bool canReflect = true, bool ignoreShield = false, bool canCrit = true, bool canStruck = true)
+        public override long Attacked(MapObject attacker, long power, Element element, bool canReflect = true, bool ignoreShield = false, bool canCrit = true, bool canStruck = true)
         {
             if (attacker == null || attacker.Race != ObjectType.Player) return 0;
 
@@ -29,7 +29,7 @@ namespace Server.Models.Monsters
 
             if (War.Participants.Count > 0 && !War.Participants.Contains(player.Character.Account.GuildMember.Guild)) return 0;
 
-            int result = base.Attacked(attacker, 1, element, canReflect, ignoreShield, canCrit);
+            long result = base.Attacked(attacker, 1, element, canReflect, ignoreShield, canCrit);
 
             #region Conquest Stats
 

@@ -648,6 +648,10 @@ namespace Server.Models
                     return new WhiteFoxman { MonsterInfo = monsterInfo };
                 case 146:
                     return new GreatFoxSpirit { MonsterInfo = monsterInfo };
+                case 147:
+                    return new Terracotta { MonsterInfo = monsterInfo };
+                case 148:
+                    return new Terracotta { MonsterInfo = monsterInfo, CanPhase = true };
                 default:
                     return new MonsterObject { MonsterInfo = monsterInfo };
             }
@@ -690,8 +694,9 @@ namespace Server.Models
             MapDropRate -= offset;
             MapGoldRate -= offset;
 
-            RefreshStats();
-            CurrentHP = Stats[Stat.Health];
+            RefreshStats();           
+            
+            CurrentHP = MaximumHP;
             DisplayHP = CurrentHP;
                 
             RegenTime = SEnvir.Now.AddMilliseconds(SEnvir.Random.Next((int)RegenDelay.TotalMilliseconds));
@@ -722,10 +727,11 @@ namespace Server.Models
             MoveDelay = MonsterInfo.MoveDelay;
             AttackDelay = MonsterInfo.AttackDelay;
 
+            MaximumHP = (long)Stats[Stat.Health] + Stats[Stat.HealthCount] * int.MaxValue;
 
             if (SummonLevel > 0)
             {
-                Stats[Stat.Health] += Stats[Stat.Health]*SummonLevel/10;
+                MaximumHP += MaximumHP * SummonLevel/10;
 
                 Stats[Stat.MinAC] += Stats[Stat.MinAC]*SummonLevel/10;
                 Stats[Stat.MaxAC] += Stats[Stat.MaxAC]*SummonLevel/10;
@@ -772,14 +778,14 @@ namespace Server.Models
                     switch (magic.Info.Magic)
                     {
                         case MagicType.DemonicRecovery:
-                            Stats[Stat.Health] += (magic.Level + 1) * 300;
+                            MaximumHP += (magic.Level + 1) * 300;
                             break;
                     }
                 }
             }
 
 
-           
+
 
             /*
             Stats[Stat.FireResistance] = Math.Min(5, Stats[Stat.FireResistance]);
@@ -792,7 +798,7 @@ namespace Server.Models
             */
 
 
-            Stats[Stat.Health] += (int)(Stats[Stat.Health] * (long)Stats[Stat.HealthPercent] / 100);
+            MaximumHP += (int)(MaximumHP * (long)Stats[Stat.HealthPercent] / 100);
             Stats[Stat.Mana] += (int)(Stats[Stat.Mana] * (long)Stats[Stat.ManaPercent] / 100);
 
             Stats[Stat.MinAC] += (int)(Stats[Stat.MinAC] * (long)Stats[Stat.ACPercent] / 100);
@@ -812,14 +818,14 @@ namespace Server.Models
 
             if (PetOwner == null && CurrentMap != null)
             {
-                Stats[Stat.Health] += (int)(Stats[Stat.Health] * (long)MapHealthRate / 100);
+                MaximumHP += (int)(MaximumHP * (long)MapHealthRate / 100);
 
                 Stats[Stat.MinDC] += (int)(Stats[Stat.MinDC] * (long)MapDamageRate / 100);
                 Stats[Stat.MaxDC] += (int)(Stats[Stat.MaxDC] * (long)MapDamageRate / 100);
             }
 
 
-            Stats[Stat.Health] = Math.Max(1, Stats[Stat.Health]);
+            MaximumHP = Math.Max(1, MaximumHP);
             Stats[Stat.Mana] = Math.Max(1, Stats[Stat.Mana]);
 
             Stats[Stat.MinAC] = Math.Max(0, Stats[Stat.MinAC]);
@@ -837,11 +843,14 @@ namespace Server.Models
             Stats[Stat.MinMC] = Math.Min(Stats[Stat.MinMC], Stats[Stat.MaxMC]);
             Stats[Stat.MinSC] = Math.Min(Stats[Stat.MinSC], Stats[Stat.MaxSC]);
 
+            
             if (EasterEventMob)
-                Stats[Stat.Health] = 1;
+                MaximumHP = 1;
 
             if (ChristmasEventMob)
-                Stats[Stat.Health] = 10;
+                MaximumHP = 10;
+
+            
 
             S.DataObjectMaxHealthMana p = new S.DataObjectMaxHealthMana { ObjectID = ObjectID, Stats = Stats};
 
@@ -849,7 +858,7 @@ namespace Server.Models
                 player.Enqueue(p);
 
 
-            if (CurrentHP > Stats[Stat.Health]) SetHP(Stats[Stat.Health]);
+            if (CurrentHP > MaximumHP) SetHP(MaximumHP);
             if (CurrentMP > Stats[Stat.Mana]) SetMP(Stats[Stat.Mana]);
         }
         public virtual void ApplyBonusStats()
@@ -888,7 +897,7 @@ namespace Server.Models
         {
             if (!Activated) return;
 
-            if (NearByPlayers.Count > 0 || MonsterInfo.ViewRange > Config.MaxViewRange || Target != null || MonsterInfo.IsBoss || PetOwner != null || ActionList.Count > 0 || CurrentHP < Stats[Stat.Health]) return;
+            if (NearByPlayers.Count > 0 || MonsterInfo.ViewRange > Config.MaxViewRange || Target != null || MonsterInfo.IsBoss || PetOwner != null || ActionList.Count > 0 || CurrentHP < MaximumHP) return;
 
             Activated = false;
             SEnvir.ActiveObjects.Remove(this);
@@ -1054,7 +1063,7 @@ namespace Server.Models
             SummonLevel = 0;
             RefreshStats();
 
-            SetHP(Math.Min(CurrentHP, Stats[Stat.Health]/10));
+            SetHP(Math.Min(CurrentHP, MaximumHP / 10));
 
             Broadcast(new S.ObjectPetOwnerChanged { ObjectID = ObjectID });
         }
@@ -1073,9 +1082,9 @@ namespace Server.Models
 
             RegenTime = SEnvir.Now + RegenDelay;
 
-            if (CurrentHP >= Stats[Stat.Health]) return;
+            if (CurrentHP >= MaximumHP) return;
 
-            int regen = (int) Math.Max(1, Stats[Stat.Health]*0.02F); //2% every 10 seconds aprox
+            int regen = (int) Math.Max(1, MaximumHP * 0.02F); //2% every 10 seconds aprox
 
             ChangeHP(regen);
         }
@@ -1684,11 +1693,11 @@ namespace Server.Models
                                AttackElement));
         }
 
-        public virtual int Attack(MapObject ob, int power, Element element)
+        public virtual long Attack(MapObject ob, long power, Element element)
         {
             if (ob?.Node == null || ob.Dead) return 0;
 
-            int damage;
+            long damage;
 
             if (PoisonList.Any(x => x.Type == PoisonType.Abyss) && SEnvir.Random.Next(2) > 0)
             {
@@ -2352,7 +2361,7 @@ namespace Server.Models
                 ActionTime += TimeSpan.FromMilliseconds(poison.Value * 100);
             }
         }
-        public void UpdateMoveTime()
+        public virtual void UpdateMoveTime()
         {
             MoveTime = SEnvir.Now.AddMilliseconds(MoveDelay);
             ActionTime = SEnvir.Now.AddMilliseconds(Math.Min(MoveDelay - 100, AttackDelay));
@@ -2365,7 +2374,7 @@ namespace Server.Models
             }
         }
 
-        public override int Attacked(MapObject attacker, long power, Element element, bool canReflect = true, bool ignoreShield = false, bool canCrit = true, bool canStruck = true)
+        public override long Attacked(MapObject attacker, long power, Element element, bool canReflect = true, bool ignoreShield = false, bool canCrit = true, bool canStruck = true)
         {
             if (attacker?.Node == null || power == 0 || Dead || attacker.CurrentMap != CurrentMap || !Functions.InRange(attacker.CurrentLocation, CurrentLocation, Config.MaxViewRange)) return 0;
 
@@ -2401,10 +2410,10 @@ namespace Server.Models
             }
 
             if ((Poison & PoisonType.Red) == PoisonType.Red)
-                power = Math.Min(int.MaxValue, (long)(power * 1.2F));
+                power = (long)(power * 1.2F);
 
             for (int i = 0; i < attacker.Stats[Stat.Rebirth]; i++)
-                power = Math.Min(int.MaxValue, (long)(power * 1.2F));
+                power = (long)(power * 1.2F);
 
 
             BuffInfo buff = Buffs.FirstOrDefault(x => x.Type == BuffType.MagicShield);
@@ -2416,23 +2425,19 @@ namespace Server.Models
 
             if (SEnvir.Random.Next(100) < attacker.Stats[Stat.CriticalChance] && canCrit && power > 0)
             {
-                power = Math.Min(int.MaxValue, power + power + (power * attacker.Stats[Stat.CriticalDamage] / 100));
+                power = power + power + (power * attacker.Stats[Stat.CriticalDamage] / 100);
                 Critical();
             }
 
-            int finalpower = (int)power;
+            ChangeHP(-power);
 
-            ChangeHP(-finalpower);        
-
-
-
-            if (Dead) return finalpower;
+            if (Dead) return power;
             
             if (CanAttackTarget(attacker)&& PetOwner == null || Target == null)
                 Target = attacker;
 
 
-            return finalpower;
+            return power;
         }
         public override bool ApplyPoison(Poison p)
         {

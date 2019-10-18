@@ -119,7 +119,7 @@ namespace Server.DBModels
         
 
 
-        public int BossDamageTaken
+        public long BossDamageTaken
         {
             get { return _BossDamageTaken; }
             set
@@ -132,9 +132,9 @@ namespace Server.DBModels
                 OnChanged(oldValue, value, "BossDamageTaken");
             }
         }
-        private int _BossDamageTaken;
+        private long _BossDamageTaken;
 
-        public int BossDamageDealt
+        public long BossDamageDealt
         {
             get { return _BossDamageDealt; }
             set
@@ -147,7 +147,7 @@ namespace Server.DBModels
                 OnChanged(oldValue, value, "BossDamageDealt");
             }
         }
-        private int _BossDamageDealt;
+        private long _BossDamageDealt;
 
         public int BossDeathCount
         {

@@ -38,7 +38,7 @@ namespace Server.Models.Monsters
 
             if (Dead) return;
 
-            if (CurrentHP*MaxStage/Stats[Stat.Health] >= Stage || Stage <= 0) return;
+            if (CurrentHP*MaxStage/ MaximumHP >= Stage || Stage <= 0) return;
 
             Stage--;
             SpawnMinions(4, 8, Target);

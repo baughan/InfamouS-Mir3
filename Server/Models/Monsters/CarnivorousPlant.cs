@@ -65,7 +65,7 @@ namespace Server.Models.Monsters
 
                 ActionList.Add(new DelayedAction(SEnvir.Now.AddMilliseconds(3000), ActionType.Function));
 
-                SetHP(Stats[Stat.Health]);
+                SetHP(MaximumHP);
                 PoisonList.Clear();
             }
         }

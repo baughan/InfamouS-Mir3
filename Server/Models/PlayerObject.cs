@@ -43,7 +43,7 @@ namespace Server.Models
         public MirGender Gender => Character.Gender;
         public MirClass Class => Character.Class;
 
-        public override int CurrentHP
+        public override long CurrentHP
         {
             get { return Character.CurrentHP; }
             set { Character.CurrentHP = value; }
@@ -367,14 +367,14 @@ namespace Server.Models
 
             rate /= 100F;
 
-            if (CurrentHP < Stats[Stat.Health] || CurrentMP < Stats[Stat.Mana])
+            if (CurrentHP < MaximumHP || CurrentMP < Stats[Stat.Mana])
                 LevelMagic(magic);
 
 
 
-            if (CurrentHP < Stats[Stat.Health])
+            if (CurrentHP < MaximumHP)
             {
-                int regen = (int)Math.Max(1, Stats[Stat.Health] * rate);
+                int regen = (int)Math.Max(1, MaximumHP * rate);
 
                 ChangeHP(regen);
             }
@@ -413,7 +413,7 @@ namespace Server.Models
                 {
                     if (Inventory[i] == null || Inventory[i].Info.Index != link.LinkInfoIndex) continue;
 
-                    if ((Inventory[i].Info.Stats[Stat.Health] == 0 || CurrentHP == Stats[Stat.Health]) &&
+                    if ((Inventory[i].Info.Stats[Stat.Health] == 0 || CurrentHP == MaximumHP) &&
                         (Inventory[i].Info.Stats[Stat.Mana] == 0 || CurrentMP == Stats[Stat.Mana])) continue;
 
                     if (SEnvir.Now < AutoPotionCheckTime) return;
@@ -1102,7 +1102,7 @@ namespace Server.Models
 
             RefreshStats();
 
-            SetHP(Stats[Stat.Health]);
+            SetHP(MaximumHP);
             SetMP(Stats[Stat.Mana]);
 
             Direction = MirDirection.Down;
@@ -1155,7 +1155,7 @@ namespace Server.Models
             AddAllObjects();
 
             Dead = false;
-            SetHP(Stats[Stat.Health]);
+            SetHP(MaximumHP);
             SetMP(Stats[Stat.Mana]);
 
             Broadcast(new S.ObjectRevive { ObjectID = ObjectID, Location = CurrentLocation, Effect = true });
@@ -2513,7 +2513,7 @@ namespace Server.Models
         {
             RefreshStats();
 
-            SetHP(Stats[Stat.Health]);
+            SetHP(MaximumHP);
             SetMP(Stats[Stat.Mana]);
 
             Enqueue(new S.LevelChanged { Level = Level, Experience = Experience });
@@ -2843,16 +2843,18 @@ namespace Server.Models
             Stats[Stat.DropRate] += 20 * Stats[Stat.Rebirth];
             Stats[Stat.GoldRate] += 20 * Stats[Stat.Rebirth];
 
+            MaximumHP = Stats[Stat.Health] + Stats[Stat.HealthCount] * int.MaxValue;
+
             Enqueue(new S.StatsUpdate { Stats = Stats, HermitStats = Character.HermitStats, HermitPoints = Math.Max(0, (Level - 39) * 3 - Character.SpentPoints) });
 
-            S.DataObjectMaxHealthMana p = new S.DataObjectMaxHealthMana { ObjectID = ObjectID, MaxHealth = Stats[Stat.Health], MaxMana = Stats[Stat.Mana] };
+            S.DataObjectMaxHealthMana p = new S.DataObjectMaxHealthMana { ObjectID = ObjectID, MaxHealth = MaximumHP, MaxMana = Stats[Stat.Mana] };
 
             foreach (PlayerObject player in DataSeenByPlayers)
                 player.Enqueue(p);
 
             RefreshWeight();
 
-            if (CurrentHP > Stats[Stat.Health]) SetHP(Stats[Stat.Health]);
+            if (CurrentHP > MaximumHP) SetHP(MaximumHP);
             if (CurrentMP > Stats[Stat.Mana]) SetMP(Stats[Stat.Mana]);
 
             if (Spawned && tracking != Stats[Stat.PlayerTracker] + Stats[Stat.BossTracker])
@@ -5931,7 +5933,7 @@ namespace Server.Models
                                 health += health * magic.GetPower() / 100;
                                 mana += mana * magic.GetPower() / 100;
 
-                                if (CurrentHP < Stats[Stat.Health] || CurrentMP < Stats[Stat.Mana])
+                                if (CurrentHP < MaximumHP || CurrentMP < Stats[Stat.Mana])
                                     LevelMagic(magic);
                             }
 
@@ -5940,7 +5942,7 @@ namespace Server.Models
                                 health += health * magic.GetPower() / 100;
                                 mana += mana * magic.GetPower() / 100;
 
-                                if (CurrentHP < Stats[Stat.Health] || CurrentMP < Stats[Stat.Mana])
+                                if (CurrentHP < MaximumHP || CurrentMP < Stats[Stat.Mana])
                                     LevelMagic(magic);
                             }
 
@@ -6134,7 +6136,7 @@ namespace Server.Models
                             if (!Dead || SEnvir.Now < Character.ReincarnationPillTime) return;
 
                             Dead = false;
-                            SetHP(Stats[Stat.Health]);
+                            SetHP(MaximumHP);
                             SetMP(Stats[Stat.Mana]);
 
                             Character.ReincarnationPillTime = SEnvir.Now.AddSeconds(item.Info.Stats[Stat.ItemReviveTime]);
@@ -6899,7 +6901,7 @@ namespace Server.Models
                     if (Stats[Stat.MaxSC] < item.Info.RequiredAmount) return false;
                     break;
                 case RequiredType.Health:
-                    if (Stats[Stat.Health] < item.Info.RequiredAmount) return false;
+                    if (MaximumHP < item.Info.RequiredAmount) return false;
                     break;
                 case RequiredType.Mana:
                     if (Stats[Stat.Mana] < item.Info.RequiredAmount) return false;
@@ -9201,7 +9203,7 @@ namespace Server.Models
 
         public override void BuffRemove(BuffInfo info)
         {
-            int oldHealth = Stats[Stat.Health];
+            long oldHealth = MaximumHP;
 
             base.BuffRemove(info);
 
@@ -13497,7 +13499,7 @@ namespace Server.Models
 
             if (attackMagic == MagicType.Karma && Magics.TryGetValue(attackMagic, out magic) && Level >= magic.Info.NeedLevel1 && SEnvir.Now >= magic.Cooldown && Buffs.Any(x => x.Type == BuffType.Cloak))
             {
-                int cost = Stats[Stat.Health] * magic.Cost / 100;
+                long cost = MaximumHP * magic.Cost / 100;
 
                 UserMagic augMagic;
                 if (Magics.TryGetValue(MagicType.Release, out augMagic) && Level >= augMagic.Info.NeedLevel1)
@@ -13874,7 +13876,7 @@ namespace Server.Models
                     }
                     break;
                 case MagicType.DragonRepulse:
-                    if (Stats[Stat.Health] * magic.Cost / 1000 >= CurrentHP || CurrentHP < Stats[Stat.Health] / 10)
+                    if (MaximumHP * magic.Cost / 1000 >= CurrentHP || CurrentHP < MaximumHP / 10)
                     {
                         Enqueue(new S.UserLocation { Direction = Direction, Location = CurrentLocation });
                         return;
@@ -13897,7 +13899,7 @@ namespace Server.Models
                         break;
                     }
 
-                    if (Stats[Stat.Health] * magic.Cost / 1000 >= CurrentHP || CurrentHP < Stats[Stat.Health] / 10)
+                    if (MaximumHP * magic.Cost / 1000 >= CurrentHP || CurrentHP < MaximumHP / 10)
                     {
                         Enqueue(new S.UserLocation { Direction = Direction, Location = CurrentLocation });
                         return;
@@ -15540,10 +15542,10 @@ namespace Server.Models
                         BuffRemove(BuffType.Cloak);
                         break;
                     }
-                    ChangeHP(-(Stats[Stat.Health] * magic.Cost / 1000));
+                    ChangeHP(-(MaximumHP * magic.Cost / 1000));
                     break;
                 case MagicType.DragonRepulse:
-                    ChangeHP(-(Stats[Stat.Health] * magic.Cost / 1000));
+                    ChangeHP(-(MaximumHP * magic.Cost / 1000));
                     ChangeMP(-(Stats[Stat.Mana] * magic.Cost / 1000));
                     break;
                 case MagicType.DarkConversion:
@@ -15965,7 +15967,7 @@ namespace Server.Models
                     Pets[i].Target = ob;
 
             decimal power = GetDC();
-            int karmaDamage = 0;
+            long karmaDamage = 0;
             bool ignoreAccuracy = false, hasFlameSplash = false, hasLotus = false, hasDestructiveSurge = false;
             bool hasBladeStorm = false, hasDanceOfSallows = false;
             bool hasMassacre = false;
@@ -16917,7 +16919,7 @@ namespace Server.Models
             return (int)(Math.Min(int.MaxValue, damage));
         }
 
-        public override int Attacked(MapObject attacker, long power, Element element, bool canReflect = true, bool ignoreShield = false, bool canCrit = true, bool canStruck = true)
+        public override long Attacked(MapObject attacker, long power, Element element, bool canReflect = true, bool ignoreShield = false, bool canCrit = true, bool canStruck = true)
         {
             if (attacker?.Node == null || power == 0 || Dead || attacker.CurrentMap != CurrentMap || !Functions.InRange(attacker.CurrentLocation, CurrentLocation, Config.MaxViewRange)) return 0;
 
@@ -18687,7 +18689,7 @@ namespace Server.Models
 
             if (ob.PetOwner != null)
             {
-                int hp = Math.Max(1, ob.Stats[Stat.Health] / 10);
+                long hp = Math.Max(1, ob.MaximumHP / 10);
 
                 if (hp < ob.CurrentHP) ob.SetHP(hp);
 
@@ -18874,12 +18876,12 @@ namespace Server.Models
                 [Stat.MCPercent] = (1 + magic.Level) * 10,
             };
 
-            int health = CurrentHP;
+            long health = CurrentHP;
 
             BuffInfo buff = BuffAdd(BuffType.Renounce, TimeSpan.FromSeconds(30 + magic.Level * 30), buffStats, false, false, TimeSpan.Zero);
 
 
-            buff.Stats[Stat.RenounceHPLost] = health - CurrentHP;
+            buff.Stats[Stat.RenounceHPLost] = (int)(health - CurrentHP);
             Enqueue(new S.BuffChanged() { Index = buff.Index, Stats = new Stats(buff.Stats) });
 
 
@@ -18949,7 +18951,7 @@ namespace Server.Models
 
         public void HealEnd(UserMagic magic, MapObject ob)
         {
-            if (ob?.Node == null || !CanHelpTarget(ob) || ob.CurrentHP >= ob.Stats[Stat.Health] || ob.Buffs.Any(x => x.Type == BuffType.Heal)) return;
+            if (ob?.Node == null || !CanHelpTarget(ob) || ob.CurrentHP >= ob.MaximumHP || ob.Buffs.Any(x => x.Type == BuffType.Heal)) return;
 
             UserMagic empowered;
             int bonus = 0;
@@ -19248,15 +19250,15 @@ namespace Server.Models
             if (pet == null) return;
 
 
-            int damage = pet.Stats[Stat.Health];
+            long damage = pet.MaximumHP;
             pet.Broadcast(new S.ObjectEffect { Effect = Effect.DemonExplosion, ObjectID = pet.ObjectID });
 
             List<MapObject> targets = GetTargets(pet.CurrentMap, pet.CurrentLocation, 2);
 
             pet.ChangeHP(-damage * 75 / 100);
 
-            int damagePvE = damage * magic.GetPower() / 100 + GetSC() * 3;
-            int damagePvP = damage * magic.GetPower() / 100 + GetSC() * 3;
+            long damagePvE = damage * magic.GetPower() / 100 + GetSC() * 3;
+            long damagePvP = damage * magic.GetPower() / 100 + GetSC() * 3;
 
             if (stats != null && stats.GetAffinityValue(Element.Phantom) > 0)
             {
@@ -19284,7 +19286,7 @@ namespace Server.Models
 
             if (pet == null) return;
 
-            int health = pet.Stats[Stat.Health] * magic.GetPower() / 100;
+            long health = MaximumHP * magic.GetPower() / 100;
 
             pet.ChangeHP(health);
 
@@ -19300,7 +19302,7 @@ namespace Server.Models
             int power = magic.GetPower();
 
             ob.Dead = false;
-            ob.SetHP(ob.Stats[Stat.Health] * power / 100);
+            ob.SetHP(ob.MaximumHP * power / 100);
             ob.SetMP(ob.Stats[Stat.Mana] * power / 100);
 
             Broadcast(new S.ObjectRevive { ObjectID = ob.ObjectID, Location = ob.CurrentLocation, Effect = false });
@@ -19446,7 +19448,7 @@ namespace Server.Models
             if (cell == null || cell.Movements != null || !ob.Spawn(map.Info, location))
                 ob.Spawn(CurrentMap.Info, CurrentLocation);
 
-            ob.SetHP(ob.Stats[Stat.Health]);
+            ob.SetHP(ob.MaximumHP);
 
             LevelMagic(magic);
         }
@@ -19495,7 +19497,7 @@ namespace Server.Models
             Stats buffStats = new Stats
             {
                 [Stat.Cloak] = 1,
-                [Stat.CloakDamage] = Stats[Stat.Health] * (20 - magic.Level - value) / 1000,
+                [Stat.CloakDamage] = (int)Math.Min(int.MaxValue, MaximumHP * (20 - magic.Level - value) / 1000),
             };
 
             ob.BuffAdd(BuffType.Cloak, TimeSpan.MaxValue, buffStats, true, false, TimeSpan.FromSeconds(2));
@@ -19999,7 +20001,7 @@ namespace Server.Models
                 Name = Name,
 
                 Health = DisplayHP,
-                MaxHealth = Stats[Stat.Health],
+                MaxHealth = MaximumHP,
                 Dead = Dead,
 
                 Mana = DisplayMP,

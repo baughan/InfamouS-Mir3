@@ -4083,7 +4083,7 @@ namespace Client.Envir
                 MonsterInfo = p.MonsterInfo,
 
                 Health = p.Health,
-                MaxHealth = p.Stats[Stat.Health],
+                MaxHealth = (long)p.Stats[Stat.Health] + p.Stats[Stat.HealthCount] * int.MaxValue,
                 Stats = p.Stats,
                 Dead = p.Dead,
 
@@ -4163,7 +4163,7 @@ namespace Client.Envir
 
             if (p.Stats != null)
             {
-                data.MaxHealth = p.Stats[Stat.Health];
+                data.MaxHealth = p.Stats[Stat.Health] + p.Stats[Stat.HealthCount] * int.MaxValue;
                 data.MaxMana = p.Stats[Stat.Mana];
                 data.Stats = p.Stats;
             }

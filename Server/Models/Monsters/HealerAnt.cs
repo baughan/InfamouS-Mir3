@@ -20,7 +20,7 @@ namespace Server.Models.Monsters
 
         public override bool CanHelpTarget(MapObject ob)
         {
-            return base.CanHelpTarget(ob) && ob.CurrentHP < ob.Stats[Stat.Health] && ob.Buffs.All(x => x.Type != BuffType.Heal);
+            return base.CanHelpTarget(ob) && ob.CurrentHP < ob.MaximumHP && ob.Buffs.All(x => x.Type != BuffType.Heal);
         }
 
         public override void ProcessAction(DelayedAction action)

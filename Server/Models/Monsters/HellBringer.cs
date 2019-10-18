@@ -55,7 +55,7 @@ namespace Server.Models.Monsters
             Direction = Functions.DirectionFromPoint(CurrentLocation, Target.CurrentLocation);
             UpdateAttackTime();
 
-            if (!BatsSpawned && CurrentHP <= Stats[Stat.Health] / 4)
+            if (!BatsSpawned && CurrentHP <= MaximumHP / 4)
             {
                 Broadcast(new S.ObjectMagic { ObjectID = ObjectID, Direction = Direction, CurrentLocation = CurrentLocation, Cast = true, Type = MagicType.HellBringerBats });
                 BatsSpawned = true;

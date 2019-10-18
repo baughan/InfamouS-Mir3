@@ -60,10 +60,11 @@ namespace Server.Models
 
         public bool DisplayCrit, DisplayMiss, DisplayResist, DisplayBlock;
 
-        public int DisplayHP;
+        public long DisplayHP;
         public int DisplayMP;
-        
-        public virtual int CurrentHP { get; set; }
+
+        public long MaximumHP { get; set; }
+        public virtual long CurrentHP { get; set; }
         public virtual int CurrentMP { get; set; }
         
         public bool Spawned, Dead, CoolEye, Activated;
@@ -158,7 +159,7 @@ namespace Server.Models
             bool changed = false;
             if (DisplayHP != CurrentHP || DisplayBlock || DisplayCrit || DisplayMiss)
             {
-                int change = CurrentHP - DisplayHP;
+                long change = CurrentHP - DisplayHP;
 
                 Broadcast(new S.HealthChanged { ObjectID = ObjectID, Change = change, Critical = DisplayCrit, Miss = DisplayMiss, Block = DisplayBlock });
 
@@ -209,7 +210,7 @@ namespace Server.Models
                 poison.TickTime = SEnvir.Now + poison.TickFrequency;
 
                 bool infection = false;
-                int damage = 0;
+                long damage = 0;
                 MonsterObject mob;
                 switch (poison.Type)
                 {
@@ -227,7 +228,7 @@ namespace Server.Models
                         break;
                     case PoisonType.Infection:
                         if (Race == ObjectType.Player)
-                            damage += 1 + Stats[Stat.Health] / 100;
+                            damage += 1 + (int)Math.Min(int.MaxValue, MaximumHP) / 100;
                         else
                         {
                             damage += poison.Value;
@@ -279,6 +280,7 @@ namespace Server.Models
 
                     if (damage > 0)
                     {
+                        damage = Math.Min(int.MaxValue, damage);
                         #region Conquest Stats
 
                         UserConquestStats conquest;
@@ -293,26 +295,26 @@ namespace Server.Models
                                     switch (poison.Owner.Race)
                                     {
                                         case ObjectType.Player:
-                                            conquest.PvPDamageTaken += damage;
+                                            conquest.PvPDamageTaken += (int)damage;
 
                                             conquest = SEnvir.GetConquestStats((PlayerObject)poison.Owner);
 
                                             if (conquest != null)
-                                                conquest.PvPDamageDealt += damage;
+                                                conquest.PvPDamageDealt += (int)damage;
                                             break;
                                         case ObjectType.Monster:
                                             mob = (MonsterObject)poison.Owner;
 
                                             if (mob is CastleLord)
-                                                conquest.BossDamageTaken += damage;
+                                                conquest.BossDamageTaken += (int)damage;
                                             else if (mob.PetOwner != null)
                                             {
-                                                conquest.PvPDamageTaken += damage;
+                                                conquest.PvPDamageTaken += (int)damage;
 
                                                 conquest = SEnvir.GetConquestStats(mob.PetOwner);
 
                                                 if (conquest != null)
-                                                    conquest.PvPDamageDealt += damage;
+                                                    conquest.PvPDamageDealt += (int)damage;
                                             }
                                             break;
                                     }
@@ -329,7 +331,7 @@ namespace Server.Models
                                             conquest = SEnvir.GetConquestStats((PlayerObject)poison.Owner);
 
                                             if (conquest != null)
-                                                conquest.BossDamageDealt += damage;
+                                                conquest.BossDamageDealt += (int)damage;
                                             break;
                                         case ObjectType.Monster:
 
@@ -339,7 +341,7 @@ namespace Server.Models
                                                 conquest = SEnvir.GetConquestStats(mob.PetOwner);
 
                                                 if (conquest != null)
-                                                    conquest.BossDamageDealt += damage;
+                                                    conquest.BossDamageDealt += (int)damage;
                                             }
                                             break;
                                     }
@@ -440,7 +442,7 @@ namespace Server.Models
                         ChangeHP(amount);
                         buff.Stats[Stat.Healing] -= amount;
 
-                        if (CurrentHP < Stats[Stat.Health] && buff.Stats[Stat.Healing] > 0)
+                        if (CurrentHP < MaximumHP && buff.Stats[Stat.Healing] > 0)
                         {
                             if (Race == ObjectType.Player)
                                 ((PlayerObject)this).Enqueue(new S.BuffChanged { Index = buff.Index, Stats = buff.Stats });
@@ -1087,11 +1089,11 @@ namespace Server.Models
             return bestCell;
         }
 
-        public void SetHP(int amount)
+        public void SetHP(long amount)
         {
             if (Dead) return;
 
-            CurrentHP = Math.Min(amount, Stats[Stat.Health]);
+            CurrentHP = Math.Min(amount, MaximumHP);
 
             if (CurrentHP <= 0 && !Dead)
             {
@@ -1109,7 +1111,7 @@ namespace Server.Models
                 Die();
             }
         }
-        public void ChangeHP(int amount)
+        public void ChangeHP(long amount)
         {
             if (Dead) return;
 
@@ -1129,8 +1131,8 @@ namespace Server.Models
             }
 
 
-            if (CurrentHP + amount > Stats[Stat.Health])
-                amount = Stats[Stat.Health] - CurrentHP;
+            if (CurrentHP + amount > MaximumHP)
+                amount = MaximumHP - CurrentHP;
             
             CurrentHP += amount;
 
@@ -1154,22 +1156,22 @@ namespace Server.Models
         {
             CurrentMP = Math.Min(amount, Stats[Stat.Mana]);
         }
-        public void ChangeMP(int amount)
+        public void ChangeMP(long amount)
         {
             if (CurrentMP + amount > Stats[Stat.Mana])
                 amount = Stats[Stat.Mana] - CurrentMP;
 
-            CurrentMP += amount;
+            CurrentMP += (int)Math.Min(int.MaxValue, amount);
         }
 
         public virtual void CelestialLightActivate()
         {
-            CurrentHP = Stats[Stat.Health] * Stats[Stat.CelestialLight] / 100;
+            CurrentHP = MaximumHP * Stats[Stat.CelestialLight] / 100;
             BuffRemove(BuffType.CelestialLight);
         }
         public virtual void ItemRevive()
         {
-            CurrentHP = Stats[Stat.Health];
+            CurrentHP = MaximumHP;
             CurrentMP = Stats[Stat.Mana];
             ItemReviveTime = SEnvir.Now.AddSeconds(Stats[Stat.ItemReviveTime]);
         }
@@ -1392,7 +1394,7 @@ namespace Server.Models
             if (info != null)
                 BuffRemove(info);
         }
-        public virtual int Attacked(MapObject attacker, long power, Element elemnet, bool canReflect = true, bool ignoreShield = false, bool canCrit = true, bool canStruck = true) { return 0; }
+        public virtual long Attacked(MapObject attacker, long power, Element elemnet, bool canReflect = true, bool ignoreShield = false, bool canCrit = true, bool canStruck = true) { return 0; }
 
         public List<MapObject> GetTargets(Map map, Point location, int radius)
         {

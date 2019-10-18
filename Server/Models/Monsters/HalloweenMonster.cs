@@ -104,7 +104,7 @@ namespace Server.Models.Monsters
         {
             if (ob?.Node == null || ob.Dead) return;
 
-            int power;
+            long power;
             MonsterObject mob = null;
             if (ob.Race == ObjectType.Monster)
             {
