@@ -11,7 +11,7 @@ namespace Server.Models.Monsters
         protected override void Attack()
         {
 
-            if (CurrentHP <= Stats[Stat.Health] / 2 && SEnvir.Random.Next(4) > 0)
+            if (CurrentHP <= MaximumHP / 2 && SEnvir.Random.Next(4) > 0)
                 Defend();
             else
                 base.Attack();

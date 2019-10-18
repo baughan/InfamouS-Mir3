@@ -45,9 +45,9 @@ namespace Server.Models.Monsters
             SetHP(0);
         }
 
-        public override int Attacked(MapObject attacker, long power, Element element, bool canReflect = true, bool ignoreShield = false, bool canCrit = true, bool canStruck = true)
+        public override long Attacked(MapObject attacker, long power, Element element, bool canReflect = true, bool ignoreShield = false, bool canCrit = true, bool canStruck = true)
         {
-            int value = base.Attacked(attacker, power, element, canReflect, ignoreShield, canCrit, canStruck);
+            long value = base.Attacked(attacker, power, element, canReflect, ignoreShield, canCrit, canStruck);
 
 
             SetHP(0);

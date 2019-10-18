@@ -118,6 +118,7 @@
     <Compile Include="Models\MonsterObject.cs" />
     <Compile Include="Models\Monsters\BlackFoxman.cs" />
     <Compile Include="Models\Monsters\GreatFoxSpirit.cs" />
+    <Compile Include="Models\Monsters\Terracotta.cs" />
     <Compile Include="Models\Monsters\WhiteFoxman.cs" />
     <Compile Include="Models\Monsters\RedFoxman.cs" />
     <Compile Include="Models\Monsters\OmaKing.cs" />

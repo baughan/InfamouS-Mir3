@@ -986,6 +986,8 @@ namespace Library
         RedFoxman,
         WhiteFoxman,
         GreatFoxSpirit,
+
+        Terracotta1,
     }
 
     

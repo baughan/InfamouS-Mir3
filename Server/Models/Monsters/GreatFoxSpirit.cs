@@ -43,7 +43,7 @@ namespace Server.Models.Monsters
 
             if (Dead) return;
 
-            Stage = 4 - (CurrentHP / (Stats[Stat.Health] / 4));
+            Stage = (int)(4 - (CurrentHP / (MaximumHP / 4)));
         }
 
         protected override bool InAttackRange()

@@ -23,7 +23,7 @@ namespace Server.Models.Monsters
 
             if (Dead) return;
 
-            if (!SubSpawned && CurrentHP < Stats[Stat.Health] / 4)
+            if (!SubSpawned && CurrentHP < MaximumHP / 4)
             {
                 SubSpawned = true;
                 SpawnSub();

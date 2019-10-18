@@ -105,22 +105,22 @@ namespace Client.Models
     {
         #region Value
 
-        public int Value
+        public long Value
         {
             get { return _Value; }
             set
             {
                 if (_Value == value) return;
 
-                int oldValue = _Value;
+                long oldValue = _Value;
                 _Value = value;
 
                 OnValueChanged(oldValue, value);
             }
         }
-        private int _Value;
+        private long _Value;
         public event EventHandler<EventArgs> ValueChanged;
-        public virtual void OnValueChanged(int oValue, int nValue)
+        public virtual void OnValueChanged(long oValue, long nValue)
         {
             ValueChanged?.Invoke(this, EventArgs.Empty);
         }

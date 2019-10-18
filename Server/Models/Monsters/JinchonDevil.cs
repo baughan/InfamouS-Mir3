@@ -42,7 +42,7 @@ namespace Server.Models.Monsters
 
                     foreach (MapObject ob in targets)
                     {
-                        if (CurrentHP > Stats[Stat.Health] / 2 && SEnvir.Random.Next(2) > 0) continue;
+                        if (CurrentHP > MaximumHP / 2 && SEnvir.Random.Next(2) > 0) continue;
 
                         DeathCloud(ob.CurrentLocation);
                     }

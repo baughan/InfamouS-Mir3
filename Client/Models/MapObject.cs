@@ -70,7 +70,7 @@ namespace Client.Models
         public uint ObjectID;
 
         public virtual int Level { get; set; }
-        public virtual int CurrentHP { get; set; }
+        public virtual long CurrentHP { get; set; }
         public virtual int CurrentMP { get; set; }
         public int ExtraInt;
 

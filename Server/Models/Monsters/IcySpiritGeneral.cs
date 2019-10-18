@@ -34,9 +34,9 @@ namespace Server.Models.Monsters
             base.ProcessAction(action);
         }
 
-        public int Attack(MapObject ob)
+        public long Attack(MapObject ob)
         {
-            int result = base.Attack(ob, GetDC(), Element.Dark);
+            long result = base.Attack(ob, GetDC(), Element.Dark);
 
             if (result > 0)
                 ob.ChangeMP(-Math.Min(ob.CurrentMP, result));

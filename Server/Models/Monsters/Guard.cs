@@ -44,7 +44,7 @@ namespace Server.Models.Monsters
             NameColour = Color.SkyBlue;
         }
 
-        public override int Attacked(MapObject ob, long power, Element element, bool canReflect = true, bool ignoreShield = false, bool canCrit = true, bool canStruck = true)
+        public override long Attacked(MapObject ob, long power, Element element, bool canReflect = true, bool ignoreShield = false, bool canCrit = true, bool canStruck = true)
         {
             return 0;
         }
@@ -103,7 +103,7 @@ namespace Server.Models.Monsters
         {
             if (ob?.Node == null || ob.Dead) return;
 
-            int power;
+            long power;
 
             if (ob.Race == ObjectType.Monster)
             {

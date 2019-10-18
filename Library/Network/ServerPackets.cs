@@ -435,7 +435,7 @@ namespace Library.Network.ServerPackets
     public sealed class HealthChanged : Packet
     {
         public uint ObjectID { get; set; }
-        public int Change { get; set; }
+        public long Change { get; set; }
         public bool Miss { get; set; }
         public bool Block { get; set; }
         public bool Critical { get; set; }
@@ -1183,11 +1183,11 @@ namespace Library.Network.ServerPackets
 
         public string Name { get; set; }
         
-        public int Health { get; set; }
+        public long Health { get; set; }
         public int Mana { get; set; }
         public bool Dead { get; set; }
 
-        public int MaxHealth { get; set; }
+        public long MaxHealth { get; set; }
         public int MaxMana { get; set; }
     }
     public sealed class DataObjectMonster : Packet
@@ -1201,7 +1201,7 @@ namespace Library.Network.ServerPackets
         public int MonsterIndex { get; set; }
         public string PetOwner { get; set; }
         
-        public int Health { get; set; }
+        public long Health { get; set; }
         public Stats Stats { get; set; }
         public bool Dead { get; set; }
         
@@ -1237,7 +1237,7 @@ namespace Library.Network.ServerPackets
     {
         public uint ObjectID { get; set; }
 
-        public int Health { get; set; }
+        public long Health { get; set; }
         public int Mana { get; set; }
         public bool Dead { get; set; }
     }
@@ -1245,7 +1245,7 @@ namespace Library.Network.ServerPackets
     {
         public uint ObjectID { get; set; }
 
-        public int MaxHealth { get; set; }
+        public long MaxHealth { get; set; }
         public int MaxMana { get; set; }
         public Stats Stats { get; set; }
     }

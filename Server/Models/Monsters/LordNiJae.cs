@@ -38,9 +38,9 @@ namespace Server.Models.Monsters
             }
         }
 
-        public override int Attack(MapObject ob, int power, Element element)
+        public override long Attack(MapObject ob, long power, Element element)
         {
-            int result = base.Attack(ob, power, element);
+            long result = base.Attack(ob, power, element);
             
             if (result <= 0) return result;
 

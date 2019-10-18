@@ -28,7 +28,7 @@ namespace Server.Models.Monsters
 
             Visible = true;
         }
-        public override int Attacked(MapObject attacker, long power, Element element, bool canReflect = true, bool ignoreShield = false, bool canCrit = true, bool canStruck = true)
+        public override long Attacked(MapObject attacker, long power, Element element, bool canReflect = true, bool ignoreShield = false, bool canCrit = true, bool canStruck = true)
         {
             if (!Visible) return 0;
 
