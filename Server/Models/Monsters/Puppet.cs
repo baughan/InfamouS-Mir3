@@ -99,7 +99,7 @@ namespace Server.Models.Monsters
                     target,
                     Functions.InRange(target.CurrentLocation, CurrentLocation, 1),
                     DarkStoneStats,
-                    0));
+                    (long)0));
             }
 
             Effect effect = Effect.Puppet;

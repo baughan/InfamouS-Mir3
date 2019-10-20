@@ -646,7 +646,7 @@ namespace Server.Models
                                         ob,
                                         true,
                                         buff.Stats,
-                                        0));
+                                        (long)0));
                                 }
                                 break;
 
