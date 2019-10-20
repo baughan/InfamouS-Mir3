@@ -315,7 +315,7 @@ namespace Server.Models
 
                     if (!CanAttackTarget(ob)) return;
 
-                    MagicAttack((List<UserMagic>)action.Data[0], ob, (bool)action.Data[2], (Stats)action.Data[3], (int)action.Data[4]);
+                    MagicAttack((List<UserMagic>)action.Data[0], ob, (bool)action.Data[2], (Stats)action.Data[3], (long)action.Data[4]);
                     return;
                 case ActionType.Mount:
                     PacketWaiting = false;
@@ -16446,7 +16446,7 @@ namespace Server.Models
             }
         }
 
-        public int MagicAttack(List<UserMagic> magics, MapObject ob, bool primary, Stats stats = null, int extra = 0)
+        public int MagicAttack(List<UserMagic> magics, MapObject ob, bool primary, Stats stats = null, long extra = 0)
         {
             if (ob?.Node == null || ob.Dead) return 0;
 
@@ -18660,7 +18660,7 @@ namespace Server.Models
 
             if (ob.MonsterInfo.IsBoss) return;
 
-            if (SEnvir.Random.Next(4 - magic.Level) > 0)
+            if (SEnvir.Random.Next(7 - magic.Level) > 0)
             {
 
                 if (SEnvir.Random.Next(2) == 0) LevelMagic(magic);

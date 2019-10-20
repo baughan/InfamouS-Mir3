@@ -195,6 +195,7 @@ namespace Library
             [LibraryFile.MonMagicEx9] = @"Data\MonMagicEx9.Zl", //
             [LibraryFile.MonMagicEx13] = @"Data\MonMagicEx13.Zl", //
             [LibraryFile.MonMagicEx14] = @"Data\MonMagicEx14.Zl", //
+            [LibraryFile.MonMagicEx17] = @"Data\MonMagicEx17.Zl", //
             [LibraryFile.MonMagicEx19] = @"Data\MonMagicEx19.Zl", //
             [LibraryFile.MonMagicEx20] = @"Data\MonMagicEx20.Zl", //
             [LibraryFile.MonMagicEx21] = @"Data\MonMagicEx21.Zl", //
@@ -860,6 +861,7 @@ namespace Library
         MonMagicEx9,
         MonMagicEx13,
         MonMagicEx14,
+        MonMagicEx17,
         MonMagicEx19,
         MonMagicEx20,
         MonMagicEx21,

@@ -988,6 +988,11 @@ namespace Library
         GreatFoxSpirit,
 
         Terracotta1,
+        Terracotta2,
+        Terracotta3,
+        Terracotta4,
+        TerracottaSub,
+        TerracottaBoss,
     }
 
     
@@ -2569,7 +2574,33 @@ namespace Library
         GreatFoxSpiritAttack4,
         GreatFoxSpiritStruck,
         GreatFoxSpiritDie,
-            
+
+        Terracotta1Attack,
+        Terracotta1Struck,
+        Terracotta1Die,
+
+        Terracotta2Attack,
+        Terracotta2Struck,
+        Terracotta2Die,
+
+        Terracotta3Attack,
+        Terracotta3Struck,
+        Terracotta3Die,
+
+        Terracotta4Attack,
+        Terracotta4Struck,
+        Terracotta4Die,
+
+        TerracottaSubAttack,
+        TerracottaSubAttack2,
+        TerracottaSubStruck,
+        TerracottaSubDie,
+
+        TerracottaBossAttack,
+        TerracottaBossAttack2,
+        TerracottaBossStruck,
+        TerracottaBossDie,
+
 
 
         #endregion

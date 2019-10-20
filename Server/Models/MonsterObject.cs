@@ -652,6 +652,24 @@ namespace Server.Models
                     return new Terracotta { MonsterInfo = monsterInfo };
                 case 148:
                     return new Terracotta { MonsterInfo = monsterInfo, CanPhase = true };
+                case 149:
+                    return new TerracottaSub
+                    {
+                        MonsterInfo = monsterInfo,
+                        PoisonType = PoisonType.Paralysis,
+                        PoisonTicks = 1,
+                        PoisonFrequency = 5,
+                        PoisonRate = 15,
+                    };
+                case 150:
+                    return new TerracottaBoss
+                    {
+                        MonsterInfo = monsterInfo,
+                        PoisonType = PoisonType.Paralysis,
+                        PoisonTicks = 1,
+                        PoisonFrequency = 5,
+                        PoisonRate = 15,
+                    };
                 default:
                     return new MonsterObject { MonsterInfo = monsterInfo };
             }

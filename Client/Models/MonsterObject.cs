@@ -2322,9 +2322,61 @@ namespace Client.Models
                 case MonsterImage.Terracotta1:
                     CEnvir.LibraryList.TryGetValue(LibraryFile.Mon_42, out BodyLibrary);
                     BodyShape = 4;
-
+                    AttackSound = SoundIndex.Terracotta1Attack;
+                    StruckSound = SoundIndex.Terracotta1Struck;
+                    DieSound = SoundIndex.Terracotta1Die;
 
                     foreach (KeyValuePair<MirAnimation, Frame> frame in FrameSet.Terracotta1)
+                        Frames[frame.Key] = frame.Value;
+                    break;
+                case MonsterImage.Terracotta2:
+                    CEnvir.LibraryList.TryGetValue(LibraryFile.Mon_42, out BodyLibrary);
+                    BodyShape = 5;
+                    AttackSound = SoundIndex.Terracotta2Attack;
+                    StruckSound = SoundIndex.Terracotta2Struck;
+                    DieSound = SoundIndex.Terracotta2Die;
+
+                    foreach (KeyValuePair<MirAnimation, Frame> frame in FrameSet.Terracotta2)
+                        Frames[frame.Key] = frame.Value;
+                    break;
+                case MonsterImage.Terracotta3:
+                    CEnvir.LibraryList.TryGetValue(LibraryFile.Mon_42, out BodyLibrary);
+                    BodyShape = 6;
+                    AttackSound = SoundIndex.Terracotta3Attack;
+                    StruckSound = SoundIndex.Terracotta3Struck;
+                    DieSound = SoundIndex.Terracotta3Die;
+
+                    foreach (KeyValuePair<MirAnimation, Frame> frame in FrameSet.Terracotta3)
+                        Frames[frame.Key] = frame.Value;
+                    break;
+                case MonsterImage.Terracotta4:
+                    CEnvir.LibraryList.TryGetValue(LibraryFile.Mon_42, out BodyLibrary);
+                    BodyShape = 7;
+                    AttackSound = SoundIndex.Terracotta4Attack;
+                    StruckSound = SoundIndex.Terracotta4Struck;
+                    DieSound = SoundIndex.Terracotta4Die;
+
+                    foreach (KeyValuePair<MirAnimation, Frame> frame in FrameSet.Terracotta3)
+                        Frames[frame.Key] = frame.Value;
+                    break;
+                case MonsterImage.TerracottaSub:
+                    CEnvir.LibraryList.TryGetValue(LibraryFile.Mon_42, out BodyLibrary);
+                    BodyShape = 8;
+                    AttackSound = SoundIndex.TerracottaSubAttack;
+                    StruckSound = SoundIndex.TerracottaSubStruck;
+                    DieSound = SoundIndex.TerracottaSubDie;
+
+                    foreach (KeyValuePair<MirAnimation, Frame> frame in FrameSet.TerracottaSub)
+                        Frames[frame.Key] = frame.Value;
+                    break;
+                case MonsterImage.TerracottaBoss:
+                    CEnvir.LibraryList.TryGetValue(LibraryFile.Mon_42, out BodyLibrary);
+                    BodyShape = 9;
+                    AttackSound = SoundIndex.TerracottaBossAttack2;
+                    StruckSound = SoundIndex.TerracottaBossStruck;
+                    DieSound = SoundIndex.TerracottaBossDie;
+
+                    foreach (KeyValuePair<MirAnimation, Frame> frame in FrameSet.TerracottaBoss)
                         Frames[frame.Key] = frame.Value;
                     break;
                 default:
@@ -3100,6 +3152,17 @@ namespace Client.Models
                         effect.Process();
                     }
                     break;
+                case MonsterImage.TerracottaBoss:
+                    //foreach (MapObject attackTarget in AttackTargets)
+                    //{
+                    Effects.Add(new MirProjectile(300, 10, TimeSpan.FromMilliseconds(100), LibraryFile.MonMagicEx17, 0, 0, Globals.NoneColour, new Point(CurrentLocation.X, CurrentLocation.Y-1))
+                    {
+                        Has16Directions = false,
+                        MapTarget = Functions.Move(CurrentLocation, Direction, 12),
+                        Skip = 10,
+                    });
+                    //}
+                    break;
             }
 
         }
@@ -3166,6 +3229,16 @@ namespace Client.Models
                                 });
                             }
                             break;
+                        case MonsterImage.TerracottaBoss:
+                            if (FrameIndex == 6)
+                            {
+                                Effects.Add(new MirEffect(400, 10, TimeSpan.FromMilliseconds(100), LibraryFile.MonMagicEx17, 10, 35, Globals.FireColour)
+                                {
+                                    Blend = true,
+                                    MapTarget = Functions.Move(CurrentLocation, Direction, 3),
+                                });
+                            }
+                            break;
                     }
                     break;
                 case MirAction.RangeAttack:
@@ -3216,6 +3289,21 @@ namespace Client.Models
                                     });
                                 }
                             }
+                            break;
+                        case MonsterImage.TerracottaSub:
+                            if (FrameIndex == 1)
+                            {
+                                DXSoundManager.Play(SoundIndex.TerracottaSubAttack2);
+                                Effects.Add(new MirEffect(100, 9, TimeSpan.FromMilliseconds(100), LibraryFile.MonMagicEx17, 0, 0, Globals.NoneColour)
+                                {
+                                    Target = this,
+                                    Direction = Direction,
+                                });
+                            }
+                            break;
+                        case MonsterImage.TerracottaBoss:
+                            if (FrameIndex == 6)
+                                CreateProjectile();
                             break;
                     }                            
                     break;            
@@ -4283,6 +4371,41 @@ namespace Client.Models
                             {
                                 Blend = true,
                                 Target = this,
+                            });
+                            break;
+                    }
+                    break;
+                case MonsterImage.TerracottaSub:
+                    switch (CurrentAction)
+                    {
+                        case MirAction.Attack:
+                            Effects.Add(new MirEffect(0, 10, TimeSpan.FromMilliseconds(100), LibraryFile.MonMagicEx17, 10, 35, Globals.NoneColour)
+                            {
+                                //Blend = true,
+                                Target = this,
+                                Direction = Direction,
+                            });
+                            break;
+                    }
+                    break;
+                case MonsterImage.TerracottaBoss:
+                    switch (CurrentAction)
+                    {
+                        case MirAction.Spell:
+                            DXSoundManager.Play(SoundIndex.TerracottaBossAttack);
+                            Effects.Add(new MirEffect(200, 5, TimeSpan.FromMilliseconds(100), LibraryFile.MonMagicEx17, 10, 35, Globals.NoneColour)
+                            {
+                                //Blend = true,
+                                Target = this,
+                                Direction = Direction,
+                            });
+                            break;
+                        case MirAction.Die:
+                            Effects.Add(new MirEffect(500, 18, TimeSpan.FromMilliseconds(120), LibraryFile.MonMagicEx17, 0, 0, Globals.NoneColour)
+                            {
+                                Target = this,
+                                Direction = Direction,
+                                Skip = 20,
                             });
                             break;
                     }
