@@ -647,6 +647,15 @@ namespace Server.Models
                     case 20:
                         NameColour = Color.MediumVioletRed;
                         break;
+                    case 21:
+                        NameColour = Color.BlanchedAlmond;
+                        break;
+                    case 22:
+                        NameColour = Color.MediumSlateBlue;
+                        break;
+                    case 23:
+                        NameColour = Color.Maroon;
+                        break;
                 }
             }
 

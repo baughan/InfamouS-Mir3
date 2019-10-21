@@ -1377,6 +1377,9 @@ namespace Library
         Sacrafice = 210,
 
         HellishBat = 211,
+
+        DoubleDeathSpawner = 212,
+        DoubleDeathSpawnMob = 213,
     }
 
     #region Packet Enums
