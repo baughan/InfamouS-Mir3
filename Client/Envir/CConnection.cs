@@ -4238,6 +4238,10 @@ namespace Client.Envir
                 GameScene.Game.CompanionForbiddenItems.Add(Tuple.Create(ItemType.Ring, RequiredClass.None));
             if (!p.CompanionShoes)
                 GameScene.Game.CompanionForbiddenItems.Add(Tuple.Create(ItemType.Shoes, RequiredClass.None));
+            if (!p.CompanionEmblems)
+                GameScene.Game.CompanionForbiddenItems.Add(Tuple.Create(ItemType.Emblem, RequiredClass.None));
+            if (!p.CompanionWings)
+                GameScene.Game.CompanionForbiddenItems.Add(Tuple.Create(ItemType.Wings, RequiredClass.None));
             if (!p.CompanionBook)
                 GameScene.Game.CompanionForbiddenItems.Add(Tuple.Create(ItemType.Book, RequiredClass.None));
             if (!p.CompanionBookWarrior)
@@ -4251,7 +4255,7 @@ namespace Client.Envir
             if (!p.CompanionPotion)
                 GameScene.Game.CompanionForbiddenItems.Add(Tuple.Create(ItemType.Consumable, RequiredClass.None));
             if (!p.CompanionOre)
-                GameScene.Game.CompanionForbiddenItems.Add(Tuple.Create(ItemType.Meat, RequiredClass.None));
+                GameScene.Game.CompanionForbiddenItems.Add(Tuple.Create(ItemType.Ore, RequiredClass.None));
             if (!p.CompanionCommon)
                 GameScene.Game.CompanionForbiddenGrades.Add(Rarity.Common);
             if (!p.CompanionElite)
