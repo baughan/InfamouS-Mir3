@@ -1705,6 +1705,29 @@ namespace Server.Models
 
                         Teleport(player.CurrentMap, player.CurrentLocation);
                         break;
+                    case "LEVELSKILL":
+
+                        if (parts.Length < 3) return;
+
+                        if (parts.Length == 3) player = this; //@levelskill healing 5
+                        else player = SEnvir.GetPlayerByCharacter(parts[1]); //@levelskill ryan healing 5
+              
+                        if (player == null) return;
+
+                        MagicInfo tinfo = SEnvir.MagicInfoList.Binding.FirstOrDefault(m => m.Name.Replace(" ", "").ToUpper().Equals(parts[2].ToUpper()));
+                        if (tinfo == null) return;
+
+
+                        if (int.TryParse(parts[3], out int tlevel))
+                        {
+                            player.Magics[tinfo.Magic].Level = tlevel;
+                            player.Magics[tinfo.Magic].Experience = 0;
+
+                            player.Enqueue(new S.MagicLeveled { InfoIndex = tinfo.Index, Level = tlevel, Experience = 0 });
+                            player.RefreshStats();
+                            Connection.ReceiveChat(string.Format("{0}'s {1} has been leveled to {2}", parts[1], parts[2], parts[3]), MessageType.System);
+                        }
+                        break;
                     case "GIVESKILLS":
                         if (!Character.Account.TempAdmin) return;
                         if (parts.Length < 2) return;
@@ -6730,7 +6753,7 @@ namespace Server.Models
                     bool foundmagic = Magics.TryGetValue(info.Magic, out magic);
                     if (foundmagic)
                     {
-                        if (magic.Level >= 6) return; //MAGIC LEVEL CAP
+                        if (magic.Level >= SharedConfig.MAGIC_LEVEL_CAP) return; //MAGIC LEVEL CAP
                     }
 
                     if (SEnvir.Random.Next(100) >= item.CurrentDurability)
