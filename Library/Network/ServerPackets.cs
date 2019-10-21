@@ -1130,13 +1130,15 @@ namespace Library.Network.ServerPackets
         public bool CompanionBracelet { get; set; }
         public bool CompanionRing { get; set; }
         public bool CompanionShoes { get; set; }
+        public bool CompanionEmblems { get; set; }
+        public bool CompanionWings { get; set; }
         public bool CompanionBook { get; set; }
         public bool CompanionBookWarrior { get; set; }
         public bool CompanionBookWizard { get; set; }
         public bool CompanionBookTaoist { get; set; }
         public bool CompanionBookAssassin { get; set; }
         public bool CompanionPotion { get; set; }
-        public bool CompanionMeat { get; set; }
+        public bool CompanionOre { get; set; }
         public bool CompanionCommon { get; set; }
         public bool CompanionElite { get; set; }
         public bool CompanionSuperior { get; set; }

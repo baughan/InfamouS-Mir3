@@ -724,6 +724,36 @@ namespace Server.DBModels
         }
         private bool _CompanionForbidShoes;
 
+        public bool CompanionForbidEmblems
+        {
+            get { return _CompanionForbidEmblems; }
+            set
+            {
+                if (_CompanionForbidEmblems == value) return;
+
+                var oldValue = _CompanionForbidEmblems;
+                _CompanionForbidEmblems = value;
+
+                OnChanged(oldValue, value, "CompanionForbidEmblems");
+            }
+        }
+        private bool _CompanionForbidEmblems;
+
+        public bool CompanionForbidWings
+        {
+            get { return _CompanionForbidWings; }
+            set
+            {
+                if (_CompanionForbidWings == value) return;
+
+                var oldValue = _CompanionForbidWings;
+                _CompanionForbidWings = value;
+
+                OnChanged(oldValue, value, "CompanionForbidWings");
+            }
+        }
+        private bool _CompanionForbidWings;
+
         public bool CompanionForbidBook
         {
             get { return _CompanionForbidBook; }
@@ -814,20 +844,20 @@ namespace Server.DBModels
         }
         private bool _CompanionForbidPotion;
 
-        public bool CompanionForbidMeat
+        public bool CompanionForbidOre
         {
-            get { return _CompanionForbidMeat; }
+            get { return _CompanionForbidOre; }
             set
             {
-                if (_CompanionForbidMeat == value) return;
+                if (_CompanionForbidOre == value) return;
 
-                var oldValue = _CompanionForbidMeat;
-                _CompanionForbidMeat = value;
+                var oldValue = _CompanionForbidOre;
+                _CompanionForbidOre = value;
 
-                OnChanged(oldValue, value, "CompanionForbidMeat");
+                OnChanged(oldValue, value, "CompanionForbidOre"); //hopefully renaming this doesn't break DB Load.. must check
             }
         }
-        private bool _CompanionForbidMeat;
+        private bool _CompanionForbidOre;
 
         public bool CompanionForbidCommon
         {
