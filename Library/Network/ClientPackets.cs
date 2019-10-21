@@ -649,7 +649,7 @@ namespace Library.Network.ClientPackets
     public sealed class NPCWeaponCraft : Packet
     {
         public RequiredClass Class { get; set; }
-        public CellLinkInfo Template { get; set; }
+        public CellLinkInfo Item { get; set; }
         public CellLinkInfo Yellow { get; set; }
         public CellLinkInfo Blue { get; set; }
         public CellLinkInfo Red { get; set; }

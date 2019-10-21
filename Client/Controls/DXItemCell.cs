@@ -1880,7 +1880,7 @@ namespace Client.Controls
                                 switch (Item.Info.Effect)
                                 {
                                     case ItemEffect.WeaponTemplate:
-                                        MoveItem(GameScene.Game.NPCWeaponCraftBox.TemplateCell);
+                                        MoveItem(GameScene.Game.NPCWeaponCraftBox.ItemCell);
                                         return;
                                     case ItemEffect.YellowSlot:
                                         MoveItem(GameScene.Game.NPCWeaponCraftBox.YellowCell);
@@ -1905,7 +1905,7 @@ namespace Client.Controls
                                 {
                                     case ItemType.Weapon:
                                     case ItemType.Shield:
-                                        MoveItem(GameScene.Game.NPCWeaponCraftBox.TemplateCell);
+                                        MoveItem(GameScene.Game.NPCWeaponCraftBox.ItemCell);
                                         return;
                                 }
                                 GameScene.Game.ReceiveChat($"Unable to use {Item.Info.ItemName} to Craft.", MessageType.System);
