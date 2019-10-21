@@ -12622,9 +12622,11 @@ namespace Server.Models
         }
         public void NPCWeaponCraft(C.NPCWeaponCraft p)
         {
+            bool isTemplate = Inventory[p.Item.Slot].Info.Effect == ItemEffect.WeaponTemplate;
             S.NPCWeaponCraft result = new S.NPCWeaponCraft
             {
-                Template = p.Template,
+                IsTemplate = isTemplate,
+                Item = p.Item,
                 Yellow = p.Yellow,
                 Blue = p.Blue,
                 Red = p.Red,
@@ -12636,26 +12638,19 @@ namespace Server.Models
 
 
             int statCount = 0;
-
-            bool isTemplate = false;
-
             #region Tempate Check
 
-            if (p.Template == null) return;
+            if (p.Item == null) return;
 
-            if (p.Template.GridType != GridType.Inventory) return;
+            if (p.Item.GridType != GridType.Inventory) return;
 
-            if (p.Template.Slot < 0 || p.Template.Slot >= Inventory.Length) return;
+            if (p.Item.Slot < 0 || p.Item.Slot >= Inventory.Length) return;
 
-            if (p.Template.Count != 1) return;
+            if (p.Item.Count != 1) return;
 
-            if (Inventory[p.Template.Slot] == null) return;
+            if (Inventory[p.Item.Slot] == null) return;
 
-            if (Inventory[p.Template.Slot].Info.Effect == ItemEffect.WeaponTemplate)
-            {
-                isTemplate = true;
-            }
-            else if ((Inventory[p.Template.Slot].Info.ItemType != ItemType.Weapon && Inventory[p.Template.Slot].Info.ItemType != ItemType.Shield) || Inventory[p.Template.Slot].Info.Effect == ItemEffect.SpiritBlade) return;
+            if (!isTemplate && (Inventory[p.Item.Slot].Info.ItemType != ItemType.Weapon && Inventory[p.Item.Slot].Info.ItemType != ItemType.Shield) || Inventory[p.Item.Slot].Info.Effect == ItemEffect.SpiritBlade) return;
 
             #endregion
 
@@ -12663,7 +12658,7 @@ namespace Server.Models
 
             if (!isTemplate)
             {
-                switch (Inventory[p.Template.Slot].Info.Rarity)
+                switch (Inventory[p.Item.Slot].Info.Rarity)
                 {
                     case Rarity.Common:
                         cost = Globals.CommonCraftWeaponPercentCost;
@@ -12781,7 +12776,6 @@ namespace Server.Models
             #endregion
 
             ItemInfo weap = null;
-
             if (isTemplate)
             {
 
@@ -12818,11 +12812,11 @@ namespace Server.Models
 
             if (isTemplate)
             {
-                item = Inventory[p.Template.Slot];
+                item = Inventory[p.Item.Slot];
                 if (item.Count == 1)
                 {
                     RemoveItem(item);
-                    Inventory[p.Template.Slot] = null;
+                    Inventory[p.Item.Slot] = null;
                     item.Delete();
                 }
                 else
@@ -12936,7 +12930,6 @@ namespace Server.Models
             GoldChanged();
 
             int total = 0;
-
             foreach (WeaponCraftStatInfo stat in SEnvir.WeaponCraftStatInfoList.Binding)
             {
                 if ((stat.RequiredClass & p.Class) != p.Class) continue;
@@ -12950,29 +12943,28 @@ namespace Server.Models
             }
             else
             {
-                item = Inventory[p.Template.Slot];
+                item = Inventory[p.Item.Slot];
 
-                RemoveItem(item);
-                Inventory[p.Template.Slot] = null;
+                //RemoveItem(item);
+                //Inventory[p.Item.Slot] = null;
 
                 item.Level = 1;
                 item.Flags &= ~UserItemFlags.Refinable;
 
+                //Remove all stats ~ except Enhancement
                 for (int i = item.AddedStats.Count - 1; i >= 0; i--)
                 {
                     UserItemStat stat = item.AddedStats[i];
-                    if (stat.StatSource == StatSource.Enhancement) continue;
+                    if (stat.StatSource == StatSource.Enhancement || stat.StatSource == StatSource.GemOrb) continue;
 
                     stat.Delete();
                 }
-
-                item.StatsChanged();
+                //item.StatsChanged();
             }
 
             for (int i = 0; i < statCount; i++)
             {
                 int value = SEnvir.Random.Next(total);
-
                 foreach (WeaponCraftStatInfo stat in SEnvir.WeaponCraftStatInfoList.Binding)
                 {
                     if ((stat.RequiredClass & p.Class) != p.Class) continue;
@@ -12985,10 +12977,9 @@ namespace Server.Models
                     break;
                 }
             }
-
             item.StatsChanged();
 
-            GainItem(item);
+            //GainItem(item);
         }
         #endregion
 
