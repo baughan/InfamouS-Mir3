@@ -894,6 +894,10 @@ namespace Server.Models
                 CompanionForbiddenItems.Add(Tuple.Create(ItemType.Ring, RequiredClass.None));
             if (Character.CompanionForbidShoes)
                 CompanionForbiddenItems.Add(Tuple.Create(ItemType.Shoes, RequiredClass.None));
+            if (Character.CompanionForbidEmblems)
+                CompanionForbiddenItems.Add(Tuple.Create(ItemType.Emblem, RequiredClass.None));
+            if (Character.CompanionForbidWings)
+                CompanionForbiddenItems.Add(Tuple.Create(ItemType.Wings, RequiredClass.None));
             if (Character.CompanionForbidBook)
                 CompanionForbiddenItems.Add(Tuple.Create(ItemType.Book, RequiredClass.None));
             if (Character.CompanionForbidBookWarrior)
@@ -908,10 +912,6 @@ namespace Server.Models
                 CompanionForbiddenItems.Add(Tuple.Create(ItemType.Consumable, RequiredClass.None));
             if (Character.CompanionForbidOre)
                 CompanionForbiddenItems.Add(Tuple.Create(ItemType.Ore, RequiredClass.None));
-            if (Character.CompanionForbidWings)
-                CompanionForbiddenItems.Add(Tuple.Create(ItemType.Wings, RequiredClass.None));
-            if (Character.CompanionForbidEmblems)
-                CompanionForbiddenItems.Add(Tuple.Create(ItemType.Emblem, RequiredClass.None));
             if (Character.CompanionForbidCommon)
                 CompanionForbiddenGrades.Add(Rarity.Common);
             if (Character.CompanionForbidElite)
@@ -12667,7 +12667,6 @@ namespace Server.Models
             #endregion
 
             long cost = Globals.CraftWeaponPercentCost;
-
             if (!isTemplate)
             {
                 switch (Inventory[p.Item.Slot].Info.Rarity)
@@ -12684,6 +12683,11 @@ namespace Server.Models
                 }
             }
 
+            if (Gold < cost)
+            {
+                Connection.ReceiveChat("You do not have enough gold.", MessageType.Hint);
+                return;
+            }
 
             #region Yellow Check
 
@@ -12971,7 +12975,7 @@ namespace Server.Models
 
                     stat.Delete();
                 }
-                //item.StatsChanged();
+                item.StatsChanged();
             }
 
             for (int i = 0; i < statCount; i++)
@@ -12991,7 +12995,8 @@ namespace Server.Models
             }
             item.StatsChanged();
 
-            //GainItem(item);
+            if (isTemplate) GainItem(item);
+            else Enqueue(new S.ItemStatsRefreshed { NewStats = item.Stats, GridType = p.Item.GridType, Slot = p.Item.Slot });
         }
         #endregion
 

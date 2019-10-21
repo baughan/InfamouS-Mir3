@@ -6845,7 +6845,7 @@ namespace Client.Scenes.Views
             {
                 Parent = this,
                 Label = { Text = "Lock Items:" },
-                Enabled = false,
+                Enabled = true,
                 Location = new Point(YellowCell.Location.X - 100, ClientArea.Y + 260)
             };
 

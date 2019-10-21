@@ -380,6 +380,8 @@ namespace Client.Scenes.Views
             BraceletCheckBox.Checked = !GameScene.Game.CompanionForbiddenItems.Contains(Tuple.Create(ItemType.Bracelet, RequiredClass.None));
             RingCheckBox.Checked = !GameScene.Game.CompanionForbiddenItems.Contains(Tuple.Create(ItemType.Ring, RequiredClass.None));
             ShoesCheckBox.Checked = !GameScene.Game.CompanionForbiddenItems.Contains(Tuple.Create(ItemType.Shoes, RequiredClass.None));
+            EmblemsCheckBox.Checked = !GameScene.Game.CompanionForbiddenItems.Contains(Tuple.Create(ItemType.Emblem, RequiredClass.None));
+            WingsCheckBox.Checked = !GameScene.Game.CompanionForbiddenItems.Contains(Tuple.Create(ItemType.Wings, RequiredClass.None));
             BookWarriorCheckBox.Checked = !GameScene.Game.CompanionForbiddenItems.Contains(Tuple.Create(ItemType.Book, RequiredClass.Warrior));
             BookWizardCheckBox.Checked = !GameScene.Game.CompanionForbiddenItems.Contains(Tuple.Create(ItemType.Book, RequiredClass.Wizard));
             BookTaoistCheckBox.Checked = !GameScene.Game.CompanionForbiddenItems.Contains(Tuple.Create(ItemType.Book, RequiredClass.Taoist));
