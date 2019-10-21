@@ -2477,6 +2477,18 @@ namespace Server.Models
 
             YieldReward();
 
+            if (MonsterInfo.Flag == MonsterFlag.DoubleDeathSpawner)
+            {
+                var info = SEnvir.MonsterInfoList.Binding.First(x => x.Flag == MonsterFlag.DoubleDeathSpawnMob);
+                if (info != null)
+                {
+                    MonsterObject mob = GetMonster(info);
+                    mob.Spawn(CurrentMap.Info, CurrentMap.GetRandomLocation(CurrentLocation, 1));
+                    MonsterObject mob2 = GetMonster(info);
+                    mob2.Spawn(CurrentMap.Info, CurrentMap.GetRandomLocation(CurrentLocation, 1));
+                }
+            }
+
             Master?.MinionList.Remove(this);
             Master = null;
 
