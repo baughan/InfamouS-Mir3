@@ -4250,7 +4250,7 @@ namespace Client.Envir
                 GameScene.Game.CompanionForbiddenItems.Add(Tuple.Create(ItemType.Book, RequiredClass.Assassin));
             if (!p.CompanionPotion)
                 GameScene.Game.CompanionForbiddenItems.Add(Tuple.Create(ItemType.Consumable, RequiredClass.None));
-            if (!p.CompanionMeat)
+            if (!p.CompanionOre)
                 GameScene.Game.CompanionForbiddenItems.Add(Tuple.Create(ItemType.Meat, RequiredClass.None));
             if (!p.CompanionCommon)
                 GameScene.Game.CompanionForbiddenGrades.Add(Rarity.Common);

@@ -906,8 +906,12 @@ namespace Server.Models
                 CompanionForbiddenItems.Add(Tuple.Create(ItemType.Book, RequiredClass.Assassin));
             if (Character.CompanionForbidPotion)
                 CompanionForbiddenItems.Add(Tuple.Create(ItemType.Consumable, RequiredClass.None));
-            if (Character.CompanionForbidMeat)
-                CompanionForbiddenItems.Add(Tuple.Create(ItemType.Meat, RequiredClass.None));
+            if (Character.CompanionForbidOre)
+                CompanionForbiddenItems.Add(Tuple.Create(ItemType.Ore, RequiredClass.None));
+            if (Character.CompanionForbidWings)
+                CompanionForbiddenItems.Add(Tuple.Create(ItemType.Wings, RequiredClass.None));
+            if (Character.CompanionForbidEmblems)
+                CompanionForbiddenItems.Add(Tuple.Create(ItemType.Emblem, RequiredClass.None));
             if (Character.CompanionForbidCommon)
                 CompanionForbiddenGrades.Add(Rarity.Common);
             if (Character.CompanionForbidElite)
@@ -926,13 +930,15 @@ namespace Server.Models
                 CompanionBracelet = !Character.CompanionForbidBracelet,
                 CompanionRing = !Character.CompanionForbidRing,
                 CompanionShoes = !Character.CompanionForbidShoes,
+                CompanionEmblems = !Character.CompanionForbidEmblems,
+                CompanionWings = !Character.CompanionForbidWings,
                 CompanionBook = !Character.CompanionForbidBook,
                 CompanionBookWarrior = !Character.CompanionForbidBookWarrior,
                 CompanionBookWizard = !Character.CompanionForbidBookWizard,
                 CompanionBookTaoist = !Character.CompanionForbidBookTaoist,
                 CompanionBookAssassin = !Character.CompanionForbidBookAssassin,
                 CompanionPotion = !Character.CompanionForbidPotion,
-                CompanionMeat = !Character.CompanionForbidMeat,
+                CompanionOre = !Character.CompanionForbidOre,
                 CompanionCommon = !Character.CompanionForbidCommon,
                 CompanionElite = !Character.CompanionForbidElite,
                 CompanionSuperior = !Character.CompanionForbidSuperior,
@@ -8609,6 +8615,12 @@ namespace Server.Models
                 case ItemType.Shoes:
                     Character.CompanionForbidShoes = CompanionForbiddenItems.Contains(tuppleToggle);
                     break;
+                case ItemType.Emblem:
+                    Character.CompanionForbidEmblems = CompanionForbiddenItems.Contains(tuppleToggle);
+                    break;
+                case ItemType.Wings:
+                    Character.CompanionForbidWings = CompanionForbiddenItems.Contains(tuppleToggle);
+                    break;
                 case ItemType.Book:
                     switch (pclass)
                     {
@@ -8632,8 +8644,8 @@ namespace Server.Models
                 case ItemType.Consumable:
                     Character.CompanionForbidPotion = CompanionForbiddenItems.Contains(tuppleToggle);
                     break;
-                case ItemType.Meat:
-                    Character.CompanionForbidMeat = CompanionForbiddenItems.Contains(tuppleToggle);
+                case ItemType.Ore:
+                    Character.CompanionForbidOre = CompanionForbiddenItems.Contains(tuppleToggle);
                     break;
             }
 
