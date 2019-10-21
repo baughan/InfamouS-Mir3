@@ -62,6 +62,7 @@
     <Compile Include="Network\GeneralPackets.cs" />
     <Compile Include="Network\Packet.cs" />
     <Compile Include="Network\ServerPackets.cs" />
+    <Compile Include="SharedConfig.cs" />
     <Compile Include="Stat.cs" />
     <Compile Include="SystemModels\BaseStat.cs" />
     <Compile Include="SystemModels\CastleInfo.cs" />
