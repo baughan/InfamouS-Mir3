@@ -2852,7 +2852,7 @@ namespace Server.Models
             Stats[Stat.DropRate] += 20 * Stats[Stat.Rebirth];
             Stats[Stat.GoldRate] += 20 * Stats[Stat.Rebirth];
 
-            MaximumHP = Stats[Stat.Health] + Stats[Stat.HealthCount] * int.MaxValue;
+            MaximumHP = Stats[Stat.Health] + (long)Stats[Stat.HealthCount] * int.MaxValue;
 
             Enqueue(new S.StatsUpdate { Stats = Stats, HermitStats = Character.HermitStats, HermitPoints = Math.Max(0, (Level - 39) * 3 - Character.SpentPoints) });
 
@@ -6080,6 +6080,7 @@ namespace Server.Models
                             work = SpecialRepair(EquipmentSlot.RingL) || work;
                             work = SpecialRepair(EquipmentSlot.RingR) || work;
                             work = SpecialRepair(EquipmentSlot.Shoes) || work;
+                            work = SpecialRepair(EquipmentSlot.Belt) || work;
 
                             if (!work) return;
                             RefreshStats();
@@ -6099,6 +6100,7 @@ namespace Server.Models
                             work = SpecialRepair(EquipmentSlot.Helmet);
                             work = SpecialRepair(EquipmentSlot.Armour) || work;
                             work = SpecialRepair(EquipmentSlot.Shoes) || work;
+                            work = SpecialRepair(EquipmentSlot.Belt) || work;
 
                             if (!work) return;
                             RefreshStats();
@@ -7668,13 +7670,13 @@ namespace Server.Models
             switch (fromItem.Info.Shape)
             {
                 default:
-                    success = totype == ItemType.Weapon || totype == ItemType.Armour || totype == ItemType.Helmet || totype == ItemType.Necklace || totype == ItemType.Bracelet || totype == ItemType.Ring || totype == ItemType.Shoes;
+                    success = totype == ItemType.Weapon || totype == ItemType.Armour || totype == ItemType.Helmet || totype == ItemType.Necklace || totype == ItemType.Bracelet || totype == ItemType.Ring || totype == ItemType.Shoes || totype == ItemType.Belt;
                     break;
                 case 1:
                     success = totype == ItemType.Weapon || totype == ItemType.Necklace || totype == ItemType.Bracelet || totype == ItemType.Ring;
                     break;
                 case 2:
-                    success = totype == ItemType.Armour || totype == ItemType.Shield || totype == ItemType.Helmet || totype == ItemType.Bracelet || totype == ItemType.Ring || totype == ItemType.Shoes;
+                    success = totype == ItemType.Armour || totype == ItemType.Shield || totype == ItemType.Helmet || totype == ItemType.Bracelet || totype == ItemType.Ring || totype == ItemType.Shoes || totype == ItemType.Belt;
                     break;
             }
             if (!success) return;
@@ -9992,6 +9994,7 @@ namespace Server.Models
                     case ItemType.Ring:
                     case ItemType.Shoes:
                     case ItemType.Book:
+                    case ItemType.Belt:
                         flags |= UserItemFlags.NonRefinable;
                         break;
                 }
@@ -10765,6 +10768,7 @@ namespace Server.Models
                     case ItemType.Ring:
                     case ItemType.Shoes:
                     case ItemType.Shield:
+                    case ItemType.Belt:
                         break;
                     default:
                         Connection.ReceiveChat(string.Format(Connection.Language.RepairFail, item.Info.ItemName), MessageType.System);

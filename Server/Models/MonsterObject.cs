@@ -745,7 +745,7 @@ namespace Server.Models
             MoveDelay = MonsterInfo.MoveDelay;
             AttackDelay = MonsterInfo.AttackDelay;
 
-            MaximumHP = (long)Stats[Stat.Health] + Stats[Stat.HealthCount] * int.MaxValue;
+            MaximumHP = Stats[Stat.Health] + (long)Stats[Stat.HealthCount] * int.MaxValue;
 
             if (SummonLevel > 0)
             {
@@ -3185,6 +3185,7 @@ namespace Server.Models
                 CurrentLocation = CurrentLocation,
 
                 Health = DisplayHP,
+                MaximumHealth = MaximumHP,
                 Stats = Stats,
                 Dead = Dead,
 

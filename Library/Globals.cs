@@ -404,7 +404,7 @@ namespace Library
 
 
         public const int InventorySize = 196,
-                         EquipmentSize = 17,
+                         EquipmentSize = 18,
                          CompanionInventorySize = 40,
                          CompanionEquipmentSize = 4,
                          PartsStorageOffset = 2000,
@@ -714,6 +714,7 @@ namespace Library
                 case ItemType.Shoes:
                 case ItemType.Shield:
                 case ItemType.Emblem:
+                case ItemType.Belt:
                     break;
                 default:
                     return false;
@@ -737,6 +738,7 @@ namespace Library
                         case ItemType.Shoes:
                         case ItemType.Shield:
                         case ItemType.Emblem:
+                        case ItemType.Belt:
                             return Info.RequiredAmount * 10000 / 9;
                        /* case ItemType.Helmet:
                         case ItemType.Necklace:
@@ -759,6 +761,7 @@ namespace Library
                         case ItemType.Shoes:
                         case ItemType.Shield:
                         case ItemType.Emblem:
+                        case ItemType.Belt:
                             return Info.RequiredAmount * 10000 / 2;
                       /*  case ItemType.Helmet:
                         case ItemType.Necklace:
@@ -784,6 +787,7 @@ namespace Library
                         case ItemType.Emblem:
                             return 150000;
                         case ItemType.Shoes:
+                        case ItemType.Belt:
                             return 30000;
                         default:
                             return 0;
@@ -808,6 +812,7 @@ namespace Library
                         case ItemType.Shoes:
                         case ItemType.Shield:
                         case ItemType.Emblem:
+                        case ItemType.Belt:
                             return Math.Max(1, Info.RequiredAmount / 2 + 5);
                       /*  case ItemType.Helmet:
                             return Math.Max(1, (Info.RequiredAmount - 30) / 6);
@@ -834,6 +839,7 @@ namespace Library
                         case ItemType.Shoes:
                         case ItemType.Shield:
                         case ItemType.Emblem:
+                        case ItemType.Belt:
                             return Math.Max(1, Info.RequiredAmount / 2 + 5);
                       /*  case ItemType.Helmet:
                             return Math.Max(1, (Info.RequiredAmount - 30) / 6);
@@ -863,6 +869,7 @@ namespace Library
                         case ItemType.Emblem:
                             return 10;
                         case ItemType.Shoes:
+                        case ItemType.Belt:
                             return 3;
                         default:
                             return 0;

@@ -1751,6 +1751,9 @@ namespace Server.Envir
                     case ItemType.Shoes:
                         UpgradeShoes(item);
                         break;
+                    case ItemType.Belt:
+                        UpgradeBelt(item);
+                        break;
                 }
                 item.StatsChanged();
             }
@@ -1765,6 +1768,7 @@ namespace Server.Envir
                 case ItemType.Bracelet:
                 case ItemType.Ring:
                 case ItemType.Shoes:
+                case ItemType.Belt:
                     item.CurrentDurability = Math.Min(Random.Next(info.Durability) + 1000, item.MaxDurability);
                     break;
                 case ItemType.Meat:
@@ -2750,7 +2754,135 @@ namespace Server.Envir
                 item.AddStat(element, -1, StatSource.Added);
             }
         }
-        
+
+        public static void UpgradeBelt(UserItem item)
+        {
+            if (Random.Next(10) < 9)
+            {
+                float value = 0.04F;
+
+                if (Random.Next(7) == 0)
+                    value += 0.04F;
+
+                if (Random.Next(30) == 0)
+                    value += 0.02F;
+
+                item.AddStat(Stat.MaxAC, (int)(item.Info.Stats[Stat.MaxAC] * value), StatSource.Added);
+            }
+
+            if (Random.Next(10) < 9)
+            {
+                float value = 0.04F;
+
+                if (Random.Next(7) == 0)
+                    value += 0.04F;
+
+                if (Random.Next(30) == 0)
+                    value += 0.02F;
+
+                item.AddStat(Stat.MaxMR, (int)(item.Info.Stats[Stat.MaxMR] * value), StatSource.Added);
+            }
+
+            if (Random.Next(10) < 9)
+            {
+                int value = 1;
+
+                if (Random.Next(12) == 0)
+                    value += 1;
+
+                if (Random.Next(30) == 0)
+                    value += 1;
+
+                item.AddStat(Stat.Comfort, value, StatSource.Added);
+            }
+
+
+            List<Stat> Elements = new List<Stat>
+            {
+                Stat.FireResistance, Stat.IceResistance, Stat.LightningResistance, Stat.WindResistance,
+                Stat.HolyResistance, Stat.DarkResistance,
+                Stat.PhantomResistance, Stat.PhysicalResistance,
+            };
+            if (Random.Next(10) == 0)
+            {
+                Stat element = Elements[Random.Next(Elements.Count)];
+
+                Elements.Remove(element);
+
+                item.AddStat(element, 1, StatSource.Added);
+
+                if (Random.Next(2) == 0)
+                {
+                    element = Elements[Random.Next(Elements.Count)];
+
+                    Elements.Remove(element);
+
+                    item.AddStat(element, -1, StatSource.Added);
+                }
+
+                if (Random.Next(45) == 0)
+                {
+                    element = Elements[Random.Next(Elements.Count)];
+
+                    Elements.Remove(element);
+
+                    item.AddStat(element, 1, StatSource.Added);
+
+                    if (Random.Next(2) == 0)
+                    {
+                        element = Elements[Random.Next(Elements.Count)];
+
+                        Elements.Remove(element);
+
+                        item.AddStat(element, -1, StatSource.Added);
+                    }
+
+                    if (Random.Next(60) == 0)
+                    {
+                        element = Elements[Random.Next(Elements.Count)];
+
+                        Elements.Remove(element);
+
+                        item.AddStat(element, 1, StatSource.Added);
+
+                        if (Random.Next(2) == 0)
+                        {
+                            element = Elements[Random.Next(Elements.Count)];
+
+                            Elements.Remove(element);
+
+                            item.AddStat(element, -1, StatSource.Added);
+                        }
+
+                    }
+                    else if (Random.Next(60) == 0)
+                    {
+                        element = Elements[Random.Next(Elements.Count)];
+
+                        Elements.Remove(element);
+
+                        item.AddStat(element, -1, StatSource.Added);
+                    }
+                }
+                else if (Random.Next(45) == 0)
+                {
+                    element = Elements[Random.Next(Elements.Count)];
+
+                    Elements.Remove(element);
+
+                    item.AddStat(element, -1, StatSource.Added);
+                }
+            }
+            else if (Random.Next(10) == 0)
+            {
+                Stat element = Elements[Random.Next(Elements.Count)];
+
+                Elements.Remove(element);
+
+                item.AddStat(element, -1, StatSource.Added);
+            }
+        }
+
         public static void Login(C.Login p, SConnection con)
         {
             AccountInfo account = null;

@@ -4083,7 +4083,7 @@ namespace Client.Envir
                 MonsterInfo = p.MonsterInfo,
 
                 Health = p.Health,
-                MaxHealth = (long)p.Stats[Stat.Health] + p.Stats[Stat.HealthCount] * int.MaxValue,
+                MaxHealth = p.MaximumHealth,
                 Stats = p.Stats,
                 Dead = p.Dead,
 
