@@ -16549,7 +16549,7 @@ namespace Server.Models
                     case MagicType.ImprovedExplosiveTalisman:
                         element = Element.Dark;
                         power += magic.GetPower() + GetSC();
-                        power *= 3;
+                        power *= 2;
                         break;
                     case MagicType.EvilSlayer:
                     case MagicType.GreaterEvilSlayer:
