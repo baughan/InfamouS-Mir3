@@ -1535,6 +1535,9 @@ namespace Client.Controls
                 case ItemType.Shoes:
                     GameScene.Game.CharacterBox.Grid[(int)EquipmentSlot.Shoes].ToEquipment(this);
                     break;
+                case ItemType.Belt:
+                    GameScene.Game.CharacterBox.Grid[(int)EquipmentSlot.Belt].ToEquipment(this);
+                    break;
                 case ItemType.Poison:
                     GameScene.Game.CharacterBox.Grid[(int)EquipmentSlot.Poison].ToEquipment(this);
                     break;
@@ -1704,6 +1707,7 @@ namespace Client.Controls
                     DXSoundManager.Play(SoundIndex.ItemRing);
                     break;
                 case ItemType.Shoes:
+                case ItemType.Belt:
                     DXSoundManager.Play(SoundIndex.ItemShoes);
                     break;
                 case ItemType.Consumable:

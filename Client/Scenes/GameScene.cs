@@ -1531,6 +1531,7 @@ namespace Client.Scenes
                     case ItemType.Bracelet:
                     case ItemType.Ring:
                     case ItemType.Shoes:
+                    case ItemType.Belt:
                     case ItemType.Poison:
                     case ItemType.Amulet:
                         if (User.WearWeight - (Equipment[(int)EquipmentSlot.Armour]?.Info.Weight ?? 0) + MouseItem.Info.Weight > User.Stats[Stat.WearWeight])
@@ -2002,7 +2003,7 @@ namespace Client.Scenes
                         str += "-Weapon" + Environment.NewLine + "-Necklace" + Environment.NewLine + "-Bracelet" + Environment.NewLine + "-Ring";
                         break;
                     case 2:
-                        str += "-Armour" + Environment.NewLine + "-Shield" + Environment.NewLine + "-Helmet" + Environment.NewLine + "-Bracelet" + Environment.NewLine + "-Ring" + Environment.NewLine + "-Shoes";
+                        str += "-Armour" + Environment.NewLine + "-Shield" + Environment.NewLine + "-Helmet" + Environment.NewLine + "-Bracelet" + Environment.NewLine + "-Ring" + Environment.NewLine + "-Shoes" + Environment.NewLine + "-Belt";
                         break;
                     default:
                         str += "-All Items";

@@ -897,6 +897,7 @@ namespace Server.Models
                             player.SpecialRepair(EquipmentSlot.RingL);
                             player.SpecialRepair(EquipmentSlot.RingR);
                             player.SpecialRepair(EquipmentSlot.Shoes);
+                            player.SpecialRepair(EquipmentSlot.Belt);
 
                             player.RefreshStats();
                             break;

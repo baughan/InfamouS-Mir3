@@ -868,6 +868,7 @@ namespace Client.Scenes.Views
                 case ItemType.Ring:
                 case ItemType.Shoes:
                 case ItemType.Book:
+                case ItemType.Belt:
                     ItemCell.Item.Flags |= UserItemFlags.NonRefinable;
                     break;
             }
@@ -904,6 +905,7 @@ namespace Client.Scenes.Views
                 case ItemType.Poison:
                 case ItemType.Amulet:
                 case ItemType.DarkStone:
+                case ItemType.Belt:
 
                     if (GameScene.Game.CanUseItem(ItemCell.Item))
                     {
@@ -1036,6 +1038,7 @@ namespace Client.Scenes.Views
                 case ItemType.Poison:
                 case ItemType.Amulet:
                 case ItemType.DarkStone:
+                case ItemType.Belt:
                     RequirementLabel.ForeColour = GameScene.Game.CanUseItem(ItemCell.Item) ? Color.Aquamarine : Color.Red;
                     break;
             }

@@ -281,7 +281,7 @@ namespace Client.Scenes.Views
 
             Grid[(int)EquipmentSlot.Wings] = cell = new DXItemCell
             {
-                Location = new Point(15, 300),
+                Location = new Point(15, 180),
                 Parent = CharacterTab,
                 FixedBorder = true,
                 Border = true,
@@ -290,6 +290,18 @@ namespace Client.Scenes.Views
                 GridType = GridType.Equipment,
             };
             //cell.BeforeDraw += (o, e) => Draw((DXItemCell)o, 104);
+
+            Grid[(int)EquipmentSlot.Belt] = cell = new DXItemCell
+            {
+                Location = new Point(15, 300),
+                Parent = CharacterTab,
+                FixedBorder = true,
+                Border = true,
+                ItemGrid = GameScene.Game.Equipment,
+                Slot = (int)EquipmentSlot.Belt,
+                GridType = GridType.Equipment,
+            };
+            //cell.BeforeDraw += (o, e) => Draw((DXItemCell)o, 36);
 
 
             Grid[(int)EquipmentSlot.Shoes] = cell = new DXItemCell

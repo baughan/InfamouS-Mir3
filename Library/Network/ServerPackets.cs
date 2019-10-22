@@ -1202,6 +1202,7 @@ namespace Library.Network.ServerPackets
         public string PetOwner { get; set; }
         
         public long Health { get; set; }
+        public long MaximumHealth { get; set; }
         public Stats Stats { get; set; }
         public bool Dead { get; set; }
         

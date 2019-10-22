@@ -109,6 +109,7 @@ namespace Library
         Emblem = 14,
         Shield = 15,
         Wings = 16,
+        Belt = 17,
     }
 
     public enum CompanionSlot
@@ -340,6 +341,7 @@ namespace Library
         Wings,
         Gem,
         Orb,
+        Belt,
     }
 
     public enum MirAction : byte
