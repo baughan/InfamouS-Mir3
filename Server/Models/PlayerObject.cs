@@ -1706,7 +1706,7 @@ namespace Server.Models
                         Teleport(player.CurrentMap, player.CurrentLocation);
                         break;
                     case "LEVELSKILL":
-
+                        if (!Character.Account.TempAdmin) return;
                         if (parts.Length < 3) return;
 
                         if (parts.Length == 3) player = this; //@levelskill healing 5
