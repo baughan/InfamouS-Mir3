@@ -18,7 +18,7 @@ namespace Client.Scenes.Views
 
         public DXLabel TypeFilterLabel, GradeFilterLabel, BookLabel;
         public Point CheckBoxRightPoint;
-        public DXCheckBox GoldCheckBox, WeaponCheckBox, ArmourCheckBox, HelmetCheckBox, ShieldCheckBox, NecklaceCheckBox, BraceletCheckBox, RingCheckBox, ShoesCheckBox, PotionCheckBox, MeatCheckBox, CommonCheckBox, EliteCheckBox, SuperiorCheckBox, BookWarriorCheckBox, BookWizardCheckBox, BookTaoistCheckBox, BookAssassinCheckBox;
+        public DXCheckBox GoldCheckBox, WeaponCheckBox, ArmourCheckBox, HelmetCheckBox, ShieldCheckBox, NecklaceCheckBox, BraceletCheckBox, RingCheckBox, ShoesCheckBox, PotionCheckBox, OreCheckBox, CommonCheckBox, EliteCheckBox, SuperiorCheckBox, BookWarriorCheckBox, BookWizardCheckBox, BookTaoistCheckBox, BookAssassinCheckBox, EmblemsCheckBox, WingsCheckBox;
 
         #endregion
 
@@ -169,6 +169,34 @@ namespace Client.Scenes.Views
             };
             i += gap;
 
+            EmblemsCheckBox = new DXCheckBox
+            {
+                Parent = this,
+                ForeColour = Color.White,
+                Label = { Text = "Emblems:" },
+                Visible = true
+            };
+            EmblemsCheckBox.Location = new Point(CheckBoxRightPoint.X - EmblemsCheckBox.Size.Width, ClientArea.Y + i);
+            EmblemsCheckBox.MouseClick += (o, e) =>
+            {
+                CEnvir.Enqueue(new C.CompanionPickupToggle { Type = ItemType.Emblem });
+            };
+            i += gap;
+
+            WingsCheckBox = new DXCheckBox
+            {
+                Parent = this,
+                ForeColour = Color.White,
+                Label = { Text = "Wings:" },
+                Visible = true
+            };
+            WingsCheckBox.Location = new Point(CheckBoxRightPoint.X - WingsCheckBox.Size.Width, ClientArea.Y + i);
+            WingsCheckBox.MouseClick += (o, e) =>
+            {
+                CEnvir.Enqueue(new C.CompanionPickupToggle { Type = ItemType.Wings });
+            };
+            i += gap;
+
             BookLabel = new DXLabel
             {
                 Parent = this,
@@ -249,17 +277,17 @@ namespace Client.Scenes.Views
             };
             i += gap;
 
-            MeatCheckBox = new DXCheckBox
+            OreCheckBox = new DXCheckBox
             {
                 Parent = this,
                 ForeColour = Color.White,
-                Label = { Text = "Meat:" },
+                Label = { Text = "Ore:" },
                 Visible = true
             };
-            MeatCheckBox.Location = new Point(CheckBoxRightPoint.X - MeatCheckBox.Size.Width, ClientArea.Y + i);
-            MeatCheckBox.MouseClick += (o, e) =>
+            OreCheckBox.Location = new Point(CheckBoxRightPoint.X - OreCheckBox.Size.Width, ClientArea.Y + i);
+            OreCheckBox.MouseClick += (o, e) =>
             {
-                CEnvir.Enqueue(new C.CompanionPickupToggle { Type = ItemType.Meat });
+                CEnvir.Enqueue(new C.CompanionPickupToggle { Type = ItemType.Ore });
             };
             i += gap;
 
@@ -352,12 +380,14 @@ namespace Client.Scenes.Views
             BraceletCheckBox.Checked = !GameScene.Game.CompanionForbiddenItems.Contains(Tuple.Create(ItemType.Bracelet, RequiredClass.None));
             RingCheckBox.Checked = !GameScene.Game.CompanionForbiddenItems.Contains(Tuple.Create(ItemType.Ring, RequiredClass.None));
             ShoesCheckBox.Checked = !GameScene.Game.CompanionForbiddenItems.Contains(Tuple.Create(ItemType.Shoes, RequiredClass.None));
+            EmblemsCheckBox.Checked = !GameScene.Game.CompanionForbiddenItems.Contains(Tuple.Create(ItemType.Emblem, RequiredClass.None));
+            WingsCheckBox.Checked = !GameScene.Game.CompanionForbiddenItems.Contains(Tuple.Create(ItemType.Wings, RequiredClass.None));
             BookWarriorCheckBox.Checked = !GameScene.Game.CompanionForbiddenItems.Contains(Tuple.Create(ItemType.Book, RequiredClass.Warrior));
             BookWizardCheckBox.Checked = !GameScene.Game.CompanionForbiddenItems.Contains(Tuple.Create(ItemType.Book, RequiredClass.Wizard));
             BookTaoistCheckBox.Checked = !GameScene.Game.CompanionForbiddenItems.Contains(Tuple.Create(ItemType.Book, RequiredClass.Taoist));
             BookAssassinCheckBox.Checked = !GameScene.Game.CompanionForbiddenItems.Contains(Tuple.Create(ItemType.Book, RequiredClass.Assassin));
             PotionCheckBox.Checked = !GameScene.Game.CompanionForbiddenItems.Contains(Tuple.Create(ItemType.Consumable, RequiredClass.None));
-            MeatCheckBox.Checked = !GameScene.Game.CompanionForbiddenItems.Contains(Tuple.Create(ItemType.Meat, RequiredClass.None));
+            OreCheckBox.Checked = !GameScene.Game.CompanionForbiddenItems.Contains(Tuple.Create(ItemType.Meat, RequiredClass.None));
 
             CommonCheckBox.Checked = !GameScene.Game.CompanionForbiddenGrades.Contains(Rarity.Common);
             EliteCheckBox.Checked = !GameScene.Game.CompanionForbiddenGrades.Contains(Rarity.Elite);
@@ -510,12 +540,12 @@ namespace Client.Scenes.Views
                     PotionCheckBox = null;
                 }
 
-                if (MeatCheckBox != null)
+                if (OreCheckBox != null)
                 {
-                    if (!MeatCheckBox.IsDisposed)
-                        MeatCheckBox.Dispose();
+                    if (!OreCheckBox.IsDisposed)
+                        OreCheckBox.Dispose();
 
-                    MeatCheckBox = null;
+                    OreCheckBox = null;
                 }
 
                 if (GoldCheckBox != null)

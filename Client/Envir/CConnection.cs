@@ -4238,6 +4238,10 @@ namespace Client.Envir
                 GameScene.Game.CompanionForbiddenItems.Add(Tuple.Create(ItemType.Ring, RequiredClass.None));
             if (!p.CompanionShoes)
                 GameScene.Game.CompanionForbiddenItems.Add(Tuple.Create(ItemType.Shoes, RequiredClass.None));
+            if (!p.CompanionEmblems)
+                GameScene.Game.CompanionForbiddenItems.Add(Tuple.Create(ItemType.Emblem, RequiredClass.None));
+            if (!p.CompanionWings)
+                GameScene.Game.CompanionForbiddenItems.Add(Tuple.Create(ItemType.Wings, RequiredClass.None));
             if (!p.CompanionBook)
                 GameScene.Game.CompanionForbiddenItems.Add(Tuple.Create(ItemType.Book, RequiredClass.None));
             if (!p.CompanionBookWarrior)
@@ -4250,8 +4254,8 @@ namespace Client.Envir
                 GameScene.Game.CompanionForbiddenItems.Add(Tuple.Create(ItemType.Book, RequiredClass.Assassin));
             if (!p.CompanionPotion)
                 GameScene.Game.CompanionForbiddenItems.Add(Tuple.Create(ItemType.Consumable, RequiredClass.None));
-            if (!p.CompanionMeat)
-                GameScene.Game.CompanionForbiddenItems.Add(Tuple.Create(ItemType.Meat, RequiredClass.None));
+            if (!p.CompanionOre)
+                GameScene.Game.CompanionForbiddenItems.Add(Tuple.Create(ItemType.Ore, RequiredClass.None));
             if (!p.CompanionCommon)
                 GameScene.Game.CompanionForbiddenGrades.Add(Rarity.Common);
             if (!p.CompanionElite)
@@ -4312,7 +4316,7 @@ namespace Client.Envir
 
             DXItemCell[] grid;
 
-            switch (p.Template.GridType)
+            switch (p.Item.GridType)
             {
                 case GridType.Inventory:
                     grid = GameScene.Game.InventoryBox.Grid.Grid;
@@ -4336,15 +4340,24 @@ namespace Client.Envir
                     throw new ArgumentOutOfRangeException();
             }
 
-            DXItemCell fromCell = grid[p.Template.Slot];
+            DXItemCell fromCell = grid[p.Item.Slot];
             fromCell.Locked = false;
 
             if (p.Success)
             {
-                if (p.Template.Count == fromCell.Item.Count)
-                    fromCell.Item = null;
+
+                if (p.IsTemplate)
+                {
+                    if (p.Item.Count == fromCell.Item.Count)
+                        fromCell.Item = null;
+                    else
+                        fromCell.Item.Count -= p.Item.Count;
+                }
                 else
-                    fromCell.Item.Count -= p.Template.Count;
+                {
+                    if (GameScene.Game.NPCWeaponCraftBox.ItemCell.Grid[0].Link != null)
+                        GameScene.Game.NPCWeaponCraftBox.ItemCell.Grid[0].Link.RefreshItem();
+                }
 
                 fromCell.RefreshItem();
             }
@@ -4384,10 +4397,17 @@ namespace Client.Envir
                 if (p.Success)
                 {
                     if (p.Yellow.Count == fromCell.Item.Count)
+                    {
                         fromCell.Item = null;
+                        if (GameScene.Game.NPCWeaponCraftBox.YellowCell.Grid[0].Link != null)
+                            GameScene.Game.NPCWeaponCraftBox.YellowCell.Grid[0].Link = null;
+                    }
                     else
+                    {
                         fromCell.Item.Count -= p.Yellow.Count;
-
+                        if (GameScene.Game.NPCWeaponCraftBox.YellowCell.Grid[0].Link != null)
+                            GameScene.Game.NPCWeaponCraftBox.YellowCell.Grid[0].Link.LinkedCount -= p.Yellow.Count;
+                    }
                     fromCell.RefreshItem();
                 }
             }
@@ -4428,9 +4448,17 @@ namespace Client.Envir
                 if (p.Success)
                 {
                     if (p.Blue.Count == fromCell.Item.Count)
+                    {
                         fromCell.Item = null;
+                        if (GameScene.Game.NPCWeaponCraftBox.BlueCell.Grid[0].Link != null)
+                            GameScene.Game.NPCWeaponCraftBox.BlueCell.Grid[0].Link = null;
+                    }
                     else
+                    {
                         fromCell.Item.Count -= p.Blue.Count;
+                        if (GameScene.Game.NPCWeaponCraftBox.BlueCell.Grid[0].Link != null)
+                            GameScene.Game.NPCWeaponCraftBox.BlueCell.Grid[0].Link.LinkedCount -= p.Blue.Count;
+                    }
 
                     fromCell.RefreshItem();
                 }
@@ -4472,9 +4500,17 @@ namespace Client.Envir
                 if (p.Success)
                 {
                     if (p.Red.Count == fromCell.Item.Count)
+                    {
                         fromCell.Item = null;
+                        if (GameScene.Game.NPCWeaponCraftBox.RedCell.Grid[0].Link != null)
+                            GameScene.Game.NPCWeaponCraftBox.RedCell.Grid[0].Link = null;
+                    }
                     else
+                    {
                         fromCell.Item.Count -= p.Red.Count;
+                        if (GameScene.Game.NPCWeaponCraftBox.RedCell.Grid[0].Link != null)
+                            GameScene.Game.NPCWeaponCraftBox.RedCell.Grid[0].Link.LinkedCount -= p.Red.Count;
+                    }
 
                     fromCell.RefreshItem();
                 }
@@ -4516,9 +4552,17 @@ namespace Client.Envir
                 if (p.Success)
                 {
                     if (p.Purple.Count == fromCell.Item.Count)
+                    {
                         fromCell.Item = null;
+                        if (GameScene.Game.NPCWeaponCraftBox.PurpleCell.Grid[0].Link != null)
+                            GameScene.Game.NPCWeaponCraftBox.PurpleCell.Grid[0].Link = null;
+                    }
                     else
+                    {
                         fromCell.Item.Count -= p.Purple.Count;
+                        if (GameScene.Game.NPCWeaponCraftBox.PurpleCell.Grid[0].Link != null)
+                            GameScene.Game.NPCWeaponCraftBox.PurpleCell.Grid[0].Link.LinkedCount -= p.Purple.Count;
+                    }
 
                     fromCell.RefreshItem();
                 }
@@ -4560,9 +4604,17 @@ namespace Client.Envir
                 if (p.Success)
                 {
                     if (p.Green.Count == fromCell.Item.Count)
+                    {
                         fromCell.Item = null;
+                        if (GameScene.Game.NPCWeaponCraftBox.GreenCell.Grid[0].Link != null)
+                            GameScene.Game.NPCWeaponCraftBox.GreenCell.Grid[0].Link = null;
+                    }
                     else
+                    {
                         fromCell.Item.Count -= p.Green.Count;
+                        if (GameScene.Game.NPCWeaponCraftBox.GreenCell.Grid[0].Link != null)
+                            GameScene.Game.NPCWeaponCraftBox.GreenCell.Grid[0].Link.LinkedCount -= p.Green.Count;
+                    }
 
                     fromCell.RefreshItem();
                 }
@@ -4604,9 +4656,17 @@ namespace Client.Envir
                 if (p.Success)
                 {
                     if (p.Grey.Count == fromCell.Item.Count)
+                    {
                         fromCell.Item = null;
+                        if (GameScene.Game.NPCWeaponCraftBox.GreyCell.Grid[0].Link != null)
+                            GameScene.Game.NPCWeaponCraftBox.GreyCell.Grid[0].Link = null;
+                    }
                     else
+                    {
                         fromCell.Item.Count -= p.Grey.Count;
+                        if (GameScene.Game.NPCWeaponCraftBox.GreyCell.Grid[0].Link != null)
+                            GameScene.Game.NPCWeaponCraftBox.GreyCell.Grid[0].Link.LinkedCount -= p.Grey.Count;
+                    }
 
                     fromCell.RefreshItem();
                 }

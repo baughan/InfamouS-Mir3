@@ -894,6 +894,10 @@ namespace Server.Models
                 CompanionForbiddenItems.Add(Tuple.Create(ItemType.Ring, RequiredClass.None));
             if (Character.CompanionForbidShoes)
                 CompanionForbiddenItems.Add(Tuple.Create(ItemType.Shoes, RequiredClass.None));
+            if (Character.CompanionForbidEmblems)
+                CompanionForbiddenItems.Add(Tuple.Create(ItemType.Emblem, RequiredClass.None));
+            if (Character.CompanionForbidWings)
+                CompanionForbiddenItems.Add(Tuple.Create(ItemType.Wings, RequiredClass.None));
             if (Character.CompanionForbidBook)
                 CompanionForbiddenItems.Add(Tuple.Create(ItemType.Book, RequiredClass.None));
             if (Character.CompanionForbidBookWarrior)
@@ -906,8 +910,8 @@ namespace Server.Models
                 CompanionForbiddenItems.Add(Tuple.Create(ItemType.Book, RequiredClass.Assassin));
             if (Character.CompanionForbidPotion)
                 CompanionForbiddenItems.Add(Tuple.Create(ItemType.Consumable, RequiredClass.None));
-            if (Character.CompanionForbidMeat)
-                CompanionForbiddenItems.Add(Tuple.Create(ItemType.Meat, RequiredClass.None));
+            if (Character.CompanionForbidOre)
+                CompanionForbiddenItems.Add(Tuple.Create(ItemType.Ore, RequiredClass.None));
             if (Character.CompanionForbidCommon)
                 CompanionForbiddenGrades.Add(Rarity.Common);
             if (Character.CompanionForbidElite)
@@ -926,13 +930,15 @@ namespace Server.Models
                 CompanionBracelet = !Character.CompanionForbidBracelet,
                 CompanionRing = !Character.CompanionForbidRing,
                 CompanionShoes = !Character.CompanionForbidShoes,
+                CompanionEmblems = !Character.CompanionForbidEmblems,
+                CompanionWings = !Character.CompanionForbidWings,
                 CompanionBook = !Character.CompanionForbidBook,
                 CompanionBookWarrior = !Character.CompanionForbidBookWarrior,
                 CompanionBookWizard = !Character.CompanionForbidBookWizard,
                 CompanionBookTaoist = !Character.CompanionForbidBookTaoist,
                 CompanionBookAssassin = !Character.CompanionForbidBookAssassin,
                 CompanionPotion = !Character.CompanionForbidPotion,
-                CompanionMeat = !Character.CompanionForbidMeat,
+                CompanionOre = !Character.CompanionForbidOre,
                 CompanionCommon = !Character.CompanionForbidCommon,
                 CompanionElite = !Character.CompanionForbidElite,
                 CompanionSuperior = !Character.CompanionForbidSuperior,
@@ -1698,6 +1704,29 @@ namespace Server.Models
                         if (player == null) return;
 
                         Teleport(player.CurrentMap, player.CurrentLocation);
+                        break;
+                    case "LEVELSKILL":
+
+                        if (parts.Length < 3) return;
+
+                        if (parts.Length == 3) player = this; //@levelskill healing 5
+                        else player = SEnvir.GetPlayerByCharacter(parts[1]); //@levelskill ryan healing 5
+              
+                        if (player == null) return;
+
+                        MagicInfo tinfo = SEnvir.MagicInfoList.Binding.FirstOrDefault(m => m.Name.Replace(" ", "").ToUpper().Equals(parts[2].ToUpper()));
+                        if (tinfo == null) return;
+
+
+                        if (int.TryParse(parts[3], out int tlevel))
+                        {
+                            player.Magics[tinfo.Magic].Level = tlevel;
+                            player.Magics[tinfo.Magic].Experience = 0;
+
+                            player.Enqueue(new S.MagicLeveled { InfoIndex = tinfo.Index, Level = tlevel, Experience = 0 });
+                            player.RefreshStats();
+                            Connection.ReceiveChat(string.Format("{0}'s {1} has been leveled to {2}", parts[1], parts[2], parts[3]), MessageType.System);
+                        }
                         break;
                     case "GIVESKILLS":
                         if (!Character.Account.TempAdmin) return;
@@ -6704,7 +6733,7 @@ namespace Server.Models
                     bool foundmagic = Magics.TryGetValue(info.Magic, out magic);
                     if (foundmagic)
                     {
-                        if (magic.Level >= 6) return; //MAGIC LEVEL CAP
+                        if (magic.Level >= SharedConfig.MAGIC_LEVEL_CAP) return; //MAGIC LEVEL CAP
                     }
 
                     if (SEnvir.Random.Next(100) >= item.CurrentDurability)
@@ -8589,6 +8618,12 @@ namespace Server.Models
                 case ItemType.Shoes:
                     Character.CompanionForbidShoes = CompanionForbiddenItems.Contains(tuppleToggle);
                     break;
+                case ItemType.Emblem:
+                    Character.CompanionForbidEmblems = CompanionForbiddenItems.Contains(tuppleToggle);
+                    break;
+                case ItemType.Wings:
+                    Character.CompanionForbidWings = CompanionForbiddenItems.Contains(tuppleToggle);
+                    break;
                 case ItemType.Book:
                     switch (pclass)
                     {
@@ -8612,8 +8647,8 @@ namespace Server.Models
                 case ItemType.Consumable:
                     Character.CompanionForbidPotion = CompanionForbiddenItems.Contains(tuppleToggle);
                     break;
-                case ItemType.Meat:
-                    Character.CompanionForbidMeat = CompanionForbiddenItems.Contains(tuppleToggle);
+                case ItemType.Ore:
+                    Character.CompanionForbidOre = CompanionForbiddenItems.Contains(tuppleToggle);
                     break;
             }
 
@@ -12602,9 +12637,11 @@ namespace Server.Models
         }
         public void NPCWeaponCraft(C.NPCWeaponCraft p)
         {
+            bool isTemplate = Inventory[p.Item.Slot].Info.Effect == ItemEffect.WeaponTemplate;
             S.NPCWeaponCraft result = new S.NPCWeaponCraft
             {
-                Template = p.Template,
+                IsTemplate = isTemplate,
+                Item = p.Item,
                 Yellow = p.Yellow,
                 Blue = p.Blue,
                 Red = p.Red,
@@ -12616,34 +12653,26 @@ namespace Server.Models
 
 
             int statCount = 0;
-
-            bool isTemplate = false;
-
             #region Tempate Check
 
-            if (p.Template == null) return;
+            if (p.Item == null) return;
 
-            if (p.Template.GridType != GridType.Inventory) return;
+            if (p.Item.GridType != GridType.Inventory) return;
 
-            if (p.Template.Slot < 0 || p.Template.Slot >= Inventory.Length) return;
+            if (p.Item.Slot < 0 || p.Item.Slot >= Inventory.Length) return;
 
-            if (p.Template.Count != 1) return;
+            if (p.Item.Count != 1) return;
 
-            if (Inventory[p.Template.Slot] == null) return;
+            if (Inventory[p.Item.Slot] == null) return;
 
-            if (Inventory[p.Template.Slot].Info.Effect == ItemEffect.WeaponTemplate)
-            {
-                isTemplate = true;
-            }
-            else if ((Inventory[p.Template.Slot].Info.ItemType != ItemType.Weapon && Inventory[p.Template.Slot].Info.ItemType != ItemType.Shield) || Inventory[p.Template.Slot].Info.Effect == ItemEffect.SpiritBlade) return;
+            if (!isTemplate && (Inventory[p.Item.Slot].Info.ItemType != ItemType.Weapon && Inventory[p.Item.Slot].Info.ItemType != ItemType.Shield) || Inventory[p.Item.Slot].Info.Effect == ItemEffect.SpiritBlade) return;
 
             #endregion
 
             long cost = Globals.CraftWeaponPercentCost;
-
             if (!isTemplate)
             {
-                switch (Inventory[p.Template.Slot].Info.Rarity)
+                switch (Inventory[p.Item.Slot].Info.Rarity)
                 {
                     case Rarity.Common:
                         cost = Globals.CommonCraftWeaponPercentCost;
@@ -12657,6 +12686,11 @@ namespace Server.Models
                 }
             }
 
+            if (Gold < cost)
+            {
+                Connection.ReceiveChat("You do not have enough gold.", MessageType.Hint);
+                return;
+            }
 
             #region Yellow Check
 
@@ -12761,7 +12795,6 @@ namespace Server.Models
             #endregion
 
             ItemInfo weap = null;
-
             if (isTemplate)
             {
 
@@ -12798,11 +12831,11 @@ namespace Server.Models
 
             if (isTemplate)
             {
-                item = Inventory[p.Template.Slot];
+                item = Inventory[p.Item.Slot];
                 if (item.Count == 1)
                 {
                     RemoveItem(item);
-                    Inventory[p.Template.Slot] = null;
+                    Inventory[p.Item.Slot] = null;
                     item.Delete();
                 }
                 else
@@ -12916,7 +12949,6 @@ namespace Server.Models
             GoldChanged();
 
             int total = 0;
-
             foreach (WeaponCraftStatInfo stat in SEnvir.WeaponCraftStatInfoList.Binding)
             {
                 if ((stat.RequiredClass & p.Class) != p.Class) continue;
@@ -12930,29 +12962,28 @@ namespace Server.Models
             }
             else
             {
-                item = Inventory[p.Template.Slot];
+                item = Inventory[p.Item.Slot];
 
-                RemoveItem(item);
-                Inventory[p.Template.Slot] = null;
+                //RemoveItem(item);
+                //Inventory[p.Item.Slot] = null;
 
                 item.Level = 1;
                 item.Flags &= ~UserItemFlags.Refinable;
 
+                //Remove all stats ~ except Enhancement
                 for (int i = item.AddedStats.Count - 1; i >= 0; i--)
                 {
                     UserItemStat stat = item.AddedStats[i];
-                    if (stat.StatSource == StatSource.Enhancement) continue;
+                    if (stat.StatSource == StatSource.Enhancement || stat.StatSource == StatSource.GemOrb) continue;
 
                     stat.Delete();
                 }
-
                 item.StatsChanged();
             }
 
             for (int i = 0; i < statCount; i++)
             {
                 int value = SEnvir.Random.Next(total);
-
                 foreach (WeaponCraftStatInfo stat in SEnvir.WeaponCraftStatInfoList.Binding)
                 {
                     if ((stat.RequiredClass & p.Class) != p.Class) continue;
@@ -12965,10 +12996,10 @@ namespace Server.Models
                     break;
                 }
             }
-
             item.StatsChanged();
 
-            GainItem(item);
+            if (isTemplate) GainItem(item);
+            else Enqueue(new S.ItemStatsRefreshed { NewStats = item.Stats, GridType = p.Item.GridType, Slot = p.Item.Slot });
         }
         #endregion
 

@@ -3568,7 +3568,7 @@ namespace Client.Scenes
                 case ItemType.Book:
                     MagicInfo magic = Globals.MagicInfoList.Binding.FirstOrDefault(x => x.Index == item.Info.Shape);
                     if (magic == null) return false;
-                    if (User.Magics.ContainsKey(magic) && (User.Magics[magic].Level < 3 || (item.Flags & UserItemFlags.NonRefinable) == UserItemFlags.NonRefinable)) return false;
+                    if (User.Magics.ContainsKey(magic) && (User.Magics[magic].Level < 3 || (item.Flags & UserItemFlags.NonRefinable) == UserItemFlags.NonRefinable) || User.Magics[magic].Level >= SharedConfig.MAGIC_LEVEL_CAP) return false;
                     break;
                 case ItemType.Consumable:
                     switch (item.Info.Shape)

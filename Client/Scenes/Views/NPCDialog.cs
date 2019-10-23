@@ -6512,7 +6512,7 @@ namespace Client.Scenes.Views
         private DXImageControl PreviewImageBox;
 
 
-        public DXItemGrid TemplateCell;
+        public DXItemGrid ItemCell;
 
         public DXItemGrid YellowCell;
         public DXItemGrid BlueCell;
@@ -6520,6 +6520,8 @@ namespace Client.Scenes.Views
         public DXItemGrid PurpleCell;
         public DXItemGrid GreenCell;
         public DXItemGrid GreyCell;
+
+        public DXCheckBox HoldItemsCheckBox;
 
         private DXLabel ClassLabel;
 
@@ -6546,7 +6548,7 @@ namespace Client.Scenes.Views
         public virtual void OnRequiredClassChanged(RequiredClass oValue, RequiredClass nValue)
         {
 
-            if (TemplateCell.Grid[0].Item == null || TemplateCell.Grid[0].Item.Info.Effect == ItemEffect.WeaponTemplate)
+            if (ItemCell.Grid[0].Item == null || ItemCell.Grid[0].Item.Info.Effect == ItemEffect.WeaponTemplate)
             {
                 switch (RequiredClass)
                 {
@@ -6570,7 +6572,7 @@ namespace Client.Scenes.Views
             }
             else
             {
-                PreviewImageBox.Index = TemplateCell.Grid[0].Item.Info.Image;
+                PreviewImageBox.Index = ItemCell.Grid[0].Item.Info.Image;
             }
 
             AttemptButton.Enabled = CanCraft;
@@ -6588,9 +6590,9 @@ namespace Client.Scenes.Views
 
                 long cost = Globals.CraftWeaponPercentCost;
 
-                if (TemplateCell.Grid[0].Item != null && TemplateCell.Grid[0].Item.Info.Effect != ItemEffect.WeaponTemplate)
+                if (ItemCell.Grid[0].Item != null && ItemCell.Grid[0].Item.Info.Effect != ItemEffect.WeaponTemplate)
                 {
-                    switch (TemplateCell.Grid[0].Item.Info.Rarity)
+                    switch (ItemCell.Grid[0].Item.Info.Rarity)
                     {
                         case Rarity.Common:
                             cost = Globals.CommonCraftWeaponPercentCost;
@@ -6608,7 +6610,7 @@ namespace Client.Scenes.Views
             }
         }
 
-        public bool CanCraft => Cost <= GameScene.Game.User.Gold && TemplateCell.Grid[0].Link != null && RequiredClass != RequiredClass.None;
+        public bool CanCraft => Cost <= GameScene.Game.User.Gold && ItemCell.Grid[0].Link != null && RequiredClass != RequiredClass.None;
 
         public NPCWeaponCraftWindow()
         {
@@ -6626,17 +6628,17 @@ namespace Client.Scenes.Views
             };
             label.Location = new Point(ClientArea.X + (ClientArea.Width - label.Size.Width) / 2 + 50, ClientArea.Y);
 
-            TemplateCell = new DXItemGrid
+            ItemCell = new DXItemGrid
             {
                 GridSize = new Size(1, 1),
                 Parent = this,
                 GridType = GridType.WeaponCraftTemplate,
                 Linked = true,
             };
-            TemplateCell.Location = new Point(label.Location.X + (label.Size.Width - TemplateCell.Size.Width) / 2, label.Location.Y + label.Size.Height + 5);
-            TemplateCell.Grid[0].LinkChanged += (o, e) =>
+            ItemCell.Location = new Point(label.Location.X + (label.Size.Width - ItemCell.Size.Width) / 2, label.Location.Y + label.Size.Height + 5);
+            ItemCell.Grid[0].LinkChanged += (o, e) =>
             {
-                if (TemplateCell.Grid[0].Item == null || TemplateCell.Grid[0].Item.Info.Effect == ItemEffect.WeaponTemplate)
+                if (ItemCell.Grid[0].Item == null || ItemCell.Grid[0].Item.Info.Effect == ItemEffect.WeaponTemplate)
                 {
                     ClassLabel.Text = "Class:";
                     switch (RequiredClass)
@@ -6662,7 +6664,7 @@ namespace Client.Scenes.Views
                 else
                 {
                     ClassLabel.Text = "Stats:";
-                    PreviewImageBox.Index = TemplateCell.Grid[0].Item.Info.Image;
+                    PreviewImageBox.Index = ItemCell.Grid[0].Item.Info.Image;
                 }
 
                 ClassLabel.Location = new Point(ClientArea.X + (ClientArea.Width - ClassLabel.Size.Width) / 2, ClientArea.Y + 185);
@@ -6839,7 +6841,13 @@ namespace Client.Scenes.Views
 
             #endregion
 
-           
+            HoldItemsCheckBox = new DXCheckBox
+            {
+                Parent = this,
+                Label = { Text = "Lock Items:" },
+                Enabled = true,
+                Location = new Point(YellowCell.Location.X - 100, ClientArea.Y + 260)
+            };
 
             AttemptButton = new DXButton
             {
@@ -6854,58 +6862,57 @@ namespace Client.Scenes.Views
                 if (GameScene.Game.Observer) return;
 
 
-                if (TemplateCell.Grid[0].Link == null) return;
+                if (ItemCell.Grid[0].Link == null) return;
 
                 C.NPCWeaponCraft packet = new C.NPCWeaponCraft
                 {
                     Class = RequiredClass,
-
-                    Template = new CellLinkInfo { Count = TemplateCell.Grid[0].LinkedCount, GridType = TemplateCell.Grid[0].Link.GridType, Slot = TemplateCell.Grid[0].Link.Slot }
+                    Item = new CellLinkInfo { Count = ItemCell.Grid[0].LinkedCount, GridType = ItemCell.Grid[0].Link.GridType, Slot = ItemCell.Grid[0].Link.Slot }
                 };
 
-                TemplateCell.Grid[0].Link.Locked = true;
-                TemplateCell.Grid[0].Link = null; 
+                ItemCell.Grid[0].Link.Locked = true;
+                if (!HoldItemsCheckBox.Checked) ItemCell.Grid[0].Link = null; 
 
                 if (YellowCell.Grid[0].Link != null)
                 {
                     packet.Yellow = new CellLinkInfo { Count = YellowCell.Grid[0].LinkedCount, GridType = YellowCell.Grid[0].Link.GridType, Slot = YellowCell.Grid[0].Link.Slot };
                     YellowCell.Grid[0].Link.Locked = true;
-                    YellowCell.Grid[0].Link = null;
+                    if (!HoldItemsCheckBox.Checked) YellowCell.Grid[0].Link = null;
                 }
 
                 if (BlueCell.Grid[0].Link != null)
                 {
                     packet.Blue = new CellLinkInfo { Count = BlueCell.Grid[0].LinkedCount, GridType = BlueCell.Grid[0].Link.GridType, Slot = BlueCell.Grid[0].Link.Slot };
                     BlueCell.Grid[0].Link.Locked = true;
-                    BlueCell.Grid[0].Link = null;
+                    if (!HoldItemsCheckBox.Checked) BlueCell.Grid[0].Link = null;
                 }
 
                 if (RedCell.Grid[0].Link != null)
                 {
                     packet.Red = new CellLinkInfo { Count = RedCell.Grid[0].LinkedCount, GridType = RedCell.Grid[0].Link.GridType, Slot = RedCell.Grid[0].Link.Slot };
                     RedCell.Grid[0].Link.Locked = true;
-                    RedCell.Grid[0].Link = null;
+                    if (!HoldItemsCheckBox.Checked) RedCell.Grid[0].Link = null;
                 }
 
                 if (PurpleCell.Grid[0].Link != null)
                 {
                     packet.Purple = new CellLinkInfo { Count = PurpleCell.Grid[0].LinkedCount, GridType = PurpleCell.Grid[0].Link.GridType, Slot = PurpleCell.Grid[0].Link.Slot };
                     PurpleCell.Grid[0].Link.Locked = true;
-                    PurpleCell.Grid[0].Link = null;
+                    if (!HoldItemsCheckBox.Checked) PurpleCell.Grid[0].Link = null;
                 }
 
                 if (GreenCell.Grid[0].Link != null)
                 {
                     packet.Green = new CellLinkInfo { Count = GreenCell.Grid[0].LinkedCount, GridType = GreenCell.Grid[0].Link.GridType, Slot = GreenCell.Grid[0].Link.Slot };
                     GreenCell.Grid[0].Link.Locked = true;
-                    GreenCell.Grid[0].Link = null;
+                    if (!HoldItemsCheckBox.Checked) GreenCell.Grid[0].Link = null;
                 }
 
                 if (GreyCell.Grid[0].Link != null)
                 {
                     packet.Grey = new CellLinkInfo { Count = GreyCell.Grid[0].LinkedCount, GridType = GreyCell.Grid[0].Link.GridType, Slot = GreyCell.Grid[0].Link.Slot };
                     GreyCell.Grid[0].Link.Locked = true;
-                    GreyCell.Grid[0].Link = null;
+                    if (!HoldItemsCheckBox.Checked) GreyCell.Grid[0].Link = null;
                 }
 
                 CEnvir.Enqueue(packet);
