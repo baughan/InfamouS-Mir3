@@ -3696,11 +3696,45 @@ namespace Client.Scenes
             User.Light = Math.Max(3, User.Stats[Stat.Light]);
             
             MainPanel.ACLabel.Text = User.Stats.GetFormat(Stat.MaxAC);
+            if (User.Stats[Stat.MinAC] > 10000 || User.Stats[Stat.MaxAC] > 10000)
+                MainPanel.ACLabel.Font = new Font(Config.FontName, CEnvir.FontSize(6.5F));
+            else if (User.Stats[Stat.MinAC] > 1000 || User.Stats[Stat.MaxAC] > 1000)
+                MainPanel.ACLabel.Font = new Font(Config.FontName, CEnvir.FontSize(8.5F));
+            else
+                MainPanel.ACLabel.Font = new Font(Config.FontName, CEnvir.FontSize(10F));
+
             MainPanel.MRLabel.Text = User.Stats.GetFormat(Stat.MaxMR);
+            if (User.Stats[Stat.MinMR] > 10000 || User.Stats[Stat.MaxMR] > 10000)
+                MainPanel.MRLabel.Font = new Font(Config.FontName, CEnvir.FontSize(6.5F));
+            else if (User.Stats[Stat.MinMR] > 1000 || User.Stats[Stat.MaxMR] > 1000)
+                MainPanel.MRLabel.Font = new Font(Config.FontName, CEnvir.FontSize(8.5F));
+            else
+                MainPanel.MRLabel.Font = new Font(Config.FontName, CEnvir.FontSize(10F));
+
+
             MainPanel.DCLabel.Text = User.Stats.GetFormat(Stat.MaxDC);
+            if (User.Stats[Stat.MinDC] > 10000 || User.Stats[Stat.MaxDC] > 10000)
+                MainPanel.DCLabel.Font = new Font(Config.FontName, CEnvir.FontSize(6.5F));
+            else if (User.Stats[Stat.MinDC] > 1000 || User.Stats[Stat.MaxDC] > 1000)
+                MainPanel.DCLabel.Font = new Font(Config.FontName, CEnvir.FontSize(8.5F));
+            else
+                MainPanel.DCLabel.Font = new Font(Config.FontName, CEnvir.FontSize(10F));
 
             MainPanel.MCLabel.Text = User.Stats.GetFormat(Stat.MaxMC);
+            if (User.Stats[Stat.MinMC] > 10000 || User.Stats[Stat.MaxMC] > 10000)
+                MainPanel.MCLabel.Font = new Font(Config.FontName, CEnvir.FontSize(6.5F));
+            else if (User.Stats[Stat.MinMC] > 1000 || User.Stats[Stat.MaxMC] > 1000)
+                MainPanel.MCLabel.Font = new Font(Config.FontName, CEnvir.FontSize(8.5F));
+            else
+                MainPanel.MCLabel.Font = new Font(Config.FontName, CEnvir.FontSize(10F));
+
             MainPanel.SCLabel.Text = User.Stats.GetFormat(Stat.MaxSC);
+            if (User.Stats[Stat.MinSC] > 10000 || User.Stats[Stat.MaxSC] > 10000)
+                MainPanel.SCLabel.Font = new Font(Config.FontName, CEnvir.FontSize(6.5F));
+            else if (User.Stats[Stat.MinSC] > 1000 || User.Stats[Stat.MaxSC] > 1000)
+                MainPanel.SCLabel.Font = new Font(Config.FontName, CEnvir.FontSize(8.5F));
+            else
+                MainPanel.SCLabel.Font = new Font(Config.FontName, CEnvir.FontSize(10F));
 
             MainPanel.AccuracyLabel.Text = User.Stats[Stat.Accuracy].ToString();
             MainPanel.AgilityLabel.Text = User.Stats[Stat.Agility].ToString();
