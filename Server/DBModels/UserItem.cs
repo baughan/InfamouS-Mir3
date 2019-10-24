@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Drawing;
+using System.Linq;
 using Library;
 using Library.SystemModels;
 using MirDB;
@@ -789,6 +790,17 @@ namespace Server.DBModels
                 AddStat(element, value, StatSource.Refine);
 
             return value;
+        }
+
+        public void LevelUp()
+        {
+            int statcount = SEnvir.WeaponCraftStatInfoList.Binding.Where(x => x.RequiredClass == RequiredClass.All).Count();
+            if (statcount == 0) return;
+
+            WeaponCraftStatInfo stat = SEnvir.WeaponCraftStatInfoList.Binding.Where(x => x.RequiredClass == RequiredClass.All).ElementAt(SEnvir.Random.Next(statcount));
+
+            AddStat(stat.Stat, SEnvir.Random.Next(stat.MinValue, stat.MaxValue + 1), StatSource.Added);
+            StatsChanged();
         }
 
 
