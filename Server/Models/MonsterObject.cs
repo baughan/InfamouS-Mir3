@@ -2686,14 +2686,32 @@ namespace Server.Models
                         exp /= ExtraExperienceRate;
 
                     EXPOwner.GainExperience(exp, PlayerTagged, Level);
+
+                    for (int i = (int)EquipmentSlot.Necklace; i <= (int)EquipmentSlot.RingR; i++)
+                    {
+                        UserItem item = EXPOwner.Equipment[i];
+                        if (item != null && (item.Flags & UserItemFlags.NonRefinable) != UserItemFlags.NonRefinable && item.Level < Globals.AccessoryExperienceList.Count)
+                        {
+                            item.Experience += 1;
+                            int multi = 1;
+                            if (item.Info.RequiredType == RequiredType.RebirthLevel)
+                                multi = item.Info.RequiredAmount;
+                            EXPOwner.Enqueue(new S.ItemExperience { Target = new CellLinkInfo { Slot = i, GridType = GridType.Equipment }, Experience = item.Experience, Level = item.Level, Flags = item.Flags });
+                            if (item.Experience >= Globals.AccessoryExperienceList[item.Level] * multi)
+                            {
+                                item.Experience = 0;
+                                item.Level++;
+                                item.LevelUp();
+                                EXPOwner.Enqueue(new S.ItemStatsRefreshed { NewStats = item.Stats, GridType = GridType.Equipment, Slot = i });
+                            }
+                        }
+                    }
                 }
             }
             else
             {
                 if (ePlayers.Count > 1)
                     exp += exp * 0.06M * ePlayers.Count; //6% per nearby member.
-
-
 
                 foreach (PlayerObject player in ePlayers)
                 {
@@ -2703,6 +2721,27 @@ namespace Server.Models
                         expfinal /= ExtraExperienceRate;
 
                     player.GainExperience(expfinal, PlayerTagged, Level);
+
+                    for (int i = (int)EquipmentSlot.Necklace; i <= (int)EquipmentSlot.RingR; i++)
+                    {
+                        UserItem item = player.Equipment[i];
+                        if (item != null && (item.Flags & UserItemFlags.NonRefinable) != UserItemFlags.NonRefinable && item.Level < Globals.AccessoryExperienceList.Count)
+                        {
+                            item.Experience += 1;
+                            int multi = 1;
+                            if (item.Info.RequiredType == RequiredType.RebirthLevel)
+                                multi = item.Info.RequiredAmount;
+
+                            player.Enqueue(new S.ItemExperience { Target = new CellLinkInfo { Slot = i, GridType = GridType.Equipment }, Experience = item.Experience, Level = item.Level, Flags = item.Flags });
+                            if (item.Experience >= Globals.AccessoryExperienceList[item.Level] * multi)
+                            {
+                                item.Experience = 0;
+                                item.Level++;
+                                item.LevelUp();
+                                player.Enqueue(new S.ItemStatsRefreshed { NewStats = item.Stats, GridType = GridType.Equipment, Slot = i });
+                            }
+                        }
+                    }
                 }
             }
 
