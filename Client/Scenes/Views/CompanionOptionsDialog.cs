@@ -387,7 +387,7 @@ namespace Client.Scenes.Views
             BookTaoistCheckBox.Checked = !GameScene.Game.CompanionForbiddenItems.Contains(Tuple.Create(ItemType.Book, RequiredClass.Taoist));
             BookAssassinCheckBox.Checked = !GameScene.Game.CompanionForbiddenItems.Contains(Tuple.Create(ItemType.Book, RequiredClass.Assassin));
             PotionCheckBox.Checked = !GameScene.Game.CompanionForbiddenItems.Contains(Tuple.Create(ItemType.Consumable, RequiredClass.None));
-            OreCheckBox.Checked = !GameScene.Game.CompanionForbiddenItems.Contains(Tuple.Create(ItemType.Meat, RequiredClass.None));
+            OreCheckBox.Checked = !GameScene.Game.CompanionForbiddenItems.Contains(Tuple.Create(ItemType.Ore, RequiredClass.None));
 
             CommonCheckBox.Checked = !GameScene.Game.CompanionForbiddenGrades.Contains(Rarity.Common);
             EliteCheckBox.Checked = !GameScene.Game.CompanionForbiddenGrades.Contains(Rarity.Elite);
