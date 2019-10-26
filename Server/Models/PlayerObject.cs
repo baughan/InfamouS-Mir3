@@ -12659,7 +12659,6 @@ namespace Server.Models
         {
             S.NPCWeaponCraft result = new S.NPCWeaponCraft
             {
-                IsTemplate = isTemplate,
                 Item = p.Item,
                 Yellow = p.Yellow,
                 Blue = p.Blue,
@@ -12841,6 +12840,7 @@ namespace Server.Models
                 }
             }
 
+            result.IsTemplate = isTemplate;
             result.Success = true;
 
             UserItem item;
