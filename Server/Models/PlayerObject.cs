@@ -12637,10 +12637,8 @@ namespace Server.Models
         }
         public void NPCWeaponCraft(C.NPCWeaponCraft p)
         {
-            bool isTemplate = Inventory[p.Item.Slot].Info.Effect == ItemEffect.WeaponTemplate;
             S.NPCWeaponCraft result = new S.NPCWeaponCraft
             {
-                IsTemplate = isTemplate,
                 Item = p.Item,
                 Yellow = p.Yellow,
                 Blue = p.Blue,
@@ -12651,8 +12649,6 @@ namespace Server.Models
             };
             Enqueue(result);
 
-
-            int statCount = 0;
             #region Tempate Check
 
             if (p.Item == null) return;
@@ -12665,10 +12661,11 @@ namespace Server.Models
 
             if (Inventory[p.Item.Slot] == null) return;
 
+            bool isTemplate = Inventory[p.Item.Slot].Info.Effect == ItemEffect.WeaponTemplate;
             if (!isTemplate && (Inventory[p.Item.Slot].Info.ItemType != ItemType.Weapon && Inventory[p.Item.Slot].Info.ItemType != ItemType.Shield) || Inventory[p.Item.Slot].Info.Effect == ItemEffect.SpiritBlade) return;
-
             #endregion
 
+            int statCount = 0;
             long cost = Globals.CraftWeaponPercentCost;
             if (!isTemplate)
             {
@@ -12823,6 +12820,7 @@ namespace Server.Models
                 }
             }
 
+            result.IsTemplate = isTemplate;
             result.Success = true;
 
             UserItem item;
