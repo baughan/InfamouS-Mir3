@@ -3117,6 +3117,7 @@ namespace Client.Scenes
 
 
                 case MagicType.SeismicSlam:
+                case MagicType.CrushingWave:
 
                 case MagicType.Repulsion:
                 case MagicType.ScortchedEarth:

@@ -2861,10 +2861,23 @@ namespace Client.Models
 
                         #endregion
 
-                        #region Lightning Beam
+                        #region Seismic Slam
 
                         case MagicType.SeismicSlam:
                             Effects.Add(spell = new MirEffect(4900, 6, TimeSpan.FromMilliseconds(100), LibraryFile.MagicEx5, 10, 35, Globals.LightningColour)
+                            {
+                                Blend = true,
+                                Target = this,
+                                Direction = action.Direction,
+                            });
+                            break;
+
+                        #endregion
+
+                        #region Crushing Wave
+
+                        case MagicType.CrushingWave:
+                            Effects.Add(spell = new MirEffect(100, 6, TimeSpan.FromMilliseconds(100), LibraryFile.MagicEx6, 0, 0, Globals.LightningColour)
                             {
                                 Blend = true,
                                 Target = this,
