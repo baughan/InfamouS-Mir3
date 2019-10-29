@@ -710,6 +710,7 @@ namespace Server.Models
             BuffRemove(BuffType.Ranking);
             BuffRemove(BuffType.Castle);
             BuffRemove(BuffType.Veteran);
+            BuffRemove(BuffType.ElementalHurricane);
 
             if (GroupMembers != null) GroupLeave();
 
@@ -1894,6 +1895,12 @@ namespace Server.Models
                         if (!Character.Account.TempAdmin) return;
 
                         SEnvir.IPBlocks.Clear();
+                        break;
+                    case "SAFEDEATH":
+                        if (!Character.Account.TempAdmin) return;
+
+                        SEnvir.SafeDeath = !SEnvir.SafeDeath;
+                        Connection.ReceiveChat($"Safe Deaths [{SEnvir.SafeDeath}]", MessageType.System);
                         break;
                     case "REBOOT":
                         if (!Character.Account.TempAdmin) return;
@@ -9260,6 +9267,7 @@ namespace Server.Models
                 case BuffType.Ranking:
                 case BuffType.Developer:
                 case BuffType.Castle:
+                case BuffType.ElementalHurricane:
                     info.IsTemporary = true;
                     break;
             }
@@ -13841,6 +13849,7 @@ namespace Server.Models
                 case MagicType.Assault:
                 case MagicType.SeismicSlam:
                 case MagicType.CrushingWave:
+                case MagicType.Invincibility:
 
                 case MagicType.FireBall:
                 case MagicType.IceBolt:
@@ -13967,6 +13976,17 @@ namespace Server.Models
                         return;
                     }
                     break;
+                case MagicType.ElementalHurricane:
+                    int cost = magic.Cost;
+                    if (Buffs.Any(x => x.Type == BuffType.ElementalHurricane))
+                        cost = 0;
+
+                    if (cost > CurrentMP)
+                    {
+                        Enqueue(new S.UserLocation { Direction = Direction, Location = CurrentLocation });
+                        return;
+                    }
+                    break;
                 default:
                     Enqueue(new S.UserLocation { Direction = Direction, Location = CurrentLocation });
                     return;
@@ -14039,6 +14059,7 @@ namespace Server.Models
                 case MagicType.Might:
                 case MagicType.ReflectDamage:
                 case MagicType.Endurance:
+                case MagicType.Invincibility:
                     ob = null;
                     p.Direction = MirDirection.Down;
 
@@ -14824,6 +14845,18 @@ namespace Server.Models
                                 new List<UserMagic> { magic },
                                 target));
                         }
+                    }
+                    break;
+                case MagicType.ElementalHurricane:
+                    ob = null;
+                    if (Buffs.Any(x => x.Type == BuffType.ElementalHurricane))
+                    {
+                        BuffRemove(BuffType.ElementalHurricane);
+                    }
+                    else
+                    {
+                        buff = BuffAdd(BuffType.ElementalHurricane, TimeSpan.MaxValue, null, true, false, TimeSpan.FromSeconds(1));
+                        buff.TickTime = TimeSpan.FromMilliseconds(500);
                     }
                     break;
 
@@ -15675,6 +15708,11 @@ namespace Server.Models
                     }
                     ChangeMP(-magic.Cost);
                     break;
+                case MagicType.ElementalHurricane:
+                    if (Buffs.Any(x => x.Type == BuffType.ElementalHurricane))
+                        break;
+                    ChangeMP(-(Stats[Stat.Mana] * magic.Cost / 1000));
+                    break;
                 default:
                     ChangeMP(-magic.Cost);
                     break;
@@ -15711,6 +15749,7 @@ namespace Server.Models
                 case MagicType.Defiance:
                 case MagicType.Might:
                 case MagicType.ReflectDamage:
+                case MagicType.Invincibility:
 
                 case MagicType.Repulsion:
                 case MagicType.ElectricShock:
@@ -16660,6 +16699,11 @@ namespace Server.Models
                         repel = 5;
                         canStuck = false;
                         break;
+                    case MagicType.ElementalHurricane:
+                        bool hasStone = Equipment[(int)EquipmentSlot.Amulet]?.Info.ItemType == ItemType.DarkStone;
+                        element = hasStone ? Equipment[(int)EquipmentSlot.Amulet].Info.Stats.GetAffinityElement() : Element.None;
+                        power += magic.GetPower() + GetMC();
+                        break;
 
                     case MagicType.ExplosiveTalisman:
                         element = Element.Dark;
@@ -16784,6 +16828,7 @@ namespace Server.Models
                     case MagicType.BlowEarth:
                     case MagicType.FrozenEarth:
                     case MagicType.GreaterFrozenEarth:
+                    case MagicType.ElementalHurricane:
                         if (!primary)
                             power = (int)(power * 0.3M);
                         break;
@@ -17049,7 +17094,7 @@ namespace Server.Models
 
         public override long Attacked(MapObject attacker, long power, Element element, bool canReflect = true, bool ignoreShield = false, bool canCrit = true, bool canStruck = true)
         {
-            if (attacker?.Node == null || power == 0 || Dead || attacker.CurrentMap != CurrentMap || !Functions.InRange(attacker.CurrentLocation, CurrentLocation, Config.MaxViewRange)) return 0;
+            if (attacker?.Node == null || power == 0 || Dead || attacker.CurrentMap != CurrentMap || !Functions.InRange(attacker.CurrentLocation, CurrentLocation, Config.MaxViewRange) || Stats[Stat.Invincibility] > 0) return 0;
 
             UserMagic magic;
             if (element != Element.None)
@@ -17251,6 +17296,9 @@ namespace Server.Models
             if (Magics.TryGetValue(MagicType.AdventOfDevil, out magic) && element != Element.None)
                 LevelMagic(magic);
 
+            if (Buffs.Any(x => x.Type == BuffType.Invincibility) && Magics.TryGetValue(MagicType.Invincibility, out magic))
+                LevelMagic(magic);
+
             return (int)power;
         }
 
@@ -17432,6 +17480,9 @@ namespace Server.Models
                         }
 
                         break;
+                    case MagicType.Invincibility:
+                        InvincibilityEnd(magic);
+                        break;
                     case MagicType.CrushingWave:
                         cell = (Cell)data[1];
                         if (cell == null || cell.Objects == null) continue;
@@ -17468,6 +17519,7 @@ namespace Server.Models
                     case MagicType.FrozenEarth:
                     case MagicType.BlowEarth:
                     case MagicType.GreaterFrozenEarth:
+                    case MagicType.ElementalHurricane:
                         AttackCell(magics, (Cell)data[1], (bool)data[2]);
                         break;
                     case MagicType.FireStorm:
@@ -17867,7 +17919,7 @@ namespace Server.Models
                 }
             }
 
-            if (Stats[Stat.Rebirth] > 0 && (LastHitter == null || LastHitter.Race != ObjectType.Player))
+            if (!SEnvir.SafeDeath && (Stats[Stat.Rebirth] > 0 && (LastHitter == null || LastHitter.Race != ObjectType.Player)))
             {
                 //Level = Math.Max(Level - Stats[Stat.Rebirth] * 3, 1);
                 decimal expbonus = Experience;
@@ -18702,6 +18754,17 @@ namespace Server.Models
             LevelMagic(magic);
         }
 
+        public void InvincibilityEnd(UserMagic magic)
+        {
+            Stats buffStats = new Stats
+            {
+                [Stat.Invincibility] = 1,
+            };
+
+            BuffAdd(BuffType.Invincibility, TimeSpan.FromSeconds(5 + magic.Level), buffStats, false, false, TimeSpan.Zero);
+
+            LevelMagic(magic);
+        }
 
         public void ReflectDamageEnd(UserMagic magic)
         {

@@ -2900,7 +2900,7 @@ namespace Client.Scenes
 
             if (CEnvir.Now < User.NextMagicTime || User.Dead || User.Buffs.Any(x => x.Type == BuffType.DragonRepulse || x.Type ==  BuffType.FrostBite) ||     
                 (User.Poison & PoisonType.Paralysis) == PoisonType.Paralysis || 
-                (User.Poison & PoisonType.Silenced) == PoisonType.Silenced) return;
+                (User.Poison & PoisonType.Silenced) == PoisonType.Silenced || (User.Buffs.Any(x => x.Type == BuffType.ElementalHurricane) && magic.Info.Magic != MagicType.ElementalHurricane)) return;
 
             if (CEnvir.Now < magic.NextCast)
             {
@@ -2960,6 +2960,21 @@ namespace Client.Scenes
                         return;
                     }
                     if (User.Stats[Stat.Mana] * magic.Cost / 1000 >= User.CurrentMP || User.CurrentMP < User.Stats[Stat.Mana] / 10)
+                    {
+                        if (CEnvir.Now >= OutputTime)
+                        {
+                            OutputTime = CEnvir.Now.AddSeconds(1);
+                            ReceiveChat($"Unable to cast {magic.Info.Name}, You do not have enough Mana.", MessageType.Hint);
+                        }
+                        return;
+                    }
+                    break;
+                case MagicType.ElementalHurricane:
+                    int cost = magic.Cost;
+                    if (MapObject.User.VisibleBuffs.Contains(BuffType.ElementalHurricane))
+                        cost = 0;
+
+                    if (cost > User.CurrentMP)
                     {
                         if (CEnvir.Now >= OutputTime)
                         {
@@ -3091,6 +3106,7 @@ namespace Client.Scenes
                     break;
 
                 case MagicType.Defiance:
+                case MagicType.Invincibility:
                     direction = MirDirection.Down;
                     break;
                 case MagicType.Might:
@@ -3129,6 +3145,7 @@ namespace Client.Scenes
                 case MagicType.GreaterFrozenEarth:
                 case MagicType.ThunderStrike:
                 case MagicType.MirrorImage:
+                case MagicType.ElementalHurricane:
 
                 // case MagicType.SummonSkeleton:
                 case MagicType.Invisibility:

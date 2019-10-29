@@ -211,6 +211,7 @@ namespace Library
         Might = 101,
         Endurance = 102,
         ReflectDamage = 103,
+        Invincibility = 104,
 
         Renounce = 200,
         MagicShield = 201,
@@ -241,6 +242,7 @@ namespace Library
         Evasion = 409,
         RagingWind = 410,
         FrostBite = 411,
+        ElementalHurricane = 412,
 
         MagicWeakness = 500,
         YinDevilNode = 501,
@@ -403,7 +405,9 @@ namespace Library
         DragonRepulseStart,
         DragonRepulseMiddle,
         DragonRepulseEnd,
-
+        ChannellingStart,
+        ChannellingMiddle,
+        ChannellingEnd,
     }
     
 
@@ -509,6 +513,7 @@ namespace Library
         MassBeckon = 123,
         SeismicSlam = 124,
         CrushingWave = 125,
+        Invincibility = 126,
 
         FireBall = 201,
         LightningBall = 202,
@@ -550,6 +555,7 @@ namespace Library
         AdvancedRenounce = 238,
         FrostBite = 239,
         Asteroid = 240,
+        ElementalHurricane = 241,
 
         Heal = 300,
         SpiritSword = 301,
@@ -1722,6 +1728,7 @@ namespace Library
 
         FrostBiteStart,
 
+        ElementalHurricane,
 
         HealStart,
         HealEnd,

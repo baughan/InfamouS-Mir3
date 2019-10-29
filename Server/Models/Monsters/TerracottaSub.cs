@@ -84,7 +84,7 @@ namespace Server.Models.Monsters
         protected virtual void Attack2()
         {
             Direction = Functions.DirectionFromPoint(CurrentLocation, Target.CurrentLocation);
-            Broadcast(new S.ObjectMagic { ObjectID = ObjectID, Direction = Direction, CurrentLocation = CurrentLocation, Cast = true, Type = MagicType.None });
+            Broadcast(new S.ObjectMagic { ObjectID = ObjectID, Direction = Direction, CurrentLocation = CurrentLocation, Cast = true, Type = MagicType.None, AttackElement = Element.None });
 
             UpdateAttackTime();
 

@@ -95,7 +95,7 @@ namespace Server.Models.Monsters
 
         public void Wave(List<MapObject> targets)
         {
-            Broadcast(new S.ObjectMagic { ObjectID = ObjectID, Direction = Direction, CurrentLocation = CurrentLocation, Cast = true, Type = MagicType.DoomClawWave });
+            Broadcast(new S.ObjectMagic { ObjectID = ObjectID, Direction = Direction, CurrentLocation = CurrentLocation, Cast = true, Type = MagicType.DoomClawWave, AttackElement = Element.None });
 
             UpdateAttackTime();
 
@@ -175,13 +175,13 @@ namespace Server.Models.Monsters
 
             }
 
-            Broadcast(new S.ObjectMagic { ObjectID = ObjectID, Direction = Direction, CurrentLocation = CurrentLocation, Cast = true, Type = MagicType.DoomClawSpit, Locations = targetsIDs });
+            Broadcast(new S.ObjectMagic { ObjectID = ObjectID, Direction = Direction, CurrentLocation = CurrentLocation, Cast = true, Type = MagicType.DoomClawSpit, Locations = targetsIDs, AttackElement = Element.None });
 
         }
 
         public void RightPinch(List<MapObject> targets)
         {
-            Broadcast(new S.ObjectMagic { ObjectID = ObjectID, Direction = Direction, CurrentLocation = CurrentLocation, Cast = true, Type = MagicType.DoomClawRightPinch });
+            Broadcast(new S.ObjectMagic { ObjectID = ObjectID, Direction = Direction, CurrentLocation = CurrentLocation, Cast = true, Type = MagicType.DoomClawRightPinch, AttackElement = Element.None });
 
             UpdateAttackTime();
 
@@ -219,7 +219,7 @@ namespace Server.Models.Monsters
         }
         public void RightSwipe(List<MapObject> targets)
         {
-            Broadcast(new S.ObjectMagic { ObjectID = ObjectID, Direction = Direction, CurrentLocation = CurrentLocation, Cast = true, Type = MagicType.DoomClawRightSwipe });
+            Broadcast(new S.ObjectMagic { ObjectID = ObjectID, Direction = Direction, CurrentLocation = CurrentLocation, Cast = true, Type = MagicType.DoomClawRightSwipe, AttackElement = Element.None });
 
             UpdateAttackTime();
 
@@ -261,7 +261,7 @@ namespace Server.Models.Monsters
         }
         public void LeftPinch(List<MapObject> targets)
         {
-            Broadcast(new S.ObjectMagic { ObjectID = ObjectID, Direction = Direction, CurrentLocation = CurrentLocation, Cast = true, Type = MagicType.DoomClawLeftPinch });
+            Broadcast(new S.ObjectMagic { ObjectID = ObjectID, Direction = Direction, CurrentLocation = CurrentLocation, Cast = true, Type = MagicType.DoomClawLeftPinch, AttackElement = Element.None });
 
             UpdateAttackTime();
 
@@ -301,7 +301,7 @@ namespace Server.Models.Monsters
         }
         public void LeftSwipe(List<MapObject> targets)
         {
-            Broadcast(new S.ObjectMagic { ObjectID = ObjectID, Direction = Direction, CurrentLocation = CurrentLocation, Cast = true, Type = MagicType.DoomClawLeftSwipe });
+            Broadcast(new S.ObjectMagic { ObjectID = ObjectID, Direction = Direction, CurrentLocation = CurrentLocation, Cast = true, Type = MagicType.DoomClawLeftSwipe, AttackElement = Element.None });
 
             UpdateAttackTime();
 
