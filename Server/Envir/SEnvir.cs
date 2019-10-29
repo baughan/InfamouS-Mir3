@@ -594,6 +594,8 @@ namespace Server.Envir
 
         public static List<SpawnInfo> Spawns = new List<SpawnInfo>();
 
+        public static bool SafeDeath;
+
         private static float _DayTime;
         public static float DayTime
         {

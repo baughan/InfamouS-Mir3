@@ -1791,7 +1791,7 @@ namespace Server.Models
         {
             Direction = Functions.DirectionFromPoint(CurrentLocation, Target.CurrentLocation);
 
-            Broadcast(new S.ObjectMagic { ObjectID = ObjectID, Direction = Direction, CurrentLocation = CurrentLocation, Cast = true, Type = magic, Targets = new List<uint> { Target.ObjectID } });
+            Broadcast(new S.ObjectMagic { ObjectID = ObjectID, Direction = Direction, CurrentLocation = CurrentLocation, Cast = true, Type = magic, Targets = new List<uint> { Target.ObjectID }, AttackElement = Element.None });
 
             UpdateAttackTime();
 
@@ -1807,7 +1807,7 @@ namespace Server.Models
         {
             Direction = Functions.DirectionFromPoint(CurrentLocation, Target.CurrentLocation);
 
-            Broadcast(new S.ObjectMagic { ObjectID = ObjectID, Direction = Direction, CurrentLocation = CurrentLocation, Cast = true, Type = magic, Locations = new List<Point> { Target.CurrentLocation } });
+            Broadcast(new S.ObjectMagic { ObjectID = ObjectID, Direction = Direction, CurrentLocation = CurrentLocation, Cast = true, Type = magic, Locations = new List<Point> { Target.CurrentLocation }, AttackElement = Element.None });
 
             UpdateAttackTime();
 
@@ -1827,7 +1827,7 @@ namespace Server.Models
         {
             Direction = Functions.DirectionFromPoint(CurrentLocation, Target.CurrentLocation);
 
-            Broadcast(new S.ObjectMagic { ObjectID = ObjectID, Direction = Direction, CurrentLocation = CurrentLocation, Cast = true, Type = MagicType.SamaGuardianFire, Locations = new List<Point> { Target.CurrentLocation } });
+            Broadcast(new S.ObjectMagic { ObjectID = ObjectID, Direction = Direction, CurrentLocation = CurrentLocation, Cast = true, Type = MagicType.SamaGuardianFire, Locations = new List<Point> { Target.CurrentLocation }, AttackElement = Element.None });
 
             UpdateAttackTime();
 
@@ -1846,21 +1846,24 @@ namespace Server.Models
         public void LineAoE(int distance, int min, int max, MagicType magic, Element element)
         {
             Direction = Functions.DirectionFromPoint(CurrentLocation, Target.CurrentLocation);
-
+            LineAoE(distance, min, max, magic, element, Direction);
+        }
+        public virtual void LineAoE(int distance, int min, int max, MagicType magic, Element element, MirDirection dir)
+        {
             List<uint> targetIDs = new List<uint>();
             List<Point> locations = new List<Point>();
 
 
-            Broadcast(new S.ObjectMagic { ObjectID = ObjectID, Direction = Direction, CurrentLocation = CurrentLocation, Cast = true, Type = magic, Targets = targetIDs, Locations = locations });
+            Broadcast(new S.ObjectMagic { ObjectID = ObjectID, Direction = dir, CurrentLocation = CurrentLocation, Cast = true, Type = magic, Targets = targetIDs, Locations = locations, AttackElement = Element.None });
 
             UpdateAttackTime();
 
 
             for (int d = min; d <= max; d++)
             {
-                MirDirection direction = Functions.ShiftDirection(Direction, d);
+                MirDirection direction = Functions.ShiftDirection(dir, d);
 
-                if (magic == MagicType.LightningBeam || magic == MagicType.BlowEarth)
+                if (magic == MagicType.LightningBeam || magic == MagicType.BlowEarth || magic == MagicType.ElementalHurricane)
                     locations.Add(Functions.Move(CurrentLocation, direction, distance));
 
                 for (int i = 1; i <= distance; i++)
@@ -1870,7 +1873,7 @@ namespace Server.Models
 
                     if (cell == null) continue;
 
-                    if (magic != MagicType.LightningBeam && magic != MagicType.BlowEarth)
+                    if (magic != MagicType.LightningBeam && magic != MagicType.BlowEarth && magic != MagicType.ElementalHurricane)
                         locations.Add(cell.Location);
 
                     if (cell.Objects != null)
@@ -1976,7 +1979,7 @@ namespace Server.Models
             List<uint> targetIDs = new List<uint>();
             List<Point> locations = new List<Point>();
 
-            Broadcast(new S.ObjectMagic { ObjectID = ObjectID, Direction = Direction, CurrentLocation = CurrentLocation, Cast = true, Type = MagicType.FireWall, Targets = targetIDs, Locations = locations });
+            Broadcast(new S.ObjectMagic { ObjectID = ObjectID, Direction = Direction, CurrentLocation = CurrentLocation, Cast = true, Type = MagicType.FireWall, Targets = targetIDs, Locations = locations, AttackElement = Element.None });
             
             UpdateAttackTime();
 
@@ -2087,7 +2090,7 @@ namespace Server.Models
             List<uint> targetIDs = new List<uint>();
             List<Point> locations = new List<Point>();
 
-            Broadcast(new S.ObjectMagic { ObjectID = ObjectID, Direction = Direction, CurrentLocation = CurrentLocation, Cast = true, Type = MagicType.LightningBall, Targets = targetIDs, Locations = locations });
+            Broadcast(new S.ObjectMagic { ObjectID = ObjectID, Direction = Direction, CurrentLocation = CurrentLocation, Cast = true, Type = MagicType.LightningBall, Targets = targetIDs, Locations = locations, AttackElement = Element.None });
 
             UpdateAttackTime();
 
@@ -2124,7 +2127,7 @@ namespace Server.Models
             List<uint> targetIDs = new List<uint>();
             List<Point> locations = new List<Point>();
 
-            Broadcast(new S.ObjectMagic { ObjectID = ObjectID, Direction = Direction, CurrentLocation = CurrentLocation, Cast = true, Type = MagicType.ThunderBolt, Targets = targetIDs, Locations = locations });
+            Broadcast(new S.ObjectMagic { ObjectID = ObjectID, Direction = Direction, CurrentLocation = CurrentLocation, Cast = true, Type = MagicType.ThunderBolt, Targets = targetIDs, Locations = locations, AttackElement = Element.None });
 
             UpdateAttackTime();
 
@@ -2175,7 +2178,7 @@ namespace Server.Models
         {
             Direction = Functions.DirectionFromPoint(CurrentLocation, Target.CurrentLocation);
 
-            Broadcast(new S.ObjectMagic { ObjectID = ObjectID, Direction = Direction, CurrentLocation = CurrentLocation, Cast = true, Type = MagicType.MonsterThunderStorm, Locations = new List<Point> { CurrentLocation } });
+            Broadcast(new S.ObjectMagic { ObjectID = ObjectID, Direction = Direction, CurrentLocation = CurrentLocation, Cast = true, Type = MagicType.MonsterThunderStorm, Locations = new List<Point> { CurrentLocation }, AttackElement = Element.None });
 
             UpdateAttackTime();
 
@@ -2196,7 +2199,7 @@ namespace Server.Models
             if (CanTurn)
                 Direction = Functions.DirectionFromPoint(CurrentLocation, Target.CurrentLocation);
 
-            Broadcast(new S.ObjectMagic { ObjectID = ObjectID, Direction = Direction, CurrentLocation = CurrentLocation, Cast = true, Type = MagicType.Purification, Targets = new List<uint> { Target.ObjectID } });
+            Broadcast(new S.ObjectMagic { ObjectID = ObjectID, Direction = Direction, CurrentLocation = CurrentLocation, Cast = true, Type = MagicType.Purification, Targets = new List<uint> { Target.ObjectID }, AttackElement = Element.None });
 
             UpdateAttackTime();
 
@@ -2213,7 +2216,7 @@ namespace Server.Models
 
             List<uint> targets = new List<uint>();
 
-            Broadcast(new S.ObjectMagic { ObjectID = ObjectID, Direction = Direction, CurrentLocation = CurrentLocation, Cast = true, Type = MagicType.Purification, Targets = targets });
+            Broadcast(new S.ObjectMagic { ObjectID = ObjectID, Direction = Direction, CurrentLocation = CurrentLocation, Cast = true, Type = MagicType.Purification, Targets = targets, AttackElement = Element.None });
 
             UpdateAttackTime();
 
@@ -2243,7 +2246,7 @@ namespace Server.Models
             List<uint> targetIDs = new List<uint>();
             List<Point> locations = new List<Point>();
 
-            Broadcast(new S.ObjectMagic { ObjectID = ObjectID, Direction = Direction, CurrentLocation = CurrentLocation, Cast = true, Type = type, Targets = targetIDs, Locations = locations });
+            Broadcast(new S.ObjectMagic { ObjectID = ObjectID, Direction = Direction, CurrentLocation = CurrentLocation, Cast = true, Type = type, Targets = targetIDs, Locations = locations, AttackElement = Element.None });
 
             UpdateAttackTime();
 
@@ -2307,7 +2310,7 @@ namespace Server.Models
             List<uint> targetIDs = new List<uint>();
             List<Point> locations = new List<Point>();
 
-            Broadcast(new S.ObjectMagic { ObjectID = ObjectID, Direction = Direction, CurrentLocation = CurrentLocation, Cast = true, Type = MagicType.PoisonousCloud, Targets = targetIDs, Locations = locations });
+            Broadcast(new S.ObjectMagic { ObjectID = ObjectID, Direction = Direction, CurrentLocation = CurrentLocation, Cast = true, Type = MagicType.PoisonousCloud, Targets = targetIDs, Locations = locations, AttackElement = Element.None });
 
             UpdateAttackTime();
 
@@ -2339,7 +2342,7 @@ namespace Server.Models
             List<uint> targetIDs = new List<uint>();
             List<Point> locations = new List<Point>();
 
-            Broadcast(new S.ObjectMagic { ObjectID = ObjectID, Direction = Direction, CurrentLocation = CurrentLocation, Cast = true, Type = MagicType.DragonRepulse, Targets = targetIDs, Locations = locations });
+            Broadcast(new S.ObjectMagic { ObjectID = ObjectID, Direction = Direction, CurrentLocation = CurrentLocation, Cast = true, Type = MagicType.DragonRepulse, Targets = targetIDs, Locations = locations, AttackElement = Element.None });
 
             UpdateAttackTime();
             
@@ -2394,7 +2397,7 @@ namespace Server.Models
 
         public override long Attacked(MapObject attacker, long power, Element element, bool canReflect = true, bool ignoreShield = false, bool canCrit = true, bool canStruck = true)
         {
-            if (attacker?.Node == null || power == 0 || Dead || attacker.CurrentMap != CurrentMap || !Functions.InRange(attacker.CurrentLocation, CurrentLocation, Config.MaxViewRange)) return 0;
+            if (attacker?.Node == null || power == 0 || Dead || attacker.CurrentMap != CurrentMap || !Functions.InRange(attacker.CurrentLocation, CurrentLocation, Config.MaxViewRange) || Stats[Stat.Invincibility] > 0) return 0;
 
             PlayerObject player;            
 

@@ -30,7 +30,7 @@ namespace Server.Models.Monsters
             }
             else if (SEnvir.Now > NextCurseTime && SEnvir.Random.Next(10) == 0)
             {
-                Broadcast(new S.ObjectMagic { ObjectID = ObjectID, Direction = Direction, CurrentLocation = CurrentLocation, Cast = true, Type = MagicType.None, Targets = new List<uint> { Target.ObjectID } });
+                Broadcast(new S.ObjectMagic { ObjectID = ObjectID, Direction = Direction, CurrentLocation = CurrentLocation, Cast = true, Type = MagicType.None, Targets = new List<uint> { Target.ObjectID }, AttackElement = Element.None });
                 NextCurseTime = SEnvir.Now + TimeSpan.FromSeconds(10 + SEnvir.Random.Next(10));
 
                 foreach (MapObject ob in GetTargets(Target.CurrentMap, Target.CurrentLocation, 1))

@@ -57,7 +57,7 @@ namespace Server.Models.Monsters
 
             if (!BatsSpawned && CurrentHP <= MaximumHP / 4)
             {
-                Broadcast(new S.ObjectMagic { ObjectID = ObjectID, Direction = Direction, CurrentLocation = CurrentLocation, Cast = true, Type = MagicType.HellBringerBats });
+                Broadcast(new S.ObjectMagic { ObjectID = ObjectID, Direction = Direction, CurrentLocation = CurrentLocation, Cast = true, Type = MagicType.HellBringerBats, AttackElement = Element.None });
                 BatsSpawned = true;
                 if (BatInfo == null) return;
 
@@ -98,7 +98,7 @@ namespace Server.Models.Monsters
             switch (SEnvir.Random.Next(3))
             {
                 case 0:
-                    Broadcast(new S.ObjectMagic { ObjectID = ObjectID, Direction = Direction, CurrentLocation = CurrentLocation, Cast = true, Type = MagicType.None });
+                    Broadcast(new S.ObjectMagic { ObjectID = ObjectID, Direction = Direction, CurrentLocation = CurrentLocation, Cast = true, Type = MagicType.None, AttackElement = Element.None });
                     List<MapObject> targets = GetTargets(CurrentMap, CurrentLocation, ViewRange);
 
                     if (targets.Count > 0)

@@ -788,6 +788,9 @@ namespace Library
 
         [StatDescription(Title = "Health Count", Format = "{0:+#0;-#0;#0}", Mode = StatType.Default)]
         HealthCount,
+
+        [StatDescription(Title = "You are immune to all damage.", Mode = StatType.Text)]
+        Invincibility,
     }
 
     public enum StatSource

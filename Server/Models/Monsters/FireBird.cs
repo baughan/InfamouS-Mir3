@@ -116,7 +116,7 @@ namespace Server.Models.Monsters
             List<uint> targetIDs = new List<uint>();
             List<Point> locations = new List<Point>();
 
-            Broadcast(new S.ObjectMagic { ObjectID = ObjectID, Direction = dir, CurrentLocation = CurrentLocation, Cast = true, Type = magic, Targets = targetIDs, Locations = locations });
+            Broadcast(new S.ObjectMagic { ObjectID = ObjectID, Direction = dir, CurrentLocation = CurrentLocation, Cast = true, Type = magic, Targets = targetIDs, Locations = locations, AttackElement = Element.None });
 
             UpdateAttackTime();
 

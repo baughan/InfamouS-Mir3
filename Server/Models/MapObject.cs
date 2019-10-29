@@ -271,6 +271,9 @@ namespace Server.Models
                         break;
                 }
 
+                if (Stats[Stat.Invincibility] > 0)
+                    damage = 0;
+
                 if (damage > 0)
                 {
                     if (Race == ObjectType.Monster && (poison.Type != PoisonType.Infection && ((MonsterObject) this).MonsterInfo.IsBoss))
@@ -655,6 +658,91 @@ namespace Server.Models
                         FrostBiteImmunity = SEnvir.Now.AddSeconds(1);
 
                         expiredBuffs.Add(buff);
+                        break;
+                    case BuffType.ElementalHurricane:
+                        buff.TickTime -= ticks;
+
+                        if (buff.RemainingTime != TimeSpan.MaxValue)
+                        {
+                            buff.RemainingTime -= ticks;
+
+                            if (buff.RemainingTime <= TimeSpan.Zero)
+                                expiredBuffs.Add(buff);
+                        }
+
+                        if (buff.TickTime > TimeSpan.Zero) continue;
+
+                        buff.TickTime += buff.TickFrequency;
+
+                        switch (Race)
+                        {
+                            case ObjectType.Player:
+                                {
+                                    player = (PlayerObject)this;
+
+                                    if (!player.Magics.TryGetValue(MagicType.ElementalHurricane, out magic)) break;
+                                    int cost = magic.Cost;
+
+                                    if (cost > CurrentMP)
+                                    {
+                                        expiredBuffs.Add(buff);
+                                    }
+                                    ChangeMP(-cost);
+
+                                    for (int i = 1; i <= 8; i++)
+                                    {
+                                        Point location = Functions.Move(CurrentLocation, Direction, i);
+                                        Cell cell = CurrentMap.GetCell(location);
+
+                                        ActionList.Add(new DelayedAction(
+                                            SEnvir.Now,
+                                            ActionType.DelayMagic,
+                                            new List<UserMagic> { magic },
+                                            cell,
+                                            true));
+
+
+                                        switch (Direction)
+                                        {
+                                            case MirDirection.Up:
+                                            case MirDirection.Right:
+                                            case MirDirection.Down:
+                                            case MirDirection.Left:
+                                                ActionList.Add(new DelayedAction(
+                                                    SEnvir.Now,
+                                                    ActionType.DelayMagic,
+                                                    new List<UserMagic> { magic },
+                                                    CurrentMap.GetCell(Functions.Move(location, Functions.ShiftDirection(Direction, -2))),
+                                                    false));
+                                                ActionList.Add(new DelayedAction(
+                                                    SEnvir.Now,
+                                                    ActionType.DelayMagic,
+                                                    new List<UserMagic> { magic },
+                                                    CurrentMap.GetCell(Functions.Move(location, Functions.ShiftDirection(Direction, 2))),
+                                                    false));
+                                                break;
+                                            case MirDirection.UpRight:
+                                            case MirDirection.DownRight:
+                                            case MirDirection.DownLeft:
+                                            case MirDirection.UpLeft:
+                                                ActionList.Add(new DelayedAction(
+                                                    SEnvir.Now,
+                                                    ActionType.DelayMagic,
+                                                    new List<UserMagic> { magic },
+                                                    CurrentMap.GetCell(Functions.Move(location, Functions.ShiftDirection(Direction, 1))),
+                                                    false));
+                                                ActionList.Add(new DelayedAction(
+                                                    SEnvir.Now,
+                                                    ActionType.DelayMagic,
+                                                    new List<UserMagic> { magic },
+                                                    CurrentMap.GetCell(Functions.Move(location, Functions.ShiftDirection(Direction, -1))),
+                                                    false));
+                                                break;
+                                        }
+                                    }
+                                    break;
+                                }
+                        }
                         break;
                     default:
                         if (buff.RemainingTime == TimeSpan.MaxValue) continue;
@@ -1237,6 +1325,7 @@ namespace Server.Models
                         case BuffType.DarkConversion:
                         case BuffType.Evasion:
                         case BuffType.RagingWind:
+                        case BuffType.Invincibility:
                             buffs.Add(buff);
                             result++;
                             break;
@@ -1500,6 +1589,7 @@ namespace Server.Models
 
             BuffRemove(BuffType.Heal);
             BuffRemove(BuffType.DragonRepulse);
+            BuffRemove(BuffType.ElementalHurricane);
 
             PoisonList.Clear();
             
@@ -1518,7 +1608,7 @@ namespace Server.Models
         {
             int count = 0;
             if (Dead) return count;
-            if (Buffs.Any(x => x.Type == BuffType.Endurance || x.Type == BuffType.DragonRepulse)) return count;
+            if (Buffs.Any(x => x.Type == BuffType.Endurance || x.Type == BuffType.DragonRepulse || x.Type == BuffType.ElementalHurricane)) return count;
 
             PreventSpellCheck = true;
             for (int i = 0; i < distance; i++)

@@ -48,7 +48,7 @@ namespace Server.Models.Monsters
                     }
 
                     UpdateAttackTime();
-                    Broadcast(new S.ObjectMagic { ObjectID = ObjectID, Direction = Direction, CurrentLocation = CurrentLocation, Cast = true, Type = MagicType.None, Targets = new List<uint> { Target.ObjectID } });
+                    Broadcast(new S.ObjectMagic { ObjectID = ObjectID, Direction = Direction, CurrentLocation = CurrentLocation, Cast = true, Type = MagicType.None, Targets = new List<uint> { Target.ObjectID }, AttackElement = Element.None });
                     CastTime = SEnvir.Now + CastDelay;
                 }
 

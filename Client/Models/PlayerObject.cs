@@ -558,6 +558,9 @@ namespace Client.Models
                     else if (CurrentAnimation == MirAnimation.DragonRepulseMiddle)
                         animation = MirAnimation.DragonRepulseEnd;
 
+                    if (VisibleBuffs.Contains(BuffType.ElementalHurricane))
+                        animation = MirAnimation.ChannellingMiddle;
+
                     break;
                 case MirAction.Moving:
                     //if(VisibleBuffs.Contains(BuffType.Stealth))
@@ -598,6 +601,10 @@ namespace Client.Models
 
                     if (type == MagicType.PoisonousCloud)
                         DrawWeapon = false;
+
+                    if (VisibleBuffs.Contains(BuffType.ElementalHurricane))
+                        animation = MirAnimation.ChannellingEnd;
+
                     break;
                     // case MirAction.Struck:
                     //    animation = MirAnimation.Struck;
