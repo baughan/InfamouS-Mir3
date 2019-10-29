@@ -2417,7 +2417,8 @@ namespace Client.Scenes
                         }
                         else
                         {
-                            label.Text = $"{displayInfo.ItemType} Training Points: {MouseItem.Experience / Globals.AccessoryExperienceList[MouseItem.Level] * (MouseItem.Info.RequiredType == RequiredType.RebirthLevel ? MouseItem.Info.RequiredAmount : 1):0.##%}";
+                            int multi = (MouseItem.Info.RequiredType == RequiredType.RebirthLevel ? MouseItem.Info.RequiredAmount : 1);
+                            label.Text = $"{displayInfo.ItemType} Training Points: {MouseItem.Experience / (Globals.AccessoryExperienceList[MouseItem.Level] * multi):0.##%}";
                             label.ForeColour = Color.White;
                         }
 
