@@ -313,6 +313,46 @@ namespace Client.Models
             GameScene.Game.MapControl.AddObject(this);
         }
 
+        public override void FrameIndexChanged()
+        {
+            switch (CurrentAction)
+            {
+                case MirAction.Spell:
+                    switch (MagicType)
+                    {
+                        case MagicType.CrushingWave:
+                            if (FrameIndex == 4)
+                            {
+                                MirEffect spell;
+                                Effects.Add(spell = new MirProjectile(200, 8, TimeSpan.FromMilliseconds(100), LibraryFile.MagicEx6, 35, 35, Globals.LightningColour, CurrentLocation)
+                                {
+                                    Blend = true,
+                                    Has16Directions = false,
+                                    MapTarget = Functions.Move(CurrentLocation, Direction, Globals.MagicRange),
+                                    Speed = 100,
+                                });
+                                spell.Process();
+                                DXSoundManager.Play(SoundIndex.DestructiveBlow);
+
+                                Effects.Add(new MirEffect(300, 9, TimeSpan.FromMilliseconds(150), LibraryFile.MagicEx6, 10, 35, Globals.LightningColour)
+                                {
+                                    Blend = true,
+                                    Direction = Direction,
+                                    MapTarget = Functions.Move(CurrentLocation, Direction, 1),
+                                });
+                            }
+                            break;
+                        default:
+                            base.FrameIndexChanged();
+                            break;
+                    }
+                    break;
+                default:
+                    base.FrameIndexChanged();
+                    break;
+            }
+        }
+
         public void UpdateLibraries()
         {
             LibraryFile file;

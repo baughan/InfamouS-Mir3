@@ -508,6 +508,7 @@ namespace Library
         AdvancedPotionMastery = 122,
         MassBeckon = 123,
         SeismicSlam = 124,
+        CrushingWave = 125,
 
         FireBall = 201,
         LightningBall = 202,
