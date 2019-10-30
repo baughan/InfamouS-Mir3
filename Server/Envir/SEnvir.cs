@@ -73,6 +73,7 @@ namespace Server.Envir
 
         public static Dictionary<string, DateTime> IPBlocks = new Dictionary<string, DateTime>();
         public static Dictionary<string, int> IPCount = new Dictionary<string, int>();
+        public static Dictionary<string, int> IPFastCount = new Dictionary<string, int>();
 
         public static List<SConnection> Connections = new List<SConnection>();
         public static ConcurrentQueue<SConnection> NewConnections;
@@ -1113,6 +1114,10 @@ namespace Server.Envir
                         IPCount.TryGetValue(connection.IPAddress, out var ipCount);
                         IPCount[connection.IPAddress] = ipCount + 1;
 
+                        IPFastCount.TryGetValue(connection.IPAddress, out var ipFastCount);
+                        IPFastCount[connection.IPAddress] = ipFastCount + 1;
+
+                        connection.NotAttackTime = Now + TimeSpan.FromSeconds(10);
                         Connections.Add(connection);
                     }
 
