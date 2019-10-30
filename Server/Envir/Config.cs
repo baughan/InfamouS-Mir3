@@ -15,6 +15,7 @@ namespace Server.Envir
         public static TimeSpan PingDelay { get; set; } = TimeSpan.FromSeconds(2);
         public static ushort UserCountPort { get; set; } = 3000;
         public static int MaxPacket { get; set; } = 50;
+        public static int MaxFastConnection { get; set; } = 20;
         public static TimeSpan PacketBanTime { get; set; } = TimeSpan.FromMinutes(5);
 
 

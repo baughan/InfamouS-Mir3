@@ -32,6 +32,9 @@ namespace Server.Envir
         public string IPAddress { get; }
         public int SessionID { get; }
 
+        public DateTime NotAttackTime;
+        public bool NotAttack;
+
         public SConnection Observed;
         public List<SConnection> Observers = new List<SConnection>();
 
@@ -78,6 +81,8 @@ namespace Server.Envir
 
             SEnvir.Connections.Remove(this);
             SEnvir.IPCount[IPAddress]--;
+            if (!NotAttack)
+                SEnvir.IPFastCount[IPAddress]--;
             SEnvir.DBytesSent += TotalBytesSent;
             SEnvir.DBytesReceived += TotalBytesReceived;
         }
@@ -189,6 +194,26 @@ namespace Server.Envir
 
                 SEnvir.Log($"{IPAddress} Disconnected, Large amount of Packets");
                 return;
+            }
+
+            if (SEnvir.IPFastCount[IPAddress] > Config.MaxFastConnection)
+            {
+                TryDisconnect();
+                SEnvir.IPBlocks[IPAddress] = SEnvir.Now.Add(Config.PacketBanTime);
+
+                for (int i = SEnvir.Connections.Count - 1; i >= 0; i--)
+                    if (SEnvir.Connections[i].IPAddress == IPAddress)
+                        SEnvir.Connections[i].TryDisconnect();
+
+                SEnvir.Log($"{IPAddress} Disconnected, Large amount of Connections");
+                return;
+            }            
+
+            if (SEnvir.Now > NotAttackTime)
+            {
+                NotAttackTime = DateTime.MaxValue;
+                NotAttack = true;
+                SEnvir.IPFastCount[IPAddress]--;
             }
 
             base.Process();
