@@ -269,6 +269,7 @@ namespace Client.Models
         public DateTime FrameStart;
         public Dictionary<MirAnimation, Frame> Frames;
         public Color DrawColour;
+        public int MaximumSuperiorMagicShield;
 
         public Color DefaultColour = Color.White;
 
@@ -399,7 +400,7 @@ namespace Client.Models
             else
                 Opacity = 1f;
 
-            if (VisibleBuffs.Contains(BuffType.MagicShield))
+            if (VisibleBuffs.Contains(BuffType.MagicShield) || VisibleBuffs.Contains(BuffType.SuperiorMagicShield))
             {
                 if (MagicShieldEffect == null)
                     MagicShieldCreate();
@@ -3335,6 +3336,19 @@ namespace Client.Models
 
                         #endregion
 
+                        #region Superior Magic Shield
+
+                        case MagicType.SuperiorMagicShield:
+                            Effects.Add(new MirEffect(1900, 17, TimeSpan.FromMilliseconds(60), LibraryFile.MagicEx2, 10, 35, Globals.FireColour)
+                            {
+                                Blend = true,
+                                Target = this,
+                            });
+                            DXSoundManager.Play(SoundIndex.MagicShieldStart);
+                            break;
+
+                        #endregion
+
                         #endregion
 
                         #region Taoist
@@ -4084,7 +4098,7 @@ namespace Client.Models
 
             PlayStruckSound();
 
-            if (VisibleBuffs.Contains(BuffType.MagicShield))
+            if (VisibleBuffs.Contains(BuffType.MagicShield) || VisibleBuffs.Contains(BuffType.SuperiorMagicShield))
                 MagicShieldStruck();
 
             if (VisibleBuffs.Contains(BuffType.CelestialLight))
@@ -4310,6 +4324,9 @@ namespace Client.Models
 
             if (CEnvir.Now < DrawHealthTime)
                 y -= 20;
+
+            if (this == User && User.VisibleBuffs.Contains(BuffType.SuperiorMagicShield))
+                y -= 10;
 
             if (Dead)
                 y += 35;

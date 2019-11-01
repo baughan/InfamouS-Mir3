@@ -1076,6 +1076,24 @@ namespace Client.Models
 
             if (!GameScene.Game.IsAlly(ObjectID) && User.Buffs.All(x => x.Type != BuffType.Developer)) return;
 
+            if (this == User && User.Buffs.Any(x => x.Type == BuffType.SuperiorMagicShield))
+            {
+                MirLibrary library;
+
+                if (!CEnvir.LibraryList.TryGetValue(LibraryFile.Interface, out library)) return;
+
+                float percent = Math.Min(1, Math.Max(0, User.Buffs.First(x => x.Type == BuffType.SuperiorMagicShield).Stats[Stat.SuperiorMagicShield] / (float)User.MaximumSuperiorMagicShield));
+
+                if (percent == 0) return;
+
+                Size size = library.GetSize(79);
+
+                Color color = Color.Goldenrod;
+
+                library.Draw(80, DrawX, DrawY - 59, Color.White, false, 1F, ImageType.Image);
+                library.Draw(79, DrawX + 1, DrawY - 59 + 1, color, new Rectangle(0, 0, (int)(size.Width * percent), size.Height), 1F, ImageType.Image);
+            }
+
             if (data.MaxHealth > 0)
             {
                 MirLibrary library;

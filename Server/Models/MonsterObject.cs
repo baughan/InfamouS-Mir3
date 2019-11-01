@@ -2450,7 +2450,16 @@ namespace Server.Models
                 Critical();
             }
 
-            ChangeHP(-power);
+            buff = Buffs.FirstOrDefault(x => x.Type == BuffType.SuperiorMagicShield);
+
+            if (buff != null)
+            {
+                Stats[Stat.SuperiorMagicShield] -= (int)Math.Min(int.MaxValue, power);
+                if (Stats[Stat.SuperiorMagicShield] <= 0)
+                    BuffRemove(buff);
+            }
+            else
+                ChangeHP(-power);
 
             if (Dead) return power;
             

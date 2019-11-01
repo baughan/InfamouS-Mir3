@@ -351,12 +351,7 @@ namespace Client.Models
                 Magics[magic.Info] = magic;
 
             foreach (ClientBuffInfo buff in info.Buffs)
-            {
-                Buffs.Add(buff);
-                VisibleBuffs.Add(buff.Type);
-            }
-            
-
+                AddBuff(buff);
 
             UpdateLibraries();
 
@@ -625,7 +620,6 @@ namespace Client.Models
                     break;
             }
             ServerTime = CEnvir.Now.AddSeconds(5);
-
         }
 
         public override void Process()
@@ -693,6 +687,18 @@ namespace Client.Models
 
             GameScene.Game.CharacterBox.CharacterNameLabel.Text = Name;
             GameScene.Game.TradeBox.UserLabel.Text = Name;
+        }
+
+        public void AddBuff(ClientBuffInfo buff)
+        {
+            Buffs.Add(buff);
+            VisibleBuffs.Add(buff.Type);
+
+            if (buff.Type == BuffType.SuperiorMagicShield)
+            {
+                MaximumSuperiorMagicShield = buff.Stats[Stat.SuperiorMagicShield];
+                MagicShieldEnd();
+            }
         }
     }
 }

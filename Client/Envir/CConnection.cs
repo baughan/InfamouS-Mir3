@@ -1440,7 +1440,9 @@ namespace Client.Envir
                 if (ob.ObjectID != p.ObjectID) continue;
 
                 ob.VisibleBuffs.Add(p.Type);
-                return;
+
+                if (p.Type == BuffType.SuperiorMagicShield && ob.MagicShieldEffect != null)
+                    ob.MagicShieldEnd();
             }
         }
         public void Process(S.ObjectBuffRemove p)
@@ -3128,8 +3130,7 @@ namespace Client.Envir
 
         public void Process(S.BuffAdd p)
         {
-            MapObject.User.Buffs.Add(p.Buff);
-            MapObject.User.VisibleBuffs.Add(p.Buff.Type);
+            MapObject.User.AddBuff(p.Buff);
 
             GameScene.Game.BuffBox.BuffsChanged();
         }

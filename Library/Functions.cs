@@ -242,6 +242,7 @@ namespace Library
                 case MagicType.ThunderStrike:
                 case MagicType.MirrorImage:
                 case MagicType.Asteroid:
+                case MagicType.SuperiorMagicShield:
                     return MirAnimation.Combat2;
 
                 case MagicType.ElementalHurricane:
