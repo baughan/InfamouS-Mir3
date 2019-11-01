@@ -1309,6 +1309,7 @@ namespace Server.Models
                         case BuffType.MagicResistance:
                         case BuffType.Resilience:
                         case BuffType.MagicShield:
+                        case BuffType.SuperiorMagicShield:
                         case BuffType.ElementalSuperiority:
                         case BuffType.BloodLust:
                         case BuffType.Defiance:

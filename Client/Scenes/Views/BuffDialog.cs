@@ -222,6 +222,9 @@ namespace Client.Scenes.Views
                     case BuffType.ElementalHurricane:
                         icon.Index = 98;
                         break;
+                    case BuffType.SuperiorMagicShield:
+                        icon.Index = 161;
+                        break;
                     default:
                         icon.Index = 73;
                         break;
@@ -304,6 +307,9 @@ namespace Client.Scenes.Views
                     break;
                 case BuffType.MagicShield:
                     text = $"Magic Shield\n";
+                    break;
+                case BuffType.SuperiorMagicShield:
+                    text = $"Superior Magic Shield\n";
                     break;
                 case BuffType.FrostBite:
                     text = $"Frost Bite\n";

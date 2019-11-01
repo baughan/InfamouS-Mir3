@@ -216,6 +216,7 @@ namespace Library
         Renounce = 200,
         MagicShield = 201,
         JudgementOfHeaven = 202,
+        SuperiorMagicShield = 203,
 
 
         Heal = 300,
@@ -556,6 +557,7 @@ namespace Library
         FrostBite = 239,
         Asteroid = 240,
         ElementalHurricane = 241,
+        SuperiorMagicShield = 242,
 
         Heal = 300,
         SpiritSword = 301,

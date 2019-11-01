@@ -3124,7 +3124,10 @@ namespace Client.Scenes
                 case MagicType.StrengthOfFaith:
                     break;
                 case MagicType.MagicShield:
-                    if (User.Buffs.Any(x => x.Type == BuffType.MagicShield)) return;
+                    if (User.Buffs.Any(x => x.Type == BuffType.MagicShield || x.Type == BuffType.SuperiorMagicShield)) return;
+                    break;
+                case MagicType.SuperiorMagicShield:
+                    if (User.Buffs.Any(x => x.Type == BuffType.SuperiorMagicShield)) return;
                     break;
                 case MagicType.FrostBite:
                     if (User.Buffs.Any(x => x.Type == BuffType.FrostBite)) return;

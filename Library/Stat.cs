@@ -791,6 +791,9 @@ namespace Library
 
         [StatDescription(Title = "You are immune to all damage.", Mode = StatType.Text)]
         Invincibility,
+
+        [StatDescription(Title = "Superior Magic Shield", Format = "{0:+#0;-#0;#0}", Mode = StatType.Default)]
+        SuperiorMagicShield,
     }
 
     public enum StatSource
