@@ -2369,7 +2369,7 @@ namespace Server.Models
 
         }
         #endregion
-        
+
         public void UpdateAttackTime()
         {
             AttackTime = SEnvir.Now.AddMilliseconds(AttackDelay);
@@ -2380,6 +2380,12 @@ namespace Server.Models
             {
                 AttackTime += TimeSpan.FromMilliseconds(poison.Value * 100);
                 ActionTime += TimeSpan.FromMilliseconds(poison.Value * 100);
+            }
+
+            if (PoisonList.Any(x => x.Type == PoisonType.Neutralize))
+            {
+                AttackTime += TimeSpan.FromMilliseconds(AttackDelay);
+                ActionTime += TimeSpan.FromMilliseconds(Math.Min(MoveDelay, AttackDelay - 100));
             }
         }
         public virtual void UpdateMoveTime()
@@ -2392,6 +2398,12 @@ namespace Server.Models
             {
                 AttackTime += TimeSpan.FromMilliseconds(poison.Value * 100);
                 ActionTime += TimeSpan.FromMilliseconds(poison.Value * 100);
+            }
+
+            if (PoisonList.Any(x => x.Type == PoisonType.Neutralize))
+            {
+                AttackTime += TimeSpan.FromMilliseconds(MoveDelay);
+                ActionTime += TimeSpan.FromMilliseconds(Math.Min(MoveDelay - 100, AttackDelay));
             }
         }
 
