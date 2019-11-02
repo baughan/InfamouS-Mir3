@@ -169,6 +169,22 @@ namespace Server.Models
 
                     monster.Attack(ob, monster.GetDC(), Element.Fire);
                     break;
+                case SpellEffect.DarkSoulPrison:
+                    player = Owner as PlayerObject;
+                    if (player == null || !player.CanAttackTarget(ob)) return;
+
+                    damage = player.MagicAttack(new List<UserMagic> { Magic }, ob, true);
+
+                    if (damage > 0 && ob.Race == ObjectType.Player)
+                    {
+                        foreach (SpellObject spell in player.SpellList)
+                        {
+                            if (spell.Effect != Effect) continue;
+
+                            spell.TickCount--;
+                        }
+                    }
+                    break;
             }
         }
         protected override void OnSpawned()

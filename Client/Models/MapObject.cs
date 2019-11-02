@@ -239,7 +239,7 @@ namespace Client.Models
         public Color LightColour = Globals.NoneColour;
 
         public MirEffect MagicShieldEffect, WraithGripEffect, WraithGripEffect2, AssaultEffect, CelestialLightEffect, LifeStealEffect, SilenceEffect, BlindEffect, AbyssEffect, ChannellingMagicEffect, ChannellingMagicEffect1,
-                         RankingEffect, DeveloperEffect, FrostBiteEffect, InfectionEffect;
+                         RankingEffect, DeveloperEffect, FrostBiteEffect, InfectionEffect, NeutralizeEffect;
 
         public bool CanShowWraithGrip = true;
 
@@ -393,6 +393,17 @@ namespace Client.Models
             {
                 if (InfectionEffect != null)
                     InfectionEnd();
+            }
+
+            if ((Poison & PoisonType.Neutralize) == PoisonType.Neutralize)
+            {
+                if (NeutralizeEffect == null)
+                    NeutralizeCreate();
+            }
+            else
+            {
+                if (NeutralizeEffect != null)
+                    NeutralizeEnd();
             }
 
             if (VisibleBuffs.Contains(BuffType.Invisibility) || VisibleBuffs.Contains(BuffType.Cloak) || VisibleBuffs.Contains(BuffType.Transparency))
@@ -1934,6 +1945,46 @@ namespace Client.Models
 
                             if (MagicLocations.Count > 0 || AttackTargets.Count > 0)
                                 DXSoundManager.Play(SoundIndex.FireBallTravel);
+                            break;
+
+                        #endregion
+
+                        #region Neutralize
+
+                        case MagicType.Neutralize:
+                            foreach (Point point in MagicLocations)
+                            {
+                                Effects.Add(spell = new MirProjectile(300, 4, TimeSpan.FromMilliseconds(80), LibraryFile.MagicEx7, 35, 35, Globals.FireColour, CurrentLocation)
+                                {
+                                    Blend = true,
+                                    MapTarget = point,
+                                });
+                                spell.Process();
+                            }
+
+                            foreach (MapObject attackTarget in AttackTargets)
+                            {
+                                Effects.Add(spell = new MirProjectile(300, 4, TimeSpan.FromMilliseconds(80), LibraryFile.MagicEx7, 35, 35, Globals.FireColour, CurrentLocation)
+                                {
+                                    Blend = true,
+                                    Target = attackTarget,
+                                });
+
+                                spell.CompleteAction = () =>
+                                {
+                                    attackTarget.Effects.Add(spell = new MirEffect(460, 10, TimeSpan.FromMilliseconds(100), LibraryFile.MagicEx7, 0, 0, Globals.FireColour)
+                                    {
+                                        Blend = true,
+                                        Target = attackTarget,
+                                    });
+                                    spell.Process();
+
+                                    DXSoundManager.Play(SoundIndex.NeutralizeEnd);
+                                };
+                                spell.Process();
+                            }
+
+
                             break;
 
                         #endregion
@@ -3675,8 +3726,22 @@ namespace Client.Models
 
                         #endregion
 
+                        //Neutralize
+
+                        #region Dark Soul Prison
+
+                        case MagicType.DarkSoulPrison:
+                            Effects.Add(new MirEffect(600, 9, TimeSpan.FromMilliseconds(100), LibraryFile.MagicEx6, 10, 35, Globals.DarkColour)
+                            {
+                                Blend = true,
+                                Target = this,
+                            });
+                            DXSoundManager.Play(SoundIndex.DarkSoulPrison);
+                            break;
                         #endregion
-                            
+
+                        #endregion
+
                         #region Assassin
 
                         //Willow Dance
@@ -4571,6 +4636,21 @@ namespace Client.Models
         {
             InfectionEffect?.Remove();
             InfectionEffect = null;
+        }
+        public void NeutralizeCreate()
+        {
+            NeutralizeEffect = new MirEffect(470, 6, TimeSpan.FromMilliseconds(120), LibraryFile.MagicEx7, 0, 0, Globals.NoneColour)
+            {
+                Blend = true,
+                Target = this,
+                Loop = true,
+                Opacity = 0.8F
+            };
+        }
+        public void NeutralizeEnd()
+        {
+            NeutralizeEffect?.Remove();
+            NeutralizeEffect = null;
         }
 
         public void ChannellingMagicCreate()
