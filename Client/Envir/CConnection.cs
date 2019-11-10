@@ -3990,6 +3990,11 @@ namespace Client.Envir
             GameScene.Game.Companion.Level11 = p.Level11;
             GameScene.Game.Companion.Level13 = p.Level13;
             GameScene.Game.Companion.Level15 = p.Level15;
+            GameScene.Game.Companion.Level17 = p.Level17;
+            GameScene.Game.Companion.Level19 = p.Level19;
+            GameScene.Game.Companion.Level21 = p.Level21;
+            GameScene.Game.Companion.Level23 = p.Level23;
+            GameScene.Game.Companion.Level25 = p.Level25;
 
             GameScene.Game.CompanionBox.Refresh();
         }

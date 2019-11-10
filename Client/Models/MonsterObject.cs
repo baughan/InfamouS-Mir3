@@ -2379,6 +2379,33 @@ namespace Client.Models
                     foreach (KeyValuePair<MirAnimation, Frame> frame in FrameSet.TerracottaBoss)
                         Frames[frame.Key] = frame.Value;
                     break;
+                case MonsterImage.KingScorpion:
+                    CEnvir.LibraryList.TryGetValue(LibraryFile.KingScorpion, out BodyLibrary);
+                    foreach (KeyValuePair<MirAnimation, Frame> frame in FrameSet.KingScorpion)
+                        Frames[frame.Key] = frame.Value;
+                    BodyShape = 0;
+                    AttackSound = SoundIndex.KingScorpionAttack;
+                    StruckSound = SoundIndex.KingScorpionStruck;
+                    DieSound = SoundIndex.KingScorpionDie;
+                    break;
+                case MonsterImage.KingHog:
+                    CEnvir.LibraryList.TryGetValue(LibraryFile.KingHog, out BodyLibrary);
+                    foreach (KeyValuePair<MirAnimation, Frame> frame in FrameSet.BlackFoxman)
+                        Frames[frame.Key] = frame.Value;
+                    BodyShape = 0;
+                    AttackSound = SoundIndex.KingHogAttack;
+                    StruckSound = SoundIndex.KingHogStruck;
+                    DieSound = SoundIndex.KingHogDie;
+                    break;
+                case MonsterImage.DarkDevil:
+                    CEnvir.LibraryList.TryGetValue(LibraryFile.DarkDevil, out BodyLibrary);
+                    foreach (KeyValuePair<MirAnimation, Frame> frame in FrameSet.KingScorpion)
+                        Frames[frame.Key] = frame.Value;
+                    BodyShape = 0;
+                    AttackSound = SoundIndex.DarkDevilAttack;
+                    StruckSound = SoundIndex.DarkDevilStruck;
+                    DieSound = SoundIndex.DarkDevilDie;
+                    break;
                 default:
                     CEnvir.LibraryList.TryGetValue(LibraryFile.Mon_1, out BodyLibrary);
                     BodyShape = 0;
@@ -2628,6 +2655,16 @@ namespace Client.Models
                     if (CurrentAction == MirAction.Die || CurrentAction == MirAction.Dead) break;
                     if (!CEnvir.LibraryList.TryGetValue(LibraryFile.GreatFoxSpirit, out library)) break;
                     library.DrawBlend(DrawFrame + 30, x, y, Color.White, true, 1f, ImageType.Image);
+                    break;
+                case MonsterImage.KingHog:
+                    if (CurrentAction != MirAction.Attack) break;
+                    if (!CEnvir.LibraryList.TryGetValue(LibraryFile.KingHog, out library)) break;
+                    library.DrawBlend(DrawFrame + 144, x, y, Color.White, true, 1f, ImageType.Image);
+                    break;
+                case MonsterImage.DarkDevil:
+                    if (CurrentAction != MirAction.Attack) break;
+                    if (!CEnvir.LibraryList.TryGetValue(LibraryFile.DarkDevil, out library)) break;
+                    library.DrawBlend(DrawFrame + 262, x, y, Color.White, true, 1f, ImageType.Image);
                     break;
             }
 
@@ -4406,6 +4443,43 @@ namespace Client.Models
                                 Target = this,
                                 Direction = Direction,
                                 Skip = 20,
+                            });
+                            break;
+                    }
+                    break;
+                case MonsterImage.KingScorpion:
+                    switch (CurrentAction)
+                    {
+                        case MirAction.Spell:
+                            DXSoundManager.Play(SoundIndex.KingScorpionAttack2);
+                            Effects.Add(new MirEffect(272, 8, TimeSpan.FromMilliseconds(80), LibraryFile.KingScorpion, 10, 35, Globals.LightningColour)
+                            {
+                                Direction = Direction,
+                                Blend = true,
+                                Target = this,
+                                Skip = 8,
+                            });
+                            break;
+                    }
+                    break;
+                case MonsterImage.DarkDevil:
+                    switch (CurrentAction)
+                    {
+                        case MirAction.Spell:
+                            DXSoundManager.Play(SoundIndex.DarkDevilAttack2);
+                            Effects.Add(new MirEffect(272, 8, TimeSpan.FromMilliseconds(80), LibraryFile.DarkDevil, 10, 35, Globals.LightningColour)
+                            {
+                                Direction = Direction,
+                                Blend = true,
+                                Target = this,
+                                Skip = 8,
+                            });
+                            break;
+                        case MirAction.Die:
+                            Effects.Add(new MirEffect(336, 6, TimeSpan.FromMilliseconds(80), LibraryFile.DarkDevil, 10, 35, Globals.LightningColour)
+                            {
+                                Blend = true,
+                                Target = this,
                             });
                             break;
                     }

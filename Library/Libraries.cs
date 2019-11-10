@@ -264,6 +264,9 @@ namespace Library
             [LibraryFile.Mon_55] = @"Data\Mon-55.Zl",
             [LibraryFile.Mon_56] = @"Data\Mon-56.Zl",
 
+            [LibraryFile.KingScorpion] = @"Data\Mir2\Monster\075.Zl",
+            [LibraryFile.KingHog] = @"Data\Mir2\Monster\076.Zl",
+            [LibraryFile.DarkDevil] = @"Data\Mir2\Monster\077.Zl",
             [LibraryFile.AxeOma] = @"Data\Mir2\Monster\118.Zl",
             [LibraryFile.SwordOma] = @"Data\Mir2\Monster\119.Zl",
             [LibraryFile.CrossbowOma] = @"Data\Mir2\Monster\120.Zl",
@@ -949,6 +952,9 @@ namespace Library
         GreatFoxSpirit,
         HedgeKektal,
         BigHedgeKektal,
+        KingScorpion,
+        KingHog,
+        DarkDevil,
 
 
         Magic, 
