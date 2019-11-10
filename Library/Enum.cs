@@ -1007,6 +1007,10 @@ namespace Library
         Terracotta4,
         TerracottaSub,
         TerracottaBoss,
+
+        KingScorpion,
+        KingHog,
+        DarkDevil,
     }
 
     
@@ -2623,6 +2627,20 @@ namespace Library
         TerracottaBossAttack2,
         TerracottaBossStruck,
         TerracottaBossDie,
+
+        KingScorpionAttack,
+        KingScorpionAttack2,
+        KingScorpionStruck,
+        KingScorpionDie,
+
+        KingHogAttack,
+        KingHogStruck,
+        KingHogDie,
+
+        DarkDevilAttack,
+        DarkDevilAttack2,
+        DarkDevilStruck,
+        DarkDevilDie,
 
 
 

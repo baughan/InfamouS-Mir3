@@ -225,6 +225,81 @@ namespace Server.DBModels
         }
         private Stats _Level15;
 
+        public Stats Level17
+        {
+            get { return _Level17; }
+            set
+            {
+                if (_Level17 == value) return;
+
+                var oldValue = _Level17;
+                _Level17 = value;
+
+                OnChanged(oldValue, value, "Level17");
+            }
+        }
+        private Stats _Level17;
+
+        public Stats Level19
+        {
+            get { return _Level19; }
+            set
+            {
+                if (_Level19 == value) return;
+
+                var oldValue = _Level19;
+                _Level19 = value;
+
+                OnChanged(oldValue, value, "Level19");
+            }
+        }
+        private Stats _Level19;
+
+        public Stats Level21
+        {
+            get { return _Level21; }
+            set
+            {
+                if (_Level21 == value) return;
+
+                var oldValue = _Level21;
+                _Level21 = value;
+
+                OnChanged(oldValue, value, "Level21");
+            }
+        }
+        private Stats _Level21;
+
+        public Stats Level23
+        {
+            get { return _Level23; }
+            set
+            {
+                if (_Level23 == value) return;
+
+                var oldValue = _Level23;
+                _Level23 = value;
+
+                OnChanged(oldValue, value, "Level23");
+            }
+        }
+        private Stats _Level23;
+
+        public Stats Level25
+        {
+            get { return _Level25; }
+            set
+            {
+                if (_Level25 == value) return;
+
+                var oldValue = _Level25;
+                _Level25 = value;
+
+                OnChanged(oldValue, value, "Level25");
+            }
+        }
+        private Stats _Level25;
+
 
         [Association("Items", true)]
         public DBBindingList<UserItem> Items { get; set; }
@@ -258,6 +333,11 @@ namespace Server.DBModels
                 Level11 = Level11,
                 Level13 = Level13,
                 Level15 = Level15,
+                Level17 = Level17,
+                Level19 = Level19,
+                Level21 = Level21,
+                Level23 = Level23,
+                Level25 = Level25,
 
                 Items = Items.Select(x => x.ToClientInfo()).ToList(),
             };

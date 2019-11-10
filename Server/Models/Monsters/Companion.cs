@@ -392,6 +392,36 @@ namespace Server.Models.Monsters
                 result = true;
             }
 
+            if (UserCompanion.Level >= 17 && (UserCompanion.Level17 == null || UserCompanion.Level17.Count == 0))
+            {
+                UserCompanion.Level17 = GetSkill(17);
+                result = true;
+            }
+
+            if (UserCompanion.Level >= 19 && (UserCompanion.Level19 == null || UserCompanion.Level19.Count == 0))
+            {
+                UserCompanion.Level19 = GetSkill(19);
+                result = true;
+            }
+
+            if (UserCompanion.Level >= 21 && (UserCompanion.Level21 == null || UserCompanion.Level21.Count == 0))
+            {
+                UserCompanion.Level21 = GetSkill(21);
+                result = true;
+            }
+
+            if (UserCompanion.Level >= 23 && (UserCompanion.Level23 == null || UserCompanion.Level23.Count == 0))
+            {
+                UserCompanion.Level23 = GetSkill(23);
+                result = true;
+            }
+
+            if (UserCompanion.Level >= 25 && (UserCompanion.Level25 == null || UserCompanion.Level25.Count == 0))
+            {
+                UserCompanion.Level25 = GetSkill(25);
+                result = true;
+            }
+
             CompanionOwner.CompanionRefreshBuff();
 
             if (!result) return;
@@ -404,7 +434,12 @@ namespace Server.Models.Monsters
                 Level10 = UserCompanion.Level10,
                 Level11 = UserCompanion.Level11,
                 Level13 = UserCompanion.Level13,
-                Level15 = UserCompanion.Level15
+                Level15 = UserCompanion.Level15,
+                Level17 = UserCompanion.Level17,
+                Level19 = UserCompanion.Level19,
+                Level21 = UserCompanion.Level21,
+                Level23 = UserCompanion.Level23,
+                Level25 = UserCompanion.Level25
             });
 
         }

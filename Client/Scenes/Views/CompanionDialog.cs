@@ -21,7 +21,7 @@ namespace Client.Scenes.Views
         public MonsterObject CompanionDisplay;
         public Point CompanionDisplayPoint;
 
-        public DXLabel WeightLabel, HungerLabel, NameLabel, LevelLabel, ExperienceLabel, Level3Label, Level5Label, Level7Label, Level10Label, Level11Label, Level13Label, Level15Label;
+        public DXLabel WeightLabel, HungerLabel, NameLabel, LevelLabel, ExperienceLabel, Level3Label, Level5Label, Level7Label, Level10Label, Level11Label, Level13Label, Level15Label, Level17Label, Level19Label, Level21Label, Level23Label, Level25Label;
         public DXComboBox ModeComboBox;
 
         public int BagWeight, MaxBagWeight, InventorySize;
@@ -36,7 +36,7 @@ namespace Client.Scenes.Views
         public CompanionDialog()
         {
             TitleLabel.Text = "Companion";
-            SetClientSize(new Size(352, 341));
+            SetClientSize(new Size(352, 441));
 
             CompanionDisplayPoint = new Point(ClientArea.X + 60, ClientArea.Y + 50);
 
@@ -45,7 +45,7 @@ namespace Client.Scenes.Views
                 GridSize = new Size(10, 4),
                 Parent = this,
                 GridType = GridType.CompanionInventory,
-                Location = new Point(ClientArea.X, ClientArea.Y + 200),
+                Location = new Point(ClientArea.X, ClientArea.Y + 300),
             };
 
             EquipmentGrid = new DXItemCell[Globals.CompanionEquipmentSize];
@@ -291,6 +291,121 @@ namespace Client.Scenes.Views
                 Text = "Not Available"
             };
 
+            label = new DXLabel
+            {
+                Parent = this,
+                Outline = true,
+                Font = new Font(Config.FontName, CEnvir.FontSize(10F), FontStyle.Bold),
+                ForeColour = Color.FromArgb(198, 166, 99),
+                OutlineColour = Color.Black,
+                IsControl = false,
+                Text = "Level 17",
+            };
+            label.Location = new Point(235 - label.Size.Width, CompanionDisplayPoint.Y + 140);
+
+            Level17Label = new DXLabel
+            {
+                Parent = this,
+                ForeColour = Color.White,
+                Outline = true,
+                OutlineColour = Color.Black,
+                IsControl = false,
+                Location = new Point(235, CompanionDisplayPoint.Y + 143),
+                Text = "Not Available"
+            };
+
+            label = new DXLabel
+            {
+                Parent = this,
+                Outline = true,
+                Font = new Font(Config.FontName, CEnvir.FontSize(10F), FontStyle.Bold),
+                ForeColour = Color.FromArgb(198, 166, 99),
+                OutlineColour = Color.Black,
+                IsControl = false,
+                Text = "Level 19",
+            };
+            label.Location = new Point(235 - label.Size.Width, CompanionDisplayPoint.Y + 160);
+
+            Level19Label = new DXLabel
+            {
+                Parent = this,
+                ForeColour = Color.White,
+                Outline = true,
+                OutlineColour = Color.Black,
+                IsControl = false,
+                Location = new Point(235, CompanionDisplayPoint.Y + 163),
+                Text = "Not Available"
+            };
+
+            label = new DXLabel
+            {
+                Parent = this,
+                Outline = true,
+                Font = new Font(Config.FontName, CEnvir.FontSize(10F), FontStyle.Bold),
+                ForeColour = Color.FromArgb(198, 166, 99),
+                OutlineColour = Color.Black,
+                IsControl = false,
+                Text = "Level 21",
+            };
+            label.Location = new Point(235 - label.Size.Width, CompanionDisplayPoint.Y + 180);
+
+            Level21Label = new DXLabel
+            {
+                Parent = this,
+                ForeColour = Color.White,
+                Outline = true,
+                OutlineColour = Color.Black,
+                IsControl = false,
+                Location = new Point(235, CompanionDisplayPoint.Y + 183),
+                Text = "Not Available"
+            };
+
+            label = new DXLabel
+            {
+                Parent = this,
+                Outline = true,
+                Font = new Font(Config.FontName, CEnvir.FontSize(10F), FontStyle.Bold),
+                ForeColour = Color.FromArgb(198, 166, 99),
+                OutlineColour = Color.Black,
+                IsControl = false,
+                Text = "Level 23",
+            };
+            label.Location = new Point(235 - label.Size.Width, CompanionDisplayPoint.Y + 200);
+
+            Level23Label = new DXLabel
+            {
+                Parent = this,
+                ForeColour = Color.White,
+                Outline = true,
+                OutlineColour = Color.Black,
+                IsControl = false,
+                Location = new Point(235, CompanionDisplayPoint.Y + 203),
+                Text = "Not Available"
+            };
+
+            label = new DXLabel
+            {
+                Parent = this,
+                Outline = true,
+                Font = new Font(Config.FontName, CEnvir.FontSize(10F), FontStyle.Bold),
+                ForeColour = Color.FromArgb(198, 166, 99),
+                OutlineColour = Color.Black,
+                IsControl = false,
+                Text = "Level 25",
+            };
+            label.Location = new Point(235 - label.Size.Width, CompanionDisplayPoint.Y + 220);
+
+            Level25Label = new DXLabel
+            {
+                Parent = this,
+                ForeColour = Color.White,
+                Outline = true,
+                OutlineColour = Color.Black,
+                IsControl = false,
+                Location = new Point(235, CompanionDisplayPoint.Y + 223),
+                Text = "Not Available"
+            };
+
             NameLabel = new DXLabel
             {
                 Parent = this,
@@ -496,6 +611,16 @@ namespace Client.Scenes.Views
             Level13Label.Text = GameScene.Game.Companion.Level13 == null ? "Not Available" : GameScene.Game.Companion.Level13.GetDisplay(GameScene.Game.Companion.Level13.Values.Keys.First());
 
             Level15Label.Text = GameScene.Game.Companion.Level15 == null ? "Not Available" : GameScene.Game.Companion.Level15.GetDisplay(GameScene.Game.Companion.Level15.Values.Keys.First());
+
+            Level17Label.Text = GameScene.Game.Companion.Level17 == null ? "Not Available" : GameScene.Game.Companion.Level17.GetDisplay(GameScene.Game.Companion.Level17.Values.Keys.First());
+
+            Level19Label.Text = GameScene.Game.Companion.Level19 == null ? "Not Available" : GameScene.Game.Companion.Level19.GetDisplay(GameScene.Game.Companion.Level19.Values.Keys.First());
+
+            Level21Label.Text = GameScene.Game.Companion.Level21 == null ? "Not Available" : GameScene.Game.Companion.Level21.GetDisplay(GameScene.Game.Companion.Level21.Values.Keys.First());
+
+            Level23Label.Text = GameScene.Game.Companion.Level23 == null ? "Not Available" : GameScene.Game.Companion.Level23.GetDisplay(GameScene.Game.Companion.Level23.Values.Keys.First());
+
+            Level25Label.Text = GameScene.Game.Companion.Level25 == null ? "Not Available" : GameScene.Game.Companion.Level25.GetDisplay(GameScene.Game.Companion.Level25.Values.Keys.First());
 
             for (int i = 0; i < InventoryGrid.Grid.Length; i++)
                 InventoryGrid.Grid[i].Enabled = i < InventorySize;

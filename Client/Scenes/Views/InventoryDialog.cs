@@ -16,6 +16,7 @@ namespace Client.Scenes.Views
         public DXItemGrid Grid;
 
         public DXLabel GoldLabel, WeightLabel;
+        public DXButton FragmentButton;
         public override void OnIsVisibleChanged(bool oValue, bool nValue)
         {
             if (!IsVisible)
@@ -103,6 +104,25 @@ namespace Client.Scenes.Views
                 Size = new Size(78, 20),
                 IsControl = false,
             };
+
+            FragmentButton = new DXButton
+            {
+                Location = new Point(ClientArea.Right - 100, Size.Height - 41),
+                Size = new Size(60, DefaultHeight),
+                Parent = this,
+                Label = { Text = "Fragment" }
+            };
+            FragmentButton.MouseClick += (o, e) =>
+            {
+                if (!GameScene.Game.NPCItemFragmentBox.Visible)
+                {
+                    GameScene.Game.NPCItemFragmentBox.Visible = true;
+                    if (DisplayArea.Left - GameScene.Game.NPCItemFragmentBox.Size.Width < 0)
+                        GameScene.Game.NPCItemFragmentBox.Location = new Point(DisplayArea.Right + 1, DisplayArea.Top);
+                    else
+                        GameScene.Game.NPCItemFragmentBox.Location = new Point(DisplayArea.Left - GameScene.Game.NPCItemFragmentBox.Size.Width, DisplayArea.Top);
+                }
+            };
         }
 
         #region Methods
@@ -143,6 +163,14 @@ namespace Client.Scenes.Views
                         WeightLabel.Dispose();
 
                     WeightLabel = null;
+                }
+
+                if (FragmentButton != null)
+                {
+                    if (!FragmentButton.IsDisposed)
+                        FragmentButton.Dispose();
+
+                    FragmentButton = null;
                 }
             }
 

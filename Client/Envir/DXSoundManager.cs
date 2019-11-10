@@ -1081,6 +1081,20 @@ namespace Client.Envir
             [SoundIndex.TerracottaBossAttack2] = new DXSound(SoundPath + @"m419-7.wav", SoundType.Monster),
             [SoundIndex.TerracottaBossStruck] = new DXSound(SoundPath + @"m419-4.wav", SoundType.Monster),
             [SoundIndex.TerracottaBossDie] = new DXSound(SoundPath + @"m419-5.wav", SoundType.Monster),
+
+            [SoundIndex.KingScorpionAttack] = new DXSound(Mir2MonsterSoundPath + @"075-1.wav", SoundType.Monster),
+            [SoundIndex.KingScorpionAttack2] = new DXSound(Mir2MonsterSoundPath + @"075-5.wav", SoundType.Monster),
+            [SoundIndex.KingScorpionStruck] = new DXSound(Mir2MonsterSoundPath + @"075-2.wav", SoundType.Monster),
+            [SoundIndex.KingScorpionDie] = new DXSound(Mir2MonsterSoundPath + @"075-3.wav", SoundType.Monster),
+
+            [SoundIndex.KingHogAttack] = new DXSound(Mir2MonsterSoundPath + @"076-1.wav", SoundType.Monster),
+            [SoundIndex.KingHogStruck] = new DXSound(Mir2MonsterSoundPath + @"076-2.wav", SoundType.Monster),
+            [SoundIndex.KingHogDie] = new DXSound(Mir2MonsterSoundPath + @"076-3.wav", SoundType.Monster),
+
+            [SoundIndex.DarkDevilAttack] = new DXSound(Mir2MonsterSoundPath + @"077-1.wav", SoundType.Monster),
+            [SoundIndex.DarkDevilAttack2] = new DXSound(Mir2MonsterSoundPath + @"077-5.wav", SoundType.Monster),
+            [SoundIndex.DarkDevilStruck] = new DXSound(Mir2MonsterSoundPath + @"077-2.wav", SoundType.Monster),
+            [SoundIndex.DarkDevilDie] = new DXSound(Mir2MonsterSoundPath + @"077-3.wav", SoundType.Monster),
             #endregion
         };
 

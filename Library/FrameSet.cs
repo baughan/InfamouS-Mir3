@@ -53,6 +53,9 @@ namespace Library
 
             //Mir2 Fox
             BlackFoxman, WhiteFoxman, GreatFoxSpirit,
+
+            //Mir2 BDD
+            KingScorpion,
             
             Terracotta1, Terracotta2, Terracotta3, TerracottaSub, TerracottaBoss;
 
@@ -1005,6 +1008,17 @@ namespace Library
                 [MirAnimation.Struck] = new Frame(320, 3, 10, TimeSpan.FromMilliseconds(100)),
                 [MirAnimation.Die] = new Frame(400, 11, 20, TimeSpan.FromMilliseconds(120)),
                 [MirAnimation.Dead] = new Frame(411, 1, 20, TimeSpan.FromMilliseconds(1000)),
+            };
+
+            KingScorpion = new Dictionary<MirAnimation, Frame>
+            {
+                [MirAnimation.Standing] = new Frame(0, 4, 4, TimeSpan.FromMilliseconds(500)),
+                [MirAnimation.Walking] = new Frame(32, 6, 6, TimeSpan.FromMilliseconds(100)),
+                [MirAnimation.Combat1] = new Frame(80, 6, 6, TimeSpan.FromMilliseconds(100)),
+                [MirAnimation.Combat3] = new Frame(224, 6, 6, TimeSpan.FromMilliseconds(100)),
+                [MirAnimation.Struck] = new Frame(128, 2, 2, TimeSpan.FromMilliseconds(100)),
+                [MirAnimation.Die] = new Frame(144, 10, 10, TimeSpan.FromMilliseconds(100)),
+                [MirAnimation.Dead] = new Frame(153, 1, 10, TimeSpan.FromMilliseconds(1000)),
             };
         }
     }

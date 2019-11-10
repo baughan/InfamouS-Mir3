@@ -110,7 +110,7 @@ namespace Server.Models
         public HorseType Horse;
 
         public bool BlockWhisper;
-        public bool CompanionLevelLock3, CompanionLevelLock5, CompanionLevelLock7, CompanionLevelLock10, CompanionLevelLock11, CompanionLevelLock13, CompanionLevelLock15;
+        public bool CompanionLevelLock3, CompanionLevelLock5, CompanionLevelLock7, CompanionLevelLock10, CompanionLevelLock11, CompanionLevelLock13, CompanionLevelLock15, CompanionLevelLock17, CompanionLevelLock19, CompanionLevelLock21, CompanionLevelLock23, CompanionLevelLock25;
         public bool ExtractorLock;
 
         public override bool CanAttack => base.CanAttack && Horse == HorseType.None;
@@ -1520,6 +1520,26 @@ namespace Server.Models
                         CompanionLevelLock15 = !CompanionLevelLock15;
                         Connection.ReceiveChat(string.Format(CompanionLevelLock15 ? Connection.Language.CompanionSkillEnabled : Connection.Language.CompanionSkillDisabled, 15), MessageType.System);
                         break;
+                    case "ENABLELEVEL17":
+                        CompanionLevelLock17 = !CompanionLevelLock17;
+                        Connection.ReceiveChat(string.Format(CompanionLevelLock17 ? Connection.Language.CompanionSkillEnabled : Connection.Language.CompanionSkillDisabled, 17), MessageType.System);
+                        break;
+                    case "ENABLELEVEL19":
+                        CompanionLevelLock19 = !CompanionLevelLock19;
+                        Connection.ReceiveChat(string.Format(CompanionLevelLock19 ? Connection.Language.CompanionSkillEnabled : Connection.Language.CompanionSkillDisabled, 19), MessageType.System);
+                        break;
+                    case "ENABLELEVEL21":
+                        CompanionLevelLock21 = !CompanionLevelLock21;
+                        Connection.ReceiveChat(string.Format(CompanionLevelLock21 ? Connection.Language.CompanionSkillEnabled : Connection.Language.CompanionSkillDisabled, 21), MessageType.System);
+                        break;
+                    case "ENABLELEVEL23":
+                        CompanionLevelLock23 = !CompanionLevelLock23;
+                        Connection.ReceiveChat(string.Format(CompanionLevelLock23 ? Connection.Language.CompanionSkillEnabled : Connection.Language.CompanionSkillDisabled, 23), MessageType.System);
+                        break;
+                    case "ENABLELEVEL25":
+                        CompanionLevelLock25 = !CompanionLevelLock25;
+                        Connection.ReceiveChat(string.Format(CompanionLevelLock25 ? Connection.Language.CompanionSkillEnabled : Connection.Language.CompanionSkillDisabled, 25), MessageType.System);
+                        break;
                     case "ALLOWTRADE":
                         Character.Account.AllowTrade = !Character.Account.AllowTrade;
                         Connection.ReceiveChat(Character.Account.AllowTrade ? Connection.Language.TradingEnabled : Connection.Language.TradingDisabled, MessageType.System);
@@ -1803,6 +1823,21 @@ namespace Server.Models
                             case 15:
                                 Companion.UserCompanion.Level15 = new Stats { [stat] = value };
                                 break;
+                            case 17:
+                                Companion.UserCompanion.Level17 = new Stats { [stat] = value };
+                                break;
+                            case 19:
+                                Companion.UserCompanion.Level19 = new Stats { [stat] = value };
+                                break;
+                            case 21:
+                                Companion.UserCompanion.Level21 = new Stats { [stat] = value };
+                                break;
+                            case 23:
+                                Companion.UserCompanion.Level23 = new Stats { [stat] = value };
+                                break;
+                            case 25:
+                                Companion.UserCompanion.Level25 = new Stats { [stat] = value };
+                                break;
                         }
 
                         CompanionRefreshBuff();
@@ -1815,7 +1850,12 @@ namespace Server.Models
                             Level10 = Companion.UserCompanion.Level10,
                             Level11 = Companion.UserCompanion.Level11,
                             Level13 = Companion.UserCompanion.Level13,
-                            Level15 = Companion.UserCompanion.Level15
+                            Level15 = Companion.UserCompanion.Level15,
+                            Level17 = Companion.UserCompanion.Level17,
+                            Level19 = Companion.UserCompanion.Level19,
+                            Level21 = Companion.UserCompanion.Level21,
+                            Level23 = Companion.UserCompanion.Level23,
+                            Level25 = Companion.UserCompanion.Level25
                         });
                         break;
                     case "RESETGUILDTIME":
@@ -2473,7 +2513,7 @@ namespace Server.Models
 
                 amount *= 1M + Stats[Stat.BaseExperienceRate] / 100M;
 
-                for (int i = 0; i < Character.Rebirth; i++)
+                for (int i = 0; i < Math.Min(21, Character.Rebirth); i++)
                     amount *= 0.5M;
 
                 if (Level < 80)
@@ -3695,6 +3735,21 @@ namespace Server.Models
 
             if (Companion.UserCompanion.Level >= 15)
                 buffStats.Add(Companion.UserCompanion.Level15);
+
+            if (Companion.UserCompanion.Level >= 17)
+                buffStats.Add(Companion.UserCompanion.Level17);
+
+            if (Companion.UserCompanion.Level >= 19)
+                buffStats.Add(Companion.UserCompanion.Level19);
+
+            if (Companion.UserCompanion.Level >= 21)
+                buffStats.Add(Companion.UserCompanion.Level21);
+
+            if (Companion.UserCompanion.Level >= 23)
+                buffStats.Add(Companion.UserCompanion.Level23);
+
+            if (Companion.UserCompanion.Level >= 25)
+                buffStats.Add(Companion.UserCompanion.Level25);
 
             BuffInfo buff = BuffAdd(BuffType.Companion, TimeSpan.MaxValue, buffStats, false, false, TimeSpan.FromMinutes(1));
             buff.TickTime = TimeSpan.FromMinutes(1); //set to Full Minute
@@ -6338,6 +6393,111 @@ namespace Server.Models
                                     while (current.Compare(Companion.UserCompanion.Level15))
                                     {
                                         Companion.UserCompanion.Level15 = null;
+
+                                        Companion.CheckSkills();
+                                    }
+                                    break;
+                                case 17:
+                                    if (Companion.UserCompanion.Level17 == null) return;
+
+                                    if (!CompanionLevelLock17)
+                                    {
+                                        Connection.ReceiveChat(string.Format(Connection.Language.ConnotResetCompanionSkill, item.Info.ItemName, 17), MessageType.System);
+
+                                        foreach (SConnection con in Connection.Observers)
+                                            con.ReceiveChat(string.Format(con.Language.ConnotResetCompanionSkill, item.Info.ItemName, 17), MessageType.System);
+                                        return;
+                                    }
+
+                                    current = new Stats(Companion.UserCompanion.Level17);
+
+                                    while (current.Compare(Companion.UserCompanion.Level17))
+                                    {
+                                        Companion.UserCompanion.Level17 = null;
+
+                                        Companion.CheckSkills();
+                                    }
+                                    break;
+                                case 19:
+                                    if (Companion.UserCompanion.Level17 == null) return;
+
+                                    if (!CompanionLevelLock19)
+                                    {
+                                        Connection.ReceiveChat(string.Format(Connection.Language.ConnotResetCompanionSkill, item.Info.ItemName, 19), MessageType.System);
+
+                                        foreach (SConnection con in Connection.Observers)
+                                            con.ReceiveChat(string.Format(con.Language.ConnotResetCompanionSkill, item.Info.ItemName, 19), MessageType.System);
+                                        return;
+                                    }
+
+                                    current = new Stats(Companion.UserCompanion.Level19);
+
+                                    while (current.Compare(Companion.UserCompanion.Level19))
+                                    {
+                                        Companion.UserCompanion.Level19 = null;
+
+                                        Companion.CheckSkills();
+                                    }
+                                    break;
+                                case 21:
+                                    if (Companion.UserCompanion.Level21 == null) return;
+
+                                    if (!CompanionLevelLock21)
+                                    {
+                                        Connection.ReceiveChat(string.Format(Connection.Language.ConnotResetCompanionSkill, item.Info.ItemName, 21), MessageType.System);
+
+                                        foreach (SConnection con in Connection.Observers)
+                                            con.ReceiveChat(string.Format(con.Language.ConnotResetCompanionSkill, item.Info.ItemName, 21), MessageType.System);
+                                        return;
+                                    }
+
+                                    current = new Stats(Companion.UserCompanion.Level21);
+
+                                    while (current.Compare(Companion.UserCompanion.Level21))
+                                    {
+                                        Companion.UserCompanion.Level21 = null;
+
+                                        Companion.CheckSkills();
+                                    }
+                                    break;
+                                case 23:
+                                    if (Companion.UserCompanion.Level23 == null) return;
+
+                                    if (!CompanionLevelLock23)
+                                    {
+                                        Connection.ReceiveChat(string.Format(Connection.Language.ConnotResetCompanionSkill, item.Info.ItemName, 23), MessageType.System);
+
+                                        foreach (SConnection con in Connection.Observers)
+                                            con.ReceiveChat(string.Format(con.Language.ConnotResetCompanionSkill, item.Info.ItemName, 23), MessageType.System);
+                                        return;
+                                    }
+
+                                    current = new Stats(Companion.UserCompanion.Level23);
+
+                                    while (current.Compare(Companion.UserCompanion.Level23))
+                                    {
+                                        Companion.UserCompanion.Level23 = null;
+
+                                        Companion.CheckSkills();
+                                    }
+                                    break;
+                                case 25:
+                                    if (Companion.UserCompanion.Level25 == null) return;
+
+                                    if (!CompanionLevelLock25)
+                                    {
+                                        Connection.ReceiveChat(string.Format(Connection.Language.ConnotResetCompanionSkill, item.Info.ItemName, 25), MessageType.System);
+
+                                        foreach (SConnection con in Connection.Observers)
+                                            con.ReceiveChat(string.Format(con.Language.ConnotResetCompanionSkill, item.Info.ItemName, 25), MessageType.System);
+                                        return;
+                                    }
+
+                                    current = new Stats(Companion.UserCompanion.Level25);
+
+                                    while (current.Compare(Companion.UserCompanion.Level25))
+                                    {
+                                        Companion.UserCompanion.Level25 = null;
 
                                         Companion.CheckSkills();
                                     }
@@ -9065,9 +9225,9 @@ namespace Server.Models
 
             Stats stats = new Stats();
 
-            stats[Stat.ExperienceRate] += 15;
-            stats[Stat.DropRate] += 15;
-            stats[Stat.GoldRate] += 15;
+            stats[Stat.ExperienceRate] += 1000;
+            stats[Stat.DropRate] += 50;
+            stats[Stat.GoldRate] += 50;
 
             BuffAdd(BuffType.Observable, TimeSpan.MaxValue, stats, false, false, TimeSpan.Zero);
         }
@@ -10183,7 +10343,7 @@ namespace Server.Models
             S.ItemsChanged p = new S.ItemsChanged { Links = links };
             Enqueue(p);
 
-            if (Dead || NPC == null || NPCPage == null || NPCPage.DialogType != NPCDialogType.ItemFragment) return;
+            //if (Dead || NPC == null || NPCPage == null || NPCPage.DialogType != NPCDialogType.ItemFragment) return;
 
             if (!ParseLinks(p.Links, 0, 100)) return;
 
@@ -10224,9 +10384,9 @@ namespace Server.Models
                 itemCount++;
 
                 if (item.Info.Rarity == Rarity.Common)
-                    fragmentCount += item.FragmentCount();
+                    fragmentCount += item.FragmentCount() * Globals.FragmentMultiplier;
                 else
-                    fragment2Count += item.FragmentCount();
+                    fragment2Count += item.FragmentCount() * Globals.FragmentMultiplier;
             }
 
 
@@ -16554,22 +16714,22 @@ namespace Server.Models
 
             if (hasSwiftBlade)
             {
-                lifestealAmount = Math.Min(lifestealAmount, 18000 - SwiftBladeLifeSteal);
+                lifestealAmount = Math.Min(lifestealAmount, 9000 - SwiftBladeLifeSteal);
                 SwiftBladeLifeSteal += lifestealAmount;
             }
 
             if (hasFlameSplash)
             {
-                lifestealAmount = Math.Min(lifestealAmount, 6750 - FlameSplashLifeSteal);
+                lifestealAmount = Math.Min(lifestealAmount, 3500 - FlameSplashLifeSteal);
                 FlameSplashLifeSteal += lifestealAmount;
             }
             if (hasDestructiveSurge)
             {
-                lifestealAmount = Math.Min(lifestealAmount, 6750 - DestructiveSurgeLifeSteal);
+                lifestealAmount = Math.Min(lifestealAmount, 3500 - DestructiveSurgeLifeSteal);
                 DestructiveSurgeLifeSteal += lifestealAmount;
             }
 
-            if (primary || Class == MirClass.Warrior || hasFlameSplash)
+            if (Class == MirClass.Warrior)
                 LifeSteal += lifestealAmount;
 
             if (LifeSteal > 1)
