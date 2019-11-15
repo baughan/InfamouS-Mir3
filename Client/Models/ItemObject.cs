@@ -40,7 +40,7 @@ namespace Client.Models
                 Title = "[Part]";
             }
 
-            Name = Item.Count > 1 ? $"{itemInfo.ItemName} ({Item.Count})" : itemInfo.ItemName;
+            Name = Item.Count > 1 ? $"{info.Item.GetItemName()} ({Item.Count})" : info.Item.GetItemName();
 
             if ((Item.Flags & UserItemFlags.QuestItem) == UserItemFlags.QuestItem)
                 Title = "(Quest)";

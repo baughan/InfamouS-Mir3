@@ -169,6 +169,7 @@ namespace Client.Scenes
         public NPCAccessoryLevelDialog NPCAccessoryLevelBox;
         public NPCAccessoryResetDialog NPCAccessoryResetBox;
         public NPCMasterRefineDialog NPCMasterRefineBox;
+        public NPCItemRenameDialog NPCItemRenameBox;
         public MiniMapDialog MiniMapBox;
         public BigMapDialog BigMapBox;
         public MagicDialog MagicBox;
@@ -543,6 +544,11 @@ namespace Client.Scenes
                 Visible = false
             };
             NPCMasterRefineBox = new NPCMasterRefineDialog
+            {
+                Parent = this,
+                Visible = false
+            };
+            NPCItemRenameBox = new NPCItemRenameDialog
             {
                 Parent = this,
                 Visible = false
@@ -1479,7 +1485,7 @@ namespace Client.Scenes
                 ForeColour = Color.Yellow,
                 Location = new Point(4, 4),
                 Parent = ItemLabel,
-                Text = displayInfo.ItemName 
+                Text = MouseItem.GetItemName()
             };
 
             if (MouseItem.Info.Effect == ItemEffect.ItemPart)
@@ -4334,6 +4340,13 @@ namespace Client.Scenes
                         NPCMasterRefineBox.Dispose();
 
                     NPCMasterRefineBox = null;
+                }
+                if (NPCItemRenameBox != null)
+                {
+                    if (!NPCItemRenameBox.IsDisposed)
+                        NPCItemRenameBox.Dispose();
+
+                    NPCItemRenameBox = null;
                 }
 
 

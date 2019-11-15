@@ -290,6 +290,7 @@ namespace Server.Envir
         public abstract string NPCMasterRefineChance { get; set; }
         public abstract string AccessoryRefineSuccess { get; set; }
         public abstract string AccessoryRefineFailed { get; set; }
+        public abstract string NPCItemRenameSuccess { get; set; }
 
 
         [ConfigSection("Skills")]

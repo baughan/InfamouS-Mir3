@@ -267,6 +267,12 @@ namespace Library.Network.ClientPackets
         public List<CellLinkInfo> Crystal { get; set; }
         public long Gold { get; set; }
     }
+    public sealed class NPCItemRename : Packet
+    {
+        public List<CellLinkInfo> Item { get; set; }
+        public List<CellLinkInfo> Scroll { get; set; }
+        public string Rename { get; set; }
+    }
 
     public sealed class NPCClose : Packet
     {

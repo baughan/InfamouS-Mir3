@@ -623,6 +623,13 @@ namespace Library.Network.ServerPackets
 
         public bool Success { get; set; }
     }
+    public sealed class NPCItemRename : Packet
+    {
+        public List<CellLinkInfo> Item { get; set; }
+        public List<CellLinkInfo> Scroll { get; set; }
+        public string Rename { get; set; }
+        public bool Success { get; set; }
+    }
     public sealed class NPCClose : Packet
     {
     }

@@ -2942,6 +2942,103 @@ namespace Client.Envir
 
             GameScene.Game.NPCRefineRetrieveBox.RefreshList();
         }
+        public void Process(S.NPCItemRename p)
+        {
+            foreach (CellLinkInfo cellLinkInfo in p.Item)
+            {
+                DXItemCell[] grid;
+
+                switch (cellLinkInfo.GridType)
+                {
+                    case GridType.Inventory:
+                        grid = GameScene.Game.InventoryBox.Grid.Grid;
+                        break;
+                    case GridType.Equipment:
+                        grid = GameScene.Game.CharacterBox.Grid;
+                        break;
+                    case GridType.Storage:
+                        grid = GameScene.Game.StorageBox.Grid.Grid;
+                        break;
+                    case GridType.CompanionInventory:
+                        grid = GameScene.Game.CompanionBox.InventoryGrid.Grid;
+                        break;
+                    case GridType.CompanionEquipment:
+                        grid = GameScene.Game.CompanionBox.EquipmentGrid;
+                        break;
+                    default:
+                        throw new ArgumentOutOfRangeException();
+                }
+
+                DXItemCell fromCell = grid[cellLinkInfo.Slot];
+                fromCell.Locked = false;
+
+                if (!p.Success) continue;
+
+                fromCell.Item.CustomName = p.Rename;
+                fromCell.RefreshItem();
+
+                GameScene.Game.NPCItemRenameBox.RenameTextBox.TextBox.Text = string.Empty;
+            }
+
+            foreach (CellLinkInfo cellLinkInfo in p.Scroll)
+            {
+                DXItemCell[] grid;
+
+                switch (cellLinkInfo.GridType)
+                {
+                    case GridType.Inventory:
+                        grid = GameScene.Game.InventoryBox.Grid.Grid;
+                        break;
+                    case GridType.Equipment:
+                        grid = GameScene.Game.CharacterBox.Grid;
+                        break;
+                    case GridType.Storage:
+                        grid = GameScene.Game.StorageBox.Grid.Grid;
+                        break;
+                    case GridType.CompanionInventory:
+                        grid = GameScene.Game.CompanionBox.InventoryGrid.Grid;
+                        break;
+                    case GridType.CompanionEquipment:
+                        grid = GameScene.Game.CompanionBox.EquipmentGrid;
+                        break;
+                    default:
+                        throw new ArgumentOutOfRangeException();
+                }
+
+                DXItemCell fromCell = grid[cellLinkInfo.Slot];
+                fromCell.Locked = false;
+
+                if (!p.Success) continue;
+
+
+                if (!fromCell.Item.Info.ShouldLinkInfo)
+                {
+                    for (int i = 0; i < GameScene.Game.BeltBox.Links.Length; i++)
+                    {
+                        ClientBeltLink link = GameScene.Game.BeltBox.Links[i];
+                        if (link.LinkItemIndex != fromCell.Item.Index) continue;
+
+                        link.LinkItemIndex = -1;
+
+                        if (i < GameScene.Game.BeltBox.Grid.Grid.Length)
+                            GameScene.Game.BeltBox.Grid.Grid[i].QuickItem = null; //set belt to null
+
+                        if (!GameScene.Game.Observer)
+                            CEnvir.Enqueue(new C.BeltLinkChanged { Slot = link.Slot, LinkIndex = link.LinkInfoIndex, LinkItemIndex = link.LinkItemIndex }); //Update server
+                    }
+                }
+
+
+                if (cellLinkInfo.Count == fromCell.Item.Count)
+                    fromCell.Item = null;
+                else
+                    fromCell.Item.Count -= cellLinkInfo.Count;
+
+                fromCell.RefreshItem();
+
+                GameScene.Game.NPCItemRenameBox.RenameTextBox.TextBox.Text = string.Empty;
+            }
+        }
         public void Process(S.NPCClose p)
         {
 

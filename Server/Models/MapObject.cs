@@ -397,7 +397,7 @@ namespace Server.Models
 
                         player = (PlayerObject)this;
 
-                        if (!player.InSafeZone || player.Companion.UserCompanion.Level < 15)
+                        if (!player.InSafeZone || player.Companion.UserCompanion.Level < 25)
                             player.Companion.UserCompanion.Hunger--;
 
                         if (player.Companion.LevelInfo.MaxExperience > 0)
@@ -407,9 +407,7 @@ namespace Server.Models
                             if (highest <= player.Companion.UserCompanion.Level)
                                 highest = 1;
 
-                            player.Companion.UserCompanion.Experience += highest + Stats[Stat.CompanionRate];
-
-                            
+                            player.Companion.UserCompanion.Experience += highest + Stats[Stat.CompanionRate];                            
 
                             if (player.Companion.UserCompanion.Experience >= player.Companion.LevelInfo.MaxExperience)
                             {
