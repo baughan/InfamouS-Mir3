@@ -776,6 +776,15 @@ namespace Server.DBModels
             }
         }
 
+        public string GetItemName()
+        {
+            string result = Info.ItemName;
+            if (CustomName != string.Empty)
+                result = CustomName;
+
+            return result;
+        }
+
         public int MergeRefineElements(out Stat element)
         {
             int value = 0;

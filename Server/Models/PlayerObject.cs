@@ -468,9 +468,9 @@ namespace Server.Models
 
                 if (item.ExpireTime > TimeSpan.Zero) continue;
 
-                Connection.ReceiveChat(string.Format(Connection.Language.Expired, item.Info.ItemName), MessageType.System);
+                Connection.ReceiveChat(string.Format(Connection.Language.Expired, item.GetItemName()), MessageType.System);
                 foreach (SConnection con in Connection.Observers)
-                    con.ReceiveChat(string.Format(con.Language.Expired, item.Info.ItemName), MessageType.System);
+                    con.ReceiveChat(string.Format(con.Language.Expired, item.GetItemName()), MessageType.System);
 
                 RemoveItem(item);
                 Equipment[i] = null;
@@ -497,9 +497,9 @@ namespace Server.Models
 
                 if (item.ExpireTime > TimeSpan.Zero) continue;
 
-                Connection.ReceiveChat(string.Format(Connection.Language.Expired, item.Info.ItemName), MessageType.System);
+                Connection.ReceiveChat(string.Format(Connection.Language.Expired, item.GetItemName()), MessageType.System);
                 foreach (SConnection con in Connection.Observers)
-                    con.ReceiveChat(string.Format(con.Language.Expired, item.Info.ItemName), MessageType.System);
+                    con.ReceiveChat(string.Format(con.Language.Expired, item.GetItemName()), MessageType.System);
 
                 RemoveItem(item);
                 Inventory[i] = null;
@@ -527,9 +527,9 @@ namespace Server.Models
 
                     if (item.ExpireTime > TimeSpan.Zero) continue;
 
-                    Connection.ReceiveChat(string.Format(Connection.Language.Expired, item.Info.ItemName), MessageType.System);
+                    Connection.ReceiveChat(string.Format(Connection.Language.Expired, item.GetItemName()), MessageType.System);
                     foreach (SConnection con in Connection.Observers)
-                        con.ReceiveChat(string.Format(con.Language.Expired, item.Info.ItemName), MessageType.System);
+                        con.ReceiveChat(string.Format(con.Language.Expired, item.GetItemName()), MessageType.System);
 
                     RemoveItem(item);
                     Companion.Inventory[i] = null;
@@ -554,9 +554,9 @@ namespace Server.Models
 
                     if (item.ExpireTime > TimeSpan.Zero) continue;
 
-                    Connection.ReceiveChat(string.Format(Connection.Language.Expired, item.Info.ItemName), MessageType.System);
+                    Connection.ReceiveChat(string.Format(Connection.Language.Expired, item.GetItemName()), MessageType.System);
                     foreach (SConnection con in Connection.Observers)
-                        con.ReceiveChat(string.Format(con.Language.Expired, item.Info.ItemName), MessageType.System);
+                        con.ReceiveChat(string.Format(con.Language.Expired, item.GetItemName()), MessageType.System);
 
                     RemoveItem(item);
                     Companion.Equipment[i] = null;
@@ -4306,7 +4306,7 @@ namespace Server.Models
                 foreach (GuildMemberInfo member in Character.Account.GuildMember.Guild.Members)
                 {
                     member.Account.Connection?.Player?.Enqueue(new S.GuildFundsChanged { Change = -cost, ObserverPacket = false });
-                    member.Account.Connection?.ReceiveChat(string.Format(Connection.Language.ConsignGuildFundsUsed, Name, cost, item.Info.ItemName, result.Link.Count, p.Price), MessageType.System);
+                    member.Account.Connection?.ReceiveChat(string.Format(Connection.Language.ConsignGuildFundsUsed, Name, cost, item.GetItemName(), result.Link.Count, p.Price), MessageType.System);
                 }
             }
             else
@@ -4399,7 +4399,7 @@ namespace Server.Models
 
                 mail.Account = Character.Account;
                 mail.Subject = "Listing Cancelled";
-                mail.Message = string.Format("You canceled your sale of '{0}{1}' and was not able to collect the item.", item.Info.ItemName, item.Count == 1 ? "" : "x" + item.Count);
+                mail.Message = string.Format("You canceled your sale of '{0}{1}' and was not able to collect the item.", item.GetItemName(), item.Count == 1 ? "" : "x" + item.Count);
                 mail.Sender = "Market Place";
                 item.Mail = mail;
                 item.Slot = 0;
@@ -4487,7 +4487,7 @@ namespace Server.Models
                 foreach (GuildMemberInfo member in Character.Account.GuildMember.Guild.Members)
                 {
                     member.Account.Connection?.Player?.Enqueue(new S.GuildFundsChanged { Change = -cost, ObserverPacket = false });
-                    member.Account.Connection?.ReceiveChat(string.Format(member.Account.Connection.Language.ConsignBuyGuildFundsUsed, Name, cost, info.Item.Info.ItemName, p.Count, info.Price), MessageType.System);
+                    member.Account.Connection?.ReceiveChat(string.Format(member.Account.Connection.Language.ConsignBuyGuildFundsUsed, Name, cost, info.Item.GetItemName(), p.Count, info.Price), MessageType.System);
                 }
             }
             else
@@ -4532,7 +4532,7 @@ namespace Server.Models
             if (item.Info.Effect == ItemEffect.ItemPart)
                 itemName = SEnvir.ItemInfoList.Binding.First(x => x.Index == partIndex).ItemName + " - [Part]";
             else
-                itemName = item.Info.ItemName;
+                itemName = item.GetItemName();
 
             mail.Message = $"You have sold an item\n\n" +
                            string.Format("Buyer: {0}\n", Name) +
@@ -6292,9 +6292,9 @@ namespace Server.Models
 
                                     if (!CompanionLevelLock3)
                                     {
-                                        Connection.ReceiveChat(string.Format(Connection.Language.ConnotResetCompanionSkill, item.Info.ItemName, 3), MessageType.System);
+                                        Connection.ReceiveChat(string.Format(Connection.Language.ConnotResetCompanionSkill, item.GetItemName(), 3), MessageType.System);
                                         foreach (SConnection con in Connection.Observers)
-                                            con.ReceiveChat(string.Format(con.Language.ConnotResetCompanionSkill, item.Info.ItemName, 3), MessageType.System);
+                                            con.ReceiveChat(string.Format(con.Language.ConnotResetCompanionSkill, item.GetItemName(), 3), MessageType.System);
                                         return;
                                     }
 
@@ -6313,9 +6313,9 @@ namespace Server.Models
 
                                     if (!CompanionLevelLock5)
                                     {
-                                        Connection.ReceiveChat(string.Format(Connection.Language.ConnotResetCompanionSkill, item.Info.ItemName, 5), MessageType.System);
+                                        Connection.ReceiveChat(string.Format(Connection.Language.ConnotResetCompanionSkill, item.GetItemName(), 5), MessageType.System);
                                         foreach (SConnection con in Connection.Observers)
-                                            con.ReceiveChat(string.Format(con.Language.ConnotResetCompanionSkill, item.Info.ItemName, 5), MessageType.System);
+                                            con.ReceiveChat(string.Format(con.Language.ConnotResetCompanionSkill, item.GetItemName(), 5), MessageType.System);
                                         return;
                                     }
 
@@ -6333,9 +6333,9 @@ namespace Server.Models
 
                                     if (!CompanionLevelLock7)
                                     {
-                                        Connection.ReceiveChat(string.Format(Connection.Language.ConnotResetCompanionSkill, item.Info.ItemName, 7), MessageType.System);
+                                        Connection.ReceiveChat(string.Format(Connection.Language.ConnotResetCompanionSkill, item.GetItemName(), 7), MessageType.System);
                                         foreach (SConnection con in Connection.Observers)
-                                            con.ReceiveChat(string.Format(con.Language.ConnotResetCompanionSkill, item.Info.ItemName, 7), MessageType.System);
+                                            con.ReceiveChat(string.Format(con.Language.ConnotResetCompanionSkill, item.GetItemName(), 7), MessageType.System);
                                         return;
                                     }
 
@@ -6353,10 +6353,10 @@ namespace Server.Models
 
                                     if (!CompanionLevelLock10)
                                     {
-                                        Connection.ReceiveChat(string.Format(Connection.Language.ConnotResetCompanionSkill, item.Info.ItemName, 10), MessageType.System);
+                                        Connection.ReceiveChat(string.Format(Connection.Language.ConnotResetCompanionSkill, item.GetItemName(), 10), MessageType.System);
 
                                         foreach (SConnection con in Connection.Observers)
-                                            con.ReceiveChat(string.Format(con.Language.ConnotResetCompanionSkill, item.Info.ItemName, 10), MessageType.System);
+                                            con.ReceiveChat(string.Format(con.Language.ConnotResetCompanionSkill, item.GetItemName(), 10), MessageType.System);
                                         return;
                                     }
 
@@ -6374,10 +6374,10 @@ namespace Server.Models
 
                                     if (!CompanionLevelLock11)
                                     {
-                                        Connection.ReceiveChat(string.Format(Connection.Language.ConnotResetCompanionSkill, item.Info.ItemName, 11), MessageType.System);
+                                        Connection.ReceiveChat(string.Format(Connection.Language.ConnotResetCompanionSkill, item.GetItemName(), 11), MessageType.System);
 
                                         foreach (SConnection con in Connection.Observers)
-                                            con.ReceiveChat(string.Format(con.Language.ConnotResetCompanionSkill, item.Info.ItemName, 11), MessageType.System);
+                                            con.ReceiveChat(string.Format(con.Language.ConnotResetCompanionSkill, item.GetItemName(), 11), MessageType.System);
                                         return;
                                     }
 
@@ -6395,10 +6395,10 @@ namespace Server.Models
 
                                     if (!CompanionLevelLock13)
                                     {
-                                        Connection.ReceiveChat(string.Format(Connection.Language.ConnotResetCompanionSkill, item.Info.ItemName, 13), MessageType.System);
+                                        Connection.ReceiveChat(string.Format(Connection.Language.ConnotResetCompanionSkill, item.GetItemName(), 13), MessageType.System);
 
                                         foreach (SConnection con in Connection.Observers)
-                                            con.ReceiveChat(string.Format(con.Language.ConnotResetCompanionSkill, item.Info.ItemName, 13), MessageType.System);
+                                            con.ReceiveChat(string.Format(con.Language.ConnotResetCompanionSkill, item.GetItemName(), 13), MessageType.System);
                                         return;
                                     }
 
@@ -6416,10 +6416,10 @@ namespace Server.Models
 
                                     if (!CompanionLevelLock15)
                                     {
-                                        Connection.ReceiveChat(string.Format(Connection.Language.ConnotResetCompanionSkill, item.Info.ItemName, 15), MessageType.System);
+                                        Connection.ReceiveChat(string.Format(Connection.Language.ConnotResetCompanionSkill, item.GetItemName(), 15), MessageType.System);
 
                                         foreach (SConnection con in Connection.Observers)
-                                            con.ReceiveChat(string.Format(con.Language.ConnotResetCompanionSkill, item.Info.ItemName, 15), MessageType.System);
+                                            con.ReceiveChat(string.Format(con.Language.ConnotResetCompanionSkill, item.GetItemName(), 15), MessageType.System);
                                         return;
                                     }
 
@@ -6437,10 +6437,10 @@ namespace Server.Models
 
                                     if (!CompanionLevelLock17)
                                     {
-                                        Connection.ReceiveChat(string.Format(Connection.Language.ConnotResetCompanionSkill, item.Info.ItemName, 17), MessageType.System);
+                                        Connection.ReceiveChat(string.Format(Connection.Language.ConnotResetCompanionSkill, item.GetItemName(), 17), MessageType.System);
 
                                         foreach (SConnection con in Connection.Observers)
-                                            con.ReceiveChat(string.Format(con.Language.ConnotResetCompanionSkill, item.Info.ItemName, 17), MessageType.System);
+                                            con.ReceiveChat(string.Format(con.Language.ConnotResetCompanionSkill, item.GetItemName(), 17), MessageType.System);
                                         return;
                                     }
 
@@ -6458,10 +6458,10 @@ namespace Server.Models
 
                                     if (!CompanionLevelLock19)
                                     {
-                                        Connection.ReceiveChat(string.Format(Connection.Language.ConnotResetCompanionSkill, item.Info.ItemName, 19), MessageType.System);
+                                        Connection.ReceiveChat(string.Format(Connection.Language.ConnotResetCompanionSkill, item.GetItemName(), 19), MessageType.System);
 
                                         foreach (SConnection con in Connection.Observers)
-                                            con.ReceiveChat(string.Format(con.Language.ConnotResetCompanionSkill, item.Info.ItemName, 19), MessageType.System);
+                                            con.ReceiveChat(string.Format(con.Language.ConnotResetCompanionSkill, item.GetItemName(), 19), MessageType.System);
                                         return;
                                     }
 
@@ -6479,10 +6479,10 @@ namespace Server.Models
 
                                     if (!CompanionLevelLock21)
                                     {
-                                        Connection.ReceiveChat(string.Format(Connection.Language.ConnotResetCompanionSkill, item.Info.ItemName, 21), MessageType.System);
+                                        Connection.ReceiveChat(string.Format(Connection.Language.ConnotResetCompanionSkill, item.GetItemName(), 21), MessageType.System);
 
                                         foreach (SConnection con in Connection.Observers)
-                                            con.ReceiveChat(string.Format(con.Language.ConnotResetCompanionSkill, item.Info.ItemName, 21), MessageType.System);
+                                            con.ReceiveChat(string.Format(con.Language.ConnotResetCompanionSkill, item.GetItemName(), 21), MessageType.System);
                                         return;
                                     }
 
@@ -6500,10 +6500,10 @@ namespace Server.Models
 
                                     if (!CompanionLevelLock23)
                                     {
-                                        Connection.ReceiveChat(string.Format(Connection.Language.ConnotResetCompanionSkill, item.Info.ItemName, 23), MessageType.System);
+                                        Connection.ReceiveChat(string.Format(Connection.Language.ConnotResetCompanionSkill, item.GetItemName(), 23), MessageType.System);
 
                                         foreach (SConnection con in Connection.Observers)
-                                            con.ReceiveChat(string.Format(con.Language.ConnotResetCompanionSkill, item.Info.ItemName, 23), MessageType.System);
+                                            con.ReceiveChat(string.Format(con.Language.ConnotResetCompanionSkill, item.GetItemName(), 23), MessageType.System);
                                         return;
                                     }
 
@@ -6521,10 +6521,10 @@ namespace Server.Models
 
                                     if (!CompanionLevelLock25)
                                     {
-                                        Connection.ReceiveChat(string.Format(Connection.Language.ConnotResetCompanionSkill, item.Info.ItemName, 25), MessageType.System);
+                                        Connection.ReceiveChat(string.Format(Connection.Language.ConnotResetCompanionSkill, item.GetItemName(), 25), MessageType.System);
 
                                         foreach (SConnection con in Connection.Observers)
-                                            con.ReceiveChat(string.Format(con.Language.ConnotResetCompanionSkill, item.Info.ItemName, 25), MessageType.System);
+                                            con.ReceiveChat(string.Format(con.Language.ConnotResetCompanionSkill, item.GetItemName(), 25), MessageType.System);
                                         return;
                                     }
 
@@ -6560,7 +6560,7 @@ namespace Server.Models
                         case 18:
                             if (item.Info.Stats[Stat.MapSummoning] > 0 && CurrentMap.HasSafeZone)
                             {
-                                Connection.ReceiveChat($"You cannot use [{item.Info.ItemName}] with maps that have a SafeZone.", MessageType.System);
+                                Connection.ReceiveChat($"You cannot use [{item.GetItemName()}] with maps that have a SafeZone.", MessageType.System);
                                 return;
                             }
 
@@ -6638,7 +6638,7 @@ namespace Server.Models
                                     }
 
 
-                                    string text = $"A [{item.Info.ItemName}] has been used in {CurrentMap.Info.Description}";
+                                    string text = $"A [{item.GetItemName()}] has been used in {CurrentMap.Info.Description}";
 
                                     foreach (SConnection con in SEnvir.Connections)
                                     {
@@ -6676,7 +6676,7 @@ namespace Server.Models
 
                             if (weapon.Info.Effect == ItemEffect.SpiritBlade)
                             {
-                                Connection.ReceiveChat($"You can not extract a {weapon.Info.ItemName}.", MessageType.System);
+                                Connection.ReceiveChat($"You can not extract a {weapon.GetItemName()}.", MessageType.System);
                                 return;
                             }
 
@@ -6747,7 +6747,7 @@ namespace Server.Models
 
                             if (weapon.Info.Effect == ItemEffect.SpiritBlade)
                             {
-                                Connection.ReceiveChat($"You can not apply to a {weapon.Info.ItemName}.", MessageType.System);
+                                Connection.ReceiveChat($"You can not apply to a {weapon.GetItemName()}.", MessageType.System);
                                 return;
                             }
 
@@ -7893,7 +7893,7 @@ namespace Server.Models
 
             if (toItem.Stats[Stat.GemCount] >= Globals.MaxGemOrbCount)
             {
-                Connection.ReceiveChat($"Your {toItem.Info.ItemName} has reached the maximum upgrades.", MessageType.System);
+                Connection.ReceiveChat($"Your {toItem.GetItemName()} has reached the maximum upgrades.", MessageType.System);
                 return;
             }
 
@@ -8031,7 +8031,7 @@ namespace Server.Models
                     },
                     Success = true,
                 });
-                Connection.ReceiveChat($"Your {toItem.Info.ItemName} broke.", MessageType.System);
+                Connection.ReceiveChat($"Your {toItem.GetItemName()} broke.", MessageType.System);
                 toArray[p.ToSlot] = null;
                 RemoveItem(toItem);
                 toItem.Delete();
@@ -10261,7 +10261,7 @@ namespace Server.Models
                     foreach (GuildMemberInfo member in Character.Account.GuildMember.Guild.Members)
                     {
                         member.Account.Connection?.Player?.Enqueue(new S.GuildFundsChanged { Change = -cost, ObserverPacket = false });
-                        member.Account.Connection?.ReceiveChat(string.Format(member.Account.Connection.Language.NPCFundsBuy, Name, cost, item.Info.ItemName, item.Count), MessageType.System);
+                        member.Account.Connection?.ReceiveChat(string.Format(member.Account.Connection.Language.NPCFundsBuy, Name, cost, item.GetItemName(), item.Count), MessageType.System);
                     }
                 }
                 else
@@ -10648,10 +10648,10 @@ namespace Server.Models
             {
                 if ((targetItem.Flags & UserItemFlags.Refinable) == UserItemFlags.Refinable)
                 {
-                    Connection.ReceiveChat(string.Format(Connection.Language.AccessoryLeveled, targetItem.Info.ItemName), MessageType.System);
+                    Connection.ReceiveChat(string.Format(Connection.Language.AccessoryLeveled, targetItem.GetItemName()), MessageType.System);
 
                     foreach (SConnection con in Connection.Observers)
-                        con.ReceiveChat(string.Format(con.Language.AccessoryLeveled, targetItem.Info.ItemName), MessageType.System);
+                        con.ReceiveChat(string.Format(con.Language.AccessoryLeveled, targetItem.GetItemName()), MessageType.System);
                 }
 
                 Companion?.RefreshWeight();
@@ -11011,35 +11011,35 @@ namespace Server.Models
                     case ItemType.Belt:
                         break;
                     default:
-                        Connection.ReceiveChat(string.Format(Connection.Language.RepairFail, item.Info.ItemName), MessageType.System);
+                        Connection.ReceiveChat(string.Format(Connection.Language.RepairFail, item.GetItemName()), MessageType.System);
 
                         foreach (SConnection con in Connection.Observers)
-                            con.ReceiveChat(string.Format(con.Language.RepairFail, item.Info.ItemName), MessageType.System);
+                            con.ReceiveChat(string.Format(con.Language.RepairFail, item.GetItemName()), MessageType.System);
                         return;
                 }
 
                 if (item.CurrentDurability >= item.MaxDurability)
                 {
-                    Connection.ReceiveChat(string.Format(Connection.Language.RepairFailRepaired, item.Info.ItemName), MessageType.System);
+                    Connection.ReceiveChat(string.Format(Connection.Language.RepairFailRepaired, item.GetItemName()), MessageType.System);
 
                     foreach (SConnection con in Connection.Observers)
-                        con.ReceiveChat(string.Format(con.Language.RepairFailRepaired, item.Info.ItemName), MessageType.System);
+                        con.ReceiveChat(string.Format(con.Language.RepairFailRepaired, item.GetItemName()), MessageType.System);
                     return;
                 }
                 if (NPCPage.Types.FirstOrDefault(x => x.ItemType == item.Info.ItemType) == null)
                 {
-                    Connection.ReceiveChat(string.Format(Connection.Language.RepairFailLocation, item.Info.ItemName), MessageType.System);
+                    Connection.ReceiveChat(string.Format(Connection.Language.RepairFailLocation, item.GetItemName()), MessageType.System);
 
                     foreach (SConnection con in Connection.Observers)
-                        con.ReceiveChat(string.Format(con.Language.RepairFailLocation, item.Info.ItemName), MessageType.System);
+                        con.ReceiveChat(string.Format(con.Language.RepairFailLocation, item.GetItemName()), MessageType.System);
                     return;
                 }
                 if (p.Special && SEnvir.Now < item.SpecialRepairCoolDown)
                 {
-                    Connection.ReceiveChat(string.Format(Connection.Language.RepairFailCooldown, item.Info.ItemName, Functions.ToString(item.SpecialRepairCoolDown - SEnvir.Now, false)), MessageType.System);
+                    Connection.ReceiveChat(string.Format(Connection.Language.RepairFailCooldown, item.GetItemName(), Functions.ToString(item.SpecialRepairCoolDown - SEnvir.Now, false)), MessageType.System);
 
                     foreach (SConnection con in Connection.Observers)
-                        con.ReceiveChat(string.Format(con.Language.RepairFailCooldown, item.Info.ItemName, Functions.ToString(item.SpecialRepairCoolDown - SEnvir.Now, false)), MessageType.System);
+                        con.ReceiveChat(string.Format(con.Language.RepairFailCooldown, item.GetItemName(), Functions.ToString(item.SpecialRepairCoolDown - SEnvir.Now, false)), MessageType.System);
                     return;
                 }
 
@@ -21060,19 +21060,19 @@ namespace Server.Models
                         return;
                 }
                 targetItem.StatsChanged();
-                Connection.ReceiveChat(string.Format(Connection.Language.AccessoryRefineSuccess, targetItem.Info.ItemName, p.RefineType, amount), MessageType.System);
+                Connection.ReceiveChat(string.Format(Connection.Language.AccessoryRefineSuccess, targetItem.GetItemName(), p.RefineType, amount), MessageType.System);
 
                 foreach (SConnection con in Connection.Observers)
-                    con.ReceiveChat(string.Format(con.Language.AccessoryRefineSuccess, targetItem.Info.ItemName, p.RefineType, amount), MessageType.System);
+                    con.ReceiveChat(string.Format(con.Language.AccessoryRefineSuccess, targetItem.GetItemName(), p.RefineType, amount), MessageType.System);
                 RefreshStats();
             }
             #endregion
             else
             {
-                Connection.ReceiveChat(string.Format(Connection.Language.AccessoryRefineFailed, targetItem.Info.ItemName), MessageType.System);
+                Connection.ReceiveChat(string.Format(Connection.Language.AccessoryRefineFailed, targetItem.GetItemName()), MessageType.System);
 
                 foreach (SConnection con in Connection.Observers)
-                    con.ReceiveChat(string.Format(con.Language.AccessoryRefineFailed, targetItem.Info.ItemName), MessageType.System);
+                    con.ReceiveChat(string.Format(con.Language.AccessoryRefineFailed, targetItem.GetItemName()), MessageType.System);
                 targetArray[targetItem.Slot] = null;
                 result.Links.Add(p.Target);
                 RemoveItem(targetItem);

@@ -2081,7 +2081,7 @@ namespace Client.Envir
             {
                 if (p.NewStats.Count == 0)
                 {
-                    GameScene.Game.ReceiveChat($"Nothing happen to your {fromCell.Item.Info.ItemName}", MessageType.Hint);
+                    GameScene.Game.ReceiveChat($"Nothing happen to your {fromCell.Item.GetItemName()}", MessageType.Hint);
                     return;
                 }
 
@@ -2091,7 +2091,7 @@ namespace Client.Envir
 
                     if (pair.Key == Stat.WeaponElement)
                     {
-                        GameScene.Game.ReceiveChat($"Your {fromCell.Item.Info.ItemName} has been effected: New Element {(Element)fromCell.Item.AddedStats[Stat.WeaponElement]}", MessageType.Hint);
+                        GameScene.Game.ReceiveChat($"Your {fromCell.Item.GetItemName()} has been effected: New Element {(Element)fromCell.Item.AddedStats[Stat.WeaponElement]}", MessageType.Hint);
                         continue;
                     }
 
@@ -2099,7 +2099,7 @@ namespace Client.Envir
 
                     if (string.IsNullOrEmpty(msg)) continue;
 
-                    GameScene.Game.ReceiveChat($"Your {fromCell.Item.Info.ItemName} has been effected: {msg}", MessageType.Hint);
+                    GameScene.Game.ReceiveChat($"Your {fromCell.Item.GetItemName()} has been effected: {msg}", MessageType.Hint);
                 }
             }
 
@@ -2173,7 +2173,7 @@ namespace Client.Envir
 
 
             if (p.CurrentDurability == 0)
-                GameScene.Game.ReceiveChat($"Your item {fromCell.Item.Info.ItemName} has dropped to durability 0", MessageType.System);
+                GameScene.Game.ReceiveChat($"Your item {fromCell.Item.GetItemName()} has dropped to durability 0", MessageType.System);
 
             fromCell.RefreshItem();
         }
@@ -4850,7 +4850,7 @@ namespace Client.Envir
 
             if (p.NewStats.Count == 0)
             {
-                GameScene.Game.ReceiveChat($"Nothing happen to your {fromCell.Item.Info.ItemName}", MessageType.Hint);
+                GameScene.Game.ReceiveChat($"Nothing happen to your {fromCell.Item.GetItemName()}", MessageType.Hint);
                 return;
             }
 

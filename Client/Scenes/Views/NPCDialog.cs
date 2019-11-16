@@ -2409,7 +2409,7 @@ namespace Client.Scenes.Views
         public void OnRefineChanged(ClientRefineInfo oValue, ClientRefineInfo nValue)
         {
             ItemCell.Item = Refine.Weapon;
-            ItemNameLabel.Text = Refine.Weapon.Info.ItemName;
+            ItemNameLabel.Text = Refine.Weapon.GetItemName();
 
             switch (Refine.Type)
             {
