@@ -384,7 +384,7 @@ namespace Client.Models
             base.LocationChanged();
 
             GameScene.Game.MapControl.UpdateMapLocation();
-            GameScene.Game.MapControl.FLayer.TextureValid = false;
+            GameScene.Game.MapControl.FloorLayer.TextureValid = false;
         }
 
         public override void SetAction(ObjectAction action)
@@ -674,7 +674,7 @@ namespace Client.Models
         public override void MovingOffSetChanged()
         {
             base.MovingOffSetChanged();
-            GameScene.Game.MapControl.FLayer.TextureValid = false;
+            GameScene.Game.MapControl.FloorLayer.TextureValid = false;
         }
 
 

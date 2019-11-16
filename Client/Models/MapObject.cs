@@ -8,6 +8,7 @@ using System.Windows.Forms;
 using Client.Controls;
 using Client.Envir;
 using Client.Scenes;
+using Client.Scenes.Game.Map;
 using Client.Scenes.Views;
 using Library;
 using Library.SystemModels;
@@ -97,7 +98,7 @@ namespace Client.Models
             }
         }
         private Point _CurrentLocation;
-        public Cell CurrentCell;
+        public MapCell CurrentCell;
 
         public MirDirection Direction;
 

@@ -347,7 +347,7 @@ namespace Client.Scenes
                 if (_DayTime == value) return;
 
                 _DayTime = value;
-                MapControl.LLayer.UpdateLights();
+                MapControl.LightLayer.UpdateLights();
             }
         }
         private float _DayTime;

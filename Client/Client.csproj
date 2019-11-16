@@ -111,6 +111,12 @@
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
     <Compile Include="Scenes\GameScene.cs" />
+    <Compile Include="Scenes\Game\Map\Cell\MapCell.cs" />
+    <Compile Include="Scenes\Game\Map\Cell\WemadeMir2MapCell.cs" />
+    <Compile Include="Scenes\Game\Map\Cell\WemadeMir3MapCell.cs" />
+    <Compile Include="Scenes\Game\Map\MirMap.cs" />
+    <Compile Include="Scenes\Game\Map\WemadeMir2Map.cs" />
+    <Compile Include="Scenes\Game\Map\WemadeMir3Map.cs" />
     <Compile Include="Scenes\LoginScene.cs" />
     <Compile Include="Scenes\SelectScene.cs" />
     <Compile Include="Scenes\Views\AutoPotionDialog.cs" />
@@ -126,6 +132,9 @@
     <Compile Include="Scenes\Views\BlockDialog.cs" />
     <Compile Include="Scenes\Views\EditCharacterDialog.cs" />
     <Compile Include="Scenes\Views\FortuneCheckerDialog.cs" />
+    <Compile Include="Scenes\Views\MapCtrl\Layers\DrawingStrategy.cs" />
+    <Compile Include="Scenes\Views\MapCtrl\Layers\FloorLayer.cs" />
+    <Compile Include="Scenes\Views\MapCtrl\Layers\LightLayer.cs" />
     <Compile Include="Scenes\Views\MasterDialog.cs" />
     <Compile Include="Scenes\Views\GuildDialog.cs" />
     <Compile Include="Scenes\Views\MagicBarDialog.cs" />
@@ -137,7 +146,7 @@
     <Compile Include="Scenes\Views\ExitDialog.cs" />
     <Compile Include="Scenes\Views\MagicDialog.cs" />
     <Compile Include="Scenes\Views\MainPanel.cs" />
-    <Compile Include="Scenes\Views\MapControl.cs" />
+    <Compile Include="Scenes\Views\MapCtrl\MapControl.cs" />
     <Compile Include="Scenes\Views\MiniMapDialog.cs" />
     <Compile Include="Scenes\Views\MonsterDialog.cs" />
     <Compile Include="Scenes\Views\NPCDialog.cs" />
