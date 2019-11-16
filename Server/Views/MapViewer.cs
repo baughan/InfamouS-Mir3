@@ -1772,7 +1772,7 @@ namespace Server.Views.DirectX
                     MirLibrary library;
                     LibraryFile file;
 
-                    if (!Libraries.KROrder.TryGetValue(tile.BackFile, out file)) continue;
+                    if (!Libraries.WemadeMir3Order.TryGetValue(tile.BackFile, out file)) continue;
 
                     if (!Manager.LibraryList.TryGetValue(file, out library)) continue;
 
@@ -1795,7 +1795,7 @@ namespace Server.Views.DirectX
                     MirLibrary library;
                     LibraryFile file;
 
-                    if (Libraries.KROrder.TryGetValue(cell.MiddleFile, out file) && file != LibraryFile.WemadeMir3_Tilesc && Manager.LibraryList.TryGetValue(file, out library))
+                    if (Libraries.WemadeMir3Order.TryGetValue(cell.MiddleFile, out file) && file != LibraryFile.WemadeMir3_Tilesc && Manager.LibraryList.TryGetValue(file, out library))
                     {
                         int index = cell.MiddleImage - 1;
 
@@ -1813,7 +1813,7 @@ namespace Server.Views.DirectX
                     }
 
 
-                    if (Libraries.KROrder.TryGetValue(cell.FrontFile, out file) && file != LibraryFile.WemadeMir3_Tilesc && Manager.LibraryList.TryGetValue(file, out library))
+                    if (Libraries.WemadeMir3Order.TryGetValue(cell.FrontFile, out file) && file != LibraryFile.WemadeMir3_Tilesc && Manager.LibraryList.TryGetValue(file, out library))
                     {
                         int index = (cell.FrontImage & 0x7FFF) - 1;
 
@@ -1846,7 +1846,7 @@ namespace Server.Views.DirectX
                     MirLibrary library;
                     LibraryFile file;
 
-                    if (Libraries.KROrder.TryGetValue(cell.MiddleFile, out file) && file != LibraryFile.WemadeMir3_Tilesc && Manager.LibraryList.TryGetValue(file, out library))
+                    if (Libraries.WemadeMir3Order.TryGetValue(cell.MiddleFile, out file) && file != LibraryFile.WemadeMir3_Tilesc && Manager.LibraryList.TryGetValue(file, out library))
                     {
                         int index = cell.MiddleImage - 1;
 
@@ -1871,7 +1871,7 @@ namespace Server.Views.DirectX
                     }
 
 
-                    if (Libraries.KROrder.TryGetValue(cell.FrontFile, out file) && file != LibraryFile.WemadeMir3_Tilesc && Manager.LibraryList.TryGetValue(file, out library))
+                    if (Libraries.WemadeMir3Order.TryGetValue(cell.FrontFile, out file) && file != LibraryFile.WemadeMir3_Tilesc && Manager.LibraryList.TryGetValue(file, out library))
                     {
                         int index = cell.FrontImage - 1;
 

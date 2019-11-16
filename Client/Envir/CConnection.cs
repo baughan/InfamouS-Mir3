@@ -1661,7 +1661,7 @@ namespace Client.Envir
                         Target = ob
                     });
 
-                GameScene.Game.MapControl.FLayer.TextureValid = false;
+                GameScene.Game.MapControl.FloorLayer.TextureValid = false;
 
                 return;
             }
