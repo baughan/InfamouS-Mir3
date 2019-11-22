@@ -33,67 +33,37 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="DevExpress.BonusSkins.v18.2">
-      <HintPath>C:\Zircon\code\mir3-zircon-master\Components\DevExpress\DevExpress.BonusSkins.v18.2.dll</HintPath>
-    </Reference>
     <Reference Include="DevExpress.Data.v18.2, Version=18.2.4.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL">
       <Private>False</Private>
-      <HintPath>C:\Zircon\code\mir3-zircon-master\Components\DevExpress\DevExpress.Data.v18.2.dll</HintPath>
-    </Reference>
-    <Reference Include="DevExpress.Images.v18.2">
-      <HintPath>C:\Zircon\code\mir3-zircon-master\Components\DevExpress\DevExpress.Images.v18.2.dll</HintPath>
+      <HintPath>..\..\DevExpress Components RUNTIME\DevExpress.Data.v18.2.dll</HintPath>
     </Reference>
     <Reference Include="DevExpress.Pdf.v18.2.Core, Version=18.2.4.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL">
       <Private>False</Private>
-      <HintPath>C:\Zircon\code\mir3-zircon-master\Components\DevExpress\DevExpress.Pdf.v18.2.Core.dll</HintPath>
+      <HintPath>..\..\DevExpress Components RUNTIME\DevExpress.Pdf.v18.2.Core.dll</HintPath>
     </Reference>
     <Reference Include="DevExpress.Office.v18.2.Core, Version=18.2.4.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL">
       <Private>False</Private>
-      <HintPath>C:\Zircon\code\mir3-zircon-master\Components\DevExpress\DevExpress.Office.v18.2.Core.dll</HintPath>
+      <HintPath>..\..\DevExpress Components RUNTIME\DevExpress.Office.v18.2.Core.dll</HintPath>
     </Reference>
     <Reference Include="DevExpress.RichEdit.v18.2.Core, Version=18.2.4.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL">
       <Private>False</Private>
-      <HintPath>C:\Zircon\code\mir3-zircon-master\Components\DevExpress\DevExpress.RichEdit.v18.2.Core.dll</HintPath>
+      <HintPath>..\..\DevExpress Components RUNTIME\DevExpress.RichEdit.v18.2.Core.dll</HintPath>
     </Reference>
     <Reference Include="DevExpress.RichEdit.v18.2.Export, Version=18.2.4.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL">
       <Private>False</Private>
-      <HintPath>C:\Zircon\code\mir3-zircon-master\Components\DevExpress\DevExpress.RichEdit.v18.2.Export.dll</HintPath>
+      <HintPath>..\..\DevExpress Components RUNTIME\DevExpress.RichEdit.v18.2.Export.dll</HintPath>
     </Reference>
     <Reference Include="DevExpress.Printing.v18.2.Core, Version=18.2.4.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL">
       <Private>False</Private>
-      <HintPath>C:\Zircon\code\mir3-zircon-master\Components\DevExpress\DevExpress.Printing.v18.2.Core.dll</HintPath>
-    </Reference>
-    <Reference Include="DevExpress.Sparkline.v18.2.Core">
-      <HintPath>C:\Zircon\code\mir3-zircon-master\Components\DevExpress\DevExpress.Sparkline.v18.2.Core.dll</HintPath>
+      <HintPath>..\..\DevExpress Components RUNTIME\DevExpress.Printing.v18.2.Core.dll</HintPath>
     </Reference>
     <Reference Include="DevExpress.Utils.v18.2, Version=18.2.4.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL">
       <Private>False</Private>
-      <HintPath>C:\Zircon\code\mir3-zircon-master\Components\DevExpress\DevExpress.Utils.v18.2.dll</HintPath>
-    </Reference>
-    <Reference Include="DevExpress.XtraBars.v18.2">
-      <HintPath>C:\Zircon\code\mir3-zircon-master\Components\DevExpress\DevExpress.XtraBars.v18.2.dll</HintPath>
+      <HintPath>..\..\DevExpress Components RUNTIME\DevExpress.Utils.v18.2.dll</HintPath>
     </Reference>
     <Reference Include="DevExpress.XtraEditors.v18.2, Version=18.2.4.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL">
       <Private>False</Private>
-      <HintPath>C:\Zircon\code\mir3-zircon-master\Components\DevExpress\DevExpress.XtraEditors.v18.2.dll</HintPath>
-    </Reference>
-    <Reference Include="DevExpress.XtraGrid.v18.2">
-      <HintPath>C:\Zircon\code\mir3-zircon-master\Components\DevExpress\DevExpress.XtraGrid.v18.2.dll</HintPath>
-    </Reference>
-    <Reference Include="DevExpress.XtraLayout.v18.2">
-      <HintPath>C:\Zircon\code\mir3-zircon-master\Components\DevExpress\DevExpress.XtraLayout.v18.2.dll</HintPath>
-    </Reference>
-    <Reference Include="DevExpress.XtraNavBar.v18.2">
-      <HintPath>C:\Zircon\code\mir3-zircon-master\Components\DevExpress\DevExpress.XtraNavBar.v18.2.dll</HintPath>
-    </Reference>
-    <Reference Include="DevExpress.XtraPrinting.v18.2">
-      <HintPath>C:\Zircon\code\mir3-zircon-master\Components\DevExpress\DevExpress.XtraPrinting.v18.2.dll</HintPath>
-    </Reference>
-    <Reference Include="DevExpress.XtraRichEdit.v18.2">
-      <HintPath>C:\Zircon\code\mir3-zircon-master\Components\DevExpress\DevExpress.XtraRichEdit.v18.2.dll</HintPath>
-    </Reference>
-    <Reference Include="DevExpress.XtraTreeList.v18.2">
-      <HintPath>C:\Zircon\code\mir3-zircon-master\Components\DevExpress\DevExpress.XtraTreeList.v18.2.dll</HintPath>
+      <HintPath>..\..\DevExpress Components RUNTIME\DevExpress.XtraEditors.v18.2.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />

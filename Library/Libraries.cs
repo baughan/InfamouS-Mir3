@@ -8,6 +8,7 @@ namespace Library
 {
     public static class Libraries
     {
+        public const int ShandaMir2OffSet = 100, WemadeMir3OffSet = 200, ShandaMir3OffSet = 300;
         public static Dictionary<LibraryFile, string> LibraryList = new Dictionary<LibraryFile, string>
         {
             [LibraryFile.Interface1c] = @"Data\Interface1c.Zl",
@@ -27,7 +28,7 @@ namespace Library
             [LibraryFile.NPC] = @"Data\NPC.Zl",
             [LibraryFile.GameInter2] = @"Data\GameInter2.Zl",
             [LibraryFile.MiniMap] = @"Data\MiniMap.Zl",
-
+            
             [LibraryFile.MagicIcon] = @"Data\MIcon.Zl",
             [LibraryFile.CBIcon] = @"Data\CBIcons.Zl",
 
@@ -97,7 +98,7 @@ namespace Library
             [LibraryFile.M_Weapon14] = @"Data\M-Weapon14.Zl",
             [LibraryFile.M_Weapon15] = @"Data\M-Weapon15.Zl",
             [LibraryFile.M_Weapon16] = @"Data\M-Weapon16.Zl",
-
+            
             [LibraryFile.WM_Weapon1] = @"Data\WM-Weapon1.Zl",
             [LibraryFile.WM_Weapon2] = @"Data\WM-Weapon2.Zl",
             [LibraryFile.WM_Weapon3] = @"Data\WM-Weapon3.Zl",
@@ -150,7 +151,7 @@ namespace Library
             [LibraryFile.M_Helmet3] = @"Data\M-Helmet3.Zl",
             [LibraryFile.M_Helmet4] = @"Data\M-Helmet4.Zl",
             [LibraryFile.M_Helmet5] = @"Data\M-Helmet5.Zl",
-
+            
             [LibraryFile.M_Helmet11] = @"Data\M-Helmet11.Zl",
             [LibraryFile.M_Helmet12] = @"Data\M-Helmet12.Zl",
             [LibraryFile.M_Helmet13] = @"Data\M-Helmet13.Zl",
@@ -581,79 +582,7 @@ namespace Library
 
         };
 
-        public static Dictionary<int, LibraryFile> WemadeMir3Order = new Dictionary<int, LibraryFile>
-        {
-            [0] = LibraryFile.WemadeMir3_Tilesc,
-            [1] = LibraryFile.WemadeMir3_Tiles30c,
-            [2] = LibraryFile.WemadeMir3_Tiles5c,
-            [3] = LibraryFile.WemadeMir3_SmTilesc,
-            [4] = LibraryFile.WemadeMir3_Housesc,
-            [5] = LibraryFile.WemadeMir3_Cliffsc,
-            [6] = LibraryFile.WemadeMir3_Dungeonsc,
-            [7] = LibraryFile.WemadeMir3_Innersc,
-            [8] = LibraryFile.WemadeMir3_Furnituresc,
-            [9] = LibraryFile.WemadeMir3_Wallsc,
-            [10] = LibraryFile.WemadeMir3_SmObjectsc,
-            [11] = LibraryFile.WemadeMir3_Animationsc,
-            [12] = LibraryFile.WemadeMir3_Object1c,
-            [13] = LibraryFile.WemadeMir3_Object2c,
-
-            [15] = LibraryFile.WemadeMir3_Wood_Tilesc,
-            [16] = LibraryFile.WemadeMir3_Wood_Tiles30c,
-            [17] = LibraryFile.WemadeMir3_Wood_Tiles5c,
-            [18] = LibraryFile.WemadeMir3_Wood_SmTilesc,
-            [19] = LibraryFile.WemadeMir3_Wood_Housesc,
-            [20] = LibraryFile.WemadeMir3_Wood_Cliffsc,
-            [21] = LibraryFile.WemadeMir3_Wood_Dungeonsc,
-            [22] = LibraryFile.WemadeMir3_Wood_Innersc,
-            [23] = LibraryFile.WemadeMir3_Wood_Furnituresc,
-            [24] = LibraryFile.WemadeMir3_Wood_Wallsc,
-            [25] = LibraryFile.WemadeMir3_Wood_SmObjectsc,
-            [26] = LibraryFile.WemadeMir3_Wood_Animationsc,
-
-
-            [30] = LibraryFile.WemadeMir3_Sand_Tilesc,
-            [31] = LibraryFile.WemadeMir3_Sand_Tiles30c,
-            [32] = LibraryFile.WemadeMir3_Sand_Tiles5c,
-            [33] = LibraryFile.WemadeMir3_Sand_SmTilesc,
-            [34] = LibraryFile.WemadeMir3_Sand_Housesc,
-            [35] = LibraryFile.WemadeMir3_Sand_Cliffsc,
-            [36] = LibraryFile.WemadeMir3_Sand_Dungeonsc,
-            [37] = LibraryFile.WemadeMir3_Sand_Innersc,
-            [38] = LibraryFile.WemadeMir3_Sand_Furnituresc,
-            [39] = LibraryFile.WemadeMir3_Sand_Wallsc,
-            [40] = LibraryFile.WemadeMir3_Sand_SmObjectsc,
-            [41] = LibraryFile.WemadeMir3_Sand_Animationsc,
-
-
-            [45] = LibraryFile.WemadeMir3_Snow_Tilesc,
-            [46] = LibraryFile.WemadeMir3_Snow_Tiles30c,
-            [47] = LibraryFile.WemadeMir3_Snow_Tiles5c,
-            [48] = LibraryFile.WemadeMir3_Snow_SmTilesc,
-            [49] = LibraryFile.WemadeMir3_Snow_Housesc,
-            [50] = LibraryFile.WemadeMir3_Snow_Cliffsc,
-            [51] = LibraryFile.WemadeMir3_Snow_Dungeonsc,
-            [52] = LibraryFile.WemadeMir3_Snow_Innersc,
-            [53] = LibraryFile.WemadeMir3_Snow_Furnituresc,
-            [54] = LibraryFile.WemadeMir3_Snow_Wallsc,
-            [55] = LibraryFile.WemadeMir3_Snow_SmObjectsc,
-            [56] = LibraryFile.WemadeMir3_Snow_Animationsc,
-
-
-            [60] = LibraryFile.WemadeMir3_Forest_Tilesc,
-            [61] = LibraryFile.WemadeMir3_Forest_Tiles30c,
-            [62] = LibraryFile.WemadeMir3_Forest_Tiles5c,
-            [63] = LibraryFile.WemadeMir3_Forest_SmTilesc,
-            [64] = LibraryFile.WemadeMir3_Forest_Housesc,
-            [65] = LibraryFile.WemadeMir3_Forest_Cliffsc,
-            [66] = LibraryFile.WemadeMir3_Forest_Dungeonsc,
-            [67] = LibraryFile.WemadeMir3_Forest_Innersc,
-            [68] = LibraryFile.WemadeMir3_Forest_Furnituresc,
-            [69] = LibraryFile.WemadeMir3_Forest_Wallsc,
-            [70] = LibraryFile.WemadeMir3_Forest_SmObjectsc,
-            [71] = LibraryFile.WemadeMir3_Forest_Animationsc
-        };
-        public static Dictionary<int, LibraryFile> WemadeMir2Order = new Dictionary<int, LibraryFile>
+        public static Dictionary<int, LibraryFile> KROrder = new Dictionary<int, LibraryFile>
         {
             [0] = LibraryFile.WemadeMir2_Tiles,
             [1] = LibraryFile.WemadeMir2_SmTiles,
@@ -680,7 +609,79 @@ namespace Library
             [22] = LibraryFile.WemadeMir2_Objects21,
             [23] = LibraryFile.WemadeMir2_Objects22,
             [24] = LibraryFile.WemadeMir2_Objects23,
-            [25] = LibraryFile.WemadeMir2_Objects24
+            [25] = LibraryFile.WemadeMir2_Objects24,
+            [26] = LibraryFile.WemadeMir2_Objects25,
+
+            [WemadeMir3OffSet + 0] = LibraryFile.WemadeMir3_Tilesc,
+            [WemadeMir3OffSet + 1] = LibraryFile.WemadeMir3_Tiles30c,
+            [WemadeMir3OffSet + 2] = LibraryFile.WemadeMir3_Tiles5c,
+            [WemadeMir3OffSet + 3] = LibraryFile.WemadeMir3_SmTilesc,
+            [WemadeMir3OffSet + 4] = LibraryFile.WemadeMir3_Housesc,
+            [WemadeMir3OffSet + 5] = LibraryFile.WemadeMir3_Cliffsc,
+            [WemadeMir3OffSet + 6] = LibraryFile.WemadeMir3_Dungeonsc,
+            [WemadeMir3OffSet + 7] = LibraryFile.WemadeMir3_Innersc,
+            [WemadeMir3OffSet + 8] = LibraryFile.WemadeMir3_Furnituresc,
+            [WemadeMir3OffSet + 9] = LibraryFile.WemadeMir3_Wallsc,
+            [WemadeMir3OffSet + 10] = LibraryFile.WemadeMir3_SmObjectsc,
+            [WemadeMir3OffSet + 11] = LibraryFile.WemadeMir3_Animationsc,
+            [WemadeMir3OffSet + 12] = LibraryFile.WemadeMir3_Object1c,
+            [WemadeMir3OffSet + 13] = LibraryFile.WemadeMir3_Object2c,
+
+
+            [WemadeMir3OffSet + 15] = LibraryFile.WemadeMir3_Wood_Tilesc,
+            [WemadeMir3OffSet + 16] = LibraryFile.WemadeMir3_Wood_Tiles30c,
+            [WemadeMir3OffSet + 17] = LibraryFile.WemadeMir3_Wood_Tiles5c,
+            [WemadeMir3OffSet + 18] = LibraryFile.WemadeMir3_Wood_SmTilesc,
+            [WemadeMir3OffSet + 19] = LibraryFile.WemadeMir3_Wood_Housesc,
+            [WemadeMir3OffSet + 20] = LibraryFile.WemadeMir3_Wood_Cliffsc,
+            [WemadeMir3OffSet + 21] = LibraryFile.WemadeMir3_Wood_Dungeonsc,
+            [WemadeMir3OffSet + 22] = LibraryFile.WemadeMir3_Wood_Innersc,
+            [WemadeMir3OffSet + 23] = LibraryFile.WemadeMir3_Wood_Furnituresc,
+            [WemadeMir3OffSet + 24] = LibraryFile.WemadeMir3_Wood_Wallsc,
+            [WemadeMir3OffSet + 25] = LibraryFile.WemadeMir3_Wood_SmObjectsc,
+            [WemadeMir3OffSet + 26] = LibraryFile.WemadeMir3_Wood_Animationsc,
+
+
+            [WemadeMir3OffSet + 30] = LibraryFile.WemadeMir3_Sand_Tilesc,
+            [WemadeMir3OffSet + 31] = LibraryFile.WemadeMir3_Sand_Tiles30c,
+            [WemadeMir3OffSet + 32] = LibraryFile.WemadeMir3_Sand_Tiles5c,
+            [WemadeMir3OffSet + 33] = LibraryFile.WemadeMir3_Sand_SmTilesc,
+            [WemadeMir3OffSet + 34] = LibraryFile.WemadeMir3_Sand_Housesc,
+            [WemadeMir3OffSet + 35] = LibraryFile.WemadeMir3_Sand_Cliffsc,
+            [WemadeMir3OffSet + 36] = LibraryFile.WemadeMir3_Sand_Dungeonsc,
+            [WemadeMir3OffSet + 37] = LibraryFile.WemadeMir3_Sand_Innersc,
+            [WemadeMir3OffSet + 38] = LibraryFile.WemadeMir3_Sand_Furnituresc,
+            [WemadeMir3OffSet + 39] = LibraryFile.WemadeMir3_Sand_Wallsc,
+            [WemadeMir3OffSet + 40] = LibraryFile.WemadeMir3_Sand_SmObjectsc,
+            [WemadeMir3OffSet + 41] = LibraryFile.WemadeMir3_Sand_Animationsc,
+
+
+            [WemadeMir3OffSet + 45] = LibraryFile.WemadeMir3_Snow_Tilesc,
+            [WemadeMir3OffSet + 46] = LibraryFile.WemadeMir3_Snow_Tiles30c,
+            [WemadeMir3OffSet + 47] = LibraryFile.WemadeMir3_Snow_Tiles5c,
+            [WemadeMir3OffSet + 48] = LibraryFile.WemadeMir3_Snow_SmTilesc,
+            [WemadeMir3OffSet + 49] = LibraryFile.WemadeMir3_Snow_Housesc,
+            [WemadeMir3OffSet + 50] = LibraryFile.WemadeMir3_Snow_Cliffsc,
+            [WemadeMir3OffSet + 51] = LibraryFile.WemadeMir3_Snow_Dungeonsc,
+            [WemadeMir3OffSet + 52] = LibraryFile.WemadeMir3_Snow_Innersc,
+            [WemadeMir3OffSet + 53] = LibraryFile.WemadeMir3_Snow_Furnituresc,
+            [WemadeMir3OffSet + 54] = LibraryFile.WemadeMir3_Snow_Wallsc,
+            [WemadeMir3OffSet + 55] = LibraryFile.WemadeMir3_Snow_SmObjectsc,
+            [WemadeMir3OffSet + 56] = LibraryFile.WemadeMir3_Snow_Animationsc,
+
+
+            [WemadeMir3OffSet + 60] = LibraryFile.WemadeMir3_Forest_Tilesc,
+            [WemadeMir3OffSet + 61] = LibraryFile.WemadeMir3_Forest_Tiles30c,
+            [WemadeMir3OffSet + 62] = LibraryFile.WemadeMir3_Forest_Tiles5c,
+            [WemadeMir3OffSet + 63] = LibraryFile.WemadeMir3_Forest_SmTilesc,
+            [WemadeMir3OffSet + 64] = LibraryFile.WemadeMir3_Forest_Housesc,
+            [WemadeMir3OffSet + 65] = LibraryFile.WemadeMir3_Forest_Cliffsc,
+            [WemadeMir3OffSet + 66] = LibraryFile.WemadeMir3_Forest_Dungeonsc,
+            [WemadeMir3OffSet + 67] = LibraryFile.WemadeMir3_Forest_Innersc,
+            [WemadeMir3OffSet + 68] = LibraryFile.WemadeMir3_Forest_Furnituresc,
+            [WemadeMir3OffSet + 69] = LibraryFile.WemadeMir3_Forest_Wallsc,
+            [WemadeMir3OffSet + 70] = LibraryFile.WemadeMir3_Forest_SmObjectsc,
+            [WemadeMir3OffSet + 71] = LibraryFile.WemadeMir3_Forest_Animationsc,
         };
     }
 
