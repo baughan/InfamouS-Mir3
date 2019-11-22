@@ -1733,7 +1733,7 @@ namespace Server.Models
 
                         if (parts.Length == 3) player = this; //@levelskill healing 5
                         else player = SEnvir.GetPlayerByCharacter(parts[1]); //@levelskill ryan healing 5
-              
+
                         if (player == null) return;
 
                         MagicInfo tinfo = SEnvir.MagicInfoList.Binding.FirstOrDefault(m => m.Name.Replace(" ", "").ToUpper().Equals(parts[2].ToUpper()));
@@ -2192,8 +2192,6 @@ namespace Server.Models
                             user.ApplyCastleBuff();
 
                         break;
-<<<<<<< HEAD
-=======
                     case "ADDSTAT":
                         if (parts.Length < 4) return; //AddStat Weapon MaxDC 50
 
@@ -2213,7 +2211,6 @@ namespace Server.Models
                             Connection.ReceiveChat(string.Format("{0} added {1} + {2}", Equipment[(int)tslot].Info.ItemName, tstat, tamount), MessageType.System);
                         }
                         break;
->>>>>>> 669a7b5d1df8127e805c76f8ce1c40bddbd0f92f
                     case "CREATEGUILD":
                         if (!Character.Account.TempAdmin)
                             return;
@@ -2549,7 +2546,7 @@ namespace Server.Models
                         amount *= 1.5M;
                     else
                         amount *= 2.5M;
-                    masterexp = amount - oamount;                    
+                    masterexp = amount - oamount;
                 }
             }
 
@@ -6437,8 +6434,6 @@ namespace Server.Models
                                     break;
                                 case 17:
                                     if (Companion.UserCompanion.Level17 == null) return;
-<<<<<<< HEAD
-=======
 
                                     if (!CompanionLevelLock17)
                                     {
@@ -6530,115 +6525,6 @@ namespace Server.Models
 
                                         foreach (SConnection con in Connection.Observers)
                                             con.ReceiveChat(string.Format(con.Language.ConnotResetCompanionSkill, item.GetItemName(), 25), MessageType.System);
-                                        return;
-                                    }
-
-                                    current = new Stats(Companion.UserCompanion.Level25);
-
-                                    while (current.Compare(Companion.UserCompanion.Level25))
-                                    {
-                                        Companion.UserCompanion.Level25 = null;
-
-                                        Companion.CheckSkills();
-                                    }
-                                    break;
-                                default:
-                                    return;
-                            }
-                            break;
-                        case 17:
->>>>>>> 669a7b5d1df8127e805c76f8ce1c40bddbd0f92f
-
-                                    if (!CompanionLevelLock17)
-                                    {
-                                        Connection.ReceiveChat(string.Format(Connection.Language.ConnotResetCompanionSkill, item.Info.ItemName, 17), MessageType.System);
-
-                                        foreach (SConnection con in Connection.Observers)
-                                            con.ReceiveChat(string.Format(con.Language.ConnotResetCompanionSkill, item.Info.ItemName, 17), MessageType.System);
-                                        return;
-                                    }
-
-                                    current = new Stats(Companion.UserCompanion.Level17);
-
-                                    while (current.Compare(Companion.UserCompanion.Level17))
-                                    {
-                                        Companion.UserCompanion.Level17 = null;
-
-                                        Companion.CheckSkills();
-                                    }
-                                    break;
-                                case 19:
-                                    if (Companion.UserCompanion.Level17 == null) return;
-
-                                    if (!CompanionLevelLock19)
-                                    {
-                                        Connection.ReceiveChat(string.Format(Connection.Language.ConnotResetCompanionSkill, item.Info.ItemName, 19), MessageType.System);
-
-                                        foreach (SConnection con in Connection.Observers)
-                                            con.ReceiveChat(string.Format(con.Language.ConnotResetCompanionSkill, item.Info.ItemName, 19), MessageType.System);
-                                        return;
-                                    }
-
-                                    current = new Stats(Companion.UserCompanion.Level19);
-
-                                    while (current.Compare(Companion.UserCompanion.Level19))
-                                    {
-                                        Companion.UserCompanion.Level19 = null;
-
-                                        Companion.CheckSkills();
-                                    }
-                                    break;
-                                case 21:
-                                    if (Companion.UserCompanion.Level21 == null) return;
-
-                                    if (!CompanionLevelLock21)
-                                    {
-                                        Connection.ReceiveChat(string.Format(Connection.Language.ConnotResetCompanionSkill, item.Info.ItemName, 21), MessageType.System);
-
-                                        foreach (SConnection con in Connection.Observers)
-                                            con.ReceiveChat(string.Format(con.Language.ConnotResetCompanionSkill, item.Info.ItemName, 21), MessageType.System);
-                                        return;
-                                    }
-
-                                    current = new Stats(Companion.UserCompanion.Level21);
-
-                                    while (current.Compare(Companion.UserCompanion.Level21))
-                                    {
-                                        Companion.UserCompanion.Level21 = null;
-
-                                        Companion.CheckSkills();
-                                    }
-                                    break;
-                                case 23:
-                                    if (Companion.UserCompanion.Level23 == null) return;
-
-                                    if (!CompanionLevelLock23)
-                                    {
-                                        Connection.ReceiveChat(string.Format(Connection.Language.ConnotResetCompanionSkill, item.Info.ItemName, 23), MessageType.System);
-
-                                        foreach (SConnection con in Connection.Observers)
-                                            con.ReceiveChat(string.Format(con.Language.ConnotResetCompanionSkill, item.Info.ItemName, 23), MessageType.System);
-                                        return;
-                                    }
-
-                                    current = new Stats(Companion.UserCompanion.Level23);
-
-                                    while (current.Compare(Companion.UserCompanion.Level23))
-                                    {
-                                        Companion.UserCompanion.Level23 = null;
-
-                                        Companion.CheckSkills();
-                                    }
-                                    break;
-                                case 25:
-                                    if (Companion.UserCompanion.Level25 == null) return;
-
-                                    if (!CompanionLevelLock25)
-                                    {
-                                        Connection.ReceiveChat(string.Format(Connection.Language.ConnotResetCompanionSkill, item.Info.ItemName, 25), MessageType.System);
-
-                                        foreach (SConnection con in Connection.Observers)
-                                            con.ReceiveChat(string.Format(con.Language.ConnotResetCompanionSkill, item.Info.ItemName, 25), MessageType.System);
                                         return;
                                     }
 
@@ -6751,12 +6637,7 @@ namespace Server.Models
                                         }
                                     }
 
-
-<<<<<<< HEAD
-                                    string text = $"A [{item.Info.ItemName}] has been used in {CurrentMap.Info.Description}";
-=======
                                     string text = $"A [{item.GetItemName()}] has been used in {CurrentMap.Info.Description}";
->>>>>>> 669a7b5d1df8127e805c76f8ce1c40bddbd0f92f
 
                                     foreach (SConnection con in SEnvir.Connections)
                                     {
@@ -7948,8 +7829,6 @@ namespace Server.Models
 
             if ((fromItem.Flags & UserItemFlags.Marriage) == UserItemFlags.Marriage) return;
             if (fromItem.Info.ItemType != ItemType.Gem && fromItem.Info.ItemType != ItemType.Orb) return;
-<<<<<<< HEAD
-=======
 
             switch (p.ToGrid)
             {
@@ -8159,377 +8038,6 @@ namespace Server.Models
 
             RefreshStats();
         }
-
-
-
-
-
-        public long GetItemCount(ItemInfo info)
-        {
-            long count = 0;
-            foreach (UserItem item in Inventory)
-            {
-                if (item == null || item.Info != info) continue;
-
-                count += item.Count;
-            }
-
-            if (Companion != null)
-            {
-                foreach (UserItem item in Companion.Inventory)
-                {
-                    if (item == null || item.Info != info) continue;
-
-                    count += item.Count;
-                }
-            }
-
-            return count;
-        }
-        public void TakeItem(ItemInfo info, long count)
-        {
-            for (int i = 0; i < Inventory.Length; i++)
-            {
-                UserItem item = Inventory[i];
-
-                if (item == null || item.Info != info) continue;
-
-                if (item.Count > count)
-                {
-                    item.Count -= count;
-
-                    Enqueue(new S.ItemChanged { Link = new CellLinkInfo { GridType = GridType.Inventory, Slot = i, Count = item.Count }, Success = true });
-                    return;
-                }
-
-                count -= item.Count;
-
-                RemoveItem(item);
-                Inventory[i] = null;
-                item.Delete();
-
-                Enqueue(new S.ItemChanged { Link = new CellLinkInfo { GridType = GridType.Inventory, Slot = i }, Success = true });
-
-                if (count == 0) return;
-            }
-
-            for (int i = 0; i < Companion.Inventory.Length; i++)
-            {
-                UserItem item = Companion.Inventory[i];
-
-                if (item == null || item.Info != info) continue;
-
-                if (item.Count > count)
-                {
-                    item.Count -= count;
-
-                    Enqueue(new S.ItemChanged { Link = new CellLinkInfo { GridType = GridType.CompanionInventory, Slot = i, Count = item.Count }, Success = true });
-                    return;
-                }
-
-                count -= item.Count;
-
-                RemoveItem(item);
-                Companion.Inventory[i] = null;
-                item.Delete();
-
-                Enqueue(new S.ItemChanged { Link = new CellLinkInfo { GridType = GridType.CompanionInventory, Slot = i }, Success = true });
-
-                if (count == 0) return;
-            }
-
-            throw new Exception(string.Format("Unable to Take {0}x{1} from {2}", info.ItemName, count, Name));
-        }
-
-        public void ItemLock(C.ItemLock p)
-        {
-            UserItem[] itemArray;
-
-            switch (p.GridType)
-            {
-                case GridType.Inventory:
-                    itemArray = Inventory;
-                    break;
-                case GridType.Equipment:
-                    itemArray = Equipment;
-                    break;
-                case GridType.PartsStorage:
-                    itemArray = PartsStorage;
-                    break;
-                case GridType.Storage:
-                    itemArray = Storage;
-                    break;
-                case GridType.CompanionInventory:
-                    if (Companion == null) return;
-
-                    itemArray = Companion.Inventory;
-                    break;
-                case GridType.CompanionEquipment:
-                    if (Companion == null) return;
-
-                    itemArray = Companion.Equipment;
-                    break;
-                default:
-                    return;
-            }
-
-            if (p.SlotIndex < 0 || p.SlotIndex >= itemArray.Length) return;
-
-
-            UserItem fromItem = itemArray[p.SlotIndex];
-
-            if (fromItem == null) return;
-
-            if (p.Locked)
-                fromItem.Flags |= UserItemFlags.Locked;
-            else
-                fromItem.Flags &= ~UserItemFlags.Locked;
-
-            S.ItemLock result = new S.ItemLock
-            {
-                Grid = p.GridType,
-                Slot = p.SlotIndex,
-                Locked = p.Locked,
-            };
-
-            Enqueue(result);
->>>>>>> 669a7b5d1df8127e805c76f8ce1c40bddbd0f92f
-
-            switch (p.ToGrid)
-            {
-                case GridType.Inventory:
-                    toArray = Inventory;
-                    break;
-                case GridType.Equipment:
-                    toArray = Equipment;
-                    break;
-                case GridType.PartsStorage:
-                    array = PartsStorage;
-                    break;
-                case GridType.Storage:
-                    if (!InSafeZone && !Character.Account.TempAdmin)
-                    {
-                        Connection.ReceiveChat(Connection.Language.StorageSafeZone, MessageType.System);
-
-                        foreach (SConnection con in Connection.Observers)
-                            con.ReceiveChat(con.Language.StorageSafeZone, MessageType.System);
-                        return;
-                    }
-
-                    toArray = Storage;
-
-                    if (p.ToSlot >= Character.Account.StorageSize) return;
-                    break;
-                case GridType.GuildStorage:
-                    if (Character.Account.GuildMember == null) return;
-
-                    if ((Character.Account.GuildMember.Permission & GuildPermission.Storage) != GuildPermission.Storage)
-                    {
-                        Connection.ReceiveChat(Connection.Language.GuildStoragePermission, MessageType.System);
-                        return;
-                    }
-
-                    if (!InSafeZone && p.FromGrid != GridType.Storage)
-                    {
-                        Connection.ReceiveChat(Connection.Language.GuildStorageSafeZone, MessageType.System);
-                        return;
-                    }
-
-                    toArray = Character.Account.GuildMember.Guild.Storage;
-
-                    if (p.ToSlot >= Character.Account.GuildMember.Guild.StorageSize) return;
-                    break;
-                case GridType.CompanionInventory:
-                    if (Companion == null) return;
-
-                    toArray = Companion.Inventory;
-
-                    if (p.ToSlot >= Companion.Stats[Stat.CompanionInventory]) return;
-                    break;
-                default:
-                    return;
-            }
-
-            if (p.ToSlot < 0 || p.ToSlot >= toArray.Length) return;
-
-            UserItem toItem = toArray[p.ToSlot];
-
-            if (toItem == null) return;
-
-            if ((toItem.Flags & UserItemFlags.Marriage) == UserItemFlags.Marriage) return;
-
-            if (toItem.Stats[Stat.GemCount] >= Globals.MaxGemOrbCount)
-            {
-                Connection.ReceiveChat($"Your {toItem.Info.ItemName} has reached the maximum upgrades.", MessageType.System);
-                return;
-            }
-
-            bool success = false;
-            ItemType totype = toItem.Info.ItemType;
-            switch (fromItem.Info.Shape)
-            {
-                default:
-                    success = totype == ItemType.Weapon || totype == ItemType.Armour || totype == ItemType.Helmet || totype == ItemType.Necklace || totype == ItemType.Bracelet || totype == ItemType.Ring || totype == ItemType.Shoes || totype == ItemType.Belt;
-                    break;
-                case 1:
-                    success = totype == ItemType.Weapon || totype == ItemType.Necklace || totype == ItemType.Bracelet || totype == ItemType.Ring;
-                    break;
-                case 2:
-                    success = totype == ItemType.Armour || totype == ItemType.Shield || totype == ItemType.Helmet || totype == ItemType.Bracelet || totype == ItemType.Ring || totype == ItemType.Shoes || totype == ItemType.Belt;
-                    break;
-            }
-            if (!success) return;
-
-            S.ItemStatsChanged statschange = new S.ItemStatsChanged { GridType = p.ToGrid, Slot = p.ToSlot, NewStats = new Stats() };
-            if (SEnvir.Random.Next(100) < fromItem.Info.Stats[Stat.GemOrbSuccess])
-            {
-                foreach (KeyValuePair<Stat, int> s in fromItem.Info.Stats.Values)
-                {
-                    if (s.Key == Stat.GemOrbBrake || s.Key == Stat.GemOrbSuccess) continue;
-                    toItem.AddStat(s.Key, s.Value, StatSource.GemOrb);
-                    statschange.NewStats[s.Key] = s.Value;
-                }
-                toItem.AddStat(Stat.GemCount, 1, StatSource.None);
-                statschange.NewStats[Stat.GemCount] = 1;
-                toItem.StatsChanged();
-            }
-            else
-                success = false;
-
-            result.Success = success;
-
-            if (!success)
-            {
-                if (SEnvir.Random.Next(100) >= fromItem.Info.Stats[Stat.GemOrbBrake])
-                {
-                    success = true;
-                }
-
-            }
-
-            if (success)
-                Enqueue(statschange);
-
-
-<<<<<<< HEAD
-            fromItem.Count -= 1;
-            if (fromItem.Count < 0) fromItem.Count = 0;
-=======
-                switch (p.Grid)
-                {
-                    case GridType.Inventory:
-                        newItem.Character = Character;
-                        break;
-                    case GridType.PartsStorage:
-                        newItem.Account = Character.Account;
-                        break;
-                    case GridType.Storage:
-                        newItem.Account = Character.Account;
-                        break;
-                    case GridType.CompanionInventory:
-                        newItem.Companion = Companion.UserCompanion;
-                        break;
-                    case GridType.GuildStorage:
-                        newItem.Guild = Character.Account.GuildMember.Guild;
->>>>>>> 669a7b5d1df8127e805c76f8ce1c40bddbd0f92f
-
-            Packet guildpacket;
-
-            switch (p.FromGrid)
-            {
-                case GridType.GuildStorage:
-                    guildpacket = new S.ItemChanged
-                    {
-                        Link = new CellLinkInfo()
-                        {
-                            GridType = p.FromGrid,
-                            Slot = p.FromSlot,
-                            Count = fromItem.Count,
-                        },
-                        Success = true,
-                    };
-
-                    foreach (GuildMemberInfo member in Character.Account.GuildMember.Guild.Members)
-                    {
-                        PlayerObject player = member.Account.Connection?.Player;
-
-                        if (player == null || player == this) continue;
-
-                        //Send Removal Command
-                        player.Enqueue(guildpacket);
-                    }
-                    break;
-            }
-
-            Enqueue(new S.ItemChanged
-            {
-                Link = new CellLinkInfo()
-                {
-                    GridType = p.FromGrid,
-                    Slot = p.FromSlot,
-                    Count = fromItem.Count,
-                },
-                Success = true,
-            });
-            if (fromItem.Count <= 0)
-            {
-                fromArray[fromItem.Slot] = null;
-                RemoveItem(fromItem);
-                fromItem.Delete();
-            }
-
-            switch (p.ToGrid)
-            {
-                case GridType.GuildStorage:
-                    foreach (GuildMemberInfo member in Character.Account.GuildMember.Guild.Members)
-                    {
-                        PlayerObject player = member.Account.Connection?.Player;
-
-                        if (player == null || player == this) continue;
-
-                        if (success)
-                            player.Enqueue(statschange);
-                        else
-                            player.Enqueue(new S.ItemChanged
-                            {
-                                Link = new CellLinkInfo()
-                                {
-                                    GridType = p.ToGrid,
-                                    Slot = p.ToSlot,
-                                    Count = 0,
-                                },
-                                Success = true,
-                            });
-                    }
-
-                    break;
-            }
-
-            if (!success)
-            {
-                Enqueue(new S.ItemChanged
-                {
-                    Link = new CellLinkInfo()
-                    {
-                        GridType = p.ToGrid,
-                        Slot = p.ToSlot,
-                        Count = 0,
-                    },
-                    Success = true,
-                });
-                Connection.ReceiveChat($"Your {toItem.Info.ItemName} broke.", MessageType.System);
-                toArray[p.ToSlot] = null;
-                RemoveItem(toItem);
-                toItem.Delete();
-            }
-
-            RefreshStats();
-        }
-
-
-
-
-
         public long GetItemCount(ItemInfo info)
         {
             long count = 0;
@@ -8780,7 +8288,6 @@ namespace Server.Models
                 return;
             }
         }
-
         public void GoldChanged()
         {
             Enqueue(new S.GoldChanged { Gold = Gold });
@@ -17391,11 +16898,7 @@ namespace Server.Models
 
             if (LifeSteal > 1)
             {
-<<<<<<< HEAD
                 int heal = (int)Math.Min(int.MaxValue, Math.Floor(LifeSteal));
-=======
-                int heal = (int)Math.Floor(LifeSteal);
->>>>>>> 669a7b5d1df8127e805c76f8ce1c40bddbd0f92f
                 LifeSteal -= heal;
                 //ChangeHP(Math.Min((hasLotus ? 4500 : 2250), heal));
                 ChangeHP(heal);
@@ -18040,11 +17543,7 @@ namespace Server.Models
                 power = (int)(power * 1.2F);
 
             for (int i = 0; i < attacker.Stats[Stat.Rebirth]; i++)
-<<<<<<< HEAD
                 power = (int)(power * 1.01F);
-=======
-                power = (int)(power * 1.1F);
->>>>>>> 669a7b5d1df8127e805c76f8ce1c40bddbd0f92f
 
             if (SEnvir.Random.Next(100) < attacker.Stats[Stat.CriticalChance] && canCrit)
             {
@@ -18700,7 +18199,7 @@ namespace Server.Models
                 switch (p.Type)
                 {
                     case PoisonType.Paralysis:
-                        NextParaTime = SEnvir.Now + TimeSpan.FromSeconds(7); 
+                        NextParaTime = SEnvir.Now + TimeSpan.FromSeconds(7);
                         break;
                     case PoisonType.Silenced:
                         NextSilenceTime = SEnvir.Now + TimeSpan.FromSeconds(7);
@@ -21554,50 +21053,22 @@ namespace Server.Models
                         return;
                 }
                 targetItem.StatsChanged();
-<<<<<<< HEAD
+
                 Connection.ReceiveChat(string.Format(Connection.Language.AccessoryRefineSuccess, targetItem.Info.ItemName, p.RefineType, amount), MessageType.System);
 
                 foreach (SConnection con in Connection.Observers)
                     con.ReceiveChat(string.Format(con.Language.AccessoryRefineSuccess, targetItem.Info.ItemName, p.RefineType, amount), MessageType.System);
-=======
-                Connection.ReceiveChat(string.Format(Connection.Language.AccessoryRefineSuccess, targetItem.GetItemName(), p.RefineType, amount), MessageType.System);
-
-                foreach (SConnection con in Connection.Observers)
-                    con.ReceiveChat(string.Format(con.Language.AccessoryRefineSuccess, targetItem.GetItemName(), p.RefineType, amount), MessageType.System);
->>>>>>> 669a7b5d1df8127e805c76f8ce1c40bddbd0f92f
                 RefreshStats();
             }
             #endregion
             else
             {
-<<<<<<< HEAD
                 Connection.ReceiveChat(string.Format(Connection.Language.AccessoryRefineFailed, targetItem.Info.ItemName), MessageType.System);
 
                 foreach (SConnection con in Connection.Observers)
                     con.ReceiveChat(string.Format(con.Language.AccessoryRefineFailed, targetItem.Info.ItemName), MessageType.System);
-=======
-                Connection.ReceiveChat(string.Format(Connection.Language.AccessoryRefineFailed, targetItem.GetItemName()), MessageType.System);
-
-                foreach (SConnection con in Connection.Observers)
-                    con.ReceiveChat(string.Format(con.Language.AccessoryRefineFailed, targetItem.GetItemName()), MessageType.System);
->>>>>>> 669a7b5d1df8127e805c76f8ce1c40bddbd0f92f
-                targetArray[targetItem.Slot] = null;
-                result.Links.Add(p.Target);
-                RemoveItem(targetItem);
-                targetItem.Delete();
-
-            }
-
-            Gold -= 50000;
-            GoldChanged();
-            targetOreArray[oretargetItem.Slot] = null;
-            result.Links.Add(p.OreTarget);
-            RemoveItem(oretargetItem);
-            oretargetItem.Delete();
-            Companion?.RefreshWeight();
-            RefreshStats();
+            };
         }
-
         public void MasterInvite(string name)
         {
             if (Character.MasterCharacter != null)

@@ -1998,11 +1998,7 @@ namespace Client.Controls
                                             return;
                                         break;
                                 }
-<<<<<<< HEAD
-                                GameScene.Game.ReceiveChat($"Unable to use {Item.Info.ItemName} to rename.", MessageType.System);
-=======
                                 GameScene.Game.ReceiveChat($"Unable to use {Item.GetItemName()} to rename.", MessageType.System);
->>>>>>> 669a7b5d1df8127e805c76f8ce1c40bddbd0f92f
                                 return;
                             }
 

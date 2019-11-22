@@ -646,11 +646,7 @@ namespace Library
         public string GetItemName()
         {
             string result = Info.ItemName;
-<<<<<<< HEAD
             if ((CustomName != null) && (CustomName != string.Empty))
-=======
-            if (CustomName != string.Empty)
->>>>>>> 669a7b5d1df8127e805c76f8ce1c40bddbd0f92f
                 result = CustomName;
 
             return result;

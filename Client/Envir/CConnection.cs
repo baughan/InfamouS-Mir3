@@ -2081,11 +2081,7 @@ namespace Client.Envir
             {
                 if (p.NewStats.Count == 0)
                 {
-<<<<<<< HEAD
-                    GameScene.Game.ReceiveChat($"Nothing happen to your {fromCell.Item.Info.ItemName}", MessageType.Hint);
-=======
                     GameScene.Game.ReceiveChat($"Nothing happen to your {fromCell.Item.GetItemName()}", MessageType.Hint);
->>>>>>> 669a7b5d1df8127e805c76f8ce1c40bddbd0f92f
                     return;
                 }
 
@@ -2095,17 +2091,6 @@ namespace Client.Envir
 
                     if (pair.Key == Stat.WeaponElement)
                     {
-<<<<<<< HEAD
-                        GameScene.Game.ReceiveChat($"Your {fromCell.Item.Info.ItemName} has been effected: New Element {(Element)fromCell.Item.AddedStats[Stat.WeaponElement]}", MessageType.Hint);
-                        continue;
-                    }
-
-                    string msg = p.NewStats.GetDisplay(pair.Key);
-
-                    if (string.IsNullOrEmpty(msg)) continue;
-
-                    GameScene.Game.ReceiveChat($"Your {fromCell.Item.Info.ItemName} has been effected: {msg}", MessageType.Hint);
-=======
                         GameScene.Game.ReceiveChat($"Your {fromCell.Item.GetItemName()} has been effected: New Element {(Element)fromCell.Item.AddedStats[Stat.WeaponElement]}", MessageType.Hint);
                         continue;
                     }
@@ -2113,12 +2098,9 @@ namespace Client.Envir
                     string msg = p.NewStats.GetDisplay(pair.Key);
 
                     if (string.IsNullOrEmpty(msg)) continue;
-
                     GameScene.Game.ReceiveChat($"Your {fromCell.Item.GetItemName()} has been effected: {msg}", MessageType.Hint);
->>>>>>> 669a7b5d1df8127e805c76f8ce1c40bddbd0f92f
                 }
             }
-
             fromCell.RefreshItem();
         }
         public void Process(S.ItemStatsRefreshed p)
@@ -3057,10 +3039,9 @@ namespace Client.Envir
         }
         public void Process(S.NPCClose p)
         {
-
-
             GameScene.Game.NPCBox.Visible = false;
         }
+
         public void Process(S.NPCAccessoryLevelUp p)
         {
             if (p.Target != null)
@@ -3098,7 +3079,6 @@ namespace Client.Envir
                 fromCell.Locked = false;
             }
         }
-
         public void Process(S.GroupSwitch p)
         {
             GameScene.Game.GroupBox.AllowGroup = p.Allow;
@@ -3106,7 +3086,6 @@ namespace Client.Envir
         public void Process(S.GroupMember p)
         {
             GameScene.Game.GroupBox.Members.Add(new ClientPlayerInfo { ObjectID = p.ObjectID, Name = p.Name });
-
 
             GameScene.Game.ReceiveChat($"-{p.Name} has joined the group.", MessageType.Group);
 
@@ -3117,7 +3096,6 @@ namespace Client.Envir
 
             GameScene.Game.BigMapBox.Update(data);
             GameScene.Game.MiniMapBox.Update(data);
-
         }
         public void Process(S.GroupRemove p)
         {
@@ -3151,6 +3129,7 @@ namespace Client.Envir
                 GameScene.Game.MiniMapBox.Update(data);
             }
         }
+
         public void Process(S.GroupInvite p)
         {
             DXMessageBox messageBox = new DXMessageBox($"Do you want to group with {p.Name}?", "Group Invitation", DXMessageBoxButtons.YesNo);
@@ -3240,7 +3219,6 @@ namespace Client.Envir
 
             GameScene.Game.MasterBox.UpdateInterface();
         }
-
         public void Process(S.BuffAdd p)
         {
             MapObject.User.AddBuff(p.Buff);
@@ -3292,10 +3270,7 @@ namespace Client.Envir
 
         public void Process(S.Inspect p)
         {
-
-
             GameScene.Game.InspectBox.NewInformation(p);
-
         }
         public void Process(S.Rankings p)
         {
@@ -4053,19 +4028,10 @@ namespace Client.Envir
             foreach (MapObject ob in GameScene.Game.MapControl.Objects)
             {
                 if (ob.Race != ObjectType.Monster || ob.ObjectID != p.ObjectID) continue;
-<<<<<<< HEAD
 
                 MonsterObject monster = (MonsterObject)ob;
-
                 if (monster.CompanionObject == null) continue;
 
-=======
-
-                MonsterObject monster = (MonsterObject)ob;
-
-                if (monster.CompanionObject == null) continue;
-
->>>>>>> 669a7b5d1df8127e805c76f8ce1c40bddbd0f92f
                 monster.CompanionObject.HeadShape = p.HeadShape;
                 monster.CompanionObject.BackShape = p.BackShape;
                 return;
@@ -4874,16 +4840,9 @@ namespace Client.Envir
 
             if (p.NewStats.Count == 0)
             {
-<<<<<<< HEAD
-                GameScene.Game.ReceiveChat($"Nothing happen to your {fromCell.Item.Info.ItemName}", MessageType.Hint);
-=======
                 GameScene.Game.ReceiveChat($"Nothing happen to your {fromCell.Item.GetItemName()}", MessageType.Hint);
->>>>>>> 669a7b5d1df8127e805c76f8ce1c40bddbd0f92f
                 return;
             }
-
-
-
             fromCell.RefreshItem();
         }
 
@@ -4898,4 +4857,3 @@ namespace Client.Envir
         }
     }
 }
-
