@@ -1659,6 +1659,7 @@ namespace Server.Envir
             UserItem freshItem = UserItemList.CreateNewObject();
 
             freshItem.Colour = item.Colour;
+            freshItem.CustomName = string.Empty;
 
             freshItem.Info = item.Info;
             freshItem.CurrentDurability = item.CurrentDurability;
@@ -1681,6 +1682,8 @@ namespace Server.Envir
             item.Flags = check.Flags;
             item.ExpireTime = check.ExpireTime;
 
+            item.CustomName = string.Empty;
+
             if (item.Info.Effect == ItemEffect.Gold || item.Info.Effect == ItemEffect.Experience)
                 item.Count = check.Count;
             else
@@ -1695,6 +1698,7 @@ namespace Server.Envir
             UserItem item = UserItemList.CreateNewObject();
 
             item.Colour = Color.FromArgb(Random.Next(256), Random.Next(256), Random.Next(256));
+            item.CustomName = string.Empty;
 
             item.Info = info;
             item.CurrentDurability = info.Durability;
@@ -1726,6 +1730,7 @@ namespace Server.Envir
             item.MaxDurability = info.Durability;
 
             item.Colour = Color.FromArgb(Random.Next(256), Random.Next(256), Random.Next(256));
+            item.CustomName = string.Empty;
 
             if (item.Info.Rarity != Rarity.Common)
                 chance *= 2;

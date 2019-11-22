@@ -2081,7 +2081,11 @@ namespace Client.Envir
             {
                 if (p.NewStats.Count == 0)
                 {
+<<<<<<< HEAD
                     GameScene.Game.ReceiveChat($"Nothing happen to your {fromCell.Item.Info.ItemName}", MessageType.Hint);
+=======
+                    GameScene.Game.ReceiveChat($"Nothing happen to your {fromCell.Item.GetItemName()}", MessageType.Hint);
+>>>>>>> 669a7b5d1df8127e805c76f8ce1c40bddbd0f92f
                     return;
                 }
 
@@ -2091,6 +2095,7 @@ namespace Client.Envir
 
                     if (pair.Key == Stat.WeaponElement)
                     {
+<<<<<<< HEAD
                         GameScene.Game.ReceiveChat($"Your {fromCell.Item.Info.ItemName} has been effected: New Element {(Element)fromCell.Item.AddedStats[Stat.WeaponElement]}", MessageType.Hint);
                         continue;
                     }
@@ -2100,6 +2105,17 @@ namespace Client.Envir
                     if (string.IsNullOrEmpty(msg)) continue;
 
                     GameScene.Game.ReceiveChat($"Your {fromCell.Item.Info.ItemName} has been effected: {msg}", MessageType.Hint);
+=======
+                        GameScene.Game.ReceiveChat($"Your {fromCell.Item.GetItemName()} has been effected: New Element {(Element)fromCell.Item.AddedStats[Stat.WeaponElement]}", MessageType.Hint);
+                        continue;
+                    }
+
+                    string msg = p.NewStats.GetDisplay(pair.Key);
+
+                    if (string.IsNullOrEmpty(msg)) continue;
+
+                    GameScene.Game.ReceiveChat($"Your {fromCell.Item.GetItemName()} has been effected: {msg}", MessageType.Hint);
+>>>>>>> 669a7b5d1df8127e805c76f8ce1c40bddbd0f92f
                 }
             }
 
@@ -2173,7 +2189,7 @@ namespace Client.Envir
 
 
             if (p.CurrentDurability == 0)
-                GameScene.Game.ReceiveChat($"Your item {fromCell.Item.Info.ItemName} has dropped to durability 0", MessageType.System);
+                GameScene.Game.ReceiveChat($"Your item {fromCell.Item.GetItemName()} has dropped to durability 0", MessageType.System);
 
             fromCell.RefreshItem();
         }
@@ -2941,6 +2957,103 @@ namespace Client.Envir
             }
 
             GameScene.Game.NPCRefineRetrieveBox.RefreshList();
+        }
+        public void Process(S.NPCItemRename p)
+        {
+            foreach (CellLinkInfo cellLinkInfo in p.Item)
+            {
+                DXItemCell[] grid;
+
+                switch (cellLinkInfo.GridType)
+                {
+                    case GridType.Inventory:
+                        grid = GameScene.Game.InventoryBox.Grid.Grid;
+                        break;
+                    case GridType.Equipment:
+                        grid = GameScene.Game.CharacterBox.Grid;
+                        break;
+                    case GridType.Storage:
+                        grid = GameScene.Game.StorageBox.Grid.Grid;
+                        break;
+                    case GridType.CompanionInventory:
+                        grid = GameScene.Game.CompanionBox.InventoryGrid.Grid;
+                        break;
+                    case GridType.CompanionEquipment:
+                        grid = GameScene.Game.CompanionBox.EquipmentGrid;
+                        break;
+                    default:
+                        throw new ArgumentOutOfRangeException();
+                }
+
+                DXItemCell fromCell = grid[cellLinkInfo.Slot];
+                fromCell.Locked = false;
+
+                if (!p.Success) continue;
+
+                fromCell.Item.CustomName = p.Rename;
+                fromCell.RefreshItem();
+
+                GameScene.Game.NPCItemRenameBox.RenameTextBox.TextBox.Text = string.Empty;
+            }
+
+            foreach (CellLinkInfo cellLinkInfo in p.Scroll)
+            {
+                DXItemCell[] grid;
+
+                switch (cellLinkInfo.GridType)
+                {
+                    case GridType.Inventory:
+                        grid = GameScene.Game.InventoryBox.Grid.Grid;
+                        break;
+                    case GridType.Equipment:
+                        grid = GameScene.Game.CharacterBox.Grid;
+                        break;
+                    case GridType.Storage:
+                        grid = GameScene.Game.StorageBox.Grid.Grid;
+                        break;
+                    case GridType.CompanionInventory:
+                        grid = GameScene.Game.CompanionBox.InventoryGrid.Grid;
+                        break;
+                    case GridType.CompanionEquipment:
+                        grid = GameScene.Game.CompanionBox.EquipmentGrid;
+                        break;
+                    default:
+                        throw new ArgumentOutOfRangeException();
+                }
+
+                DXItemCell fromCell = grid[cellLinkInfo.Slot];
+                fromCell.Locked = false;
+
+                if (!p.Success) continue;
+
+
+                if (!fromCell.Item.Info.ShouldLinkInfo)
+                {
+                    for (int i = 0; i < GameScene.Game.BeltBox.Links.Length; i++)
+                    {
+                        ClientBeltLink link = GameScene.Game.BeltBox.Links[i];
+                        if (link.LinkItemIndex != fromCell.Item.Index) continue;
+
+                        link.LinkItemIndex = -1;
+
+                        if (i < GameScene.Game.BeltBox.Grid.Grid.Length)
+                            GameScene.Game.BeltBox.Grid.Grid[i].QuickItem = null; //set belt to null
+
+                        if (!GameScene.Game.Observer)
+                            CEnvir.Enqueue(new C.BeltLinkChanged { Slot = link.Slot, LinkIndex = link.LinkInfoIndex, LinkItemIndex = link.LinkItemIndex }); //Update server
+                    }
+                }
+
+
+                if (cellLinkInfo.Count == fromCell.Item.Count)
+                    fromCell.Item = null;
+                else
+                    fromCell.Item.Count -= cellLinkInfo.Count;
+
+                fromCell.RefreshItem();
+
+                GameScene.Game.NPCItemRenameBox.RenameTextBox.TextBox.Text = string.Empty;
+            }
         }
         public void Process(S.NPCClose p)
         {
@@ -3940,11 +4053,19 @@ namespace Client.Envir
             foreach (MapObject ob in GameScene.Game.MapControl.Objects)
             {
                 if (ob.Race != ObjectType.Monster || ob.ObjectID != p.ObjectID) continue;
+<<<<<<< HEAD
 
                 MonsterObject monster = (MonsterObject)ob;
 
                 if (monster.CompanionObject == null) continue;
 
+=======
+
+                MonsterObject monster = (MonsterObject)ob;
+
+                if (monster.CompanionObject == null) continue;
+
+>>>>>>> 669a7b5d1df8127e805c76f8ce1c40bddbd0f92f
                 monster.CompanionObject.HeadShape = p.HeadShape;
                 monster.CompanionObject.BackShape = p.BackShape;
                 return;
@@ -4753,7 +4874,11 @@ namespace Client.Envir
 
             if (p.NewStats.Count == 0)
             {
+<<<<<<< HEAD
                 GameScene.Game.ReceiveChat($"Nothing happen to your {fromCell.Item.Info.ItemName}", MessageType.Hint);
+=======
+                GameScene.Game.ReceiveChat($"Nothing happen to your {fromCell.Item.GetItemName()}", MessageType.Hint);
+>>>>>>> 669a7b5d1df8127e805c76f8ce1c40bddbd0f92f
                 return;
             }
 

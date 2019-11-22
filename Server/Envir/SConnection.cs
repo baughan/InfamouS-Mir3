@@ -587,6 +587,12 @@ namespace Server.Envir
 
             Player.NPCMasterRefineEvaluate(p);
         }
+        public void Process(C.NPCItemRename p)
+        {
+            if (Stage != GameStage.Game) return;
+
+            Player.NPCItemRename(p);
+        }
         public void Process(C.NPCClose p)
         {
             if (Stage != GameStage.Game) return;

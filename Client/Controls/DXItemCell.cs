@@ -1135,6 +1135,12 @@ namespace Client.Controls
                             case GridType.WeaponCraftGrey:
                                 cell.LinkedCount = 1;
                                 break;
+                            case GridType.ItemRenameItem:
+                                cell.LinkedCount = 1;
+                                break;
+                            case GridType.ItemRenameScroll:
+                                cell.LinkedCount = 1;
+                                break;
                         }
 
                         cell.Link = this;
@@ -1477,6 +1483,27 @@ namespace Client.Controls
                         if (!Item.AddedStats.Compare(GameScene.Game.NPCAccessoryRefineBox.TargetCell.Grid[0].Link?.Item?.AddedStats)) return false;
                     }
                     break;
+                case GridType.ItemRenameScroll:
+                    if (Item.Info.Effect != ItemEffect.ItemRenameScroll) return false;
+                    break;
+                case GridType.ItemRenameItem:
+                    if (Item.CustomName != string.Empty || Item.Count > 1) return false;
+
+                    switch (Item.Info.ItemType)
+                    {
+                        case ItemType.Armour:
+                        case ItemType.Bracelet:
+                        case ItemType.Helmet:
+                        case ItemType.Necklace:
+                        case ItemType.Ring:
+                        case ItemType.Shield:
+                        case ItemType.Shoes:
+                        case ItemType.Weapon:
+                            break;
+                        default:
+                            return false;
+                    }
+                    break;
             }
 
             return true;
@@ -1809,18 +1836,18 @@ namespace Client.Controls
                             if (GameScene.Game.NPCRepairBox.IsVisible)
                             {
                                 if (Item.CurrentDurability >= Item.MaxDurability || !Item.Info.CanRepair)
-                                    GameScene.Game.ReceiveChat($"Unable to repair {Item.Info.ItemName}, it is already fully repaired.", MessageType.System);
+                                    GameScene.Game.ReceiveChat($"Unable to repair {Item.GetItemName()}, it is already fully repaired.", MessageType.System);
                                 else if (!MoveItem(GameScene.Game.NPCRepairBox.Grid))
-                                    GameScene.Game.ReceiveChat($"Unable to repair {Item.Info.ItemName} here.", MessageType.System);
+                                    GameScene.Game.ReceiveChat($"Unable to repair {Item.GetItemName()} here.", MessageType.System);
                                 return;
                             }
 
                             if (GameScene.Game.NPCSellBox.IsVisible)
                             {
                                 if (!Item.Info.CanSell)
-                                    GameScene.Game.ReceiveChat($"Unable to Sell {Item.Info.ItemName}, it cannot be sold.", MessageType.System);
+                                    GameScene.Game.ReceiveChat($"Unable to Sell {Item.GetItemName()}, it cannot be sold.", MessageType.System);
                                 else if (!MoveItem(GameScene.Game.NPCSellBox.Grid))
-                                    GameScene.Game.ReceiveChat($"Unable to Sell {Item.Info.ItemName} here.", MessageType.System);
+                                    GameScene.Game.ReceiveChat($"Unable to Sell {Item.GetItemName()} here.", MessageType.System);
                                 return;
                             }
 
@@ -1853,7 +1880,7 @@ namespace Client.Controls
                                             return;
                                         break;
                                 }
-                                GameScene.Game.ReceiveChat($"Unable to use {Item.Info.ItemName} to refine.", MessageType.System);
+                                GameScene.Game.ReceiveChat($"Unable to use {Item.GetItemName()} to refine.", MessageType.System);
                                 return;
                             }
                             if (GameScene.Game.NPCRefinementStoneBox.IsVisible)
@@ -1876,7 +1903,39 @@ namespace Client.Controls
                                         MoveItem(GameScene.Game.NPCRefinementStoneBox.CrystalGrid);
                                         return;
                                 }
-                                GameScene.Game.ReceiveChat($"Unable to use {Item.Info.ItemName} to refine.", MessageType.System);
+                                GameScene.Game.ReceiveChat($"Unable to use {Item.GetItemName()} to refine.", MessageType.System);
+                                return;
+                            }
+                            if (GameScene.Game.NPCItemRenameBox.IsVisible)
+                            {
+                                switch (Item.Info.Effect)
+                                {
+                                    case ItemEffect.ItemRenameScroll:
+                                        if (MoveItem(GameScene.Game.NPCItemRenameBox.ScrollGrid))
+                                            return;
+                                        break;
+                                    default:
+                                        if (MoveItem(GameScene.Game.NPCItemRenameBox.ItemGrid))
+                                            return;
+                                        break;
+                                }
+                                GameScene.Game.ReceiveChat($"Unable to use {Item.GetItemName()} to rename.", MessageType.System);
+                                return;
+                            }
+                            if (GameScene.Game.NPCItemRenameBox.IsVisible)
+                            {
+                                switch (Item.Info.Effect)
+                                {
+                                    case ItemEffect.ItemRenameScroll:
+                                        if (MoveItem(GameScene.Game.NPCItemRenameBox.ScrollGrid))
+                                            return;
+                                        break;
+                                    default:
+                                        if (MoveItem(GameScene.Game.NPCItemRenameBox.ItemGrid))
+                                            return;
+                                        break;
+                                }
+                                GameScene.Game.ReceiveChat($"Unable to use {Item.Info.ItemName} to rename.", MessageType.System);
                                 return;
                             }
                             if (GameScene.Game.NPCWeaponCraftBox.IsVisible)
@@ -1912,7 +1971,7 @@ namespace Client.Controls
                                         MoveItem(GameScene.Game.NPCWeaponCraftBox.ItemCell);
                                         return;
                                 }
-                                GameScene.Game.ReceiveChat($"Unable to use {Item.Info.ItemName} to Craft.", MessageType.System);
+                                GameScene.Game.ReceiveChat($"Unable to use {Item.GetItemName()} to Craft.", MessageType.System);
                                 return;
                             }
 
@@ -1920,9 +1979,30 @@ namespace Client.Controls
                             {
 
                                 if (!Item.CanFragment())
-                                    GameScene.Game.ReceiveChat($"Unable to Fragment {Item.Info.ItemName}, it cannot be Fragmented.", MessageType.System);
+                                    GameScene.Game.ReceiveChat($"Unable to Fragment {Item.GetItemName()}, it cannot be Fragmented.", MessageType.System);
                                 else MoveItem(GameScene.Game.NPCItemFragmentBox.Grid);
                                 
+                                return;
+                            }
+
+                            if (GameScene.Game.NPCItemRenameBox.IsVisible)
+                            {
+                                switch (Item.Info.Effect)
+                                {
+                                    case ItemEffect.ItemRenameScroll:
+                                        if (MoveItem(GameScene.Game.NPCItemRenameBox.ScrollGrid))
+                                            return;
+                                        break;
+                                    default:
+                                        if (MoveItem(GameScene.Game.NPCItemRenameBox.ItemGrid))
+                                            return;
+                                        break;
+                                }
+<<<<<<< HEAD
+                                GameScene.Game.ReceiveChat($"Unable to use {Item.Info.ItemName} to rename.", MessageType.System);
+=======
+                                GameScene.Game.ReceiveChat($"Unable to use {Item.GetItemName()} to rename.", MessageType.System);
+>>>>>>> 669a7b5d1df8127e805c76f8ce1c40bddbd0f92f
                                 return;
                             }
 
@@ -1931,10 +2011,10 @@ namespace Client.Controls
                                 if (GameScene.Game.NPCAccessoryLevelBox.TargetCell.Grid[0].Link == null)
                                 {
                                     if (!MoveItem(GameScene.Game.NPCAccessoryLevelBox.TargetCell))
-                                        GameScene.Game.ReceiveChat($"Unable to Level {Item.Info.ItemName}.", MessageType.System);
+                                        GameScene.Game.ReceiveChat($"Unable to Level {Item.GetItemName()}.", MessageType.System);
                                 }
                                 else if (!MoveItem(GameScene.Game.NPCAccessoryLevelBox.Grid))
-                                    GameScene.Game.ReceiveChat($"Unable to use {Item.Info.ItemName} to level.", MessageType.System);
+                                    GameScene.Game.ReceiveChat($"Unable to use {Item.GetItemName()} to level.", MessageType.System);
 
                                 return;
                             }
@@ -1944,7 +2024,7 @@ namespace Client.Controls
                             {
 
                                 if (!Item.CanAccessoryUpgrade())
-                                    GameScene.Game.ReceiveChat($"Unable to Upgrade {Item.Info.ItemName}.", MessageType.System);
+                                    GameScene.Game.ReceiveChat($"Unable to Upgrade {Item.GetItemName()}.", MessageType.System);
                                 else
                                     MoveItem(GameScene.Game.NPCAccessoryUpgradeBox.TargetCell);
 
@@ -1954,7 +2034,7 @@ namespace Client.Controls
                             if (GameScene.Game.NPCAccessoryResetBox.IsVisible)
                             {
                                 if (!MoveItem(GameScene.Game.NPCAccessoryResetBox.AccessoryGrid))
-                                    GameScene.Game.ReceiveChat($"Unable to Reset {Item.Info.ItemName}.", MessageType.System);
+                                    GameScene.Game.ReceiveChat($"Unable to Reset {Item.GetItemName()}.", MessageType.System);
                                 
 
                                 return;
@@ -1979,7 +2059,35 @@ namespace Client.Controls
                                         MoveItem(GameScene.Game.NPCRefineBox.SpecialGrid);
                                         return;
                                 }
-                                GameScene.Game.ReceiveChat($"Unable to use {Item.Info.ItemName} to refine.", MessageType.System);
+                                GameScene.Game.ReceiveChat($"Unable to use {Item.GetItemName()} to refine.", MessageType.System);
+                                return;
+                            }
+
+                            if (GameScene.Game.NPCAccessoryRefineBox.IsVisible)
+                            {
+                                if (Item.Level > 1)
+                                {
+                                    GameScene.Game.ReceiveChat($"Unable to refine {Item.GetItemName()} because it has been levelled.", MessageType.System);
+                                }
+                                else
+                                {
+                                    if (Item.Info.ItemType == ItemType.Ore)
+                                    {
+                                        if (!MoveItem(GameScene.Game.NPCAccessoryRefineBox.OreTargetCell))
+                                            GameScene.Game.ReceiveChat($"You cannot use {Item.GetItemName()}, you must use Corundum Ore.", MessageType.System);
+                                    }
+                                    else
+                                    {
+                                        if (GameScene.Game.NPCAccessoryRefineBox.TargetCell.Grid[0].Link == null)
+                                        {
+
+                                            if (!MoveItem(GameScene.Game.NPCAccessoryRefineBox.TargetCell))
+                                                GameScene.Game.ReceiveChat($"Unable to refine {Item.GetItemName()}.", MessageType.System);
+                                        }
+                                        else if (!MoveItem(GameScene.Game.NPCAccessoryRefineBox.Grid))
+                                            GameScene.Game.ReceiveChat($"{Item.GetItemName()} doesnt have the same stats as the main accessory.", MessageType.System);
+                                    }
+                                }
                                 return;
                             }
 
@@ -2064,18 +2172,18 @@ namespace Client.Controls
                             if (GameScene.Game.NPCRepairBox.IsVisible)
                             {
                                 if (Item.CurrentDurability >= Item.MaxDurability || !Item.Info.CanRepair)
-                                    GameScene.Game.ReceiveChat($"Unable to repair {Item.Info.ItemName}, it is already fully repaired.", MessageType.System);
+                                    GameScene.Game.ReceiveChat($"Unable to repair {Item.GetItemName()}, it is already fully repaired.", MessageType.System);
                                 else if (!MoveItem(GameScene.Game.NPCRepairBox.Grid))
-                                    GameScene.Game.ReceiveChat($"Unable to repair {Item.Info.ItemName} here.", MessageType.System);
+                                    GameScene.Game.ReceiveChat($"Unable to repair {Item.GetItemName()} here.", MessageType.System);
                                 return;
                             }
 
                             if (GameScene.Game.NPCSellBox.IsVisible)
                             {
                                 if (!Item.Info.CanSell)
-                                    GameScene.Game.ReceiveChat($"Unable to Sell {Item.Info.ItemName}, it cannot be sold.", MessageType.System);
+                                    GameScene.Game.ReceiveChat($"Unable to Sell {Item.GetItemName()}, it cannot be sold.", MessageType.System);
                                 else if (!MoveItem(GameScene.Game.NPCSellBox.Grid))
-                                    GameScene.Game.ReceiveChat($"Unable to Sell {Item.Info.ItemName} here.", MessageType.System);
+                                    GameScene.Game.ReceiveChat($"Unable to Sell {Item.GetItemName()} here.", MessageType.System);
                                 return;
                             }
 
@@ -2098,7 +2206,7 @@ namespace Client.Controls
                                         MoveItem(GameScene.Game.NPCRefineBox.SpecialGrid);
                                         return;
                                 }
-                                GameScene.Game.ReceiveChat($"Unable to use {Item.Info.ItemName} to refine.", MessageType.System);
+                                GameScene.Game.ReceiveChat($"Unable to use {Item.GetItemName()} to refine.", MessageType.System);
                                 return;
                             }
 
@@ -2131,7 +2239,7 @@ namespace Client.Controls
                                             return;
                                         break;
                                 }
-                                GameScene.Game.ReceiveChat($"Unable to use {Item.Info.ItemName} to refine.", MessageType.System);
+                                GameScene.Game.ReceiveChat($"Unable to use {Item.GetItemName()} to refine.", MessageType.System);
                                 return;
                             }
 
@@ -2140,10 +2248,10 @@ namespace Client.Controls
                                 if (GameScene.Game.NPCAccessoryLevelBox.TargetCell.Grid[0].Link == null)
                                 {
                                     if (!MoveItem(GameScene.Game.NPCAccessoryLevelBox.TargetCell))
-                                        GameScene.Game.ReceiveChat($"Unable to Level {Item.Info.ItemName}.", MessageType.System);
+                                        GameScene.Game.ReceiveChat($"Unable to Level {Item.GetItemName()}.", MessageType.System);
                                 }
                                 else if (!MoveItem(GameScene.Game.NPCAccessoryLevelBox.Grid))
-                                    GameScene.Game.ReceiveChat($"Unable to use {Item.Info.ItemName} to level.", MessageType.System);
+                                    GameScene.Game.ReceiveChat($"Unable to use {Item.GetItemName()} to level.", MessageType.System);
 
                                 return;
                             }
@@ -2152,7 +2260,7 @@ namespace Client.Controls
                             {
 
                                 if (!Item.CanAccessoryUpgrade())
-                                    GameScene.Game.ReceiveChat($"Unable to Upgrade {Item.Info.ItemName}.", MessageType.System);
+                                    GameScene.Game.ReceiveChat($"Unable to Upgrade {Item.GetItemName()}.", MessageType.System);
                                 else
                                     MoveItem(GameScene.Game.NPCAccessoryUpgradeBox.TargetCell);
 
@@ -2162,7 +2270,7 @@ namespace Client.Controls
                             if (GameScene.Game.NPCAccessoryResetBox.IsVisible)
                             {
                                 if (!MoveItem(GameScene.Game.NPCAccessoryResetBox.AccessoryGrid))
-                                    GameScene.Game.ReceiveChat($"Unable to Reset {Item.Info.ItemName}.", MessageType.System);
+                                    GameScene.Game.ReceiveChat($"Unable to Reset {Item.GetItemName()}.", MessageType.System);
 
                                 return;
                             }
@@ -2217,9 +2325,9 @@ namespace Client.Controls
                             if (GameScene.Game.NPCRepairBox.Visible)
                             {
                                 if (Item.CurrentDurability >= Item.MaxDurability || !Item.Info.CanRepair)
-                                    GameScene.Game.ReceiveChat($"Unable to repair {Item.Info.ItemName}, it is already fully repaired.", MessageType.System);
+                                    GameScene.Game.ReceiveChat($"Unable to repair {Item.GetItemName()}, it is already fully repaired.", MessageType.System);
                                 else if (!MoveItem(GameScene.Game.NPCRepairBox.Grid))
-                                    GameScene.Game.ReceiveChat($"Unable to repair {Item.Info.ItemName} here.", MessageType.System);
+                                    GameScene.Game.ReceiveChat($"Unable to repair {Item.GetItemName()} here.", MessageType.System);
                                 return;
                             }
 
@@ -2252,7 +2360,7 @@ namespace Client.Controls
                                             return;
                                         break;
                                 }
-                                GameScene.Game.ReceiveChat($"Unable to use {Item.Info.ItemName} to refine.", MessageType.System);
+                                GameScene.Game.ReceiveChat($"Unable to use {Item.GetItemName()} to refine.", MessageType.System);
                                 return;
                             }
                             if (GameScene.Game.NPCRefineBox.Visible)
@@ -2271,7 +2379,51 @@ namespace Client.Controls
                                         MoveItem(GameScene.Game.NPCRefineBox.AccessoryGrid);
                                         return;
                                 }
-                                GameScene.Game.ReceiveChat($"Unable to use {Item.Info.ItemName} to refine.", MessageType.System);
+                                GameScene.Game.ReceiveChat($"Unable to use {Item.GetItemName()} to refine.", MessageType.System);
+                                return;
+                            }
+
+                            if (GameScene.Game.NPCAccessoryRefineBox.IsVisible)
+                            {
+                                if (Item.Level > 1)
+                                {
+                                    GameScene.Game.ReceiveChat($"Unable to refine {Item.GetItemName()} because it has been levelled.", MessageType.System);
+                                }
+                                else
+                                {
+                                    if (Item.Info.ItemType == ItemType.Ore)
+                                    {
+                                        if (!MoveItem(GameScene.Game.NPCAccessoryRefineBox.OreTargetCell))
+                                            GameScene.Game.ReceiveChat($"You cannot use {Item.GetItemName()}, you must use Corundum Ore.", MessageType.System);
+                                    }
+                                    else
+                                    {
+                                        if (GameScene.Game.NPCAccessoryRefineBox.TargetCell.Grid[0].Link == null)
+                                        {
+
+                                            if (!MoveItem(GameScene.Game.NPCAccessoryRefineBox.TargetCell))
+                                                GameScene.Game.ReceiveChat($"Unable to refine {Item.GetItemName()}.", MessageType.System);
+                                        }
+                                        else if (!MoveItem(GameScene.Game.NPCAccessoryRefineBox.Grid))
+                                            GameScene.Game.ReceiveChat($"{Item.GetItemName()} doesnt have the same stats as the main accessory.", MessageType.System);
+                                    }
+                                }
+                                return;
+                            }
+                            if (GameScene.Game.NPCItemRenameBox.IsVisible)
+                            {
+                                switch (Item.Info.Effect)
+                                {
+                                    case ItemEffect.ItemRenameScroll:
+                                        if (MoveItem(GameScene.Game.NPCItemRenameBox.ScrollGrid))
+                                            return;
+                                        break;
+                                    default:
+                                        if (MoveItem(GameScene.Game.NPCItemRenameBox.ItemGrid))
+                                            return;
+                                        break;
+                                }
+                                GameScene.Game.ReceiveChat($"Unable to use {Item.GetItemName()} to rename.", MessageType.System);
                                 return;
                             }
 
@@ -2302,7 +2454,22 @@ namespace Client.Controls
                                 }
                                 return;
                             }
-
+                            if (GameScene.Game.NPCItemRenameBox.IsVisible)
+                            {
+                                switch (Item.Info.Effect)
+                                {
+                                    case ItemEffect.ItemRenameScroll:
+                                        if (MoveItem(GameScene.Game.NPCItemRenameBox.ScrollGrid))
+                                            return;
+                                        break;
+                                    default:
+                                        if (MoveItem(GameScene.Game.NPCItemRenameBox.ItemGrid))
+                                            return;
+                                        break;
+                                }
+                                GameScene.Game.ReceiveChat($"Unable to use {Item.Info.ItemName} to rename.", MessageType.System);
+                                return;
+                            }
                             if (GameScene.Game.MarketPlaceBox.ConsignTab.IsVisible)
                             {
                                 MoveItem(GameScene.Game.MarketPlaceBox.ConsignGrid);
@@ -2318,9 +2485,9 @@ namespace Client.Controls
                             if (GameScene.Game.NPCRepairBox.Visible)
                             {
                                 if (Item.CurrentDurability >= Item.MaxDurability || !Item.Info.CanRepair)
-                                    GameScene.Game.ReceiveChat($"Unable to repair {Item.Info.ItemName}, it is already fully repaired.", MessageType.System);
+                                    GameScene.Game.ReceiveChat($"Unable to repair {Item.GetItemName()}, it is already fully repaired.", MessageType.System);
                                 else if (!MoveItem(GameScene.Game.NPCRepairBox.Grid))
-                                    GameScene.Game.ReceiveChat($"Unable to repair {Item.Info.ItemName} here.", MessageType.System);
+                                    GameScene.Game.ReceiveChat($"Unable to repair {Item.GetItemName()} here.", MessageType.System);
                                 return;
                             }
                             
@@ -2339,9 +2506,9 @@ namespace Client.Controls
                             if (GameScene.Game.NPCRepairBox.Visible)
                             {
                                 if (Item.CurrentDurability >= Item.MaxDurability || !Item.Info.CanRepair)
-                                    GameScene.Game.ReceiveChat($"Unable to repair {Item.Info.ItemName}, it is already fully repaired.", MessageType.System);
+                                    GameScene.Game.ReceiveChat($"Unable to repair {Item.GetItemName()}, it is already fully repaired.", MessageType.System);
                                 else if (!MoveItem(GameScene.Game.NPCRepairBox.Grid))
-                                    GameScene.Game.ReceiveChat($"Unable to repair {Item.Info.ItemName} here.", MessageType.System);
+                                    GameScene.Game.ReceiveChat($"Unable to repair {Item.GetItemName()} here.", MessageType.System);
                                 return;
                             }
 
@@ -2350,7 +2517,7 @@ namespace Client.Controls
                                 if (GameScene.Game.NPCAccessoryLevelBox.TargetCell.Grid[0].Link == null)
                                 {
                                     if (!MoveItem(GameScene.Game.NPCAccessoryLevelBox.TargetCell))
-                                        GameScene.Game.ReceiveChat($"Unable to Level {Item.Info.ItemName}.", MessageType.System);
+                                        GameScene.Game.ReceiveChat($"Unable to Level {Item.GetItemName()}.", MessageType.System);
                                 }
                                 return;
                             }
@@ -2358,7 +2525,7 @@ namespace Client.Controls
                             if (GameScene.Game.NPCAccessoryUpgradeBox.IsVisible)
                             {
                                 if (!Item.CanAccessoryUpgrade())
-                                    GameScene.Game.ReceiveChat($"Unable to Upgrade {Item.Info.ItemName}.", MessageType.System);
+                                    GameScene.Game.ReceiveChat($"Unable to Upgrade {Item.GetItemName()}.", MessageType.System);
                                 else
                                     MoveItem(GameScene.Game.NPCAccessoryUpgradeBox.TargetCell);
 
@@ -2385,9 +2552,9 @@ namespace Client.Controls
                             if (GameScene.Game.NPCRepairBox.Visible)
                             {
                                 if (Item.CurrentDurability >= Item.MaxDurability || !Item.Info.CanRepair)
-                                    GameScene.Game.ReceiveChat($"Unable to repair {Item.Info.ItemName}, it is already fully repaired.", MessageType.System);
+                                    GameScene.Game.ReceiveChat($"Unable to repair {Item.GetItemName()}, it is already fully repaired.", MessageType.System);
                                 else if (!MoveItem(GameScene.Game.NPCRepairBox.Grid))
-                                    GameScene.Game.ReceiveChat($"Unable to repair {Item.Info.ItemName} here.", MessageType.System);
+                                    GameScene.Game.ReceiveChat($"Unable to repair {Item.GetItemName()} here.", MessageType.System);
                                 return;
                             }
 

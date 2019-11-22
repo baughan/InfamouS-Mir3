@@ -175,6 +175,8 @@ namespace Library
         AccessoryRefineCombTarget,
         AccessoryRefineCombItems,
         PartsStorage,
+        ItemRenameItem,
+        ItemRenameScroll
     }
 
     public enum BuffType
@@ -453,6 +455,7 @@ namespace Library
         AccessoryReset,
         WeaponCraft,
         AccessoryRefine,
+        RenameItem,
     }
 
     public enum MagicSchool
@@ -1211,6 +1214,7 @@ namespace Library
         StatExtractor = 90,
         SpiritBlade = 91,
         RefineExtractor = 92,
+        ItemRenameScroll = 93,
     }
 
     [Flags]

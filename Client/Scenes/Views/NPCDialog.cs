@@ -91,6 +91,8 @@ namespace Client.Scenes.Views
             if (GameScene.Game.NPCMasterRefineBox != null && !IsVisible)
                 GameScene.Game.NPCMasterRefineBox.Visible = false;
 
+            if (GameScene.Game.NPCItemRenameBox != null && !IsVisible)
+                GameScene.Game.NPCItemRenameBox.Visible = false;
 
             if (GameScene.Game.NPCItemFragmentBox != null && !IsVisible)
                 GameScene.Game.NPCItemFragmentBox.Visible = false;
@@ -186,6 +188,7 @@ namespace Client.Scenes.Views
             GameScene.Game.NPCCompanionStorageBox.Visible = false;
             GameScene.Game.NPCWeddingRingBox.Visible = false;
             GameScene.Game.NPCItemFragmentBox.Visible = false;
+            GameScene.Game.NPCItemRenameBox.Visible = false;
             GameScene.Game.NPCAccessoryUpgradeBox.Visible = false;
             GameScene.Game.NPCAccessoryLevelBox.Visible = false;
             GameScene.Game.NPCMasterRefineBox.Visible = false;
@@ -223,6 +226,10 @@ namespace Client.Scenes.Views
                     GameScene.Game.NPCRefineRetrieveBox.Location = new Point(0, Size.Height);
                     GameScene.Game.NPCRefineRetrieveBox.Visible = true;
                     GameScene.Game.NPCRefineRetrieveBox.RefreshList();
+                    break;
+                case NPCDialogType.RenameItem:
+                    GameScene.Game.NPCItemRenameBox.Visible = true;
+                    GameScene.Game.NPCItemRenameBox.Location = new Point(Size.Width - GameScene.Game.NPCItemRenameBox.Size.Width, Size.Height);
                     break;
                 case NPCDialogType.CompanionManage:
                     GameScene.Game.NPCCompanionStorageBox.Visible = true;
@@ -2402,7 +2409,7 @@ namespace Client.Scenes.Views
         public void OnRefineChanged(ClientRefineInfo oValue, ClientRefineInfo nValue)
         {
             ItemCell.Item = Refine.Weapon;
-            ItemNameLabel.Text = Refine.Weapon.Info.ItemName;
+            ItemNameLabel.Text = Refine.Weapon.GetItemName();
 
             switch (Refine.Type)
             {
@@ -5561,6 +5568,220 @@ namespace Client.Scenes.Views
                         PhantomCheckBox.Dispose();
 
                     PhantomCheckBox = null;
+                }
+
+                if (SubmitButton != null)
+                {
+                    if (!SubmitButton.IsDisposed)
+                        SubmitButton.Dispose();
+
+                    SubmitButton = null;
+                }
+            }
+
+        }
+
+        #endregion
+    }
+
+    public sealed class NPCItemRenameDialog : DXWindow
+    {
+        public DXItemGrid ItemGrid, ScrollGrid;
+
+        public DXButton SubmitButton;
+
+        public DXTextBox RenameTextBox;
+
+        public override void OnIsVisibleChanged(bool oValue, bool nValue)
+        {
+            base.OnIsVisibleChanged(oValue, nValue);
+
+            if (GameScene.Game.InventoryBox == null) return;
+
+            if (IsVisible)
+                GameScene.Game.InventoryBox.Visible = true;
+
+            if (!IsVisible)
+            {
+                ItemGrid.ClearLinks();
+                ScrollGrid.ClearLinks();
+            }
+        }
+
+        #region RenameValid
+
+        public bool RenameValid
+        {
+            get => _RenameValid;
+            set
+            {
+                if (_RenameValid == value) return;
+
+                bool oldValue = _RenameValid;
+                _RenameValid = value;
+
+                OnRenameValidChanged(oldValue, value);
+            }
+        }
+        private bool _RenameValid;
+        public event EventHandler<EventArgs> RenameValidChanged;
+        public void OnRenameValidChanged(bool oValue, bool nValue)
+        {
+            RenameValidChanged?.Invoke(this, EventArgs.Empty);
+        }
+
+        #endregion
+
+
+        public override WindowType Type => WindowType.None;
+        public override bool CustomSize => false;
+        public override bool AutomaticVisiblity => false;
+
+        public NPCItemRenameDialog()
+        {
+            TitleLabel.Text = "Item Rename";
+
+
+            SetClientSize(new Size(491, 130));
+
+            DXLabel label = new DXLabel
+            {
+                Text = "Item",
+                Location = ClientArea.Location,
+                Parent = this,
+                Font = new Font(Config.FontName, CEnvir.FontSize(8F), FontStyle.Underline)
+            };
+
+            ItemGrid = new DXItemGrid
+            {
+                GridSize = new Size(1, 1),
+                Parent = this,
+                GridType = GridType.ItemRenameItem,
+                Linked = true,
+                Location = new Point(label.Location.X + 5, label.Location.Y + label.Size.Height + 5)
+            };
+
+            label = new DXLabel
+            {
+                Text = "Rename Scroll",
+                Location = new Point(label.Size.Width + 5 + label.Location.X, label.Location.Y),
+                Parent = this,
+                Font = new Font(Config.FontName, CEnvir.FontSize(8F), FontStyle.Underline)
+            };
+
+            ScrollGrid = new DXItemGrid
+            {
+                GridSize = new Size(1, 1),
+                Parent = this,
+                GridType = GridType.ItemRenameScroll,
+                Linked = true,
+                Location = new Point(label.Location.X + 20, label.Location.Y + label.Size.Height + 5)
+            };
+
+            RenameTextBox = new DXTextBox
+            {
+                Parent = this,
+                Location = new Point(label.Size.Width + 5 + label.Location.X, label.Location.Y + label.Size.Height + 5),
+                Size = new Size(120, 20),
+                MaxLength = Globals.MaxItemNameLength,
+                Enabled = false,
+            };
+            RenameTextBox.TextBox.TextChanged += TextBox_TextChanged;
+            RenameTextBox.BeforeDraw += (o, e) =>
+            {
+                RenameTextBox.Enabled = (ItemGrid.Grid?[0].Link != null && ScrollGrid.Grid?[0].Link != null);
+            };
+
+
+            SetClientSize(new Size(491, ScrollGrid.Location.Y + ScrollGrid.Size.Height - ClientArea.Y + 2));
+
+            SubmitButton = new DXButton
+            {
+                Label = { Text = "Submit" },
+                Size = new Size(80, SmallButtonHeight),
+                Parent = this,
+                ButtonType = ButtonType.SmallButton,
+                Enabled = false,
+            };
+            SubmitButton.Location = new Point(ClientArea.Right - SubmitButton.Size.Width, ClientArea.Bottom - SubmitButton.Size.Height);
+            SubmitButton.BeforeDraw += (o, e) =>
+            {
+                SubmitButton.Enabled = (ItemGrid.Grid?[0].Link != null && ScrollGrid.Grid?[0].Link != null && RenameValid);
+            };
+            SubmitButton.MouseClick += (o, e) =>
+            {
+                if (GameScene.Game.Observer) return;
+
+                List<CellLinkInfo> item = new List<CellLinkInfo>();
+                List<CellLinkInfo> scroll = new List<CellLinkInfo>();
+
+                foreach (DXItemCell cell in ItemGrid.Grid)
+                {
+                    if (cell.Link == null) continue;
+
+                    item.Add(new CellLinkInfo { Count = cell.LinkedCount, GridType = cell.Link.GridType, Slot = cell.Link.Slot });
+
+                    cell.Link.Locked = true;
+                    cell.Link = null;
+                }
+                foreach (DXItemCell cell in ScrollGrid.Grid)
+                {
+                    if (cell.Link == null) continue;
+
+                    scroll.Add(new CellLinkInfo { Count = cell.LinkedCount, GridType = cell.Link.GridType, Slot = cell.Link.Slot });
+
+                    cell.Link.Locked = true;
+                    cell.Link = null;
+                }
+
+                if (item.Count < 1)
+                {
+                    GameScene.Game.ReceiveChat("You must add an item.", MessageType.System);
+                    return;
+                }
+
+                if (scroll.Count < 1)
+                {
+                    GameScene.Game.ReceiveChat("You must add a Rename Scroll", MessageType.System);
+                    return;
+                }
+
+                CEnvir.Enqueue(new C.NPCItemRename { Item = item, Scroll = scroll, Rename = RenameTextBox.TextBox.Text });
+            };
+        }
+
+        private void TextBox_TextChanged(object sender, EventArgs e)
+        {
+            RenameValid = Globals.ItemRegex.IsMatch(RenameTextBox.TextBox.Text);
+
+            if (string.IsNullOrEmpty(RenameTextBox.TextBox.Text))
+                RenameTextBox.BorderColour = Color.FromArgb(198, 166, 99);
+            else
+                RenameTextBox.BorderColour = RenameValid ? Color.Green : Color.Red;
+        }
+
+        #region IDisposable
+
+        protected override void Dispose(bool disposing)
+        {
+            base.Dispose(disposing);
+
+            if (disposing)
+            {
+                if (ItemGrid != null)
+                {
+                    if (!ItemGrid.IsDisposed)
+                        ItemGrid.Dispose();
+
+                    ItemGrid = null;
+                }
+
+                if (ScrollGrid != null)
+                {
+                    if (!ScrollGrid.IsDisposed)
+                        ScrollGrid.Dispose();
+
+                    ScrollGrid = null;
                 }
 
                 if (SubmitButton != null)

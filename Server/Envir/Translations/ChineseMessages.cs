@@ -276,6 +276,7 @@ namespace Server.Envir.Translations
         public override string NPCMasterRefineChance { get; set; } = "Your chance of success is: {0}%";
         public override string AccessoryRefineSuccess { get; set; } = "Congratulations your {0} has been refined with {1} + {2}.";
         public override string AccessoryRefineFailed { get; set; } = "The refine failed and your {0}'s have been destroyed";
+        public override string NPCItemRenameSuccess { get; set; } = "Rename was successful";
 
 
         public override string ChargeExpire { get; set; } = "The energy for {0} has left your weapon.";

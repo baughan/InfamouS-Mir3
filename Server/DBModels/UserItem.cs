@@ -131,6 +131,21 @@ namespace Server.DBModels
         }
         private Color _Colour;
 
+        public string CustomName
+        {
+            get { return _CustomName; }
+            set
+            {
+                if (_CustomName == value) return;
+
+                var oldValue = _CustomName;
+                _CustomName = value;
+
+                OnChanged(oldValue, value, "CustomName");
+            }
+        }
+        private string _CustomName;
+
         public DateTime SpecialRepairCoolDown
         {
             get { return _specialRepairCoolDown; }
@@ -515,6 +530,7 @@ namespace Server.DBModels
                 Experience = Experience,
 
                 Colour = Colour,
+                CustomName = CustomName,
 
                 SpecialRepairCoolDown = SpecialRepairCoolDown > SEnvir.Now ? SpecialRepairCoolDown - SEnvir.Now : TimeSpan.Zero,
                 ResetCoolDown = ResetCoolDown > SEnvir.Now ? ResetCoolDown - SEnvir.Now : TimeSpan.Zero,
@@ -758,6 +774,15 @@ namespace Server.DBModels
                 default:
                     return 0;
             }
+        }
+
+        public string GetItemName()
+        {
+            string result = Info.ItemName;
+            if (CustomName != string.Empty)
+                result = CustomName;
+
+            return result;
         }
 
         public int MergeRefineElements(out Stat element)

