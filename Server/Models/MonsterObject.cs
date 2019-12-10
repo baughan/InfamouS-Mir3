@@ -2700,7 +2700,7 @@ namespace Server.Models
             if (PetOwner == null && CurrentMap != null)
                 eRate *= 1 + MapExperienceRate / 100M;
             
-            decimal exp = Math.Min(Experience * eRate, 50000000000000);
+            decimal exp = Math.Min(Experience * eRate, 500000000000000);
 
             if (ePlayers.Count == 0)
             {

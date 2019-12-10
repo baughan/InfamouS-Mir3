@@ -232,11 +232,10 @@ namespace Server.Models
                         else
                         {
                             damage += poison.Value;
-
                             for (int x = 0; x < poison.Owner.Stats[Stat.Rebirth]; x++)
-                                damage = (int)(damage * 1.3F);
+                                damage = Math.Min(int.MaxValue, (long)(damage * 1.3F));
                         }
-                        
+
                         infection = true;
 
                         if (Race == ObjectType.Monster && poison.Owner.Race == ObjectType.Player)
