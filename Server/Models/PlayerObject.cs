@@ -19594,12 +19594,12 @@ namespace Server.Models
 
             UserMagic empowered;
             int bonus = 0;
-            int cap = 30;
+            int cap = 1500;
 
             if (Magics.TryGetValue(MagicType.EmpoweredHealing, out empowered) && Level >= empowered.Info.NeedLevel1)
             {
                 bonus = empowered.GetPower();
-                cap += (1 + empowered.Level) * 30;
+                cap += (1 + empowered.Level) * 1500;
 
                 LevelMagic(empowered);
             }
