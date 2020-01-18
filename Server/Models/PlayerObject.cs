@@ -14091,8 +14091,10 @@ namespace Server.Models
                     AttackLocation(Functions.Move(CurrentLocation, Functions.ShiftDirection(Direction, 2)), magics, false);
                     break;
                 case MagicType.DestructiveSurge:
-                    for (int i = 1; i < 8; i++)
-                        AttackLocation(Functions.Move(CurrentLocation, Functions.ShiftDirection(Direction, i)), magics, false);
+                    int radius = 2;                    
+                    for (int y = CurrentLocation.Y - radius; y <= CurrentLocation.Y + radius; y++)
+                        for (int x = CurrentLocation.X - radius; x <= CurrentLocation.X + radius; x++)
+                            AttackLocation(new Point(x, y), magics, false);
                     break;
                 case MagicType.FlameSplash:
                     int count = 0;
@@ -19892,7 +19894,7 @@ namespace Server.Models
             long damage = pet.MaximumHP;
             pet.Broadcast(new S.ObjectEffect { Effect = Effect.DemonExplosion, ObjectID = pet.ObjectID });
 
-            List<MapObject> targets = GetTargets(pet.CurrentMap, pet.CurrentLocation, 2);
+            List<MapObject> targets = GetTargets(pet.CurrentMap, pet.CurrentLocation, 3);
 
             pet.ChangeHP(-damage * 75 / 100);
 
@@ -19961,7 +19963,7 @@ namespace Server.Models
 
             ob.ApplyPoison(new Poison
             {
-                Value = GetSC() + Stats[Stat.CriticalChance] + Stats[Stat.CriticalDamage],
+                Value = (GetSC() + Stats[Stat.CriticalChance] + Stats[Stat.CriticalDamage]) / 3,
                 Type = PoisonType.Infection,
                 Owner = this,
                 TickCount = 10 + magic.Level * 10,
