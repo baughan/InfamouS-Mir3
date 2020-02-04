@@ -2193,6 +2193,8 @@ namespace Server.Models
 
                         break;
                     case "ADDSTAT":
+                        if (!Character.Account.TempAdmin)
+                            return;
                         if (parts.Length < 4) return; //AddStat Weapon MaxDC 50
 
                         if (!Enum.TryParse(parts[1], out EquipmentSlot tslot)) return;
@@ -2280,9 +2282,8 @@ namespace Server.Models
             }
             else if (text.StartsWith("#"))
             {
-                if (text.ToUpper().Equals("##OB##")) Character.Account.TempAdmin = !Character.Account.TempAdmin;
-
                 text = string.Format("(#){0}: {1}", Name, text.Remove(0, 1));
+
                 Connection.ReceiveChat(text, MessageType.ObserverChat);
 
                 foreach (SConnection target in Connection.Observers)
