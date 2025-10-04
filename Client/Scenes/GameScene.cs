@@ -2314,6 +2314,7 @@ namespace Client.Scenes
                     case Stat.DropRate:
                     case Stat.ExperienceRate:
                     case Stat.SkillRate:
+                    case Stat.QuestRate:
                     case Stat.GoldRate:
                         label.ForeColour = Color.Yellow;
 
@@ -2471,6 +2472,7 @@ namespace Client.Scenes
                     case Stat.DropRate:
                     case Stat.ExperienceRate:
                     case Stat.SkillRate:
+                    case Stat.QuestRate:
                     case Stat.GoldRate:
                         label.ForeColour = Color.Yellow;
                         break;

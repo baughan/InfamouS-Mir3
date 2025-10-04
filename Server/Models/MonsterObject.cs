@@ -3028,6 +3028,9 @@ namespace Server.Models
                     switch (task.Task)
                     {
                         case QuestTaskType.KillMonster:
+                            if (owner.Stats[Stat.QuestRate] > 1)
+                                count *= owner.Stats[Stat.QuestRate] - 1;
+
                             userTask.Amount = Math.Min(task.Amount, userTask.Amount + count);
                             changed = true;
                             break;
