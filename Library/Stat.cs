@@ -649,6 +649,9 @@ namespace Library
         [StatDescription(Title = "Pet's DC", Format = "{0:+#0%;-#0%;#0%}", Mode = StatType.Percent)]
         PetDCPercent,
 
+        [StatDescription(Title = "Pet's Health", Format = "{0:+#0%;-#0%;#0%}", Mode = StatType.Percent)]
+        PetHPPercent,
+
         [StatDescription(Title = "Locates Boss Monsters on the Map", Mode = StatType.Text)]
         BossTracker,
         [StatDescription(Title = "Locates Players on the Map", Mode = StatType.Text)]
