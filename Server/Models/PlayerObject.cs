@@ -19723,7 +19723,7 @@ namespace Server.Models
 
             Stats buffStats = new Stats
             {
-                [Stat.MaxMR] = 5 + magic.Level
+                [Stat.MRPercent] = 1 + magic.Level
             };
 
             if (stats[Stat.FireAffinity] > 0)
@@ -19786,7 +19786,7 @@ namespace Server.Models
 
             Stats buffStats = new Stats
             {
-                [Stat.MaxAC] = 5 + magic.Level,
+                [Stat.ACPercent] = 1 + magic.Level,
                 [Stat.PhysicalResistance] = 1,
             };
 
