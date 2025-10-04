@@ -20,7 +20,7 @@ namespace Client.Controls
 
         //Grpahics
         public DXTab GraphicsTab;
-        public DXCheckBox FullScreenCheckBox, VSyncCheckBox, LimitFPSCheckBox, ClipMouseCheckBox, DebugLabelCheckBox;
+        public DXCheckBox FullScreenCheckBox, VSyncCheckBox, LimitFPSCheckBox, ClipMouseCheckBox, DebugLabelCheckBox, SmoothMoveCheckBox;
         private DXComboBox GameSizeComboBox, LanguageComboBox;
 
         //Sound
@@ -58,6 +58,7 @@ namespace Client.Controls
             GameSizeComboBox.ListBox.SelectItem(Config.GameSize);
             VSyncCheckBox.Checked = Config.VSync;
             LimitFPSCheckBox.Checked = Config.LimitFPS;
+            SmoothMoveCheckBox.Checked = Config.SmoothMove;
             ClipMouseCheckBox.Checked = Config.ClipMouse;
             DebugLabelCheckBox.Checked = Config.DebugLabel;
             LanguageComboBox.ListBox.SelectItem(Config.Language);
@@ -213,19 +214,26 @@ namespace Client.Controls
             };
             LimitFPSCheckBox.Location = new Point(120 - LimitFPSCheckBox.Size.Width, 80);
 
+            SmoothMoveCheckBox = new DXCheckBox
+            {
+                Label = { Text = "Smooth Move:" },
+                Parent = GraphicsTab,
+            };
+            SmoothMoveCheckBox.Location = new Point(120 - SmoothMoveCheckBox.Size.Width, 100);
+
             ClipMouseCheckBox = new DXCheckBox
             {
                 Label = { Text = "Clip Mouse:" },
                 Parent = GraphicsTab,
             };
-            ClipMouseCheckBox.Location = new Point(120 - ClipMouseCheckBox.Size.Width, 100);
+            ClipMouseCheckBox.Location = new Point(120 - ClipMouseCheckBox.Size.Width, 120);
 
             DebugLabelCheckBox = new DXCheckBox
             {
                 Label = { Text = "Debug Label:" },
                 Parent = GraphicsTab,
             };
-            DebugLabelCheckBox.Location = new Point(120 - DebugLabelCheckBox.Size.Width, 120);
+            DebugLabelCheckBox.Location = new Point(120 - DebugLabelCheckBox.Size.Width, 140);
 
             label = new DXLabel
             {
@@ -233,12 +241,12 @@ namespace Client.Controls
                 Outline = true,
                 Parent = GraphicsTab,
             };
-            label.Location = new Point(104 - label.Size.Width, 140);
+            label.Location = new Point(104 - label.Size.Width, 160);
 
             LanguageComboBox = new DXComboBox
             {
                 Parent = GraphicsTab,
-                Location = new Point(104, 140),
+                Location = new Point(104, 160),
                 Size = new Size(100, DXComboBox.DefaultNormalHeight),
             };
 
@@ -780,6 +788,7 @@ namespace Client.Controls
             }
 
             Config.LimitFPS = LimitFPSCheckBox.Checked;
+            Config.SmoothMove = SmoothMoveCheckBox.Checked;
             Config.ClipMouse = ClipMouseCheckBox.Checked;
             Config.DebugLabel = DebugLabelCheckBox.Checked;
 
@@ -1010,6 +1019,14 @@ namespace Client.Controls
                         LimitFPSCheckBox.Dispose();
 
                     LimitFPSCheckBox = null;
+                }
+
+                if (SmoothMoveCheckBox != null)
+                {
+                    if (!SmoothMoveCheckBox.IsDisposed)
+                        SmoothMoveCheckBox.Dispose();
+
+                    SmoothMoveCheckBox = null;
                 }
 
                 if (ClipMouseCheckBox != null)

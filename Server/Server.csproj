@@ -10,8 +10,9 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>Server</RootNamespace>
     <AssemblyName>Server</AssemblyName>
-    <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.8</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
+    <TargetFrameworkProfile />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <PlatformTarget>x64</PlatformTarget>
@@ -35,40 +36,48 @@
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="DevExpress.BonusSkins.v18.2">
+    <Reference Include="DevExpress.BonusSkins.v23.2">
       <Private>True</Private>
-      <HintPath>..\..\DevExpress Components RUNTIME\DevExpress.BonusSkins.v18.2.dll</HintPath>
+      
     </Reference>
-    <Reference Include="DevExpress.Data.v18.2">
+    <Reference Include="DevExpress.Drawing.v23.2">
       <Private>True</Private>
-      <HintPath>..\..\DevExpress Components RUNTIME\DevExpress.Data.v18.2.dll</HintPath>
+      
     </Reference>
-    <Reference Include="DevExpress.Printing.v18.2.Core">
-      <HintPath>..\..\DevExpress Components RUNTIME\DevExpress.Printing.v18.2.Core.dll</HintPath>
-    </Reference>
-    <Reference Include="DevExpress.Utils.v18.2">
+    <Reference Include="DevExpress.Data.v23.2">
       <Private>True</Private>
-      <HintPath>..\..\DevExpress Components RUNTIME\DevExpress.Utils.v18.2.dll</HintPath>
+      
     </Reference>
-    <Reference Include="DevExpress.XtraBars.v18.2, Version=18.2.4.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL">
-      <Private>True</Private>
-      <HintPath>..\..\DevExpress Components RUNTIME\DevExpress.XtraBars.v18.2.dll</HintPath>
+    <Reference Include="DevExpress.Printing.v23.2.Core">
+      
     </Reference>
-    <Reference Include="DevExpress.XtraEditors.v18.2">
+    <Reference Include="DevExpress.Data.Desktop.v23.2">
       <Private>True</Private>
-      <HintPath>..\..\DevExpress Components RUNTIME\DevExpress.XtraEditors.v18.2.dll</HintPath>
+      
     </Reference>
-    <Reference Include="DevExpress.XtraPrinting.v18.2, Version=18.2.4.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL">
+    <Reference Include="DevExpress.Utils.v23.2">
       <Private>True</Private>
-      <HintPath>..\..\DevExpress Components RUNTIME\DevExpress.XtraPrinting.v18.2.dll</HintPath>
+      
     </Reference>
-    <Reference Include="DevExpress.XtraGrid.v18.2, Version=18.2.4.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL">
+    <Reference Include="DevExpress.XtraBars.v23.2, Version=23.2.4.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL">
       <Private>True</Private>
-      <HintPath>..\..\DevExpress Components RUNTIME\DevExpress.XtraGrid.v18.2.dll</HintPath>
+      
     </Reference>
-    <Reference Include="DevExpress.XtraNavBar.v18.2, Version=18.2.4.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL">
+    <Reference Include="DevExpress.XtraEditors.v23.2">
       <Private>True</Private>
-      <HintPath>..\..\DevExpress Components RUNTIME\DevExpress.XtraNavBar.v18.2.dll</HintPath>
+      
+    </Reference>
+    <Reference Include="DevExpress.XtraPrinting.v23.2, Version=23.2.4.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL">
+      <Private>True</Private>
+      
+    </Reference>
+    <Reference Include="DevExpress.XtraGrid.v23.2, Version=23.2.4.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL">
+      <Private>True</Private>
+      
+    </Reference>
+    <Reference Include="DevExpress.XtraNavBar.v23.2, Version=23.2.4.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL">
+      <Private>True</Private>
+      
     </Reference>
     <Reference Include="SlimDX, Version=4.0.13.43, Culture=neutral, PublicKeyToken=b1b0c32fd1ffe4f9, processorArchitecture=AMD64" />
     <Reference Include="System" />
