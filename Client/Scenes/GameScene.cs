@@ -873,8 +873,10 @@ namespace Client.Scenes
                 MapControl.Animation++;
                 MoveFrame = true;
             }
-            else
+            else if (!Config.SmoothMove)
+            {
                 MoveFrame = false;
+            }
 
             if (MouseControl == MapControl)
                 MapControl.CheckCursor();

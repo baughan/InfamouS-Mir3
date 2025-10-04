@@ -19,7 +19,7 @@ namespace Server.Properties {
     // class via a tool like ResGen or Visual Studio.
     // To add or remove a member, edit your .ResX file then rerun ResGen
     // with the /str option, or rebuild your VS project.
-    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "15.0.0.0")]
+    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "17.0.0.0")]
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
     internal class Resources {
@@ -67,11 +67,12 @@ namespace Server.Properties {
         ///&lt;form action=&quot;https://www.paypal.com/cgi-bin/webscr&quot; method=&quot;post&quot; target=&quot;_top&quot;&gt;
         ///&lt;input type=&quot;hidden&quot; name=&quot;custom&quot; value=&quot;$CHARACTERNAME$&quot;&gt;
         ///&lt;input type=&quot;hidden&quot; name=&quot;cmd&quot; value=&quot;_s-xclick&quot;&gt;
-        ///&lt;input type=&quot;hidden&quot; name=&quot;hosted_button_id&quot; value=&quot;S8QAMCYTGM4SC&quot;&gt;
+        ///&lt;input type=&quot;hidden&quot; name=&quot;hosted_button_id&quot; value=&quot;643UVNVEZ6DR2&quot;&gt;
         ///&lt;table&gt;
         ///&lt;tr&gt;&lt;td&gt;&lt;input type=&quot;hidden&quot; name=&quot;on0&quot; value=&quot;Game Gold Quantity&quot;&gt;Game Gold Quantity&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td&gt;&lt;select name=&quot;os0&quot;&gt;
-        ///	&lt;option value=&quot;500 Gold&quot;&gt;500 Gold £5.00 GBP&lt;/option&gt;
-        ///	&lt;option value=&quot;1030 Gold (+3%)&quot;&gt;1030 Gol [rest of string was truncated]&quot;;.
+        ///	&lt;option value=&quot;600&quot;&gt;600 £5.00 GBP&lt;/option&gt;
+        ///	&lt;option value=&quot;2000&quot;&gt;2000 £10.00 GBP&lt;/option&gt;
+        ///	&lt;option value [rest of string was truncated]&quot;;.
         /// </summary>
         internal static string BuyGameGold {
             get {
