@@ -802,7 +802,10 @@ namespace Server.Models
                 }
             }
 
-
+            if (PetOwner != null && PetOwner.Stats[Stat.PetHPPercent] > 0)
+            {
+                MaximumHP += (int)(MaximumHP * (long)PetOwner.Stats[Stat.PetHPPercent] / 100);
+            }
 
 
             /*
