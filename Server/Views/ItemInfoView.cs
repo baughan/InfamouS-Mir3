@@ -106,6 +106,7 @@ namespace Server.Views
             builder.Append((info == null ? "Drop Rate" : string.Format("+{0}", info.Stats[Stat.DropRate])) + ", ");
             builder.Append((info == null ? "Gold Rate" : string.Format("+{0}", info.Stats[Stat.GoldRate])) + ", ");
             builder.Append((info == null ? "Skill Rate" : string.Format("+{0}", info.Stats[Stat.SkillRate])) + ", ");
+            builder.Append((info == null ? "Quest Rate" : string.Format("+{0}", info.Stats[Stat.QuestRate])) + ", ");
             builder.Append((info == null ? "Duration" : string.Format("+{0}", info.Stats[Stat.Duration])) + ", ");
             builder.Append((info == null ? "Inventory Weight" : string.Format("+{0}", info.Stats[Stat.BagWeight])) + ", ");
             builder.Append((info == null ? "Wear Weight" : string.Format("+{0}", info.Stats[Stat.WearWeight])) + ", ");

@@ -3019,6 +3019,7 @@ namespace Server.Models
 
             Stats[Stat.PickUpRadius] = 1;
             Stats[Stat.SkillRate] = 1;
+            Stats[Stat.QuestRate] = 1;
             Stats[Stat.CriticalChance] = 1;
 
             Stats.Add(Character.HermitStats);
