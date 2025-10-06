@@ -19521,7 +19521,7 @@ namespace Server.Models
 
             long health = CurrentHP;
 
-            BuffInfo buff = BuffAdd(BuffType.Renounce, TimeSpan.FromSeconds(30 + magic.Level * 30), buffStats, false, false, TimeSpan.Zero);
+            BuffInfo buff = BuffAdd(BuffType.Renounce, TimeSpan.FromSeconds(magic.GetPower() + GetMC()), buffStats, false, false, TimeSpan.Zero);
 
 
             buff.Stats[Stat.RenounceHPLost] = (int)(health - CurrentHP);
@@ -20529,13 +20529,13 @@ namespace Server.Models
                 [Stat.EvasionChance] = 4 + magic.Level * 2,
             };
 
-            ob.BuffAdd(BuffType.Evasion, TimeSpan.FromSeconds(magic.GetPower()), buffStats, false, false, TimeSpan.Zero);
+            ob.BuffAdd(BuffType.Evasion, TimeSpan.FromSeconds((magic.GetPower() + GetDC() * 2)), buffStats, false, false, TimeSpan.Zero);
         }
         public void RagingWindEnd(UserMagic magic, MapObject ob)
         {
             if (ob?.Node == null || !CanHelpTarget(ob)) return;
 
-            ob.BuffAdd(BuffType.RagingWind, TimeSpan.FromSeconds(magic.GetPower()), null, false, false, TimeSpan.Zero);
+            ob.BuffAdd(BuffType.RagingWind, TimeSpan.FromSeconds((magic.GetPower() + GetDC() * 2)), null, false, false, TimeSpan.Zero);
         }
 
 
